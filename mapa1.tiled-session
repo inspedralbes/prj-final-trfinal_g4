@@ -11,7 +11,7 @@
     ],
     "fileStates": {
         "": {
-            "scaleInDock": 0.6
+            "scaleInDock": 1
         },
         "#ejemplo1": {
             "dynamicWrapping": true
@@ -60,7 +60,7 @@
     },
     "frame.defaultDuration": 110,
     "last.exportedFilePath": "C:/Users/rublormar/Desktop/project-TR-FINAL/prj-final-trfinal_g4",
-    "last.imagePath": "C:/Users/rublormar/Desktop/project-TR-FINAL/prj-final-trfinal_g4/assets-characters/Spritesheet",
+    "last.imagePath": "C:/Users/rublormar/Desktop/ChromaticBond/prj-final-trfinal_g4/assets/ScribbleTileSet2/Tilesheet",
     "map.height": 30,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
@@ -70,6 +70,7 @@
         "assets-characters/ShapeCaracters.tsx"
     ],
     "project": "mapa1.tiled-project",
+    "property.type": "bool",
     "recentFiles": [
         "assets-characters/ShapeCaracters.tsx",
         "assets/ScribbleTileSet.tsx",
@@ -82,10 +83,11 @@
     ],
     "tileset.embedInMap": true,
     "tileset.lastUsedFormat": "tsx",
+    "tileset.margin": 0,
     "tileset.spacing": 0,
     "tileset.tileSize": {
-        "height": 64,
-        "width": 64
+        "height": 32,
+        "width": 32
     },
     "tileset.type": 0
 }
