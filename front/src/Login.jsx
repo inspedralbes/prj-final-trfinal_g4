@@ -4,11 +4,31 @@ export const Login = (props) => {
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(email);
-    }
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      try {
+        const response = await fetch('http://localhost:1337/api/auth/local/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            identifier: email,
+            password: pass,
+          }),
+        });
 
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Usuario logeado exitosamente en Strapi', data);
+        } else {
+          console.error('Error al logear el usuario en Strapi');
+        }
+      } catch (error) {
+        console.error('Error al realizar la solicitud:', error);
+      }
+    };
     return (
         <div className="auth-from-container">
             <form className="form-login" onSubmit={handleSubmit}>
