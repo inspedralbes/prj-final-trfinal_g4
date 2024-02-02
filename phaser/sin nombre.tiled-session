@@ -1,0 +1,34 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+        "public/assets",
+        "public",
+        "."
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "#suelo": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "public/assets/suelo.tsx": {
+            "scaleInDock": 1
+        }
+    },
+    "last.externalTilesetPath": "C:/Users/rublormar/Desktop/phaser-ChromaticBond/prj-final-trfinal_g4/phaser/public/assets",
+    "last.imagePath": "C:/Users/rublormar/Desktop/phaser-ChromaticBond/prj-final-trfinal_g4/phaser/public/assets",
+    "map.height": 100,
+    "map.width": 100,
+    "openFiles": [
+    ],
+    "project": "sin nombre.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.embedInMap": true
+}

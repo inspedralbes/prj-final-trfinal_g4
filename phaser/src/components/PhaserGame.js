@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Phaser from 'phaser';
 
 import Scene1 from '../scenes/Scene1';
+import Preloader from '../scenes/Preloader';
 
 const gameConfig = {
     type: Phaser.AUTO,
@@ -14,7 +15,10 @@ const gameConfig = {
             gravity: { y: 0 }
         }
     },
-    scene: [Scene1],
+    scene: [Preloader,  Scene1],
+    scale: {
+        zoom: 1,
+    }
     
 };
 
