@@ -22,6 +22,7 @@ export const Login = (props) => {
         if (response.ok) {
           const data = await response.json();
           console.log('Usuario logeado exitosamente en Strapi', data);
+
         } else {
           console.error('Error al logear el usuario en Strapi');
         }
