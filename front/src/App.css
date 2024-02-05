@@ -1,3 +1,9 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .App {
   text-align: center;
   display: flex;
@@ -47,3 +53,23 @@ button{
     text-decoration: underline;
 }
 
+.titol {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: white;
+    text-align: center;
+}
+
+.login {
+    display: flex;
+    position: absolute;
+    top: 1vh;
+    right: 1vw;
+}
+
+.register {
+    display: flex;
+    position: absolute;
+    top: 1vh;
+    right: 5vw;
+}

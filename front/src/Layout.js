@@ -1,27 +1,27 @@
 import { Outlet, Link } from "react-router-dom";
+import './App.css';
 
 const Layout = () => {
     return (
         <div>
+            <h1 className="titol">CHROMATIC BOND</h1>
             <header>
                 <nav>
-                    <ul>
-                        <li>
-                            <Link to="/login">Login</Link>
-                        </li>
-                        <li>
-                            <Link to="/register">Register</Link>
-                        </li>
-                        <li>
-                            <Link to="/hi">Hi</Link>
-                        </li>
+                    <ul className="button-container">
+                        <a href="/login" className="login">
+                            <button>Login</button>
+                        </a>
+                        <a href="/register" className="register">
+                            <button>Register</button>
+                        </a>
+                        <a href="/hi">
+                            <button>Hi</button>
+                        </a>
                     </ul>
                 </nav>
-
-
             </header>
-        <Outlet />
-        </div >
+            <Outlet />
+        </div>
     )
 };
 

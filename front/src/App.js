@@ -13,8 +13,8 @@ function App() {
   return (
     <div className="App">
 
-        <Index currentForm={currentForm} toggleForm={toggleForm} />
-  
+      <Index currentForm={currentForm} toggleForm={toggleForm} />
+
     </div>
   );
 }
