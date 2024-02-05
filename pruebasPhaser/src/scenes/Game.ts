@@ -7,7 +7,7 @@ export default class Game extends Phaser.Scene{
     private penguin!: Phaser.Physics.Matter.Sprite
     private playerController?: PlayerController
     
-    private isTouchingGround = false    
+        
 
     constructor(){
         super('game')
@@ -36,28 +36,21 @@ export default class Game extends Phaser.Scene{
         const decoracion = map.createLayer('decoracion', tileset);
         
         const platform = map.createLayer('plataforma', tileset);
-        const pinchos = map.createLayer('pinchos', tileset);
+        map.createLayer('pinchos', tileset);
 
-        
-        // this.cameras.main.scrollY = 170
         ground.setCollisionByProperty({ collides: true })
         platform.setCollisionByProperty({ collides: true })
 
-        
-        
-        // const { width, height } = this.scale
-        
-        
         const objectsLayer = map.getObjectLayer('objects')
         
         objectsLayer.objects.forEach(objData => {
-            const { x = 0, y = 0, name, width = 0 } = objData
+            const { x = 0, y = 0, name, width = 0, height = 0 } = objData
             
             switch(name)
             {
                 case 'penguin-spawn':
                     {
-                        this.penguin = this.matter.add.sprite(x + (width * 0.5), y!, 'penguin')
+                        this.penguin = this.matter.add.sprite(x + (width * 0.5), y, 'penguin')
                         .setFixedRotation()
 
                         this.playerController = new PlayerController(this.penguin, this.cursors)
@@ -66,8 +59,16 @@ export default class Game extends Phaser.Scene{
                         this.cameras.main.startFollow(this.penguin)
                         break
                     }
+
+                case 'spikes': 
+                {
+                    this.matter.add.rectangle(x + (width * 0.5), y + (height * 0.5), width, height, {
+                        isStatic: true
+                    })
+                    break
                 }
-            })
+            }
+        })
             
             this.matter.world.convertTilemapLayer(ground)
             this.matter.world.convertTilemapLayer(platform)
@@ -86,10 +87,6 @@ export default class Game extends Phaser.Scene{
 
         this.playerController.update(dt)
 
-        // if(!this.penguin)
-        // {
-        //     return
-        // }
 
         
     }

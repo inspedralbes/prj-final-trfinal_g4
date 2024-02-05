@@ -23,10 +23,12 @@ export default class PlayerController
         })
         .addState('walk', {
             onEnter: this.walkOnEnter,
-            onUpdate: this.walkOnUpdate
+            onUpdate: this.walkOnUpdate,
+            onExit: this.walkOnExit
         })
         .addState('jump', {
-            onEnter: this.jumpOnEnter
+            onEnter: this.jumpOnEnter,
+            onUpdate: this.jumpOnUpdate
         })
         .setState('idle')
 
@@ -53,6 +55,12 @@ export default class PlayerController
         if (this.cursors.left.isDown || this.cursors.right.isDown)
         {
             this.stateMachine.setState('walk')
+        }
+
+        const spaceJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.up)
+        if(spaceJustPressed)
+        {
+            this.stateMachine.setState('jump')   
         }
     }
 
@@ -91,10 +99,32 @@ export default class PlayerController
         }
     }
 
+    private walkOnExit()
+    {
+        this.sprite.stop()
+    }
+
     private jumpOnEnter() 
     {
-        this.sprite.setVelocityY(-10)
-    }ç
+        this.sprite.setVelocityY(-12)
+    }
+
+    private jumpOnUpdate()
+    {
+        const speed = 5;
+        if(this.cursors.left.isDown)
+        {
+            this.sprite.flipX = true
+            // this.sprite.play('player-walk', true)
+            this.sprite.setVelocityX(-speed)
+        }
+        else if(this.cursors.right.isDown)
+        {
+            this.sprite.flipX = false
+            // this.sprite.play('player-walk', true)
+            this.sprite.setVelocityX(speed)
+        }
+    }
 
     private createAnimation(){
 

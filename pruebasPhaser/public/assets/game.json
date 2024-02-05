@@ -147,6 +147,17 @@
                  "width":68,
                  "x":352,
                  "y":700
+                }, 
+                {
+                 "height":46,
+                 "id":10,
+                 "name":"spikes",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":280,
+                 "x":770,
+                 "y":723
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -154,8 +165,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":7,
- "nextobjectid":5,
+ "nextlayerid":8,
+ "nextobjectid":11,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
