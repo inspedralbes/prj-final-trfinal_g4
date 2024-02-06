@@ -158,6 +158,52 @@
                  "width":280,
                  "x":770,
                  "y":723
+                }, 
+                {
+                 "height":0,
+                 "id":11,
+                 "name":"Slope",
+                 "polygon":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":140,
+                         "y":139.333333333333
+                        }, 
+                        {
+                         "x":0.333333333333485,
+                         "y":139.333333333333
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1189.66666666667,
+                 "y":770.666666666667
+                }, 
+                {
+                 "height":41.5,
+                 "id":22,
+                 "name":"FloatingPlatform",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":209.5,
+                 "x":770.5,
+                 "y":559
+                }, 
+                {
+                 "height":40,
+                 "id":23,
+                 "name":"SmallFloatingPlatform",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":139.5,
+                 "x":1120.5,
+                 "y":560
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -166,7 +212,7 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":11,
+ "nextobjectid":24,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
@@ -243,6 +289,11 @@
                  "properties":[
                         {
                          "name":"collides",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"slope",
                          "type":"bool",
                          "value":false
                         }]

@@ -1,12 +1,13 @@
 import Phaser from 'phaser'
 import PlayerController from './PlayerController'
+import ObstaclesController from './ObstaclesController'
 
 export default class Game extends Phaser.Scene{
     
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
-    private penguin!: Phaser.Physics.Matter.Sprite
+    private penguin?: Phaser.Physics.Matter.Sprite
     private playerController?: PlayerController
-    
+    private obstacles!: ObstaclesController
         
 
     constructor(){
@@ -16,6 +17,7 @@ export default class Game extends Phaser.Scene{
     init()
     {
         this.cursors = this.input.keyboard.createCursorKeys()
+        this.obstacles = new ObstaclesController()
     }
 
     preload(){
@@ -53,7 +55,11 @@ export default class Game extends Phaser.Scene{
                         this.penguin = this.matter.add.sprite(x + (width * 0.5), y, 'penguin')
                         .setFixedRotation()
 
-                        this.playerController = new PlayerController(this.penguin, this.cursors)
+                        this.playerController = new PlayerController(
+                            this,
+                            this.penguin, 
+                            this.cursors, 
+                            this.obstacles)
                         
                         
                         this.cameras.main.startFollow(this.penguin)
@@ -62,11 +68,16 @@ export default class Game extends Phaser.Scene{
 
                 case 'spikes': 
                 {
-                    this.matter.add.rectangle(x + (width * 0.5), y + (height * 0.5), width, height, {
+                    const spike = this.matter.add.rectangle(x + (width * 0.5), y + (height * 0.5), width, height, {
                         isStatic: true
                     })
+                    this.obstacles.add('spikes', spike)
                     break
                 }
+                case 'slope':
+                    {
+                        
+                    }
             }
         })
             
@@ -90,5 +101,19 @@ export default class Game extends Phaser.Scene{
 
         
     }
+
+    // resetGame() 
+    // {
+    //     this.tweens.killAll();
+
+    //     if (this.playerController)
+    //     {
+    //         this.playerController.destroy();
+    //         this.playerController = undefined;
+    //     }
+
+    //     this.obstacles.clear();
+    //     this.scene.restart();
+    // }
 
 }
