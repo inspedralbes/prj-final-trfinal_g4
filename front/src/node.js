@@ -48,7 +48,7 @@ io.on('connection', (socket) => {
     });
     io.to(data.room).emit('login', data);
   });
-});  
+});
 
 server.listen(5176, 'localhost', () => {
   console.log('Server running at http://localhost:5176');
