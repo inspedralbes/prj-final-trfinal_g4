@@ -60,6 +60,8 @@ export default class PlayerController
             
             const gameObject = body.gameObject
 
+            
+
             if(!gameObject)
             {
                 return

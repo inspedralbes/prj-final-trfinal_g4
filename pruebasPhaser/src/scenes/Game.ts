@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import PlayerController from './PlayerController'
 import ObstaclesController from './ObstaclesController'
+import { World } from 'matter'
 
 export default class Game extends Phaser.Scene{
     
@@ -23,6 +24,7 @@ export default class Game extends Phaser.Scene{
     preload(){
         this.load.atlas('penguin' , 'assets/penguin.png', 'assets/penguin.json')
         this.load.image('tiles', 'assets/sheet.png')
+        this.load.image('candy', 'assets/caneRedSmall.png')
         
         this.load.tilemapTiledJSON('tilemap', 'assets/game.json')
     }
@@ -32,16 +34,23 @@ export default class Game extends Phaser.Scene{
         // this.createCharacterAnimation()
         const map = this.make.tilemap({ key: 'tilemap'})
         const tileset = map.addTilesetImage('iceworld', 'tiles')
+        const tileset2 = map.addTilesetImage('caramelo', 'candy')
+        
 
         const ground = map.createLayer('ground', tileset)
         const arboles = map.createLayer('arboles', tileset)
         const decoracion = map.createLayer('decoracion', tileset);
+        map.createLayer('caramelo', tileset2);
+
         
         const platform = map.createLayer('plataforma', tileset);
         map.createLayer('pinchos', tileset);
 
+
+
         ground.setCollisionByProperty({ collides: true })
         platform.setCollisionByProperty({ collides: true })
+
 
         const objectsLayer = map.getObjectLayer('objects')
         
@@ -83,6 +92,7 @@ export default class Game extends Phaser.Scene{
             
             this.matter.world.convertTilemapLayer(ground)
             this.matter.world.convertTilemapLayer(platform)
+            
             // this.matter.world.convertTilemapLayer(decoracion)
             // this.matter.world.convertTilemapLayer(arboles)
             // this.matter.world.convertTilemapLayer(pinchos)
