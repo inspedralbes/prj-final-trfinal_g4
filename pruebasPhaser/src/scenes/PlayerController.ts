@@ -110,7 +110,7 @@ export default class PlayerController
     private walkOnUpdate()
     {
 
-        const speed = 5;
+        const speed = 3;
         if(this.cursors.left.isDown)
         {
             this.sprite.flipX = true
@@ -144,7 +144,7 @@ export default class PlayerController
 
     private jumpOnEnter() 
     {
-        this.sprite.setVelocityY(-12)
+        this.sprite.setVelocityY(-11)
         this.sprite.play('player-jump')
     }
 
@@ -194,7 +194,7 @@ export default class PlayerController
             },
             onComplete: () => {
                 
-                this.scene.scene.restart()
+                   this.scene.scene.restart()
             }
         })
         

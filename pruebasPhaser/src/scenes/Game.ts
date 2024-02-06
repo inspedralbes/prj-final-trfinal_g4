@@ -36,22 +36,17 @@ export default class Game extends Phaser.Scene{
         const tileset = map.addTilesetImage('iceworld', 'tiles')
         const tileset2 = map.addTilesetImage('caramelo', 'candy')
         
-
         const ground = map.createLayer('ground', tileset)
         const arboles = map.createLayer('arboles', tileset)
         const decoracion = map.createLayer('decoracion', tileset);
         map.createLayer('caramelo', tileset2);
-
-        
+    
         const platform = map.createLayer('plataforma', tileset);
         map.createLayer('pinchos', tileset);
 
-
-
         ground.setCollisionByProperty({ collides: true })
         platform.setCollisionByProperty({ collides: true })
-
-
+        
         const objectsLayer = map.getObjectLayer('objects')
         
         objectsLayer.objects.forEach(objData => {
@@ -76,16 +71,24 @@ export default class Game extends Phaser.Scene{
                     }
 
                 case 'spikes': 
-                {
-                    const spike = this.matter.add.rectangle(x + (width * 0.5), y + (height * 0.5), width, height, {
-                        isStatic: true
-                    })
-                    this.obstacles.add('spikes', spike)
-                    break
-                }
-                case 'slope':
                     {
-                        
+                        const spike = this.matter.add.rectangle(x + (width * 0.5), y + (height * 0.5), width, height, {
+                            isStatic: true
+                        })
+                        this.obstacles.add('spikes', spike)
+                        break
+                    }   
+
+                
+
+                case 'FloatingPlatform':
+                    {
+                        const platform = this.matter.add.rectangle(x + (width * 0.5), y + (height * 0.5), width, height, {
+                            isStatic: true
+                        })
+                        this.obstacles.add('FloatingPlatform', platform)
+
+                        break
                     }
             }
         })

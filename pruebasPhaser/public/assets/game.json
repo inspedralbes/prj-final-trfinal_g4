@@ -177,7 +177,7 @@
                  "y":700
                 }, 
                 {
-                 "height":46,
+                 "height":33.3333333333333,
                  "id":10,
                  "name":"spikes",
                  "rotation":0,
@@ -185,7 +185,7 @@
                  "visible":true,
                  "width":280,
                  "x":770,
-                 "y":723
+                 "y":735.666666666667
                 }, 
                 {
                  "height":0,
@@ -215,6 +215,12 @@
                  "height":41.5,
                  "id":22,
                  "name":"FloatingPlatform",
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1158,6 +1164,32 @@
          "name":"caramelo",
          "spacing":0,
          "tilecount":1,
+         "tileheight":70,
+         "tilewidth":70
+        }, 
+        {
+         "columns":7,
+         "firstgid":100,
+         "image":"..\/UI-assets\/Spritesheet\/blueSheet.png",
+         "imageheight":256,
+         "imagewidth":512,
+         "margin":0,
+         "name":"UI_Blue-user",
+         "spacing":0,
+         "tilecount":21,
+         "tileheight":70,
+         "tilewidth":70
+        }, 
+        {
+         "columns":7,
+         "firstgid":121,
+         "image":"..\/UI-assets\/Spritesheet\/yellowSheet.png",
+         "imageheight":256,
+         "imagewidth":512,
+         "margin":0,
+         "name":"yellowSheet",
+         "spacing":0,
+         "tilecount":21,
          "tileheight":70,
          "tilewidth":70
         }],

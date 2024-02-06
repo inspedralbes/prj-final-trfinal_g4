@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="15" tilewidth="70" tileheight="70" infinite="0" nextlayerid="7" nextobjectid="5">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="15" tilewidth="70" tileheight="70" infinite="0" nextlayerid="8" nextobjectid="11">
  <editorsettings>
   <export target="game.json" format="json"/>
  </editorsettings>
@@ -593,5 +593,6 @@
  </layer>
  <objectgroup id="6" name="objects">
   <object id="2" name="penguin-spawn" x="352" y="700" width="68" height="69"/>
+  <object id="10" name="spikes" x="770" y="723" width="280" height="46"/>
  </objectgroup>
 </map>
