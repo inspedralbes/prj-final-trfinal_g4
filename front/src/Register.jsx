@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import io from 'socket.io-client';
 
 export const Register = (props) => {
   const [email, setEmail] = useState("");
@@ -25,6 +26,8 @@ export const Register = (props) => {
       if (response.ok) {
         const data = await response.json();
         console.log('Usuario registrado exitosamente en Strapi', data);
+        const socket = io('http://localhost:5176');
+        socket.emit('register', { userData: data });
         // Puedes redirigir o realizar otras acciones después del registro exitoso
       } else {
         console.error('Error al registrar el usuario en Strapi');
@@ -40,7 +43,7 @@ export const Register = (props) => {
     <div className="auth-from-container">
       <form className="form-register" onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
-        <input value={name} onChange={(e) => setName(e.target.value)} name="name" placeholder="Full Name"/>
+        <input value={name} onChange={(e) => setName(e.target.value)} name="name" placeholder="Full Name" />
         <label htmlFor="email" >Email</label>
         <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" id="email" name="email" />
         <label htmlFor="password">Password</label>

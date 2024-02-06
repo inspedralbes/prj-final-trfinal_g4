@@ -1,7 +1,19 @@
+import { useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
+import { io } from "socket.io-client";
 import './App.css';
 
 const Layout = () => {
+    useEffect(() => {
+        const socket = io('http://localhost:5176');
+
+        socket.emit('connection');
+
+        return () => {
+            socket.disconnect();
+        };
+    }, []);
+
     return (
         <div>
             <h1 className="titol">CHROMATIC BOND</h1>

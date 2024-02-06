@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import io from 'socket.io-client';
 
 export const Login = (props) => {
     const [email, setEmail] = useState("");
@@ -23,6 +24,8 @@ export const Login = (props) => {
           const data = await response.json();
           console.log('Usuario logeado exitosamente en Strapi', data);
 
+          const socket = io('http://localhost:5176');
+          socket.emit('login', { userData: data });
         } else {
           console.error('Error al logear el usuario en Strapi');
         }
