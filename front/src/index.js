@@ -5,10 +5,9 @@ import './App.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Layout } from './Layout';
-import { Login } from './Login';
-import { Register } from './Register';
-import { Hi } from './hi';
-
+import { Login } from './componentes/Login';
+import { Register } from './componentes/Register';
+import { Hi } from './componentes/hi';
 export default function Index() {
   return (
     
