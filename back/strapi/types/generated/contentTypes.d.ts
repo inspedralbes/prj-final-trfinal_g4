@@ -362,6 +362,68 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiFaseFase extends Schema.CollectionType {
+  collectionName: 'fases';
+  info: {
+    singularName: 'fase';
+    pluralName: 'fases';
+    displayName: 'Fase';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Mapa: Attribute.JSON;
+    Nivel: Attribute.BigInteger;
+    idFase: Attribute.UID;
+    Assets: Attribute.Media;
+    Like: Attribute.BigInteger;
+    Dislike: Attribute.BigInteger;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::fase.fase', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::fase.fase', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPartidaPartida extends Schema.CollectionType {
+  collectionName: 'partidas';
+  info: {
+    singularName: 'partida';
+    pluralName: 'partidas';
+    displayName: 'Partida';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    idPartida: Attribute.UID;
+    Fases: Attribute.JSON;
+    Guardado: Attribute.JSON;
+    Personaje1: Attribute.UID;
+    Personaje2: Attribute.UID;
+    Publica: Attribute.Boolean;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::partida.partida',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::partida.partida',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -781,68 +843,6 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
 }
 
-export interface ApiFaseFase extends Schema.CollectionType {
-  collectionName: 'fases';
-  info: {
-    singularName: 'fase';
-    pluralName: 'fases';
-    displayName: 'Fase';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    Mapa: Attribute.JSON;
-    Nivel: Attribute.BigInteger;
-    idFase: Attribute.UID;
-    Assets: Attribute.Media;
-    Like: Attribute.BigInteger;
-    Dislike: Attribute.BigInteger;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::fase.fase', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::fase.fase', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-  };
-}
-
-export interface ApiPartidaPartida extends Schema.CollectionType {
-  collectionName: 'partidas';
-  info: {
-    singularName: 'partida';
-    pluralName: 'partidas';
-    displayName: 'Partida';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    idPartida: Attribute.UID;
-    Fases: Attribute.JSON;
-    Guardado: Attribute.JSON;
-    Personaje1: Attribute.UID;
-    Personaje2: Attribute.UID;
-    Publica: Attribute.Boolean;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::partida.partida',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::partida.partida',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -853,6 +853,8 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::fase.fase': ApiFaseFase;
+      'api::partida.partida': ApiPartidaPartida;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
@@ -861,8 +863,6 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
-      'api::fase.fase': ApiFaseFase;
-      'api::partida.partida': ApiPartidaPartida;
     }
   }
 }

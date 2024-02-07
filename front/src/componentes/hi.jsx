@@ -1,21 +1,35 @@
 import React, { useEffect, useState } from 'react';
+import io from 'socket.io-client';
 
-export const Hi = (props) => {
-    const [usernames, setUsernames] = useState([]);
+const socket = io('http://localhost:5176');
+
+export const Hi = () => {
+    const [message, setMessage] = useState("");
+    const [messages, setMessages] = useState([]);
 
     useEffect(() => {
-        const storedUsernames = localStorage.getItem('usernames');
-        if (storedUsernames) {
-            setUsernames(JSON.parse(storedUsernames));
-        }
-    }, []);
+        socket.on('chat message', (msg) => {
+            setMessages([...messages, msg]);
+        });
+    }, [messages]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        socket.emit('chat message', message);
+        setMessage("");
+    };
 
     return (
         <div>
-            {usernames.map((username, index) => (
-                <h1 key={index}>Hi {username}</h1>
-            ))}
+            <ul id="messages">
+                {messages.map((msg, i) => (
+                    <li key={i}>{msg}</li>
+                ))}
+            </ul>
+            <form onSubmit={handleSubmit}>
+                <input value={message} onChange={(e) => setMessage(e.target.value)} />
+                <button>Send</button>
+            </form>
         </div>
     );
-};
-            
+}
