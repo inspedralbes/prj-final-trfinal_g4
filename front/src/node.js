@@ -25,8 +25,13 @@ io.on('connection', (socket) => {
     console.log('a user disconnected');
   });
 
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
+    console.log('message: ' + msg);
+  });
+
   socket.on('register', async (data) => {
-    console.log('gora eta', data);
+    console.log('register -->', data);
     const response = await fetch('http://localhost:1337/api/auth/local/register', {
       method: 'POST',
       headers: {
@@ -38,7 +43,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('login', async (data) => {
-    console.log('hail hitler!!!11', data);
+    console.log('login -->', data);
     const response = await fetch('http://localhost:1337/api/auth/local', {
       method: 'POST',
       headers: {
