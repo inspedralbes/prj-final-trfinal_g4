@@ -25,11 +25,6 @@ io.on('connection', (socket) => {
     console.log('a user disconnected');
   });
 
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
-    console.log('message: ' + msg);
-  });
-
   socket.on('register', async (data) => {
     console.log('register -->', data);
     const response = await fetch('http://localhost:1337/api/auth/local/register', {
