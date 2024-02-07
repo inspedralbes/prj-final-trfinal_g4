@@ -23,26 +23,28 @@ export default class Game extends Phaser.Scene{
 
     preload(){
         this.load.atlas('penguin' , 'assets/penguin.png', 'assets/penguin.json')
-        this.load.image('tiles', 'assets/sheet.png')
-        this.load.image('candy', 'assets/caneRedSmall.png')
+        this.load.image('tileset', 'assets/game-platform/mainlevbuild.png')
+        // this.load.image('candy', 'assets/caneRedSmall.png')
         
-        this.load.tilemapTiledJSON('tilemap', 'assets/game.json')
+        this.load.tilemapTiledJSON('tilemap', 'assets/game-platform/game-platform.json')
     }
 
     create()
     {
         // this.createCharacterAnimation()
         const map = this.make.tilemap({ key: 'tilemap'})
-        const tileset = map.addTilesetImage('iceworld', 'tiles')
-        const tileset2 = map.addTilesetImage('caramelo', 'candy')
+        const tileset = map.addTilesetImage('ground-build', 'tileset')
+        // const tileset2 = map.addTilesetImage('caramelo', 'candy')
         
         const ground = map.createLayer('ground', tileset)
-        const arboles = map.createLayer('arboles', tileset)
-        const decoracion = map.createLayer('decoracion', tileset);
-        map.createLayer('caramelo', tileset2);
+        // const arboles = map.createLayer('arboles', tileset)
+        // const decoracion = map.createLayer('decoracion', tileset);
+        // map.createLayer('caramelo', tileset2);
     
-        const platform = map.createLayer('plataforma', tileset);
-        map.createLayer('pinchos', tileset);
+        const platform = map.createLayer('platform', tileset);
+        const cave = map.createLayer('cave', tileset);
+        const roca = map.createLayer('roca', tileset);
+        // map.createLayer('pinchos', tileset);
 
         ground.setCollisionByProperty({ collides: true })
         platform.setCollisionByProperty({ collides: true })
@@ -50,7 +52,7 @@ export default class Game extends Phaser.Scene{
         const objectsLayer = map.getObjectLayer('objects')
         
         objectsLayer.objects.forEach(objData => {
-            const { x = 0, y = 0, name, width = 0, height = 0 } = objData
+            const { x = 0, y = 0, name, width = 0 } = objData
             
             switch(name)
             {
@@ -61,35 +63,37 @@ export default class Game extends Phaser.Scene{
 
                         this.playerController = new PlayerController(
                             this,
-                            this.penguin, 
+                            this.penguin,
                             this.cursors, 
                             this.obstacles)
                         
                         
+                        
                         this.cameras.main.startFollow(this.penguin)
+                        // this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
                         break
                     }
 
-                case 'spikes': 
-                    {
-                        const spike = this.matter.add.rectangle(x + (width * 0.5), y + (height * 0.5), width, height, {
-                            isStatic: true
-                        })
-                        this.obstacles.add('spikes', spike)
-                        break
-                    }   
+        //         // case 'spikes': 
+        //         //     {
+        //         //         const spike = this.matter.add.rectangle(x + (width * 0.5), y + (height * 0.5), width, height, {
+        //         //             isStatic: true
+        //         //         })
+        //         //         this.obstacles.add('spikes', spike)
+        //         //         break
+        //         //     }   
 
                 
 
-                case 'FloatingPlatform':
-                    {
-                        const platform = this.matter.add.rectangle(x + (width * 0.5), y + (height * 0.5), width, height, {
-                            isStatic: true
-                        })
-                        this.obstacles.add('FloatingPlatform', platform)
+        //         // case 'FloatingPlatform':
+        //         //     {
+        //         //         const platform = this.matter.add.rectangle(x + (width * 0.5), y + (height * 0.5), width, height, {
+        //         //             isStatic: true
+        //         //         })
+        //         //         this.obstacles.add('FloatingPlatform', platform)
 
-                        break
-                    }
+        //         //         break
+        //         //     }
             }
         })
             

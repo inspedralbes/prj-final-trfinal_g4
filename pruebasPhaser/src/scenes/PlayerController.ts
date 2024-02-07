@@ -144,7 +144,7 @@ export default class PlayerController
 
     private jumpOnEnter() 
     {
-        this.sprite.setVelocityY(-11)
+        this.sprite.setVelocityY(-8)
         this.sprite.play('player-jump')
     }
 
