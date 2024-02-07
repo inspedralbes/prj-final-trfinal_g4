@@ -150,7 +150,7 @@ export default class PlayerController
 
     private jumpOnUpdate()
     {
-        const speed = 5;
+        const speed = 3;
         if(this.cursors.left.isDown)
         {
             this.sprite.flipX = true

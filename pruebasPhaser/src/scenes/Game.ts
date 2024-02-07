@@ -23,7 +23,7 @@ export default class Game extends Phaser.Scene{
 
     preload(){
         this.load.atlas('penguin' , 'assets/penguin.png', 'assets/penguin.json')
-        this.load.image('tileset', 'assets/game-platform/mainlevbuild.png')
+        this.load.image('tileset', 'assets/game-platform/ForestTileBlue.png')
         // this.load.image('candy', 'assets/caneRedSmall.png')
         
         this.load.tilemapTiledJSON('tilemap', 'assets/game-platform/game-platform.json')
@@ -33,7 +33,7 @@ export default class Game extends Phaser.Scene{
     {
         // this.createCharacterAnimation()
         const map = this.make.tilemap({ key: 'tilemap'})
-        const tileset = map.addTilesetImage('ground-build', 'tileset')
+        const tileset = map.addTilesetImage('ForestTileBlue', 'tileset')
         // const tileset2 = map.addTilesetImage('caramelo', 'candy')
         
         const ground = map.createLayer('ground', tileset)
@@ -42,12 +42,14 @@ export default class Game extends Phaser.Scene{
         // map.createLayer('caramelo', tileset2);
     
         const platform = map.createLayer('platform', tileset);
-        const cave = map.createLayer('cave', tileset);
-        const roca = map.createLayer('roca', tileset);
+        // const cave = map.createLayer('cave', tileset);
+        // const roca = map.createLayer('roca', tileset);
+        const pinchos = map.createLayer('pinchos', tileset);
         // map.createLayer('pinchos', tileset);
 
         ground.setCollisionByProperty({ collides: true })
         platform.setCollisionByProperty({ collides: true })
+        // roca.setCollisionByProperty({ collides: true })
         
         const objectsLayer = map.getObjectLayer('objects')
         
