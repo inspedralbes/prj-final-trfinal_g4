@@ -18,11 +18,13 @@ io.on('connection', (socket) => {
   socket.on('join', (data) => {
     socket.join(data);
     partida.push(data);
+    console.log('data', data);
     console.log('partida', partida);
   });
 
-  socket.on('disconnect', () => {
-    console.log('a user disconnected');
+  socket.on('chat message', (msg) => {
+    console.log('message: ' + msg);
+    io.emit('chat message', msg);
   });
 
   socket.on('register', async (data) => {
@@ -47,6 +49,9 @@ io.on('connection', (socket) => {
       body: JSON.stringify(data),
     });
     io.to(data.room).emit('login', data);
+  });
+  socket.on('disconnect', () => {
+    console.log('a user disconnected');
   });
 });
 
