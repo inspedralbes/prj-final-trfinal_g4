@@ -73,3 +73,10 @@ button{
     top: 1vh;
     right: 5vw;
 }
+
+.hi{
+    display: flex;
+    position: absolute;
+    top: 1vh;
+    right: 10vw; 
+}
