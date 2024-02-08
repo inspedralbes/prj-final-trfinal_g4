@@ -6,11 +6,11 @@ import { World } from 'matter'
 export default class Game extends Phaser.Scene{
     
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
-    private penguin?: Phaser.Physics.Matter.Sprite
+    private penguin!: Phaser.Physics.Matter.Sprite
     private playerController?: PlayerController
     private obstacles!: ObstaclesController
     private pushableObj!: Phaser.Physics.Matter.Sprite
-    private pushable: Phaser.Physics.Matter.Sprite
+    // private pushable!: Phaser.Physics.Matter.Sprite
     
     
     constructor(){
@@ -46,7 +46,7 @@ export default class Game extends Phaser.Scene{
         ground.setCollisionByProperty({ collides: true })
         platform.setCollisionByProperty({ collides: true })
         
-        // this.matter.world.setBounds()
+        this.matter.world.setBounds()
         
         const objectsLayer = map.getObjectLayer('objects')
         
@@ -66,7 +66,7 @@ export default class Game extends Phaser.Scene{
                                 this.penguin,
                                 this.cursors, 
                                 this.obstacles,
-                                this.pushable)
+                                this.pushableObj)
                             
                             this.cameras.main.startFollow(this.penguin)
                             
@@ -76,10 +76,39 @@ export default class Game extends Phaser.Scene{
 
                     case 'rocaPushable': 
                         {
-                            this.pushableObj = this.matter.add.sprite(x + (width * 0.5), y + (height * 0.5), 'roca').setInteractive()                     
+                            this.pushableObj = this.matter.add.sprite(x + (width * 0.5), y + (height * 0.5), 'roca' ).setInteractive()   
+                            // console.log('pushableObj', this.pushableObj);
+                            
+                            
 
-                            break
-                        }   
+                            this.matter.world.on('collisionstart', (event) => {
+                                event.pairs.forEach(pair => {
+                                    const bodyA = pair.bodyA as MatterJS.BodyType
+                                    const bodyB = pair.bodyB as MatterJS.BodyType
+                                if (bodyA.gameObject === this.penguin && bodyB.gameObject === this.pushableObj || 
+                                    bodyA.gameObject === this.pushableObj && bodyB.gameObject === this.penguin)
+                                    {
+                                        if (!this.playerController)
+                                        {
+                                            this.playerController = new PlayerController(
+                                                this,
+                                                this.penguin,
+                                                this.cursors, 
+                                                this.obstacles,
+                                                this.pushableObj
+                                                )
+                                            }
+                                            console.log('pushableObj', this.pushableObj);
+                                            
+                                            
+                                        }
+                                        
+                                        
+                                    })
+                                })
+                                    
+                                    break
+                                }   
                                      
                     case 'spikes':
                         {
@@ -97,16 +126,7 @@ export default class Game extends Phaser.Scene{
                 this.matter.world.convertTilemapLayer(platform)
                 this.matter.world.convertTilemapLayer(pinchos)
 
-                this.matter.world.on('collisionstart', (event, bodyA, bodyB) => {
-                    if (bodyA.gameObject === this.penguin && bodyB.gameObject === this.pushableObj || bodyA.gameObject === this.pushableObj && bodyB.gameObject === this.penguin)
-
-                    {
-                        
-                        
-                        
-                    }
-                })
-
+                
     }
 
     update(t: number, dt: number)

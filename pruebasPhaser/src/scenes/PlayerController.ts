@@ -9,16 +9,16 @@ export default class PlayerController
     private sprite: Phaser.Physics.Matter.Sprite
     private cursors: CursorKeys
     private obstacles: ObstaclesController
-    private pushable: Phaser.Physics.Matter.Sprite
+    private pushableObj: Phaser.Physics.Matter.Sprite
     private stateMachine: StateMachine
 
-    constructor(scene: Phaser.Scene, sprite: Phaser.Physics.Matter.Sprite, cursors: CursorKeys, obstacles: ObstaclesController, pushable: Phaser.Physics.Matter.Sprite)
+    constructor(scene: Phaser.Scene, sprite: Phaser.Physics.Matter.Sprite, cursors: CursorKeys, obstacles: ObstaclesController, pushableObj: Phaser.Physics.Matter.Sprite)
     {
         this.scene = scene
         this.sprite = sprite
         this.cursors = cursors
         this.obstacles = obstacles
-        this.pushable = pushable
+        this.pushableObj = pushableObj
         
         this.createAnimation()
         
@@ -46,6 +46,15 @@ export default class PlayerController
             onEnter: this.spikesDeadOnEnter
         
         })
+        .addState('push', {
+            onEnter: () => {
+                this.sprite.play('player-push')
+            }
+        })
+        .addState('push-object', {
+            onEnter: this.pushObjectOnEnter,
+            onUpdate: this.pushObjectOnUpdate
+        })
         .setState('idle')
 
         this.sprite.setOnCollide((data: MatterJs.ICollisionPair) => {
@@ -60,24 +69,66 @@ export default class PlayerController
             }
             
             const gameObject = body.gameObject
+            // console.log(gameObject);
 
-            
-
-            if(!gameObject)
-            {
-                return
-            }
-            if (gameObject instanceof Phaser.Physics.Matter.TileBody)
-            {
-                if (this.stateMachine.isCurrentState('jump')) 
-                {
-                    this.stateMachine.setState('idle')
-                }
+            if (body == this.pushableObj?.body) {
+                this.stateMachine.setState('push-object')
                 return
             }
             
-        })
-    }
+            // if(gameObject instanceof Phaser.Physics.Matter.Sprite && gameObject.getData('roca') === true)
+            // {
+                //    if(this.stateMachine.isCurrentState('walk') || this.stateMachine.isCurrentState('idle') || this.stateMachine.isCurrentState('jump'))
+                //    {
+                    //        this.stateMachine.setState('push')
+                    //    }
+                    // }
+                    if (gameObject instanceof Phaser.Physics.Matter.TileBody)
+                    {
+                        if (this.stateMachine.isCurrentState('jump')) 
+                        {
+                            this.stateMachine.setState('idle')
+                        }
+                        return
+                    }
+                    
+                })
+
+                this.scene.events.on('collisionstart', (event) => {
+                    event.pairs.forEach((pair) => {
+                        const { bodyA, bodyB } = pair
+
+                        if((bodyA === this.sprite.body && bodyB === this.pushableObj.body) || 
+                        (bodyB === this.sprite.body && bodyA === this.pushableObj.body))
+                        {
+                            this.stateMachine.setState('push-object')
+                        }
+                    })    
+                })
+
+                this.scene.events.on('collisionend', (event) => {
+                    event.pairs.forEach((pair) => {
+                        const { bodyA, bodyB } = pair;
+            
+                        if ((bodyA === this.sprite.body && bodyB === this.pushableObj.body) || 
+                            (bodyB === this.sprite.body && bodyA === this.pushableObj.body))
+                            {
+                                this.stateMachine.setState('idle')
+                            }
+                    });
+                });
+                // this.pushableObj.setOnCollide((data: MatterJS.ICollisionPair) => {
+                //     const body = data.bodyB as MatterJS.BodyType
+                //     console.log(body);
+                    
+                //     if (this.obstacles.is('roca', body))
+                //     {
+                //         this.stateMachine.setState('push-object')
+                //         return
+                        
+                //     }
+                // })
+            }
 
     update(dt: number)
     {
@@ -151,7 +202,7 @@ export default class PlayerController
 
     private jumpOnUpdate()
     {
-        const speed = 3;
+        const speed = 2;
         if(this.cursors.left.isDown)
         {
             this.sprite.flipX = true
@@ -219,7 +270,22 @@ export default class PlayerController
     //     this.stateMachine.setState('idle');
     // }
 
-    
+    private pushObjectOnEnter()
+    {
+        this.sprite.setVelocityY(0)
+        this.sprite.setVelocityX(10)
+        
+    }
+
+    private pushObjectOnUpdate()
+    {
+            
+    //   if (this.sprite.play('player-idle'))
+    //   {
+    //       this.stateMachine.setState('push')
+    //   }
+      
+    }
 
     private createAnimation(){
 
@@ -269,6 +335,20 @@ export default class PlayerController
             }),
             repeat: 0,
             
+        })
+
+        this.sprite.anims.create({
+            key: 'player-push',
+            frameRate: 10,
+            frames: this.sprite.anims.generateFrameNames('penguin', {
+                start: 1,
+                end: 1,
+                prefix: 'penguin_slide0',
+                suffix: '.png',
+                
+            }),
+            repeat: -1,
+
         })
     }
 
