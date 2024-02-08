@@ -9,8 +9,10 @@ export default class Game extends Phaser.Scene{
     private penguin?: Phaser.Physics.Matter.Sprite
     private playerController?: PlayerController
     private obstacles!: ObstaclesController
-        
-
+    private pushableObj!: Phaser.Physics.Matter.Sprite
+    private pushable: Phaser.Physics.Matter.Sprite
+    
+    
     constructor(){
         super('game')
     }
@@ -25,86 +27,85 @@ export default class Game extends Phaser.Scene{
         this.load.atlas('penguin' , 'assets/penguin.png', 'assets/penguin.json')
         this.load.image('tileset', 'assets/game-platform/ForestTileBlue.png')
         // this.load.image('candy', 'assets/caneRedSmall.png')
-        
+        this.load.image('roca', 'assets/game-platform/roca-blue.png')
+
         this.load.tilemapTiledJSON('tilemap', 'assets/game-platform/game-platform.json')
     }
 
     create()
     {
-        // this.createCharacterAnimation()
+        
         const map = this.make.tilemap({ key: 'tilemap'})
         const tileset = map.addTilesetImage('ForestTileBlue', 'tileset')
-        // const tileset2 = map.addTilesetImage('caramelo', 'candy')
         
         const ground = map.createLayer('ground', tileset)
-        // const arboles = map.createLayer('arboles', tileset)
-        // const decoracion = map.createLayer('decoracion', tileset);
-        // map.createLayer('caramelo', tileset2);
-    
         const platform = map.createLayer('platform', tileset);
-        // const cave = map.createLayer('cave', tileset);
-        // const roca = map.createLayer('roca', tileset);
         const pinchos = map.createLayer('pinchos', tileset);
         // map.createLayer('pinchos', tileset);
 
         ground.setCollisionByProperty({ collides: true })
         platform.setCollisionByProperty({ collides: true })
-        // roca.setCollisionByProperty({ collides: true })
+        
+        // this.matter.world.setBounds()
         
         const objectsLayer = map.getObjectLayer('objects')
         
+        
         objectsLayer.objects.forEach(objData => {
-            const { x = 0, y = 0, name, width = 0 } = objData
+            const { x = 0, y = 0, name, width = 0, height = 0 } = objData
             
             switch(name)
             {
-                case 'penguin-spawn':
-                    {
-                        this.penguin = this.matter.add.sprite(x + (width * 0.5), y, 'penguin')
-                        .setFixedRotation()
+                    case 'penguin-spawn':
+                        {
+                            this.penguin = this.matter.add.sprite(x + (width * 0.5), y, 'penguin')
+                            .setFixedRotation().setInteractive()
 
-                        this.playerController = new PlayerController(
-                            this,
-                            this.penguin,
-                            this.cursors, 
-                            this.obstacles)
-                        
-                        
-                        
-                        this.cameras.main.startFollow(this.penguin)
-                        // this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
-                        break
+                            this.playerController = new PlayerController(
+                                this,
+                                this.penguin,
+                                this.cursors, 
+                                this.obstacles,
+                                this.pushable)
+                            
+                            this.cameras.main.startFollow(this.penguin)
+                            
+                            // this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
+                            break
+                        }
+
+                    case 'rocaPushable': 
+                        {
+                            this.pushableObj = this.matter.add.sprite(x + (width * 0.5), y + (height * 0.5), 'roca').setInteractive()                     
+
+                            break
+                        }   
+                                     
+                    case 'spikes':
+                        {
+                            const spikes = this.matter.add.rectangle(x + (width * 0.5), y + (height * 0.5), width, height, {
+                                isStatic: true
+                            })
+                            this.obstacles.add('spikes', spikes)
+                            
+                            break
+                        }
                     }
+                })
+                // 
+                this.matter.world.convertTilemapLayer(ground)
+                this.matter.world.convertTilemapLayer(platform)
+                this.matter.world.convertTilemapLayer(pinchos)
 
-        //         // case 'spikes': 
-        //         //     {
-        //         //         const spike = this.matter.add.rectangle(x + (width * 0.5), y + (height * 0.5), width, height, {
-        //         //             isStatic: true
-        //         //         })
-        //         //         this.obstacles.add('spikes', spike)
-        //         //         break
-        //         //     }   
+                this.matter.world.on('collisionstart', (event, bodyA, bodyB) => {
+                    if (bodyA.gameObject === this.penguin && bodyB.gameObject === this.pushableObj || bodyA.gameObject === this.pushableObj && bodyB.gameObject === this.penguin)
 
-                
-
-        //         // case 'FloatingPlatform':
-        //         //     {
-        //         //         const platform = this.matter.add.rectangle(x + (width * 0.5), y + (height * 0.5), width, height, {
-        //         //             isStatic: true
-        //         //         })
-        //         //         this.obstacles.add('FloatingPlatform', platform)
-
-        //         //         break
-        //         //     }
-            }
-        })
-            
-            this.matter.world.convertTilemapLayer(ground)
-            this.matter.world.convertTilemapLayer(platform)
-            
-            // this.matter.world.convertTilemapLayer(decoracion)
-            // this.matter.world.convertTilemapLayer(arboles)
-            // this.matter.world.convertTilemapLayer(pinchos)
+                    {
+                        
+                        
+                        
+                    }
+                })
 
     }
 

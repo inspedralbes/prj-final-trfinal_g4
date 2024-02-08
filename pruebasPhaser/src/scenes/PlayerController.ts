@@ -9,15 +9,16 @@ export default class PlayerController
     private sprite: Phaser.Physics.Matter.Sprite
     private cursors: CursorKeys
     private obstacles: ObstaclesController
-
+    private pushable: Phaser.Physics.Matter.Sprite
     private stateMachine: StateMachine
 
-    constructor(scene: Phaser.Scene, sprite: Phaser.Physics.Matter.Sprite, cursors: CursorKeys, obstacles: ObstaclesController)
+    constructor(scene: Phaser.Scene, sprite: Phaser.Physics.Matter.Sprite, cursors: CursorKeys, obstacles: ObstaclesController, pushable: Phaser.Physics.Matter.Sprite)
     {
         this.scene = scene
         this.sprite = sprite
         this.cursors = cursors
         this.obstacles = obstacles
+        this.pushable = pushable
         
         this.createAnimation()
         
@@ -163,6 +164,7 @@ export default class PlayerController
             // this.sprite.play('player-walk', true)
             this.sprite.setVelocityX(speed)
         }
+        
     }
 
     private spikesDeadOnEnter()
