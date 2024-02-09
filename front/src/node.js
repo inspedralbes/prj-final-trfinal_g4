@@ -1,9 +1,12 @@
+import express from 'express';
+import { join } from 'path';
+import cors from 'cors';
 const http = require('http');
 const { Server } = require('socket.io');
 
 const server = http.createServer();
 
-var partida = [];
+// var partida = [];
 
 const io = new Server(server, {
   cors: {
@@ -13,18 +16,20 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log(`Connected: ${socket.id}`);
 
-  socket.on('join', (data) => {
-    socket.join(data);
-    partida.push(data);
-    console.log('data', data);
-    console.log('partida', partida);
+  socket.on('join', (room) => {
+    console.log(`Socket ${socket.id} joining ${room}`);
+    socket.join(room);
+    // partida.push(data);
+    // console.log('data', data);
+    // console.log('partida', partida);
   });
 
-  socket.on('chat message', (msg) => {
-    console.log('message: ' + msg);
-    io.emit('chat message', msg);
+  socket.on('chat message', (dataMessage) => {
+    const { msg, room } = dataMessage;
+    console.log(`msg: ${msg}, room: ${room}`);
+    io.to(room).emit('chat message', msg);  
   });
 
   socket.on('register', async (data) => {
