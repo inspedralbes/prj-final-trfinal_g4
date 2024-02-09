@@ -274,6 +274,7 @@ export default class PlayerController
     {
         this.sprite.setVelocityY(0)
         this.sprite.setVelocityX(10)
+        this.sprite.play('player-idle')
         
     }
 

@@ -1,12 +1,4 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"json",
-         "target":"purple-blue-red-game.json"
-        }
-    },
  "height":65,
  "infinite":false,
  "layers":[
@@ -305,17 +297,11 @@
                  "height":61.3333,
                  "id":13,
                  "name":"spikes",
-                 "properties":[
-                        {
-                         "name":"KillsPlayer",
-                         "type":"bool",
-                         "value":true
-                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":2318,
-                 "x":-9,
+                 "width":11836,
+                 "x":-1351,
                  "y":977.33335
                 }],
          "offsetx":4,
