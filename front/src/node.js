@@ -28,26 +28,12 @@ io.on('connection', (socket) => {
   });
 
   socket.on('register', async (data) => {
-    console.log('register -->', data);
-    const response = await fetch('http://localhost:1337/api/auth/local/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+    console.log('funciona', data);
     io.to(data.room).emit('register', data);
   });
 
   socket.on('login', async (data) => {
-    console.log('login -->', data);
-    const response = await fetch('http://localhost:1337/api/auth/local', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+    console.log('funciona', data);
     io.to(data.room).emit('login', data);
   });
   socket.on('disconnect', () => {
