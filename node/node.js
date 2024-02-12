@@ -10,6 +10,7 @@ const server = createServer();
 // var partida = [];
 const app = express();
 
+var rooms = [];
 app.get('/api', (req, res) => {
   res.send('server node');
 });
@@ -27,11 +28,20 @@ io.on('connection', (socket) => {
   socket.on('join', (room) => {
     console.log(`Socket ${socket.id} joining ${room}`);
     socket.join(room);
+    const index = rooms.findIndex((r) => r.id === room);
+    console.log('Index:', index);
+    if (index !== -1) {
+      rooms[index].users.push(socket.id);
+    }
     // partida.push(data);
     // console.log('data', data);
     // console.log('partida', partida);
   });
 
+  socket.on('createRoom', (room) => {
+    rooms.push({"users":[socket.id], "password": room.password, "started": false, level: room.level});
+    socket.broadcast.emit('Updaterooms', rooms);
+  });
   socket.on('chat message', (dataMessage) => {
     const { msg, room } = dataMessage;
     console.log(`msg: ${msg}, room: ${room}`);
