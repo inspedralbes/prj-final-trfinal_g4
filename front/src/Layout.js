@@ -38,9 +38,9 @@ const Layout = () => {
                         <a href="/register" onClick={localStorage.setItem("mostrarLanding", false)} className="register">
                             <button>Register</button>
                         </a>
-                        <a href="/hi" onClick={localStorage.setItem("mostrarLanding", false)}>
+                        {/* <a href="/hi" onClick={localStorage.setItem("mostrarLanding", false)}>
                             <button>Chat</button>
-                        </a>
+                        </a> */}
                     </ul>
                 </nav>
             </header>
