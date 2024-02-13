@@ -10,6 +10,7 @@ import { Landing } from './componentes/Landing';
 import { Register } from './componentes/Register';
 import { Hi } from './componentes/hi';
 import { StrictMode } from 'react';
+import { Room } from './componentes/Room';
 export default function Index() {
   return (
     
@@ -20,6 +21,7 @@ export default function Index() {
               <Route path="/" element={<Landing />} />
               <Route path="/register" element={<Register />} />
               <Route path="/hi" element={<Hi />} />
+              <Route path="/room" element={<Room />} />
             </Route>
          </Routes>
       </BrowserRouter>

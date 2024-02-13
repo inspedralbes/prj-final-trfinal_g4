@@ -1,22 +1,21 @@
 // App.js
-import React, { useState } from 'react';
-import { Index } from './index.js';
+// import { join } from 'path';
 import './App.css';
+import  { useState } from 'react';
+import { Index } from './index.js';
+
 
 function App() {
   const [currentForm, setCurrentForm] = useState('login');
-
-  const toggleForm = (formName) => {
-    setCurrentForm(formName);
-  }
   
+    const toggleForm = (formName) => {
+      setCurrentForm(formName);
+    }
+
   return (
-    <div className="App">
-
-      <Index currentForm={currentForm} toggleForm={toggleForm} />
-
-    </div>
-  );
+    <Index currentForm={currentForm} toggleForm={toggleForm} />
+  )
+ 
 }
 
 export default App;
