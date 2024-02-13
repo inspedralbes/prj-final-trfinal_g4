@@ -6,7 +6,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Layout } from './Layout';
 import { Login } from './componentes/Login';
-import { Landing } from './componentes/Landing';
+// import { Landing } from './componentes/Landing';
 import { Register } from './componentes/Register';
 import { Hi } from './componentes/hi';
 import { StrictMode } from 'react';
@@ -18,7 +18,7 @@ export default function Index() {
          <Routes>
             <Route path="/" element={<Layout />}>
               <Route path="/login" element={<Login />} />
-              <Route path="/" element={<Landing />} />
+              {/* <Route path="/" element={<Landing />} /> */}
               <Route path="/register" element={<Register />} />
               <Route path="/hi" element={<Hi />} />
               <Route path="/room" element={<Room />} />
