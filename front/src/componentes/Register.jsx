@@ -15,7 +15,7 @@ export const Register = (props) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: email, // Assumption: Strapi uses 'username' for email in registration
+          username: name, // Assumption: Strapi uses 'username' for email in registration
           email: email,
           password: pass,
         }),
