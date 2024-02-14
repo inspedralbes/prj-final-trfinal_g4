@@ -20,7 +20,7 @@ export default function Index() {
               <Route path="/login" element={<Login />} />
               {/* <Route path="/" element={<Landing />} /> */}
               <Route path="/register" element={<Register />} />
-              <Route path="/hi" element={<Hi />} />
+              {/* <Route path="/hi" element={<Hi />} /> */}
               <Route path="/room" element={<Room />} />
             </Route>
          </Routes>
