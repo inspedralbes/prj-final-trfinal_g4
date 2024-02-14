@@ -1,0 +1,54 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "public/assets/game2.tmx",
+    "expandedProjectPaths": [
+        ".",
+        "public"
+    ],
+    "fileStates": {
+        "public/SET1_Mainlev_build.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "public/assets/game2.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 285,
+                "y": 808.6666666666666
+            }
+        },
+        "public/mainlevbuild.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "C:/Users/rublormar/Desktop/gitRepository-phaser/prj-final-trfinal_g4/pruebasPhaser/public/assets",
+    "last.imagePath": "C:/Users/rublormar/Desktop/gitRepository-phaser/prj-final-trfinal_g4/pruebasPhaser/public/platformer/SET1/_PNG",
+    "map.height": 65,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 270,
+    "openFiles": [
+        "public/assets/game2.tmx",
+        "public/mainlevbuild.tsx",
+        "public/SET1_Mainlev_build.tsx"
+    ],
+    "project": "prueba.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+        "public/assets/game2.tmx",
+        "public/SET1_Mainlev_build.tsx",
+        "public/mainlevbuild.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
