@@ -1,51 +1,86 @@
-import express from 'express';
-import { join } from 'path';
-import cors from 'cors';
-import { createServer} from 'node:http';
-// const http = require('http');
-import { Server } from 'socket.io';
+const express = require('express');
+const  cors  = require('cors');
 
-const server = createServer();
+// const http = require('http');
+const { Server } = require('socket.io');
+
+
 
 // var partida = [];
 const app = express();
+const http = require('http').createServer(app);
 
 var rooms = [];
-app.get('/api', (req, res) => {
-  res.send('server node');
-});
 
-const io = new Server(server, {
+// app.get('/', (_req, res) => {
+//   res.send("hola")
+// });
+
+const io=require('socket.io')(app, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
   },
 });
 
+function getNewLevel(level){
+  let map = [];
+  fetch('http://localhost:1337/api/map', 
+    {
+      method: 'GET',
+      body: JSON.stringify(level),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(response => response.json())
+    .then(data => {
+      map = data;
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+    return map;
+}   
+
 io.on('connection', (socket) => {
   console.log(`Connected: ${socket.id}`);
 
   socket.on('join', (room) => {
     console.log(`Socket ${socket.id} joining ${room}`);
-    socket.join(room);
+    socket.join(data.room);
     const index = rooms.findIndex((r) => r.id === room);
     console.log('Index:', index);
     if (index !== -1) {
-      rooms[index].users.push(socket.id);
+      rooms[index].users.push({ "user": data.username, "x": 0, "y": 0, "id": socket.id });
     }
+    io.to(data.id).emit('join', data);
     // partida.push(data);
     // console.log('data', data);
     // console.log('partida', partida);
   });
 
   socket.on('createRoom', (room) => {
-    rooms.push({"users":[socket.id], "password": room.password, "started": false, level: room.level});
+    if(room.password === '') room.password = null;
+    fetch('http://localhost:1337/api/map', 
+    {
+      method: 'GET',
+      body: JSON.stringify(1),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    rooms.push({ "users": [{ "user": room.username, "x": 0, "y": 0, "id": socket.id }], "password": room.password, "started": false, "level": 1, "id": lastRoom, "map":map });
+    socket.join(lastRoom);
+    lastRoom++;
     socket.broadcast.emit('Updaterooms', rooms);
   });
+
+  
   socket.on('chat message', (dataMessage) => {
     const { msg, room } = dataMessage;
     console.log(`msg: ${msg}, room: ${room}`);
-    io.to(room).emit('chat message', msg);  
+    io.to(room).emit('chat message', msg);
   });
 
   socket.on('register', async (data) => {
@@ -71,11 +106,33 @@ io.on('connection', (socket) => {
     });
     io.to(data.room).emit('login', data);
   });
+
+  socket.on('updatePosition', (data) => {
+    let room = rooms.findIndex((r) => r.id === data.room);
+    console.log('room:', data);
+    if (rooms[room].users[0].id === socket.id) {
+      rooms[room].users[0].x = data.x;
+      rooms[room].users[0].y = data.y;
+    } else {
+      rooms[room].users[1].x = data.x;
+      rooms[room].users[1].y = data.y;
+    }
+
+    io.to(data.room).emit('updatePosition', data);
+  });
+
+  socket.on('win',(data)=>{
+    let room = rooms.findIndex((r) => r.id === data.room);
+    rooms[room].level++;
+    rooms[room].map=getNewLevel(rooms[room].level);
+    io.to(data.room).emit('win', rooms[room]);
+  })
+
   socket.on('disconnect', () => {
     console.log('a user disconnected');
   });
 });
 
-app.listen(5000, 'localhost', () => {
-  console.log('Server running at http://localhost:5176');
+http.listen(3001, 'localhost', () => {
+  console.log('Server running at http://localhost:3001');
 });

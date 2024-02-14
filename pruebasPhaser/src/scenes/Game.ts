@@ -2,7 +2,9 @@ import Phaser from 'phaser'
 import PlayerController from './PlayerController'
 import ObstaclesController from './ObstaclesController'
 import { World } from 'matter'
-
+import { socket } from '../socket.js'
+localStorage.setItem('user', JSON.stringify({ id: '1' }))
+localStorage.setItem('room', JSON.stringify({ id: '1', users: [{ id: '1' }, { id: '2' }] }))
 export default class Game extends Phaser.Scene {
 
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
@@ -31,26 +33,43 @@ export default class Game extends Phaser.Scene {
         this.load.image('rocaPushable', 'assets/game-platform/roca-blue.png')
         this.load.image('tilesetP', 'assets/game-platform/ForestTilePurple.png')
         this.load.image('tilesetC', 'assets/game-platform/ForestTileRed.png')
-        this.load.tilemapTiledJSON('map', 'assets/game-platform/purple-blue-red-game.json') 
+        this.load.tilemapTiledJSON('map', 'assets/game-platform/purple-blue-red-game.json')
     }
 
     create() {
-        
+
         const map = this.make.tilemap({ key: 'map' })
         const tilesetB = map.addTilesetImage('ForestTileBlue', 'tilesetB')
         const tilesetP = map.addTilesetImage('ForestTilePurple', 'tilesetP')
-        
         const tilesetC = map.addTilesetImage('ForestTileRed', 'tilesetC')
+
+
+       
+        
+        const PurpleView = map.createLayer('PurpleView', tilesetP);
+        const pinchos = map.createLayer('PurpleDangers', tilesetP);
+        let userToCompare=JSON.parse(localStorage.getItem('room'));
+                console.log('users', userToCompare.users[0].id);
+        if (JSON.parse(localStorage.getItem('user')).id == JSON.parse(localStorage.getItem('room')).users[0].id) {
+            const BlueView = map.createLayer('BlueView', tilesetB);
+            BlueView.setCollisionByProperty({ collides: true })
+            this.matter.world.convertTilemapLayer(BlueView)
+        }
+        if (JSON.parse(localStorage.getItem('user')).id == JSON.parse(localStorage.getItem('room')).users[1].id) {
+            const RedView = map.createLayer('RedView', tilesetC);
+            RedView.setCollisionByProperty({ collides: true })
+            this.matter.world.convertTilemapLayer(RedView)
+        }
+
         
 
-        const ground = map.createLayer('ground', tilesetP)
-        const platform = map.createLayer('platform', tilesetB);
-        const pinchos = map.createLayer('pinchos', tilesetB);
-        
         map.createLayer('pinchos', tilesetB);
-
-        ground.setCollisionByProperty({ collides: true })
-        platform.setCollisionByProperty({ collides: true })
+        console.log(PurpleView);
+        PurpleView.setCollisionByProperty({ collides: true })
+        
+            
+        
+        
 
         // this.matter.world.setBounds()
 
@@ -61,27 +80,54 @@ export default class Game extends Phaser.Scene {
             const { x = 0, y = 0, name, width = 0, height = 0 } = objData
 
             switch (name) {
-                case 'penguin-spawn':
+                case 'penguin-spawn-red':
                     {
                         this.penguin = this.matter.add.sprite(x + (width * 0.5), y, 'penguin')
-                            .setFixedRotation().setInteractive()
-                        this.penguin.setRectangle(48, 55).setFixedRotation()
-                        this.playerController = new PlayerController(
-                            this,
-                            this.penguin,
-                            this.cursors,
-                            this.obstacles,
-                            this.pushableObj)
-
-                         this.cameras.main.startFollow(this.penguin)
+                            .setFixedRotation()
+                        this.penguin.setRectangle(48, 55, {
                             
+                        }).setFixedRotation()
+
+                        if (JSON.parse(localStorage.getItem('user')).id == JSON.parse(localStorage.getItem('room')).users[0].id) {
+                            console.log('user', "EEEEEEEEEEE");
+
+                            this.playerController = new PlayerController(
+                                this,
+                                this.penguin,
+                                this.cursors,
+                                this.obstacles,
+                                this.pushableObj)
+                                this.cameras.main.startFollow(this.penguin)
+                        }
+
+                        
+
                         // this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
                         break
                     }
+                case 'penguin-spawn-blue':
+                    {
+                        this.penguin = this.matter.add.sprite(x + (width * 0.5), y, 'penguin')
+                            .setFixedRotation()
+                        this.penguin.setRectangle(48, 55).setFixedRotation()
+                        if (JSON.parse(localStorage.getItem('user')).id == JSON.parse(localStorage.getItem('room')).users[1].id) {
+                            this.playerController = new PlayerController(
+                                this,
+                                this.penguin,
+                                this.cursors,
+                                this.obstacles,
+                                this.pushableObj)
+                                this.cameras.main.startFollow(this.penguin)
+                        }
 
+           
+
+                        // this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels)
+                        break
+                    }
                 case 'rocaPushable':
                     {
-                        this.pushableObj = this.matter.add.sprite(x + (width * 0.5), y + (height * 0.5), 'roca').setInteractive()
+                        this.pushableObj = this.matter.add.sprite(x + (width * 0.5), y + (height * 0.5), 'roca')
                         // console.log('pushableObj', this.pushableObj);
 
 
@@ -112,7 +158,7 @@ export default class Game extends Phaser.Scene {
 
                         break
                     }
-                    case 'rocaPushableLarge':
+                case 'rocaPushableLarge':
                     {
                         this.pushableLargeRock = this.matter.add.sprite(x + (width * 0.5), y, 'roca').setInteractive()
                         this.pushableLargeRock.scaleX = 6.8
@@ -158,8 +204,8 @@ export default class Game extends Phaser.Scene {
             }
         })
         // 
-        this.matter.world.convertTilemapLayer(ground)
-        this.matter.world.convertTilemapLayer(platform)
+        this.matter.world.convertTilemapLayer(PurpleView)
+        
         this.matter.world.convertTilemapLayer(pinchos)
 
 
@@ -172,6 +218,10 @@ export default class Game extends Phaser.Scene {
         }
 
         this.playerController.update(dt)
+
+        setTimeout(() => {
+            socket.emit('updatePosition', { x: this.penguin.x, y: this.penguin.y, id: 1, room: 1 })
+        }, 1000)
 
 
 
