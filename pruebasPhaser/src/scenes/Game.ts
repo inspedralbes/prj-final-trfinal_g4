@@ -5,13 +5,38 @@ import { World } from 'matter'
 import { socket } from '../socket.js'
 localStorage.setItem('user', JSON.stringify({ id: '1' }))
 localStorage.setItem('room', JSON.stringify({ id: '1', users: [{ id: '1' }, { id: '2' }] }))
+
+// class SmoothedHorizontalControl {
+//     constructor(speed) {
+//         this.msSpeed = speed;
+//         this.value = 0;
+//     }
+
+//     moveLeft(delta) {
+//         if (this.value > 0) { this.reset(); }
+//         this.value -= this.msSpeed * delta;
+//         if (this.value < -1) { this.value = -1; }
+//     }
+
+//     moveRight(delta) {
+//         if (this.value < 0) { this.reset(); }
+//         this.value += this.msSpeed * delta;
+//         if (this.value > 1) { this.value = 1; }
+//     }
+
+//     reset() {
+//         this.value = 0;
+//     }
+// }
+
 export default class Game extends Phaser.Scene {
 
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
     // private penguinA!: Phaser.Physics.Matter.Sprite
     private penguinA
     private penguinB
-
+    private cam
+    // private smoothedControls: SmoothedHorizontalControl;
     private playerController?: PlayerController
     private obstacles!: ObstaclesController
     private pushableObj!: Phaser.Physics.Matter.Sprite
@@ -20,7 +45,8 @@ export default class Game extends Phaser.Scene {
 
 
     constructor() {
-        super('game')
+        super('game');
+        // this.smoothedControls = new SmoothedHorizontalControl(0.5);
     }
 
     init() {
@@ -72,7 +98,7 @@ export default class Game extends Phaser.Scene {
             RedView = map.createLayer('RedView', tilesetC);
             RedView.setCollisionByProperty({ collides: true })
         }
-        
+        // this.smoothedControls = new SmoothedHorizontalControl(0.0005);
         map.createLayer('pinchos', tilesetB);
         console.log(PurpleView);
         PurpleView.setCollisionByProperty({ collides: true })
@@ -102,10 +128,19 @@ export default class Game extends Phaser.Scene {
                                 right: 0,
                                 bottom: 0 
                             },
+                            time: {
+                                leftDown: 0,
+                                rightDown: 0
+                            },
                             blocked: {
                                 left: false,
                                 right: false,
                                 bottom: false
+                            },
+                            lastJumpedAt: 0,
+                            speed: {
+                                run: 7,
+                                jump: 8
                             }
                         }
 
@@ -131,11 +166,13 @@ export default class Game extends Phaser.Scene {
                         
                         this.penguinA.matterSprite.setExistingBody(compoundBody).setFixedRotation()
 
+                        // this.cam = this.cameras.main
+                        // this.cam.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
                         this.anims.create({
                             key: 'walk',
-                            frames: this.anims.generateFrameNames('penguin', { start: 0, end: 4, prefix: 'penguin_walk0', suffix: '.png', }),
+                            frames: this.anims.generateFrameNames('penguin', { start: 1, end: 4, prefix: 'penguin_walk0', suffix: '.png', }),
                             frameRate: 10,
-                            repeat: 0
+                            repeat: -1
                         });
 
                         this.anims.create({
@@ -237,7 +274,7 @@ export default class Game extends Phaser.Scene {
                     //         break
                     //     }
                         case 'rocaPushable':
-                    {
+                        {
                         this.pushableObj = this.matter.add.sprite(x + (width * 0.5), y + (height * 0.5),'roca')
 
                         // console.log('pushableObj', this.pushableObj);
@@ -274,12 +311,12 @@ export default class Game extends Phaser.Scene {
                             
                             break
                         }
-                        // case 'rocaPushableLarge':
-                        //     {
-                        //         this.pushableLargeRock = this.matter.add.sprite(x + (width * 0.5), y, 'roca')
-                        //         this.pushableLargeRock.scaleX = 6.8
-                        //         this.pushableLargeRock.scaleY = 2
-                        //         this.pushableLargeRock.rotation = 1.5708
+                        case 'rocaPushableLarge':
+                            {
+                                this.pushableLargeRock = this.matter.add.sprite(x + (width * 0.5), y, 'roca')
+                                this.pushableLargeRock.scaleX = 6.8
+                                this.pushableLargeRock.scaleY = 2
+                                this.pushableLargeRock.rotation = 1.5708
                         //         // console.log('pushableObj', this.pushableObj);
 
                         //         this.matter.world.on('collisionstart', (event, bodyA, bodyB) => {
@@ -312,8 +349,8 @@ export default class Game extends Phaser.Scene {
                                             
                         //                 })
                                         
-                        //         break
-                        //     }
+                                break
+                            }
                             
                             // case 'spikes':
                             //     {
@@ -340,7 +377,7 @@ export default class Game extends Phaser.Scene {
                     }
                     
                     
-                    update(t: number, dt: number) {
+                    update(time) {
                         // if (!this.playerController) {
                         //     return
                         // }
@@ -352,28 +389,95 @@ export default class Game extends Phaser.Scene {
                         // }, 1000)
                         
                         const matterSprite = this.penguinA.matterSprite;
+                        // const speed = 3;
+
+                        let oldVelocityX;
+                        let targetVelocityX;
+                        let newVelocityX;
 
                         if(this.cursors.left.isDown && !this.penguinA.blocked.left)
                         {
+                            // this.smoothedControls.moveLeft(time);
                             this.penguinA.matterSprite.flipX = true;
-                            this.penguinA.matterSprite.setVelocityX(-3);
+                            // oldVelocityX = matterSprite.body.velocity.x;
+                            // targetVelocityX = -this.penguinA.speed.run;
+                            // newVelocityX = Phaser.Math.Linear(oldVelocityX, targetVelocityX, 0.05);
+                            
+                            matterSprite.setVelocityX(-3);
                             matterSprite.anims.play('walk', true);
+                            // console.log("velocity: ", newVelocityX);
                             
                         }else if(this.cursors.right.isDown && !this.penguinA.blocked.right)
                         {
+                            // this.smoothedControls.moveRight(time);
                             this.penguinA.matterSprite.flipX = false;
-                            this.penguinA.matterSprite.setVelocityX(3);
+                            // oldVelocityX = matterSprite.body.velocity.x;
+                            // targetVelocityX = this.penguinA.speed.run;
+                            // newVelocityX = Phaser.Math.Linear(oldVelocityX, targetVelocityX, 0.05);
+                            matterSprite.setVelocityX(3);
                             matterSprite.anims.play('walk', true);
-                        }else if(this.cursors.up.isDown)
-                        {
-                            if(this.penguinA.blocked.bottom)
-                            {
-                                this.penguinA.matterSprite.setVelocityY(-8)
-                                matterSprite.anims.play('jump', true)
-                            }
-                        }else {
+                            // console.log("velocity: ", newVelocityX);
+                            
+
+                        }else{
+                            this.penguinA.matterSprite.setVelocityX(0);
                             matterSprite.anims.play('idle', true);
                         }
+
+                        const canJump = (time - this.penguinA.lastJumpedAt) > 250;
+
+                        if(this.cursors.up.isDown && canJump)
+                        {
+                            matterSprite.anims.play('jump', true);
+
+                            if(this.penguinA.blocked.bottom)
+                            {
+                                this.penguinA.matterSprite.flipX = false;
+                                matterSprite.setVelocityY(-7);
+                                
+                            }
+                            else if(this.penguinA.blocked.left)
+                            {
+                                this.penguinA.matterSprite.flipX = true;
+                                matterSprite.setVelocityY(-7);
+                                matterSprite.setVelocityX(-3);
+                            }
+                            else if(this.penguinA.blocked.right)
+                            {
+                                this.penguinA.matterSprite.flipX = false;
+                                matterSprite.setVelocityY(-7);
+                                matterSprite.setVelocityX(-3);
+                            }
+                            // matterSprite.anims.play('jump', true);
+                            // this.penguinA.matterSprite.setVelocityY(-10);
+                        }
+
+                        // const speedJump = 3;
+                        // if(this.cursors.left.isDown)
+                        // {
+                        //     this.penguinA.matterSprite.flipX = true;
+                        //     this.penguinA.matterSprite.setVelocityX(-speedJump);
+                        // }else if(this.cursors.right.isDown)
+                        // {
+                        //     this.penguinA.matterSprite.flipX = false;
+                        //     this.penguinA.matterSprite.setVelocityX(speedJump);
+                        // }else{
+                        //     this.penguinA.matterSprite.setVelocityX(0);
+
+                        // }
+                        
+                        
+                        // const speedJump = 8;
+                        // if(this.cursors.up.isDown)
+                        // {
+                        //     if(this.penguinA.blocked.bottom)
+                        //     {
+                        //         this.penguinA.matterSprite.setVelocityY(-speedJump)
+                        //         matterSprite.anims.play('jump', true)
+                        //     }
+                        // }else {
+                        //     matterSprite.anims.play('idle', true);
+                        // }
                         
 
                     }
