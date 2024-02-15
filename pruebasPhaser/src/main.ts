@@ -10,7 +10,11 @@ const config: Phaser.Types.Core.GameConfig = {
 	physics: {
 		default: 'matter',
 		matter: {
-			debug: true
+			debug: {
+				showAxes: false,
+				showCollisions: true,
+				showVelocity: true,
+			}
 		}
 	},
 	scene: [Game]

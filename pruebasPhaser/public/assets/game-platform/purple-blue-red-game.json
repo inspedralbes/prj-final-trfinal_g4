@@ -1,4 +1,12 @@
 { "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"json",
+         "target":"..\/..\/..\/..\/..\/..\/gitRepository-phaser\/prj-final-trfinal_g4\/pruebasPhaser\/public\/assets\/game-platform\/purple-blue-red-game.json"
+        }
+    },
  "height":65,
  "infinite":false,
  "layers":[
@@ -342,8 +350,8 @@
                  "type":"",
                  "visible":true,
                  "width":80.6666666666667,
-                 "x":223.333333333333,
-                 "y":572.333333333333
+                 "x":224.083333333333,
+                 "y":559.583333333333
                 }, 
                 {
                  "ellipse":true,
@@ -454,7 +462,7 @@
         {
          "columns":64,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/..\/..\/5\/prj-final-trfinal_g4\/pruebasPhaser\/public\/assets\/game-platform\/mainlevbuild.png",
+         "image":"mainlevbuild.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
@@ -1521,7 +1529,7 @@
         {
          "columns":80,
          "firstgid":4097,
-         "image":"..\/..\/..\/..\/..\/..\/5\/prj-final-trfinal_g4\/pruebasPhaser\/public\/caves\/props1.png",
+         "image":"..\/..\/caves\/props1.png",
          "imageheight":1280,
          "imagewidth":1280,
          "margin":0,
@@ -1534,7 +1542,7 @@
         {
          "columns":28,
          "firstgid":10497,
-         "image":"..\/..\/..\/..\/..\/..\/5\/prj-final-trfinal_g4\/pruebasPhaser\/public\/assets\/game-platform\/SET1_Main_bckgrdlev_build.png",
+         "image":"SET1_Main_bckgrdlev_build.png",
          "imageheight":512,
          "imagewidth":448,
          "margin":0,
@@ -1547,7 +1555,7 @@
         {
          "columns":64,
          "firstgid":11393,
-         "image":"..\/..\/..\/..\/..\/..\/5\/prj-final-trfinal_g4\/pruebasPhaser\/public\/assets\/game-platform\/props2.png",
+         "image":"props2.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
@@ -1560,7 +1568,7 @@
         {
          "columns":64,
          "firstgid":15489,
-         "image":"..\/..\/..\/..\/..\/..\/5\/prj-final-trfinal_g4\/pruebasPhaser\/public\/assets\/game-platform\/ForestTileBlue.png",
+         "image":"ForestTileBlue.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
@@ -2012,6 +2020,42 @@
                 }, 
                 {
                  "id":909,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":920,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":921,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":922,
+                 "properties":[
+                        {
+                         "name":"collides",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":923,
                  "properties":[
                         {
                          "name":"collides",
@@ -2735,7 +2779,7 @@
         {
          "columns":64,
          "firstgid":19585,
-         "image":"..\/..\/..\/..\/..\/..\/5\/prj-final-trfinal_g4\/pruebasPhaser\/public\/assets\/game-platform\/ForestTilePurple.png",
+         "image":"ForestTilePurple.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
@@ -3929,7 +3973,7 @@
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":true
+                         "value":false
                         }]
                 }, 
                 {
@@ -4081,7 +4125,7 @@
         {
          "columns":64,
          "firstgid":23681,
-         "image":"..\/..\/..\/..\/..\/..\/5\/prj-final-trfinal_g4\/pruebasPhaser\/public\/assets\/game-platform\/ForestTileRed.png",
+         "image":"ForestTileRed.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
@@ -4131,7 +4175,7 @@
         {
          "columns":64,
          "firstgid":27777,
-         "image":"..\/..\/..\/..\/..\/..\/5\/prj-final-trfinal_g4\/pruebasPhaser\/public\/assets\/game-platform\/ForestTilePurple.png",
+         "image":"ForestTilePurple.png",
          "imageheight":1024,
          "imagewidth":1024,
          "margin":0,
