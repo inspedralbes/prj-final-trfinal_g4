@@ -1,15 +1,18 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+const cors = require('cors'); 
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
+app.use(cors()); 
+
 let rooms = [];
 
 function getNewLevel(level) {
-  let map=[];
+  let map = [];
   fetch('http://localhost:1337/api/map', {
     method: 'GET',
     body: JSON.stringify(level),
@@ -42,28 +45,36 @@ io.on('connection', (socket) => {
   });
 
   socket.on('createRoom', (room) => {
-    if (room.password === '') room.password = null;
-    fetch('http://localhost:1337/api/map', {
-      method: 'GET',
-      body: JSON.stringify(1),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((map) => {
-        rooms.push({
-          users: [{ user: room.username, x: 0, y: 0, id: socket.id }],
-          password: room.password,
-          started: false,
-          level: 1,
-          id: lastRoom,
-          map: map,
-        });
-        socket.join(lastRoom);
-        lastRoom++;
-        socket.broadcast.emit('Updaterooms', rooms);
-      });
+    if (room.password === '') room.password = null; rooms.push({
+      users: [{ user: room.username, x: 0, y: 0, id: socket.id }],
+      password: room.password,
+      started: false,
+      level: 1,
+      id: lastRoom,
+      map: map,
+    });;
+    // fetch('http://localhost:1337/api/map', {
+    //   method: 'GET',
+    //   body: JSON.stringify(1),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    //   .then((response) => response.json())
+    //   .then((map) => {
+    //     rooms.push({
+    //       users: [{ user: room.username, x: 0, y: 0, id: socket.id }],
+    //       password: room.password,
+    //       started: false,
+    //       level: 1,
+    //       id: lastRoom,
+    //       map: map,
+    //     });
+    console.log('Rooms:', rooms.users[0].user);
+    socket.join(lastRoom);
+    lastRoom++;
+    socket.broadcast.emit('Updaterooms', rooms);
+    //   });
   });
 
   socket.on('chat message', (dataMessage) => {

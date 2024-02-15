@@ -8,7 +8,7 @@ import io from 'socket.io-client';
     const socket = io.connect("http://localhost:3001");
 
     useEffect(() => {
-        socket.on('updateRooms', (data) => {
+        socket.on('createRoom', (data) => {
             setRoomsName(data);
             console.log(data);
         });
