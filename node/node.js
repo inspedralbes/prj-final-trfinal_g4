@@ -64,10 +64,20 @@ io.on('connection', (socket) => {
         identifier: data.username,
       }),
     });
-    const user = await response.json();
-    console.log(user);
-    rooms.push({ idRoom: lastRoom, name: data, users: user });
-    console.log(rooms);
+    if (response.ok) {
+      // Convierte la respuesta a JSON
+      const userData = await response.json();
+      
+      // Agrega el nombre de usuario a la sala
+      const username = userData.username;
+      rooms.push({ idRoom: lastRoom, name: username, users: userData });
+      
+      // Imprime la lista de salas para verificar
+      console.log(rooms);
+    } else {
+      // Si la solicitud falla, imprime el estado y el texto de la respuesta
+      console.error('Error fetching user:', response.status, response.statusText);
+    }
   });
     
     
