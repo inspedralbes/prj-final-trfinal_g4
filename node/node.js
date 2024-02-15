@@ -17,7 +17,6 @@ const io = new Server(server, {
 });
 
 const User = require('../back/strapi/src/api/user/services/user.js');
-const user = require("../back/strapi/src/api/user/services/user.js");
 
 app.get('/', (req, res) => {
   res.send('eyyy');
@@ -51,33 +50,13 @@ io.on('connection', (socket) => {
   });
 
   socket.on("join", async (data) => {
-    console.log("soyyyyy la sala ", data);
+    console.log("Joining room:", data.room, "as user:", data.username);
     
-    // // Busca al usuario en la base de datos
-    // const user = await findUser(data);
-    const response = await fetch(urlStrapi, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        identifier: data.username,
-      }),
-    });
-    if (response.ok) {
-      // Convierte la respuesta a JSON
-      const userData = await response.json();
-      
-      // Agrega el nombre de usuario a la sala
-      const username = userData.username;
-      rooms.push({ idRoom: lastRoom, name: username, users: userData });
-      
-      // Imprime la lista de salas para verificar
-      console.log(rooms);
-    } else {
-      // Si la solicitud falla, imprime el estado y el texto de la respuesta
-      console.error('Error fetching user:', response.status, response.statusText);
-    }
+    socket.join(data.room);
+
+    io.to(data.room).emit("userJoined", { username: data.username });
+
+    console.log('Salas:', io.sockets.adapter.rooms);
   });
     
     

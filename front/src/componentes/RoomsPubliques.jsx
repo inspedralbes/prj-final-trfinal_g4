@@ -1,7 +1,9 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import io from 'socket.io-client';
 
- export const RoomsPubliques = () => {
+export const RoomsPubliques = () => {
+    const [email, setEmail] = useState("");
+    const [pass, setPass] = useState("");
     const [roomName, setRoomsName] = useState("");
     const [rooms, setRooms] = useState([]);
     const [selectedRoom, setSelectedRoom] = useState(null);
@@ -23,9 +25,34 @@ import io from 'socket.io-client';
     //     socket.emit('join', room);
     // };
 
-    const handleJoinRoom = () => {
-        socket.emit("join", roomName);
-        console.log(roomName);
+    const handleJoinRoom = async () => {
+        try {
+            const urlStrapi = 'http://localhost:1337/api/auth/local';
+            
+            const response = await fetch('http://localhost:1337/api/auth/local', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    identifier: email,
+                    password: pass,
+                }),
+            });
+
+            if (response.ok) {
+                const userData = await response.json();
+                const username = userData.username;
+
+                // Une al usuario a la sala con su nombre de usuario
+                socket.emit("join", { room: roomName, username });
+                console.log("Joining room:", roomName, "as user:", username);
+            } else {
+                console.error('Error fetching user:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error('Error joining room:', error);
+        }
     };
 
     return (
@@ -33,11 +60,11 @@ import io from 'socket.io-client';
             <h1>Rooms</h1>
             <form className="form-room" >
                 <label htmlFor="text">Name Room</label>
-                <input value={roomName} onChange={(e) => setRoomsName(e.target.value)} type="text"/>
-                
+                <input value={roomName} onChange={(e) => setRoomsName(e.target.value)} type="text" />
+
             </form>
             <button type="submit" onClick={handleJoinRoom}>Create Public Room</button>
-            
+
             {/* <ul>
                 {rooms.map((room) =>(
                     <li key={room}>
