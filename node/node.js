@@ -33,6 +33,10 @@ function getNewLevel(level) {
 io.on('connection', (socket) => {
   console.log(`Connected: ${socket.id}`);
 
+  const { username } = socket.handshake.query;
+
+  console.log(`User connected: ${username}`);
+
   socket.on('join', (room) => {
     console.log(`Socket ${socket.id} joining ${room}`);
     socket.join(room);
@@ -45,10 +49,11 @@ io.on('connection', (socket) => {
   });
 
   socket.on('createRoom', (room) => {
+    socket.emit('getUser', room.username);
     if (room.password === '') room.password = null; rooms.push({
       users: [{ user: room.username, x: 0, y: 0, id: socket.id }],
       password: room.password,
-      started: false,
+      started: false, 
       level: 1,
       id: lastRoom,
       map: map,
@@ -73,7 +78,7 @@ io.on('connection', (socket) => {
     console.log('Rooms:', rooms.users[0].user);
     socket.join(lastRoom);
     lastRoom++;
-    socket.broadcast.emit('Updaterooms', rooms);
+    socket.broadcast.emit('updateRooms', rooms);
     //   });
   });
 
