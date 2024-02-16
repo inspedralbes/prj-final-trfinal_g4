@@ -26,7 +26,7 @@ export const Login = (props) => {
           const data = await response.json();
           console.log('Usuario logeado exitosamente en Strapi', data);
           localStorage.setItem('username', data.user.username);
-          navigate('/room')
+          navigate('/roomsPubliques')
         } else {
           console.error('Error al logear el usuario en Strapi');
         }

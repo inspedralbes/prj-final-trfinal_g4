@@ -11,8 +11,15 @@ import io from 'socket.io-client';
         const username = localStorage.getItem('username');
         socket.emit("createRoom", {roomName, username});
 
+        socket.emit('userConnected', {username});
+
     };
     useEffect(() => {
+
+        socket.on('userConnected', (data) => {
+            localStorage.setItem('username', data.username);
+        });
+
         socket.on('updateRooms', (data) => {
             setRoomsName(data);
             console.log(data);
@@ -20,6 +27,8 @@ import io from 'socket.io-client';
         return () => {
             socket.disconnect();
         };
+
+        
     }, [socket]);
 
     // const handleRoomSelect = (room) => {

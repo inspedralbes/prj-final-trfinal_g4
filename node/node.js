@@ -5,11 +5,21 @@ const cors = require('cors');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+
 
 app.use(cors()); 
 
+const io = socketIo(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+  },
+});
+
+
 let rooms = [];
+let lastRoom = 0;
+let map = getNewLevel(1);
 
 function getNewLevel(level) {
   let map = [];
@@ -33,12 +43,10 @@ function getNewLevel(level) {
 io.on('connection', (socket) => {
   console.log(`Connected: ${socket.id}`);
 
-const username = localStorage.getItem('username');
-const socket = socketIOClient("http://localhost:3001", {
-  query: { username }
-});
+  socket.on('userConnected', ({username}) => {
+    console.log(`User connected: ${username}`);
+  });
 
-  console.log(`User connected: ${username}`);
 
   socket.on('join', (room) => {
     console.log(`Socket ${socket.id} joining ${room}`);
@@ -52,14 +60,26 @@ const socket = socketIOClient("http://localhost:3001", {
   });
 
   socket.on('createRoom', (room) => {
-    if (room.password === '') room.password = null; rooms.push({
+    if (room.password === '') room.password = null; 
+  
+    // Define newRoom
+    const newRoom = {
       users: [{ user: room.username, x: 0, y: 0, id: socket.id }],
       password: room.password,
       started: false, 
       level: 1,
       id: lastRoom,
       map: map,
-    });;
+    };
+  
+    // Insert newRoom into rooms
+    rooms.push(newRoom);
+  
+    console.log('Rooms:', rooms);
+    socket.join(lastRoom);
+    lastRoom++;
+    io.emit('updateRooms', rooms);
+    });
     // fetch('http://localhost:1337/api/map', {
     //   method: 'GET',
     //   body: JSON.stringify(1),
@@ -77,14 +97,9 @@ const socket = socketIOClient("http://localhost:3001", {
     //       id: lastRoom,
     //       map: map,
     //     });
-    rooms.push(newRoom);
-    console.log('Rooms:', rooms.users[0].user);
-    socket.join(lastRoom);
-    lastRoom++;
-    io.emit('updateRooms', rooms);
+   
     //socket.broadcast.emit('updateRooms', rooms);
     //   });
-  });
 
   socket.on('chat message', (dataMessage) => {
     const { msg, room } = dataMessage;
