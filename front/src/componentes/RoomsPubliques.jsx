@@ -4,13 +4,14 @@ import io from 'socket.io-client';
  export const RoomsPubliques = () => {
     const [roomName, setRoomsName] = useState("");
     const [rooms, setRooms] = useState([]);
-    const username = localStorage.getItem('username');
     const [selectedRoom, setSelectedRoom] = useState(null);
-    const socket = io.connect("http://localhost:3001", {
-        query: {
-          username: username
-        }
-      });
+    const socket = io.connect("http://localhost:3001");
+
+    const handleJoinRoom = () => {
+        const username = localStorage.getItem('username');
+        socket.emit("createRoom", {roomName, username});
+
+    };
     useEffect(() => {
         socket.on('updateRooms', (data) => {
             setRoomsName(data);
@@ -26,15 +27,6 @@ import io from 'socket.io-client';
     //     console.log(room);
     //     socket.emit('join', room);
     // };
-
-    const handleJoinRoom = () => {
-        socket.emit("join", roomName);
-        console.log(roomName);
-    };
-
-    socket.on('getUser', (data) => {
-        console.log(data);
-    });
 
     return (
         <div>
