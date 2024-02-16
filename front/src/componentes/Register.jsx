@@ -15,16 +15,16 @@ export const Register = (props) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: email, // Assumption: Strapi uses 'username' for email in registration
+          username: name, // Assumption: Strapi uses 'username' for email in registration
           email: email,
           password: pass,
-          name: name,
         }),
       });
 
       if (response.ok) {
         const data = await response.json();
         console.log('Usuario registrado exitosamente en Strapi', data);
+        
         // Puedes redirigir o realizar otras acciones después del registro exitoso
       } else {
         console.error('Error al registrar el usuario en Strapi');

@@ -1,16 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import './App.css';
+// import './App.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Layout } from './Layout';
 import { Login } from './componentes/Login';
 // import { Landing } from './componentes/Landing';
 import { Register } from './componentes/Register';
-import { Hi } from './componentes/hi';
 import { StrictMode } from 'react';
-import { Room } from './componentes/Room';
+// import { Rooms } from './componentes/Rooms';
+import { RoomsPubliques } from './componentes/RoomsPubliques';
+// import { Room } from './componentes/Room';
+
+
+
 export default function Index() {
   return (
     
@@ -20,8 +24,9 @@ export default function Index() {
               <Route path="/login" element={<Login />} />
               {/* <Route path="/" element={<Landing />} /> */}
               <Route path="/register" element={<Register />} />
-              <Route path="/hi" element={<Hi />} />
-              <Route path="/room" element={<Room />} />
+              {/* <Route path="/room" element={<Rooms />} /> */}
+              <Route path="/roomspubliques" element={<RoomsPubliques />} />
+              {/* <Route path="/room" element={<Room />} /> */}
             </Route>
          </Routes>
       </BrowserRouter>

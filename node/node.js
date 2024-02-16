@@ -1,38 +1,160 @@
-const express = require("express")
-const app = express();
-const http = require("http");
-const cors = require("cors")
-const { Server } = require("socket.io");
-const { log } = require("console");
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+const cors = require('cors'); 
 
-app.use(cors())
+const app = express();
 const server = http.createServer(app);
 
-const io = new Server(server, {
+
+app.use(cors()); 
+
+const io = socketIo(server, {
   cors: {
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
   },
 });
 
-app.get('/', (req, res) => {
-  res.send('eyyy');
-})
+
+let rooms = [];
+let lastRoom = 0;
+let map = getNewLevel(1);
+
+function getNewLevel(level) {
+  let map = [];
+  fetch('http://localhost:1337/api/map', {
+    method: 'GET',
+    body: JSON.stringify(level),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      map = data;
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  return map;
+}
 
 io.on('connection', (socket) => {
   console.log(`Connected: ${socket.id}`);
 
-  socket.on("joinRoom", (data) => {
-    socket.join(data);
-  })
-
-  socket.on("sendMessage", (data) => {
-    socket.to(data.room).emit("receiveMessage", data)
-    console.log(data);
-
-  })
+  socket.on('userConnected', ({username}) => {
+    console.log(`User connected: ${username}`);
+  });
 
 
+  socket.on('join', (room) => {
+    console.log(`Socket ${socket.id} joining ${room}`);
+    socket.join(room);
+    const index = rooms.findIndex((r) => r.id === room);
+    console.log('Index:', index);
+    if (index !== -1) {
+      rooms[index].users.push({ user: data.username, x: 0, y: 0, id: socket.id });
+    }
+    io.to(data.id).emit('join', data);
+  });
+
+  socket.on('createRoom', (room) => {
+    if (room.password === '') room.password = null; 
+  
+    // Define newRoom
+    const newRoom = {
+      users: [{ user: room.username, x: 0, y: 0, id: socket.id }],
+      password: room.password,
+      started: false, 
+      level: 1,
+      id: lastRoom,
+      map: map,
+    };
+  
+    // Insert newRoom into rooms
+    rooms.push(newRoom);
+  
+    console.log('Rooms:', rooms);
+    socket.join(lastRoom);
+    lastRoom++;
+    io.emit('updateRooms', rooms);
+    });
+    // fetch('http://localhost:1337/api/map', {
+    //   method: 'GET',
+    //   body: JSON.stringify(1),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
+    //   .then((response) => response.json())
+    //   .then((map) => {
+    //     rooms.push({
+    //       users: [{ user: room.username, x: 0, y: 0, id: socket.id }],
+    //       password: room.password,
+    //       started: false,
+    //       level: 1,
+    //       id: lastRoom,
+    //       map: map,
+    //     });
+   
+    //socket.broadcast.emit('updateRooms', rooms);
+    //   });
+
+  socket.on('chat message', (dataMessage) => {
+    const { msg, room } = dataMessage;
+    console.log(`msg: ${msg}, room: ${room}`);
+    io.to(room).emit('chat message', msg);
+  });
+
+  socket.on('register', async (data) => {
+    console.log('register -->', data);
+    const response = await fetch('http://localhost:1337/api/auth/local/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    io.to(data.room).emit('register', data);
+  });
+
+  socket.on('login', async (data) => {
+    console.log('login -->', data);
+    const response = await fetch('http://localhost:1337/api/auth/local', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    io.to(data.room).emit('login', data);
+  });
+
+  socket.on('updatePosition', (data) => {
+    let room = rooms.findIndex((r) => r.id === data.room);
+    console.log('room:', data);
+    if (rooms[room]?.users[0]?.id === socket.id) {
+      rooms[room].users[0].x = data.x;
+      rooms[room].users[0].y = data.y;
+    } else {
+      rooms[room].users[1].x = data.x;
+      rooms[room].users[1].y = data.y;
+    }
+
+    io.to(data.room).emit('updatePosition', data);
+  });
+
+  socket.on('win', (data) => {
+    let room = rooms.findIndex((r) => r.id === data.room);
+    rooms[room].level++;
+    rooms[room].map = getNewLevel(rooms[room].level);
+    io.to(data.room).emit('win', rooms[room]);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('a user disconnected');
+  });
 });
 
 server.listen(3001, 'localhost', () => {
