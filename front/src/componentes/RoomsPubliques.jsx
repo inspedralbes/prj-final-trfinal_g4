@@ -21,9 +21,10 @@ import io from 'socket.io-client';
         });
 
         socket.on('updateRooms', (data) => {
-            setRoomsName(data);
+            setRooms(data); // Corregido: Utiliza setRooms para actualizar el estado rooms
             console.log(data);
         });
+
         return () => {
             socket.disconnect();
         };

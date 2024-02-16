@@ -17,7 +17,7 @@ const Layout = () => {
         }
 
     useEffect(() => {
-        const socket = io('http://localhost:5176');
+        const socket = io('http://localhost:3001');
 
         socket.emit('connection');
 
