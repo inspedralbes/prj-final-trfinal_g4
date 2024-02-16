@@ -1,21 +1,11 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
-<<<<<<< HEAD
 const cors = require('cors');
-=======
-const cors = require('cors'); 
->>>>>>> c7ce1872588df6d52ed2e6beeb2440c92087da54
-
 const app = express();
 const server = http.createServer(app);
 
-
-<<<<<<< HEAD
 app.use(cors());
-=======
-app.use(cors()); 
->>>>>>> c7ce1872588df6d52ed2e6beeb2440c92087da54
 
 const io = socketIo(server, {
   cors: {
@@ -51,7 +41,6 @@ function getNewLevel(level) {
 io.on('connection', (socket) => {
   console.log(`Connected: ${socket.id}`);
 
-<<<<<<< HEAD
   socket.on('userConnected', ({ username }) => {
     console.log(`User connected: ${username}`);
   });
@@ -77,7 +66,7 @@ io.on('connection', (socket) => {
     }
     io.to(lastRoom).emit('updateData', rooms[rooms.length - 1]);
     lastRoom++;
-=======
+    
   socket.on('userConnected', ({username}) => {
     console.log(`User connected: ${username}`);
   });
@@ -140,7 +129,6 @@ io.on('connection', (socket) => {
     const { msg, room } = dataMessage;
     console.log(`msg: ${msg}, room: ${room}`);
     io.to(room).emit('chat message', msg);
->>>>>>> c7ce1872588df6d52ed2e6beeb2440c92087da54
   });
 
 
@@ -217,7 +205,6 @@ socket.on('register', async (data) => {
     },
     body: JSON.stringify(data),
   });
-<<<<<<< HEAD
   io.to(data.room).emit('register', data);
 });
 
@@ -229,7 +216,6 @@ socket.on('login', async (data) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
-=======
 
   socket.on('updatePosition', (data) => {
     let room = rooms.findIndex((r) => r.id === data.room);
@@ -254,26 +240,12 @@ socket.on('login', async (data) => {
 
   socket.on('disconnect', () => {
     console.log('a user disconnected');
->>>>>>> c7ce1872588df6d52ed2e6beeb2440c92087da54
   });
   io.to(data.room).emit('login', data);
 });
 
 socket.on('updatePosition', (data) => {
 
-  
-});
-
-socket.on('win', (data) => {
-  let room = rooms.findIndex((r) => r.id === data.room);
-  rooms[room].level++;
-  rooms[room].map = getNewLevel(rooms[room].level);
-  io.to(data.room).emit('win', rooms[room]);
-});
-
-socket.on('disconnect', () => {
-  console.log('a user disconnected');
-});
 });
 
 server.listen(3001, 'localhost', () => {
