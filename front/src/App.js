@@ -1,7 +1,9 @@
 // App.js
 import React, { useEffect, useState } from 'react';
-import { Index } from './index.js';
+// import { Index } from './index.js';
+import './componentes/ConnectionPhaser.jsx';
 import './App.css';
+// import ''
 
 function App() {
   // const [backendData, setBackendData] = useState([{}]);
@@ -14,17 +16,17 @@ function App() {
   //       setBackendData(data));
   // }, []);
 
-  const [currentForm, setCurrentForm] = useState('login');
+  // const [currentForm, setCurrentForm] = useState('login');
 
-  const toggleForm = (formName) => {
-    setCurrentForm(formName);
-  }
+  // const toggleForm = (formName) => {
+  //   setCurrentForm(formName);
+  // }
   
   return (
    
-    <div className="App">
+    <div id="phaser-game" className="App">
 
-      <Index currentForm={currentForm} toggleForm={toggleForm} />
+      {/* <Index currentForm={currentForm} toggleForm={toggleForm} /> */}
 
     </div>
   );
