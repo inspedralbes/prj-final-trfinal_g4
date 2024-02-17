@@ -1,68 +1,37 @@
 import Phaser from 'phaser'
-import PlayerController from './PlayerController'
-import ObstaclesController from './ObstaclesController'
-import { World } from 'matter'
+// import { World } from 'matter'
 // import { socket } from '../socket.js'
 localStorage.setItem('user', JSON.stringify({ id: '1' }))
 localStorage.setItem('room', JSON.stringify({ id: '1', users: [{ id: '1' }, { id: '2' }] }))
 
-// class SmoothedHorizontalControl {
-//     constructor(speed) {
-//         this.msSpeed = speed;
-//         this.value = 0;
-//     }
-
-//     moveLeft(delta) {
-//         if (this.value > 0) { this.reset(); }
-//         this.value -= this.msSpeed * delta;
-//         if (this.value < -1) { this.value = -1; }
-//     }
-
-//     moveRight(delta) {
-//         if (this.value < 0) { this.reset(); }
-//         this.value += this.msSpeed * delta;
-//         if (this.value > 1) { this.value = 1; }
-//     }
-
-//     reset() {
-//         this.value = 0;
-//     }
-// }
-
 export default class Game extends Phaser.Scene {
 
-    private cursors!: Phaser.Types.Input.Keyboard.CursorKeys
-    // private penguinA!: Phaser.Physics.Matter.Sprite
-    private penguinA
-    private penguinB
-    private cam
-    // private smoothedControls: SmoothedHorizontalControl;
-    private playerController?: PlayerController
-    private obstacles!: ObstaclesController
-    private pushableObj!: Phaser.Physics.Matter.Sprite
-    private pushableLargeRock!: Phaser.Physics.Matter.Sprite
-    private pushable!: Phaser.Physics.Matter.Sprite
-
+    cursors
+    penguinA
+    penguinB
+    cam
+    pushableObj
+    pushableLargeRock
+    pushable
+    BlueView
+    RedView
 
     constructor() {
         super('game');
-        // this.smoothedControls = new SmoothedHorizontalControl(0.5);
     }
 
     init() {
         this.cursors = this.input.keyboard.createCursorKeys()
-        this.obstacles = new ObstaclesController()
     }
 
     preload() {
         this.load.atlas('penguin', 'assets/penguin.png', 'assets/penguin.json')
-        this.load.image('tilesetB', 'assets/game-platform/ForestTileBlue.png')
-        this.load.image('candy', 'assets/caneRedSmall.png')
-        this.load.image('roca', 'assets/game-platform/roca-blue.png')
-        this.load.image('rocaPushable', 'assets/game-platform/roca-blue.png')
-        this.load.image('tilesetP', 'assets/game-platform/ForestTilePurple.png')
-        this.load.image('tilesetC', 'assets/game-platform/ForestTileRed.png')
-        this.load.tilemapTiledJSON('map', 'assets/game-platform/purple-blue-red-game.json')
+        this.load.image('tilesetB', 'assets/ForestTileBlue.png')
+        this.load.image('roca', 'assets/roca-blue.png')
+        this.load.image('rocaPushable', 'assets/roca-blue.png')
+        this.load.image('tilesetP', 'assets/ForestTilePurple.png')
+        this.load.image('tilesetC', 'assets/ForestTileRed.png')
+        this.load.tilemapTiledJSON('map', 'assets/purple-blue-red-game.json')
     }
 
     
@@ -73,30 +42,18 @@ export default class Game extends Phaser.Scene {
         const tilesetB = map.addTilesetImage('ForestTileBlue', 'tilesetB')
         const tilesetP = map.addTilesetImage('ForestTilePurple', 'tilesetP')
         const tilesetC = map.addTilesetImage('ForestTileRed', 'tilesetC')
-        var BlueView
-        var RedView
-
-        function normalPerpendicularSuelo(normal) {
-            var vectorVertical = {x: 0, y:1};
-
-            var productoPunto = normal.x * vectorVertical.x + normal.y * vectorVertical.y;
-
-            var umbral = 0.5;
-
-            return Math.abs(productoPunto) < umbral;
-        }
-
+        
         const PurpleView = map.createLayer('PurpleView', tilesetP);
         const pinchos = map.createLayer('PurpleDangers', tilesetP);
         let userToCompare=JSON.parse(localStorage.getItem('room'));
                 console.log('users', userToCompare.users[0].id);
-        if (JSON.parse(localStorage.getItem('user')).id == JSON.parse(localStorage.getItem('room')).users[0].id) {
-            BlueView = map.createLayer('BlueView', tilesetB)
-            BlueView.setCollisionByProperty({ collides: true })
+        if (JSON.parse(localStorage.getItem('user')).id === JSON.parse(localStorage.getItem('room')).users[0].id) {
+            this.BlueView = map.createLayer('BlueView', tilesetB)
+            this.BlueView.setCollisionByProperty({ collides: true })
         }
-        if (JSON.parse(localStorage.getItem('user')).id == JSON.parse(localStorage.getItem('room')).users[1].id) {
-            RedView = map.createLayer('RedView', tilesetC);
-            RedView.setCollisionByProperty({ collides: true })
+        if (JSON.parse(localStorage.getItem('user')).id === JSON.parse(localStorage.getItem('room')).users[1].id) {
+            this.RedView = map.createLayer('RedView', tilesetC);
+            this.RedView.setCollisionByProperty({ collides: true })
         }
         // this.smoothedControls = new SmoothedHorizontalControl(0.0005);
         map.createLayer('pinchos', tilesetB);
@@ -232,7 +189,7 @@ export default class Game extends Phaser.Scene {
                         }, this);
                         
                         
-                        if (JSON.parse(localStorage.getItem('user')).id == JSON.parse(localStorage.getItem('room')).users[0].id) {
+                        if (JSON.parse(localStorage.getItem('user')).id === JSON.parse(localStorage.getItem('room')).users[0].id) {
                             console.log('user', "EEEEEEEEEEE");
                             
                             // this.playerController = new PlayerController(
@@ -365,11 +322,11 @@ export default class Game extends Phaser.Scene {
                         })
                         // 
                         this.matter.world.convertTilemapLayer(PurpleView)  
-                        if(BlueView!= undefined) {
-                            this.matter.world.convertTilemapLayer(BlueView)
+                        if(this.BlueView!== undefined) {
+                            this.matter.world.convertTilemapLayer(this.BlueView)
                         }
-                        if(RedView!= undefined){
-                            this.matter.world.convertTilemapLayer(RedView)
+                        if(this.RedView!== undefined){
+                            this.matter.world.convertTilemapLayer(this.RedView)
                         }
                         // this.physics.add.collider(this.penguin, objectsLayer["rocaPusable"])
                         this.matter.world.convertTilemapLayer(pinchos)
@@ -391,9 +348,7 @@ export default class Game extends Phaser.Scene {
                         const matterSprite = this.penguinA.matterSprite;
                         // const speed = 3;
 
-                        let oldVelocityX;
-                        let targetVelocityX;
-                        let newVelocityX;
+                        
 
                         if(this.cursors.left.isDown && !this.penguinA.blocked.left)
                         {
