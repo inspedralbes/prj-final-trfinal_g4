@@ -1,82 +1,181 @@
 const express = require('express');
-const  cors  = require('cors');
-
-// const http = require('http');
-const { Server } = require('socket.io');
-
-
-
-// var partida = [];
+const http = require('http');
+const socketIo = require('socket.io');
+const cors = require('cors');
 const app = express();
-const http = require('http').createServer(app);
+const server = http.createServer(app);
 
-var rooms = [];
+app.use(cors());
 
-// app.get('/', (_req, res) => {
-//   res.send("hola")
-// });
-
-const io=require('socket.io')(app, {
+const io = socketIo(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
   },
 });
 
-function getNewLevel(level){
-  let map = [];
-  fetch('http://localhost:1337/api/map', 
-    {
-      method: 'GET',
-      body: JSON.stringify(level),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(response => response.json())
-    .then(data => {
-      map = data;
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-    return map;
-}   
+
+let rooms = [];
+let lastRoom = 0;
+
+
+
 
 io.on('connection', (socket) => {
   console.log(`Connected: ${socket.id}`);
 
-  socket.on('join', (room) => {
-    console.log(`Socket ${socket.id} joining ${room}`);
-    socket.join(data.room);
-    const index = rooms.findIndex((r) => r.id === room);
-    console.log('Index:', index);
-    if (index !== -1) {
-      rooms[index].users.push({ "user": data.username, "x": 0, "y": 0, "id": socket.id });
+  socket.on('userConnected', ({ username }) => {
+    console.log(`User connected: ${username}`);
+  });
+
+  socket.on('joinRoom', () => {
+    console.log(socket.id);
+    if (rooms.length === 0) {
+      rooms.push({ id: lastRoom, users: [] });
+      rooms[0].users.push({ x: 0, y: 0, id: socket.id });
+      console.log(rooms);
+      socket.join(lastRoom);
+      io.to(lastRoom).emit('updateData', lastRoom);
+    } else {
+      console.log(rooms[rooms.length - 1].users);
+      if (rooms[rooms.length - 1].users.length === 2) {
+        rooms.push({ id: lastRoom, users: [{ x: 0, y: 0, id: socket.id }] });
+        socket.join(lastRoom);
+        io.to(lastRoom).emit('updateData', lastRoom);
+      } else {
+        rooms[rooms.length - 1].users.push({ x: 0, y: 0, id: socket.id });
+        socket.join(lastRoom);
+        io.to(lastRoom).emit('updateData', lastRoom);
+        lastRoom++;
+      }
     }
-    io.to(data.id).emit('join', data);
-    // partida.push(data);
-    // console.log('data', data);
-    // console.log('partida', partida);
+  });
+  //   io.to(lastRoom).emit('updateData', rooms[rooms.length - 1]);
+  //   lastRoom++;
+  // });
+  // socket.on('userConnected', ({ username }) => {
+  //   console.log(`User connected: ${username}`);
+  // });
+
+
+  // socket.on('join', (room) => {
+  //   console.log(`Socket ${socket.id} joining ${room}`);
+  //   socket.join(room);
+  //   const index = rooms.findIndex((r) => r.id === room);
+  //   console.log('Index:', index);
+  //   if (index !== -1) {
+  //     rooms[index].users.push({ user: data.username, x: 0, y: 0, id: socket.id });
+  //   }
+  //   io.to(data.id).emit('join', data);
+  // });
+
+  // socket.on('createRoom', (room) => {
+  //   if (room.password === '') room.password = null;
+
+  //   // Define newRoom
+  //   const newRoom = {
+  //     users: [{ user: room.username, x: 0, y: 0, id: socket.id }],
+  //     password: room.password,
+  //     started: false,
+  //     level: 1,
+  //     id: lastRoom,
+  //     map: map,
+  //   };
+
+  //   // Insert newRoom into rooms
+  //   rooms.push(newRoom);
+
+  //   console.log('Rooms:', rooms);
+  //   socket.join(lastRoom);
+  //   lastRoom++;
+  //   io.emit('updateRooms', rooms);
+  // });
+  // fetch('http://localhost:1337/api/map', {
+  //   method: 'GET',
+  //   body: JSON.stringify(1),
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  // })
+  //   .then((response) => response.json())
+  //   .then((map) => {
+  //     rooms.push({
+  //       users: [{ user: room.username, x: 0, y: 0, id: socket.id }],
+  //       password: room.password,
+  //       started: false,
+  //       level: 1,
+  //       id: lastRoom,
+  //       map: map,
+  //     });
+
+  //socket.broadcast.emit('updateRooms', rooms);
+  //   });
+
+  socket.on('chat message', (dataMessage) => {
+    const { msg, room } = dataMessage;
+    console.log(`msg: ${msg}, room: ${room}`);
+    io.to(room).emit('chat message', msg);
   });
 
-  socket.on('createRoom', (room) => {
-    if(room.password === '') room.password = null;
-    fetch('http://localhost:1337/api/map', 
-    {
-      method: 'GET',
-      body: JSON.stringify(1),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    rooms.push({ "users": [{ "user": room.username, "x": 0, "y": 0, "id": socket.id }], "password": room.password, "started": false, "level": 1, "id": lastRoom, "map":map });
-    socket.join(lastRoom);
-    lastRoom++;
-    socket.broadcast.emit('Updaterooms', rooms);
-  });
 
-  
+  // socket.on('userConnected', ({ username }) => {
+  //   console.log(`User connected: ${username}`);
+  // });
+
+
+  // socket.on('join', (room) => {
+  //   console.log(`Socket ${socket.id} joining ${room}`);
+  //   socket.join(room);
+  //   const index = rooms.findIndex((r) => r.id === room);
+  //   console.log('Index:', index);
+  //   if (index !== -1) {
+  //     rooms[index].users.push({ user: data.username, x: 0, y: 0, id: socket.id });
+  //   }
+  //   io.to(data.id).emit('join', data);
+  // });
+
+  // socket.on('createRoom', (room) => {
+  //   if (room.password === '') room.password = null;
+
+  //   // Define newRoom
+  //   const newRoom = {
+  //     users: [{ user: room.username, x: 0, y: 0, id: socket.id }],
+  //     password: room.password,
+  //     started: false,
+  //     level: 1,
+  //     id: lastRoom,
+  //     map: map,
+  //   };
+
+  //   // Insert newRoom into rooms
+  //   rooms.push(newRoom);
+
+  //   console.log('Rooms:', rooms);
+  //   socket.join(lastRoom);
+  //   lastRoom++;
+  //   io.emit('updateRooms', rooms);
+  // });
+  // // fetch('http://localhost:1337/api/map', {
+  // //   method: 'GET',
+  // //   body: JSON.stringify(1),
+  // //   headers: {
+  // //     'Content-Type': 'application/json',
+  // //   },
+  // // })
+  // //   .then((response) => response.json())
+  // //   .then((map) => {
+  // //     rooms.push({
+  // //       users: [{ user: room.username, x: 0, y: 0, id: socket.id }],
+  // //       password: room.password,
+  // //       started: false,
+  // //       level: 1,
+  // //       id: lastRoom,
+  // //       map: map,
+  // //     });
+
+  // //socket.broadcast.emit('updateRooms', rooms);
+  // //   });
+
   socket.on('chat message', (dataMessage) => {
     const { msg, room } = dataMessage;
     console.log(`msg: ${msg}, room: ${room}`);
@@ -104,35 +203,34 @@ io.on('connection', (socket) => {
       },
       body: JSON.stringify(data),
     });
-    io.to(data.room).emit('login', data);
   });
-
-  socket.on('updatePosition', (data) => {
-    let room = rooms.findIndex((r) => r.id === data.room);
-    console.log('room:', data);
-    if (rooms[room].users[0].id === socket.id) {
-      rooms[room].users[0].x = data.x;
-      rooms[room].users[0].y = data.y;
-    } else {
-      rooms[room].users[1].x = data.x;
-      rooms[room].users[1].y = data.y;
-    }
+  socket.on('changeMove', (data) => {
+    console.log('updatePosition -->', data);
+    // let room = rooms.findIndex((r) => r.id === data.room);
+    // console.log('room:', data);
+    // if (rooms[room]?.users[0]?.id === socket.id) {
+    //   rooms[room].users[0].x = data.x;
+    //   rooms[room].users[0].y = data.y;
+    // } else {
+    //   rooms[room].users[1].x = data.x;
+    //   rooms[room].users[1].y = data.y;
+    // }
 
     io.to(data.room).emit('updatePosition', data);
   });
 
-  socket.on('win',(data)=>{
-    let room = rooms.findIndex((r) => r.id === data.room);
-    rooms[room].level++;
-    rooms[room].map=getNewLevel(rooms[room].level);
-    io.to(data.room).emit('win', rooms[room]);
-  })
+  // socket.on('win', (data) => {
+  //   let room = rooms.findIndex((r) => r.id === data.room);
+  //   rooms[room].level++;
+  //   rooms[room].map = getNewLevel(rooms[room].level);
+  //   io.to(data.room).emit('win', rooms[room]);
+  // });
 
   socket.on('disconnect', () => {
     console.log('a user disconnected');
   });
 });
 
-http.listen(3001, 'localhost', () => {
+server.listen(3001, 'localhost', () => {
   console.log('Server running at http://localhost:3001');
 });
