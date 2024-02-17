@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Phaser from 'phaser';
-import Game from './scenes/Game';
+import Game from '../scenes/Game.js';
 
-class configGame extends Component {
+class ConnectionPhaser extends Component {
 
     componentDidMount(){
         const config = {
@@ -10,7 +10,6 @@ class configGame extends Component {
             width: window.innerWidth - 15,
             height: window.innerHeight - 15,
             parent: 'phaser-game',
-            backgroundColor: '#ffffff',
             physics: {
                 default: 'matter',
                 matter: {
@@ -29,12 +28,12 @@ class configGame extends Component {
         return false;
       }
       render() {
-        return <div id="game" />
+        return <div id="phaser-game" />
       }
   
 }
 
-export default configGame;
+export default ConnectionPhaser;
 
 
        
