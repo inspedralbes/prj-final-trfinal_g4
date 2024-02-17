@@ -11,7 +11,7 @@ import { Landing } from './componentes/Landing';
 import { Register } from './componentes/Register';
 import { Hi } from './componentes/hi';
 import { StrictMode } from 'react';
-import { ConnectionPhaser } from './componentes/ConnectionPhaser';
+import ConnectionPhaser from './componentes/ConnectionPhaser';
 
 export default function Index() {
   return (
@@ -21,7 +21,7 @@ export default function Index() {
             <Route path="/" element={<Layout />}>
               <Route path="/login" element={<Login />} />
               <Route path="/" element={<Landing />} />
-              <Route path="/phaser" element={<ConnectionPhaser />} />
+              <Route path="/game" element={<ConnectionPhaser />} />
               <Route path="/register" element={<Register />} />
               <Route path="/hi" element={<Hi />} />
             </Route>
