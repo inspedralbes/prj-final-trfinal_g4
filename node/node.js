@@ -5,11 +5,14 @@ const cors = require('cors');
 const app = express();
 const server = http.createServer(app);
 
-app.use(cors());
+var rooms = [];
+app.get('/api', (req, res) => {
+  res.send('server node');
+});
 
 const io = socketIo(server, {
   cors: {
-    origin: '*',
+    origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
   },
 });
@@ -23,6 +26,11 @@ let lastRoom = 0;
 
 io.on('connection', (socket) => {
   console.log(`Connected: ${socket.id}`);
+
+  socket.on('userConnected', ({username}) => {
+    console.log(`User connected: ${username}`);
+  });
+
 
   socket.on('userConnected', ({ username }) => {
     console.log(`User connected: ${username}`);
@@ -231,6 +239,8 @@ io.on('connection', (socket) => {
   });
 });
 
+server.listen(3001, 'localhost', () => {
+  console.log('Server running at http://localhost:3001');
 server.listen(3001, 'localhost', () => {
   console.log('Server running at http://localhost:3001');
 });

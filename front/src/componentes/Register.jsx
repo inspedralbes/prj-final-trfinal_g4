@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export const Register = (props) => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [name, setName] = useState("");
-  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -19,13 +18,13 @@ export const Register = (props) => {
           username: name, // Assumption: Strapi uses 'username' for email in registration
           email: email,
           password: pass,
-          name: name,
         }),
       });
 
       if (response.ok) {
         const data = await response.json();
         console.log('Usuario registrado exitosamente en Strapi', data);
+        
         // Puedes redirigir o realizar otras acciones después del registro exitoso
       } else {
         console.error('Error al registrar el usuario en Strapi');
@@ -45,11 +44,11 @@ export const Register = (props) => {
         <label htmlFor="email" >Email</label>
         <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="youremail@gmail.com" id="email" name="email" />
         <label htmlFor="password">Password</label>
-        <input value={pass} onClick={() => navigate('/hi') } onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" />
+        <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="********" id="password" name="password" />
         <button type="submit">Register</button>
       </form>
 
-      <button className="link-btn" onClick={() => navigate('/login')}>Already have an account? Login here.</button>
+      <button className="link-btn" onClick={() => props.onFormSwitch('login')}>Already have an account? Login here.</button>
     </div>
   );
 };

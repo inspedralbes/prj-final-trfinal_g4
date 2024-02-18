@@ -1,7 +1,7 @@
 //ENCABEZADO DE LA PÁGINA (HEADER)
 
 import { useEffect } from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet} from "react-router-dom";
 import { Landing } from "./componentes/Landing";
 import { io } from "socket.io-client";
 import './App.css';
@@ -17,7 +17,7 @@ const Layout = () => {
         }
 
     useEffect(() => {
-        const socket = io('http://localhost:5176');
+        const socket = io('http://localhost:3001');
 
         socket.emit('connection');
 
