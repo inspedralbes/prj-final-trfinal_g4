@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "fases",
+  "info": {
+    "singularName": "fase",
+    "pluralName": "fases",
+    "displayName": "Fase"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Mapa": {
+      "type": "json"
+    },
+    "Nivel": {
+      "type": "biginteger"
+    },
+    "idFase": {
+      "type": "uid"
+    },
+    "Assets": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
+    },
+    "Like": {
+      "type": "biginteger"
+    },
+    "Dislike": {
+      "type": "biginteger"
+    }
+  }
+}
