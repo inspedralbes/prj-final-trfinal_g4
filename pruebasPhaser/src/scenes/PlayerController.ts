@@ -20,6 +20,8 @@ export default class PlayerController
         this.obstacles = obstacles
         this.pushableObj = pushableObj
         
+        
+
         this.createAnimation()
         
         this.stateMachine = new StateMachine(this, 'player')
@@ -59,7 +61,7 @@ export default class PlayerController
 
         this.sprite.setOnCollide((data: MatterJs.ICollisionPair) => {
             const body = data.bodyB as MatterJS.BodyType
-            console.log(body);
+            // console.log(body);
             
             if (this.obstacles.is('spikes', body))
             {
@@ -71,10 +73,10 @@ export default class PlayerController
             const gameObject = body.gameObject
             // console.log(gameObject);
 
-            if (body == this.pushableObj?.body) {
-                this.stateMachine.setState('push-object')
-                return
-            }
+            // if (body == this.pushableObj?.body) {
+            //     this.stateMachine.setState('push-object')
+            //     return
+            // }
             
             // if(gameObject instanceof Phaser.Physics.Matter.Sprite && gameObject.getData('roca') === true)
             // {
@@ -90,6 +92,14 @@ export default class PlayerController
                             this.stateMachine.setState('idle')
                         }
                         return
+                    }
+
+                    if(gameObject instanceof Phaser.Physics.Matter.MatterGameObject)
+                    {
+                        if(this.stateMachine.isCurrentState('jump'))
+                        {
+                            this.stateMachine.setState('idle')
+                        }
                     }
                     
                 })
