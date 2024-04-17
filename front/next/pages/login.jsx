@@ -10,7 +10,7 @@ function Login() {
     e.preventDefault();
 
     const user = {
-      email: e.target.value,
+      email: email,
       password: password
     };
 
