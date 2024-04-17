@@ -21,7 +21,10 @@ services:
       - chromatic-db
 
   chromatic-nextjs:
-    image: node:18-bullseye
+    build:
+      context: ./front/next
+      dockerfile: ./DockerFile
+      target: runner
     container_name: chromatic-nextjs
     working_dir: /app
     volumes:
@@ -30,8 +33,7 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
-    # - NEXT_TELEMETRY_DISABLED 1
-    command: bash -c "npm install && npx nodemon --watch . -e js,jsx,json,css,scss --exec 'npm run dev'"
+    command: bash -c "npm run dev"
     links:
       - chromatic-nodesocket
 
