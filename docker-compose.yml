@@ -18,7 +18,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      - chromatic-db
 
   chromatic-nextjs:
     image: node:18-bullseye
@@ -32,7 +32,7 @@ services:
       - NODE_ENV=development
     command: bash -c "npm install && npm run dev"
     links:
-      - nodesocket
+      - chromatic-nodesocket
 
   chromatic-nodesocket:
     build:
@@ -50,7 +50,7 @@ services:
 
   chromatic-db:
     image: mysql:latest
-    container_name: mysql_db
+    container_name: chromatic-mysql_db
     volumes:
       - db-data:/var/lib/mysql
     environment:
@@ -70,7 +70,7 @@ services:
     ports:
       - "8080:80"
     depends_on:
-      - db
+      - chromatic-db
 
 volumes:
   db-data:
