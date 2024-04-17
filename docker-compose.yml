@@ -63,7 +63,7 @@ services:
     image: phpmyadmin/phpmyadmin
     container_name: chromatic-phpmyadmin
     environment:
-      PMA_HOST: db
+      PMA_HOST: chromatic-db
       PMA_PORT: 3306
       PMA_USER: root
       PMA_PASSWORD: root

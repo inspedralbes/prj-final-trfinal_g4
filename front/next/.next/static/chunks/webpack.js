@@ -140,7 +140,11 @@
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	!function() {
+<<<<<<< HEAD
 /******/ 		__webpack_require__.h = function() { return "ea341a0335ec4691"; }
+=======
+/******/ 		__webpack_require__.h = function() { return "1a8c813188456808"; }
+>>>>>>> origin/feature-login-register
 /******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
