@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  laravel-app:
+    build:
+      context: ./back/laravel
+      dockerfile: ./DockerFile
+    container_name: laravel
+    working_dir: /var/www
+    volumes:
+      - ./back/laravel:/var/www
+    command: >
+      bash -c "composer update
+      && cp .env.example .env
+      && php artisan key:generate
+      && php artisan migrate
+      && php artisan serve --host=0.0.0.0 --port=8000"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  nuxt-app:
+    image: node:18-bullseye
+    container_name: nuxt
+    working_dir: /app
+    volumes:
+      - ./front/cine-app:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
+    command: bash -c "npm install && npm run dev"
+    links:
+      - nodesocket-app
+
+  nodesocket-app:
+    build:
+      dockerfile: ./DockerFile
+      context: ./node
+    container_name: nodesocket
+    volumes:
+      - ./node:/app
+    working_dir: /app
+    command: >
+      bash -c "npm install
+      && nodemon index.js -L"
+    ports:
+      - "3727:3727"
+
+  db:
+    image: mysql:latest
+    container_name: mysql_db
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+volumes:
+  db-data:
+
+
+# docker-compose exec laravel bash -c "composer install && cp .env.example .env && php artisan key:generate && php artisan migrate"
+# && php artisan serve --host=0.0.0.0 --port=8000"
