@@ -30,7 +30,8 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
-    command: bash -c "npm install && npm run dev"
+    # - NEXT_TELEMETRY_DISABLED 1
+    command: bash -c "npm install && npx nodemon --watch . -e js,jsx,json,css,scss --exec 'npm run dev'"
     links:
       - chromatic-nodesocket
 
