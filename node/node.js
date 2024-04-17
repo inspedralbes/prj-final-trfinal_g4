@@ -12,7 +12,7 @@ app.get('/api', (req, res) => {
 
 const io = socketIo(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:3727',
     methods: ['GET', 'POST'],
   },
 });
@@ -38,7 +38,7 @@ io.on('connection', (socket) => {
 
   socket.on('joinRoom', () => {
     console.log(socket.id);
-    if (rooms.length === 0) {
+    if (rooms.length == 0) {
       rooms.push({ id: lastRoom, users: [] });
       rooms[0].users.push({ x: 0, y: 0, id: socket.id });
       console.log(rooms);
@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
       io.to(lastRoom).emit('updateData', lastRoom);
     } else {
       console.log(rooms[rooms.length - 1].users);
-      if (rooms[rooms.length - 1].users.length === 2) {
+      if (rooms[rooms.length - 1].users.length == 2) {
         rooms.push({ id: lastRoom, users: [{ x: 0, y: 0, id: socket.id }] });
         socket.join(lastRoom);
         io.to(lastRoom).emit('updateData', lastRoom);
