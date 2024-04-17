@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 
-function Login() {
+function Register() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -12,14 +18,26 @@ function Login() {
     setPassword(e.target.value);
   };
 
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Aquí puedes agregar la lógica para registrar al usuario
   };
 
   return (
     <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4">
       <div className="bg-white shadow-md rounded-lg px-8 py-6 max-w-md w-full">
-        <h2 className="text-3xl font-semibold text-center mb-4">Inicia Sessió</h2>
+        <h2 className="text-3xl font-semibold text-center mb-4">Registre</h2>
+        <div className="mb-4">
+          <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Nom</label>
+          <input type="text" id="name" name="name"
+            value={name} onChange={handleNameChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
         <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Correu electrònic</label>
           <input type="email" id="email" name="email"
@@ -27,10 +45,17 @@ function Login() {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
-        <div className="mb-6">
+        <div className="mb-4">
           <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">Contrasenya</label>
           <input type="password" id="password" name="password"
             value={password} onChange={handlePasswordChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div className="mb-6">
+          <label htmlFor="confirmPassword" className="block text-gray-700 text-sm font-bold mb-2">Confirmar Contrasenya</label>
+          <input type="password" id="confirmPassword" name="confirmPassword"
+            value={confirmPassword} onChange={handleConfirmPasswordChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
@@ -40,14 +65,14 @@ function Login() {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out hover:scale-110"
             onClick={handleSubmit}
           >
-            Iniciar Sessió
+            Registrarse
           </button>
-          {/* Enlace para registro */}
-          <p className="text-gray-700 text-sm mt-4">Si no estàs registrat, <a href="#" className="text-blue-500">registrat ara</a>.</p>
+          {/* Enlace para iniciar sesión */}
+          <p className="text-gray-700 text-sm mt-4">Ja tens compte? <a href="#" className="text-blue-500">Inicia sessió</a>.</p>
         </div>
       </div>
     </div>
   );
 }
 
-export default Login;
+export default Register;
