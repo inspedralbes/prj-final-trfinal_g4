@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
+
 const IndexPage = () => {
   return (
     <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-between p-4">

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { login } from '../services/communicationManager';
 
 function Login() {
   const [email, setEmail] = useState('');
