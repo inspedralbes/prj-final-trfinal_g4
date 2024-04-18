@@ -23,14 +23,24 @@ function Rooms() {
                         </div>
                     </div>
                 </div>
-                
+
                 {/* Espacio entre las salas y los botones */}
-                <div className="w-44"></div> {/* Reduce el ancho del espacio entre las salas y los botones */}
+                <div className="w-8"></div> {/* Reduce el ancho del espacio entre las salas y los botones */}
 
                 {/* Columna de los botones */}
                 <div className="rounded-lg p-4 flex flex-col">
-                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold rounded my-12 h-16 w-32">CREAR SALA</button>
-                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold rounded mt-0 h-16 w-32">Botón 2</button>
+                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold rounded my-12 h-16 w-46">CREAR SALA</button>
+                    <div className="grid grid-cols-6 gap-2">
+                        {Array.from({ length: 6 }).map((_, index) => (
+                            <input
+                                key={index}
+                                type="text"
+                                placeholder="#"
+                                maxLength="1"
+                                className="bg-white border border-gray-300 rounded-lg px-2 py-1 focus:outline-none focus:border-blue-400 h-16 text-gray-800 placeholder-gray-500 text-base text-center"
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
