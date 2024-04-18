@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Map;
 use Illuminate\Http\Request;
+use Ramsey\Uuid\Type\Integer;
+use SebastianBergmann\Diff\Diff;
 
 class MapController extends Controller
 {
@@ -18,9 +20,9 @@ class MapController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function getDifficulty($request)
+    public function mapsByDifficulty($difficulty)
     {
-        return Map::where('difficulty', $request->difficulty)->get();
+        return Map::where('difficulty', $difficulty)->get();
     }
 
     public function getMap($request)
@@ -42,15 +44,15 @@ class MapController extends Controller
         $newMap= new Map();
         $newMap->name = $request->name;
         $newMap->description = $request->description;
+
         $img = $request->file('img');
-        $path = $img->storeAs($img->getClientOriginalName());
+        $path = $img->storeAs('/images',$img->getClientOriginalName());
         $newMap->image = $path;
         $map= $request->file('map');
-        $pathMap = $map->storeAs($map->getClientOriginalName());
+        $pathMap = $map->storeAs('/public',$map->getClientOriginalName());
         $newMap->mapRoute = $pathMap;
         $newMap->difficulty = $request->difficulty;
         $newMap->user_id = $request->user_id;
-
         $newMap->save();
         return $newMap;
     }
@@ -61,14 +63,20 @@ class MapController extends Controller
      */
     public function update(Request $request, Map $map)
     {
-        $mapToUpdate = Map::find($map->id);
+        
+        $mapToUpdate = Map::find($map)->first();
         $mapToUpdate->name = $request->name;
         $mapToUpdate->description = $request->description;
-        $mapToUpdate->image = $request->image;
-        $mapToUpdate->mapRoute = $request->mapRoute;
+        $img = $request->file('img');
+        $path = $img->storeAs('/images',$img->getClientOriginalName());
+        $mapToUpdate->image = $path;
+        $map= $request->file('map');
+        $pathMap = $map->storeAs('/public',$map->getClientOriginalName());
+        $mapToUpdate->mapRoute = $pathMap;
         $mapToUpdate->difficulty = $request->difficulty;
         $mapToUpdate->user_id = $request->user_id;
         $mapToUpdate->save();
+        // dd($mapToUpdate);
         return $mapToUpdate;
 
     }

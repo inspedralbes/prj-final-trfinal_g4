@@ -20,10 +20,16 @@ class SaveController extends Controller
         return Save::find($request->id);
     }
 
-    public function getSavesByUser($request)
+    public function getSavesByUser($user)
     {
-        return Save::where('user_id', $request->user_id)->get();
+        return Save::where('user_id', $user)->get();
     }
+
+    public function show(Save $save)
+    {
+        return $save;
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -45,7 +51,7 @@ class SaveController extends Controller
      */
     public function update(Request $request, Save $save)
     {
-        $save= Save::find($request->id);
+        $save= Save::find($save)->first();
         $save->state = $request->state;
         $save->save();
         return $save;
