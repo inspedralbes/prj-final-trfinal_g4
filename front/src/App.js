@@ -3,7 +3,9 @@
 import './App.css';
 import  { useState } from 'react';
 import { Index } from './index.js';
-
+import './componentes/ConnectionPhaser.jsx';
+import './App.css';
+// import ''
 
 function App() {
   // const [backendData, setBackendData] = useState([{}]);
