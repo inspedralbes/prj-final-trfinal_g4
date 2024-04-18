@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { register } from '../services/communicationManager';
+import { useRouter } from 'next/router';
 
-function Register() {
-
+function Register (){
+  
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-    const handleSubmit =  (e) => {
+  const router = useRouter();
+
+    const handleSubmit = async (e) => {
       e.preventDefault();
 
       if (!name || !email || !password || !confirmPassword) {
@@ -19,11 +23,23 @@ function Register() {
           name: name,
           email: email,
           password: password,
-          password_confirmation: confirmPassword
         };
-    };
-
-      return (
+        console.log(user);
+        if (password != confirmPassword) {
+          alert('Passwords do not match');
+          return;
+        }else{
+          register(user)
+            .then(() => {
+              router.push('/login');
+            })
+            .catch(() => {
+              alert('Error registering user');
+            });
+          };
+        }
+        
+  return (
     <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4">
       <form className="bg-white shadow-md rounded-lg px-8 py-6 max-w-md w-full" onSubmit={handleSubmit}>
         <h2 className="text-3xl font-semibold text-center mb-4">Registre</h2>
@@ -56,21 +72,21 @@ function Register() {
           />
         </div>
         <div className="flex flex-col items-center justify-center">
-          <Link href="/login">
           <button
             type="submit"
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out hover:scale-110"
-            
+
           >
-            Registrarse
+          Register
           </button>
+          <Link href="/login">
+          <p className="text-gray-700 text-sm mt-4">Ja tens compte? Inicia sessió</p>
           </Link>
           {/* Enlace para iniciar sesión */}
-          <p className="text-gray-700 text-sm mt-4">Ja tens compte? <a href="#" className="text-blue-500">Inicia sessió</a>.</p>
+          
         </div>
       </form>
     </div>
   );
 }
-
 export default Register;
