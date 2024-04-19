@@ -19,6 +19,7 @@ export default class Preloader extends Phaser.Scene {
     updateProgress(progress) {
         let adjustedProgress = progress * 100;
         this.loadingText.setText('Loading game... ' + Math.round(adjustedProgress) + '%');
+        
     }
 
     create() {

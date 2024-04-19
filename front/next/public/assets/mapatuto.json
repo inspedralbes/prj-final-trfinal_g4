@@ -1,4 +1,12 @@
 { "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"json",
+         "target":"mapatuto.json"
+        }
+    },
  "height":52,
  "infinite":true,
  "layers":[
@@ -561,6 +569,7 @@
          "opacity":1,
          "startx":0,
          "starty":0,
+         "tintcolor":"#969696",
          "type":"tilelayer",
          "visible":true,
          "width":176,
@@ -1203,7 +1212,7 @@
         {
          "columns":22,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/..\/prj-final-trfinal_g4\/front\/public\/assets\/tiled\/tilesets\/White-terrain.png",
+         "image":"..\/..\/..\/..\/..\/..\/prj-final-trfinal_g4\/front\/public\/assets\/tiled\/tilesets\/White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
