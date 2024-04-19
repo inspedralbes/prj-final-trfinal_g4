@@ -1,12 +1,17 @@
+"use client";
+
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { login } from '../services/communicationManager';
 import { useRouter } from 'next/router';
+import { signIn} from 'next-auth/react';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+
+ 
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -61,6 +66,9 @@ function Login() {
 
         </div>
       </form>
+      <button onClick={()=>signIn()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out hover:scale-110 mt-4">
+        Iniciar Sessió amb Google
+      </button>
     </div>
   );
 }
