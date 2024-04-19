@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import Link from 'next/link';
 
 function Rooms() {
     const rooms = Array.from({ length: 20 }, (_, index) => ({
@@ -71,7 +72,9 @@ function Rooms() {
             <div className="w-32"></div>
 
             <div className="rounded-lg p-4 flex flex-col w-3/12">
-                <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded my-14 h-12 focus:outline-none">CREAR SALA</button>
+                <Link href="/create">
+                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded my-14 h-12 w-32 mx-40 focus:outline-none">CREAR SALA</button>
+                </Link>
                 <div className="grid grid-cols-7 gap-2">
                     {Array.from({ length: 6 }).map((_, index) => (
                         <input
