@@ -26,11 +26,15 @@ const Game = () => {
                 physics: {
                     default: 'matter',
                     matter: {
-                        debug: true,
-                          
+                        // debug: true,
+
                         // debug: isDevelopment,
 
                     },
+
+                },
+                scale: {
+                    zoom: 2.5,
                 },
                 backgroundColor: '#B6B4B4',
             });
