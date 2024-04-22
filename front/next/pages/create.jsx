@@ -14,9 +14,9 @@ const Create = () => {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-16">
+        <div className="flex items-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 flex-col p-8">
             {/* Parte izquierda para crear la sala */}
-            <div className="flex flex-col justify-center items-center w-1/3 mx-52">
+            <div className="flex flex-col justify-center items-center w-1/3 mb-4">
                 <h2 className="text-white text-2xl mb-6">Crear Sala</h2>
                 <div className="w-full bg-white rounded-lg p-4 mb-4">
                     <label htmlFor="roomName" className="block text-gray-700 font-semibold mb-2">Nombre de la Sala:</label>
@@ -63,13 +63,14 @@ const Create = () => {
             </div>
 
             {/* Parte derecha con las imágenes */}
-            <div className="w-1/3 mx-8 overflow-y-auto">
-                <div className="flex flex-col items-center">
-                    <img src="/images/random.jpg" alt="Imagen 1" className="w-5/12 my-1" />
-                    <img src="/images/random.jpg" alt="Imagen 2" className="w-5/12 my-1" />
-                    <img src="/images/random.jpg" alt="Imagen 3" className="w-5/12 my-1" />
+            <div className="w-3/4 mx-8 overflow-y-auto mb-8">
+                <div className="flex flex-row justify-center items-center">
+                    <img src="/images/random.jpg" alt="Imagen 1" className="w-64 h-64 my-4 mx-36" />
+                    <img src="/images/random.jpg" alt="Imagen 2" className="w-64 h-64 my-4 mx-36" />
+                    <img src="/images/random.jpg" alt="Imagen 3" className="w-64 h-64 my-4 mx-36" />
                 </div>
             </div>
+
         </div>
     );
 };
