@@ -26,11 +26,13 @@ const Game = () => {
                 physics: {
                     default: 'matter',
                     matter: {
+                        debug: true,
+                          
                         // debug: isDevelopment,
 
                     },
                 },
-                backgroundColor: '#575555',
+                backgroundColor: '#B6B4B4',
             });
 
             setGame(phaserGame);
