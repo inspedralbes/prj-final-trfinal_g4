@@ -1,15 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
 import LoginButton from '../components/LoginButton';
-import {Providers} from 'app/Providers';
 
 const IndexPage = () => {
   return (
     <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-between p-4">
       <div className="flex flex-col md:flex-row md:justify-end md:items-start">
-        <Providers>
+
           <LoginButton />
-        </Providers>
+
       </div>
       <div className="flex-1 flex flex-col justify-center items-center">
         <h1 className="text-4xl font-bold text-white mb-8">CHROMATIC BONDssss</h1>

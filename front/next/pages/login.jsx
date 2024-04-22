@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { login } from '../services/communicationManager';
 import { useRouter } from 'next/router';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn, useSession, signOut } from 'next-auth/react';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -31,8 +31,13 @@ function Login() {
       .catch(() => {
         alert('Error logging in');
       });
+    
+      signIn().then(() => {
+        router.push('/');
+      });
+      
 
-    }
+  };
   return (
     <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4">
       <form className="bg-white shadow-md rounded-lg px-8 py-6 max-w-md w-full" onSubmit={handleSubmit}>
@@ -67,8 +72,12 @@ function Login() {
 
         </div>
       </form>
-      <button onClick={()=>signIn('google')} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out hover:scale-110 mt-4">
+
+      <button onClick={signIn} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out hover:scale-110 mt-4">
         Iniciar Sessió amb Google
+      </button>
+      <button onClick={()=> { signOut(); }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out hover:scale-110 mt-4">
+        Tancar Sessió
       </button>
     </div>
   );
