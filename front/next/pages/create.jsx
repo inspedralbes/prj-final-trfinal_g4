@@ -70,7 +70,6 @@ const Create = () => {
                     <img src="/images/random.jpg" alt="Imagen 3" className="w-64 h-64 my-4 mx-36" />
                 </div>
             </div>
-
         </div>
     );
 };
