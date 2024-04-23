@@ -65,22 +65,31 @@ const Lobby = () => {
         <div className='bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4  text-white'>
             <div className='min-h-[600px] min-w-[850px] bg-black text-center'>
                 <h1 className='text-4xl font-bold tracking-wider my-5 animate-pulse'>ESPERANT ACOMPANYANT</h1>
-                <div className='min-w-[425px]'>
-                    {/* Chat section */}
-                    <div className='max-h-[400px] overflow-y-auto'>
-                        <div className="flex flex-col items-start mt-8 w-full max-w-xl">
-                            <div className="flex flex-col mb-4">
-                                {chatMessages.map((chatMessage, index) => (
-                                    <div key={index} className={`bg-${chatMessage.sender == 'me' ? 'blue' : 'green'}-500 text-white py-2 px-4 rounded-lg mb-1 ${chatMessage.sender == 'me' ? 'self-end' : ''}`}
-                                    >
-                                        {chatMessage.text}
-                                    </div>
-                                ))}
-                                <div ref={messagesEndRef} />
+                {/* Chat section */}
+                <div className='flex flex-col min-w-[425px] mx-3 grid grid-cols-2 justify-center items-center'>
+                    <div className='max-h-[350px] overflow-y-auto' >
+                        <div className=" max-h-[350px] max-w-[250px]">
+                            <div className="flex flex-col ">
+                                <div className="flex flex-col">
+                                    {chatMessages.map((chatMessage, index) => (
+                                        <div key={index} className={`bg-${chatMessage.sender == 'me' ? 'blue' : 'green'}-500 text-white py-2 px-4 rounded-lg mb-1 ${chatMessage.sender == 'me' ? 'self-end' : ''}`}
+                                        >
+                                            {chatMessage.text}
+                                        </div>
+                                    ))}
+                                    <div ref={messagesEndRef} />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex flex-col items-center justify-center bg-slate-600 rounded-lg w-full max-w-xl ">
+                            <div className="flex flex-col items-center bg-zinc-200 mx-8 ">
+                                
                             </div>
                         </div>
                     </div>
-                    <div className="flex mt-4 text-black">
+                </div>
+                <div className="flex flex-col mt-5 text-black max-w-[350px] min-w-[200px]">
+                    <div class="flex flex-row justify-center items-center">
                         <input
                             type="text"
                             value={message}
