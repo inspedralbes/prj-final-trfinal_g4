@@ -16,7 +16,7 @@ const Game = () => {
             const { default: GameHome } = await import('../scenes/GameHome');
             const { default: Preloader } = await import('../scenes/Preloader');
             const phaserGame = new Phaser.Game({
-                type: Phaser.AUTO,
+                type: Phaser.CANVAS,
                 parent: 'game-content',
                 width: window.innerWidth,
                 height: window.innerHeight,
@@ -26,15 +26,12 @@ const Game = () => {
                 physics: {
                     default: 'matter',
                     matter: {
-                        // debug: true,
-
+                        debug: true,
+                        
                         // debug: isDevelopment,
 
                     },
 
-                },
-                scale: {
-                    zoom: 2.5,
                 },
                 backgroundColor: '#B6B4B4',
             });
