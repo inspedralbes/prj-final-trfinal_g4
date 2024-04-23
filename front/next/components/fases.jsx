@@ -1,50 +1,88 @@
 import React, { useState } from 'react';
 
-const Fases = ({ fases }) => {
-    const [currentImageIndexes, setCurrentImageIndexes] = useState(Array(fases.length).fill(0));
+import image1 from '../public/images/image1.jpg';
+import image2 from '../public/images/image2.jpg';
+import image3 from '../public/images/image3.jpg';
 
-    const handlePrev = (phaseIndex) => {
-        setCurrentImageIndexes((prevIndexes) => {
-            const newIndexes = [...prevIndexes];
-            newIndexes[phaseIndex] = newIndexes[phaseIndex] === 0 ? fases[phaseIndex].length - 1 : newIndexes[phaseIndex] - 1;
-            return newIndexes;
-        });
+
+const Fases = ({ fases }) => {
+    const [currentPhaseIndex, setCurrentPhaseIndex] = useState(0);
+
+    const handlePrev = () => {
+        setCurrentPhaseIndex((prevIndex) => (prevIndex === 0 ? fases.length - 1 : prevIndex - 1));
     };
 
-    const handleNext = (phaseIndex) => {
-        setCurrentImageIndexes((prevIndexes) => {
-            const newIndexes = [...prevIndexes];
-            newIndexes[phaseIndex] = newIndexes[phaseIndex] === fases[phaseIndex].length - 1 ? 0 : newIndexes[phaseIndex] + 1;
-            return newIndexes;
-        });
+    const handleNext = () => {
+        setCurrentPhaseIndex((prevIndex) => (prevIndex + 1) % fases.length);
     };
 
     return (
         <div className="flex justify-center items-center">
-            {fases.map((phase, phaseIndex) => (
-                <div key={phaseIndex} className="flex flex-col items-center mx-4">
-                    <h3 className="mb-2">Fase {phaseIndex + 1}</h3>
-                    <img
-                        src={phase[currentImageIndexes[phaseIndex]]}
-                        alt={`Fase ${phaseIndex + 1}`}
-                        className="w-32 h-32 my-2"
-                    />
-                    <div className="flex justify-center mt-4">
-                        <button
-                            className="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-l focus:outline-none"
-                            onClick={() => handlePrev(phaseIndex)}
-                        >
-                            {'<'}
-                        </button>
-                        <button
-                            className="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-r focus:outline-none"
-                            onClick={() => handleNext(phaseIndex)}
-                        >
-                            {'>'}
-                        </button>
+            <div key={currentPhaseIndex} className="flex flex-col items-center mx-4">
+                <div className="flex relative">
+                    {/* Fase 1 */}
+                    <div className="flex flex-col items-center relative">
+                        <h3 className="mb-2 text-center">Fase 1</h3>
+                        <div className="inline-block relative">
+                            <img src='/images/image1.jpg' alt={`Fase 1`} className="h-60 w-96 my-4 mx-3" />
+                            <button
+                                className="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-l focus:outline-none absolute top-1/2 left-0 transform -translate-y-1/2 opacity-50"
+                                onClick={handlePrev}
+                            >
+                                {'<'}
+                            </button>
+                            <button
+                                className="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-r focus:outline-none absolute top-1/2 right-0 transform -translate-y-1/2 opacity-50"
+                                onClick={handleNext}
+                            >
+                                {'>'}
+                            </button>
+                        </div>
+                    </div>
+                    {/* Fase 2 */}
+                    <div className="flex flex-col items-center relative mx-2">
+                        <h3 className="mb-2 text-center">Fase 2</h3>
+                        <div className="inline-block relative">
+                            <img src='/images/image2.jpg' alt={`Fase 2`} className="h-60 w-96 my-4 mx-2" />
+                            <button
+                                className="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-l focus:outline-none absolute top-1/2 left-0 transform -translate-y-1/2 opacity-50"
+                                onClick={handlePrev}
+                            >
+                                {'<'}
+                            </button>
+                            <button
+                                className="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-r focus:outline-none absolute top-1/2 right-0 transform -translate-y-1/2 opacity-50"
+                                onClick={handleNext}
+                            >
+                                {'>'}
+                            </button>
+                        </div>
+                    </div>
+                    {/* Fase 3 */}
+                    <div className="flex flex-col items-center relative">
+                        <h3 className="mb-2 text-center">Fase 3</h3>
+                        <div className="inline-block relative">
+                            <img src='/images/image3.jpg' alt={`Fase 3`} className="h-60 w-96 my-4 mx-3" />
+                            <button
+                                className="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-l focus:outline-none absolute top-1/2 left-0 transform -translate-y-1/2 opacity-50"
+                                onClick={handlePrev}
+                            >
+                                {'<'}
+                            </button>
+                            <button
+                                className="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-r focus:outline-none absolute top-1/2 right-0 transform -translate-y-1/2 opacity-50"
+                                onClick={handleNext}
+                            >
+                                {'>'}
+                            </button>
+                        </div>
                     </div>
                 </div>
-            ))}
+            </div>
         </div>
     );
 };
+
+const fases = [image1, image2, image3];
+
+export default () => <Fases fases={fases} />;
