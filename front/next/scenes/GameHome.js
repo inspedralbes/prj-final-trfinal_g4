@@ -9,6 +9,7 @@ export default class GameHome extends Phaser.Scene {
     whiteView;
     blackView;
     grayView;
+    endGame;
 
     constructor() {
         super('gamehome');
@@ -163,6 +164,8 @@ export default class GameHome extends Phaser.Scene {
                             frameRate: 10,
                             repeat: -1
                         })
+
+
 
                         // this.anims.create({
                         //     key: 'walk',
@@ -332,11 +335,24 @@ export default class GameHome extends Phaser.Scene {
                         }, this);
 
                         break;
+                    };
+                    
+                case 'endGame':
+                    {
+                        this.endGame = {
+                            matterSpriteEnd: this.matter.add.sprite(x + (width * 0.5), y + (height * 0.5), 'frag-out').setTint(0x303030),
+                        }
+                        this.anims.create({
+                            key: 'flag-move',
+                            frames: this.anims.generateFrameNames('flag-movement', { start: 1, end: 26, prefix: 'frag-out00', suffix: '.png' }),
+                            frameRate: 10,
+                            repeat: -1
+                        })
+                        break;
                     }
 
             }
-
-        })
+        });
 
         // this.add.text(20, 20, 'Welcome to the game home');
     }
