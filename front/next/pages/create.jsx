@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Fases from '../components/fases';
 import { PiNumberCircleOne, PiNumberCircleTwo, PiNumberCircleThree } from 'react-icons/pi';
-import { TbSquareLetterX } from "react-icons/tb";
+import { TbLetterX } from "react-icons/tb";
 
 const Create = () => {
     // State para los valores de la sala
@@ -68,17 +68,17 @@ const Create = () => {
             {/* Parte derecha con las imágenes */}
             <div className="w-3/4 mx-8 overflow-y-auto">
                 <div className="flex flex-row justify-center items-center">
-                    <ImageWithOverlay imageSrc="/images/random.jpg" altText="Imagen 1">
+                    <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 1">
                         <PiNumberCircleOne className="text-black text-4xl absolute top-3 left-2 m-2" />
-                        <TbSquareLetterX className="text-black text-3xl absolute top-1 right-0 m-2" />
+                        <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
                     </ImageWithOverlay>
-                    <ImageWithOverlay imageSrc="/images/random.jpg" altText="Imagen 2">
+                    <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 2">
                         <PiNumberCircleTwo className="text-black text-4xl absolute top-3 left-2 m-2" />
-                        <TbSquareLetterX className="text-black text-3xl absolute top-1 right-0 m-2" />
+                        <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
                     </ImageWithOverlay>
-                    <ImageWithOverlay imageSrc="/images/random.jpg" altText="Imagen 3">
+                    <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 3">
                         <PiNumberCircleThree className="text-black text-4xl absolute top-3 left-2 m-2" />
-                        <TbSquareLetterX className="text-black text-3xl absolute top-1 right-0 m-2" />
+                        <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
                     </ImageWithOverlay>
                 </div>
             </div>
@@ -91,7 +91,7 @@ const Create = () => {
 const ImageWithOverlay = ({ imageSrc, altText, children }) => {
     return (
         <div className="relative">
-            <img src={imageSrc} alt={altText} className="h-60 w-96 my-4 mx-3" />
+            <img src={imageSrc} alt={altText} className="h-60 w-96 my-4 mx-3 bg-zinc-400" />
             {children}
         </div>
     );
