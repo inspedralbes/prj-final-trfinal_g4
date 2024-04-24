@@ -63,56 +63,18 @@ const Lobby = () => {
 
     return (
         <div className='bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4  text-white'>
-            <div className='min-h-[600px] min-w-[850px] bg-black text-center'>
-                <h1 className='text-4xl font-bold tracking-wider my-5 animate-pulse'>ESPERANT ACOMPANYANT</h1>
+            <h1 className='text-4xl font-bold tracking-wider my-5 animate-pulse'>ESPERANT ACOMPANYANT</h1>
+            <div className='min-h-[600px] min-w-[850px] text-center flex flex-inline'>
                 {/* Chat section */}
-                {/* <div className='flex flex-col min-w-[425px] mx-3 grid grid-cols-2 justify-center items-center'>
-                    <div className='max-h-[350px] overflow-y-auto' >
-                        <div className=" max-h-[350px] max-w-[250px]">
-                            <div className="flex flex-col ">
-                                <div className="flex flex-col">
-                                    {chatMessages.map((chatMessage, index) => (
-                                        <div key={index} className={`bg-${chatMessage.sender == 'me' ? 'blue' : 'green'}-500 text-white py-2 px-4 rounded-lg mb-1 ${chatMessage.sender == 'me' ? 'self-end' : ''}`}
-                                        >
-                                            {chatMessage.text}
-                                        </div>
-                                    ))}
-                                    <div ref={messagesEndRef} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex flex-col items-center justify-center bg-slate-600 rounded-lg w-full max-w-xl ">
-                            <div className="flex flex-col items-center bg-zinc-200 mx-8 ">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="flex flex-col mt-5 text-black max-w-[350px] min-w-[200px]">
-                    <div class="flex flex-row justify-center items-center">
-                        <input
-                            type="text"
-                            value={message}
-                            onChange={handleMessageChange}
-                            placeholder="Escribe tu mensaje..."
-                            className="border border-gray-400 px-4 py-2 rounded-l-md"
-                        />
-                        <button
-                            onClick={handleSendMessage}
-                            className="bg-green-500 text-white px-4 py-2 rounded-r-md"
-                        >
-                            Enviar
-                        </button>
-                    </div>
-                </div> */}
-                <div className='max-h-[350px] max-w-[400px]'>
-                    <div id='messages' className='flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-rhumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
+                <div className='h-[600px] min-w-[400px] bg-black flex flex-col m-5 mt-9'>
+                    <div id='messages' className='flex-grow flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-rhumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
                         {/* Primer Mensaje */}
                         <div className='chat-message'>
                             <div className='flex items-end'>
                                 <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start'>
                                     <div>
                                         <span className='px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600'>
-                                            Hola! ¿Cómo estás?
+                                            Hola! ¿Cómo estás? (otro)
                                         </span>
                                     </div>
                                 </div>
@@ -125,27 +87,44 @@ const Lobby = () => {
                                 <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end'>
                                     <div>
                                         <span className='px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white'>
-                                            ¡Hola! Bien y tú?
+                                            ¡Hola! Bien y tú? (tu)
                                         </span>
                                     </div>
                                 </div>
                                 <img src="/images/random.jpg" alt="Venti" className='w-6 h-6 rounded-full order-2' />
                             </div>
                         </div>
+                        <div className='chat-message'>
+                            <div className='flex items-center justify-center'>
+                                <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 items-center'>
+                                    <div>
+                                        <span className='px-4 py-2 rounded-lg inline-block bg-red-600 text-white'>
+                                            Missatges Servidor
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
                     <div className='border-t-2 border-gray-200 px-4 pt-4 mb-2 mb-16'>
                         <div className='relative flex'>
+                            <input placeholder='Escriu un missatge...' type="text" className='focus:ring-red-500 focus:border-red-500 w-full focus:placeholder-gray-400 text-gray-600 placeholder-gray-300 pl-12 bg-gray-100 rounded-full py-3 border-gray-200' />
                             <span className='absolute inset-y-0 flex items-center'>
                                 <button className='inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300'>
-                                    <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' className='h-6 w-6 text-gray-600'>
-                                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z'></path>
+                                    <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 45 45' stroke='currentColor' className='h-6 w-6 text-gray-600'>
+                                        <g id="Layer_2"><path d="m44.4 23.1-40-16c-.4-.2-.9-.1-1.1.2-.3.3-.4.8-.2 1.1l7.8 15.6-7.8 15.6c-.2.4-.1.8.2 1.1.2.2.4.3.7.3.1 0 .3 0 .4-.1l40-16c.4-.2.6-.5.6-.9s-.2-.8-.6-.9zm-38.3-13.2 32.7 13.1h-26.2zm6.5 15.1h26.2l-32.7 13.1z"/></g>
                                     </svg>
                                 </button>
                             </span>
-                            <input placeholder='Escriu un missatge...' type="text" className='focus:ring-red-500 focus:border-red-500 w-full focus:placeholder-gray-400 text-gray-600 placeholder-gray-300 pl-12 bg-gray-100 rounded-full py-3 border-gray-200' />
                         </div>
                     </div>
+                </div>
+                {/* users & info room section */}
+                <div className='h-[600px] min-w-[400px] flex flex-col m-5 mt-9'>
+                    {/* Users section */}
+                    <div className='h-[200px]'></div>
+                    {/* info room section */}
+                    <div className='h-[400px]'></div>
                 </div>
             </div>
             <button className={`text-white text-2xl font-bold py-2 px-4 w-40 rounded mt-5 ${buttonColorClass}`} onClick={handleButtonClick}>
