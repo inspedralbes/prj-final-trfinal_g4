@@ -24,10 +24,10 @@ const Game = () => {
                     Preloader, GameHome,
                 ],
                 physics: {
-                    default: 'matter',
-                    matter: {
+                    default: 'arcade',
+                    arcade: {
                         debug: true,
-                        
+                        gravity: { y: 500 },
                         // debug: isDevelopment,
 
                     },
