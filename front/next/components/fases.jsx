@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-
-import image1 from '../public/images/image1.jpg';
-import image2 from '../public/images/image2.jpg';
-import image3 from '../public/images/image3.jpg';
-
+import mapa from '../public/images/mapa.png';
 
 const Fases = ({ fases }) => {
     const [currentPhaseIndex, setCurrentPhaseIndex] = useState(0);
@@ -83,6 +79,6 @@ const Fases = ({ fases }) => {
     );
 };
 
-const fases = [image1, image2, image3];
+const fases = [1, 2, 3];
 
 export default () => <Fases fases={fases} />;
