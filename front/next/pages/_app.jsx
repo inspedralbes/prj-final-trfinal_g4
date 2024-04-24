@@ -4,7 +4,7 @@ import tailwind from 'tailwindcss/tailwind.css';
 import React from 'react';
 import App from 'next/app';
 import {Providers} from 'app/Providers';
-import { socket } from '../services/sockets';
+// import { socket } from '../services/sockets';
 
 function MyApp({ Component, pageProps }) {
 

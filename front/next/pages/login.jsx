@@ -9,9 +9,10 @@ function Login() {
   const [password, setPassword] = useState('');
   const router = useRouter();
   const [setSession] = useState(null);
+  const username = localStorage.getItem('user');
 
   const session = useSession();
-  console.log(session);
+  // console.log(session);
 
   useEffect(() => {
     // Si hay una sesión activa, redirige al usuario a la página de /rooms
@@ -30,12 +31,15 @@ function Login() {
 
     login(user)
       .then((data) => {
-        localStorage.setItem('username', data.username);
-        router.push('/');
+        localStorage.setItem('user', JSON.stringify(user.name));
+        console.log(data);
+        router.push('/rooms');
+        console.log(username);
       })
       .catch(() => {
         alert('Error logging in');
       });
+      
   };
 
   async function loginGoogle() {

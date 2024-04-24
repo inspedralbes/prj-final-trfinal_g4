@@ -12,7 +12,7 @@ const Create = () => {
         console.log('Pública:', isPublic);
         console.log('Modo de juego:', gameMode);
     };
-
+    
     return (
         <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-16">
             {/* Parte izquierda para crear la sala */}

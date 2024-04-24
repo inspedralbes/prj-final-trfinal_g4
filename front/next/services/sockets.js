@@ -1,15 +1,15 @@
-import io from 'socket.io-client';
-import { useState, useEffect } from 'react';
+// import io from 'socket.io-client';
+// import { useState, useEffect } from 'react';
 
-const url = 'http://localhost:3727';
-// const url = 'http://'; // Add production url here
+// const url = 'http://localhost:3727';
+// // const url = 'http://'; // Add production url here
 
-const socket = io(url);
+// const socket = io(url);
 
-let state;
-let effect;
+// let state;
+// let effect;
 
-setTimeout(() => {
-    state = useState;
-    effect = useEffect;
-}, 500);
+// setTimeout(() => {
+//     state = useState;
+//     effect = useEffect;
+// }, 500);
