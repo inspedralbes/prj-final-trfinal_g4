@@ -16,7 +16,7 @@ const Game = () => {
             const { default: GameHome } = await import('../scenes/GameHome');
             const { default: Preloader } = await import('../scenes/Preloader');
             const phaserGame = new Phaser.Game({
-                type: Phaser.CANVAS,
+                type: Phaser.WEBGL,
                 parent: 'game-content',
                 width: window.innerWidth,
                 height: window.innerHeight,
