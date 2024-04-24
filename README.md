@@ -25,3 +25,5 @@ El projecte s'ha de poder desplegar en mode desenvolupament simplement fent dock
  * Adreça del prototip gràfic del projecte (Penpot, figma, moqups...)
  * URL de producció (quan la tingueu)
  * Estat: en procés, implementant Next.js i TailwindCSS, així com el backend amb Laravel.
+   * GOOGLE_CLIENT_ID= 621468965238-j4t2qmf87b1o9d3941ml2fqtq4hetil1.apps.googleusercontent.com
+   * GOOGLE_CLIENT_SECRET= GOCSPX-FBhy_Kl_1Sjg_OrE1eoxjBe06Xh

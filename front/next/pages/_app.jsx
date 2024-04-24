@@ -3,10 +3,14 @@
 import tailwind from 'tailwindcss/tailwind.css';
 import React from 'react';
 import App from 'next/app';
+import {Providers} from 'app/Providers';
 import { socket } from '../services/sockets';
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+
+  return <Providers>
+    <Component {...pageProps} />
+  </Providers>
 }
 
 export default MyApp;
