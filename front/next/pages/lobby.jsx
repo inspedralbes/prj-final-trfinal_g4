@@ -158,12 +158,12 @@ const Lobby = () => {
                     <div className='h-[400px] flex flex-col items-center'>
                         <h1 className='text-3xl font-bold mb-3 mt-5'>Informació de partida</h1>
                         <div className='bg-white rounded-lg w-[350px] text-black'>
-                            <p className='text-2xl font-bold'>Nom de la sala:</p>
+                            <p className='text-2xl font-bold mt-2'>Nom de la sala:</p>
                             <p className='text-2xl'>Sala de proves</p>
                             <p className='text-2xl font-bold'>Mode joc:</p>
                             <p className='text-2xl'>Normal</p>
                             <p className='text-2xl font-bold'>Mapes seleccionats:</p>
-                            <ul className='text-2xl font-bold flex items-center justify-center text-center mb-4'>
+                            <ul className='text-2xl font-bold flex items-center justify-center text-center mb-4 mt-2'>
                                 <li>
                                     <img src="/images/random.jpg" alt="mapa" className="w-24 h-12" />
                                 </li>
