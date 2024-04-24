@@ -10,6 +10,8 @@ function Login() {
   const router = useRouter();
   const [setSession] = useState(null);
   const username = localStorage.getItem('user');
+  const token = localStorage.getItem('token');
+
 
   const session = useSession();
   // console.log(session);
@@ -31,10 +33,9 @@ function Login() {
 
     login(user)
       .then((data) => {
-        localStorage.setItem('user', JSON.stringify(user.name));
-        console.log(data);
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token', JSON.stringify(user.token));
         router.push('/rooms');
-        console.log(username);
       })
       .catch(() => {
         alert('Error logging in');

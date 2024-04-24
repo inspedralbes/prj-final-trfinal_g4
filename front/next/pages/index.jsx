@@ -1,12 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
-import LoginButton from '../components/LoginButton';
+
 
 const IndexPage = () => {
   return (
     <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-between p-4">
       <div className="flex flex-col md:flex-row md:justify-end md:items-start">
-          <LoginButton />
+        <Link href="/login">
+            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-4 mt-4 md:mt-0">Login</button>
+        </Link>
 
       </div>
       <div className="flex-1 flex flex-col justify-center items-center">
