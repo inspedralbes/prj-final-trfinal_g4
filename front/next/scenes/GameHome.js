@@ -9,6 +9,7 @@ export default class GameHome extends Phaser.Scene {
     blackView;
     grayView;
     flag_endGame;
+    platform;
 
     constructor() {
         super('gamehome');
@@ -131,6 +132,7 @@ export default class GameHome extends Phaser.Scene {
                         console.log("character2 y", y);
 
                         this.physics.add.existing(this.character2);
+
                         this.character1.body.setSize(w * 0.75, h);
 
                         this.character2.setPosition(x, y);
@@ -159,36 +161,53 @@ export default class GameHome extends Phaser.Scene {
                 case 'endGame':
                     {
 
-                        this.flag_endGame = this.physics.add.sprite(x, y, 'flag-flagMove')
+                        this.flag_endGame = this.physics.add.sprite(x, y, 'flag');
                         const w = this.flag_endGame.width;
                         const h = this.flag_endGame.height;
                         console.log("flag w", w);
                         console.log("flag h", h);
                         console.log("flag x", x);
-                        console.log("flag y", yFlag);
+                        console.log("flag y", y);
 
                         this.physics.add.existing(this.flag_endGame);
 
-                        this.flag_endGame.body.setSize(w * 0.3, h);
+                        this.flag_endGame.body.setSize(w * 0.45, h - 3);
 
-                        this.flag_endGame.setPosition(xFlag, yFlag);
-
-                        this.anims.create({
-                            key: 'flagOut',
-                            frames: this.anims.generateFrameNames('flag-movement', { start: 0, end: 1, prefix: 'frag0', suffix: '.png' }),
-                            frameRate: 10,
-                            repeat: -1
-                        })
+                        this.flag_endGame.setPosition(x, y);
 
                         this.anims.create({
                             key: 'flagMove',
-                            frames: this.anims.generateFrameNames('flag-movement', { start: 1, end: 20, prefix: 'frag-out0', suffix: '.png' }),
+                            frames: this.anims.generateFrameNames('flag', { start: 1, end: 25, prefix: 'tile0', suffix: '.png' }),
                             frameRate: 10,
                             repeat: -1
                         })
 
                         this.physics.add.collider(this.flag_endGame, gray);
 
+                        break;
+                    }
+                case 'platform_move_up-1':
+                    {
+                        this.platform = this.physics.add.sprite(x, y, 'platform');
+                        const w = this.platform.width * 1; // Double the width of the platform
+                        const h = this.platform.height;
+
+                        this.platform.scaleX = 1.5;
+
+                        this.physics.add.existing(this.platform);
+
+                        this.platform.body.setSize(w, h);
+
+                        this.platform.setPosition(x * 1.047, y);
+
+                        this.anims.create({
+                            key: 'platformMoveUp',
+                            frames: this.anims.generateFrameNames('platform', { start: 1, end: 25, prefix: 'tile00', suffix: '.png' }),
+                            frameRate: 10,
+                            repeat: -1
+                        })
+
+                        this.physics.add.collider(this.platform, gray);
 
                         break;
                     }
@@ -200,10 +219,20 @@ export default class GameHome extends Phaser.Scene {
 
     update() {
 
-        if (this.physics.overlap(this.character1, this.flag_endGame)) {
+        if (this.physics.overlap(this.character1, this.platform)) {
+            // Define the maximum height for the platform
+            this.platform.setVelocityY(-60);
+            this.character1.setVelocityY(-60);
+            this.platform.anims.play('platformMoveUp', true);
+        } else {
+            this.platform.setVelocityY(60);
+            this.platform.anims.play('platformMoveUp', false);
+        }
+
+        if (this.physics.overlap(this.flag_endGame, this.character1)) {
             this.flag_endGame.anims.play('flagMove', true);
         } else {
-            this.flag_endGame.anims.play('flagOut', true);
+            this.flag_endGame.anims.play('flagMove', false);
         }
 
         if (this.cursors.left.isDown) {
@@ -228,6 +257,8 @@ export default class GameHome extends Phaser.Scene {
             console.log('jump');
             this.character1.setVelocityY(-280);
         }
+
+
 
     }
 }
