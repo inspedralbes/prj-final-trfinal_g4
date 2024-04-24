@@ -24,7 +24,7 @@ const Fases = ({ fases }) => {
                     <div className="flex flex-col items-center relative">
                         <h3 className="mb-2 text-center">Fase 1</h3>
                         <div className="inline-block relative">
-                            <img src='/images/image1.jpg' alt={`Fase 1`} className="h-60 w-96 my-4 mx-3" />
+                            <img src='/images/mapa.png' alt={`Fase 1`} className="h-60 w-96 my-4 mx-3" />
                             <button
                                 className="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-l focus:outline-none absolute top-1/2 left-0 transform -translate-y-1/2 opacity-50"
                                 onClick={handlePrev}
@@ -43,7 +43,7 @@ const Fases = ({ fases }) => {
                     <div className="flex flex-col items-center relative mx-2">
                         <h3 className="mb-2 text-center">Fase 2</h3>
                         <div className="inline-block relative">
-                            <img src='/images/image2.jpg' alt={`Fase 2`} className="h-60 w-96 my-4 mx-2" />
+                            <img src='/images/mapa.png' alt={`Fase 2`} className="h-60 w-96 my-4 mx-2" />
                             <button
                                 className="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-l focus:outline-none absolute top-1/2 left-0 transform -translate-y-1/2 opacity-50"
                                 onClick={handlePrev}
@@ -62,7 +62,7 @@ const Fases = ({ fases }) => {
                     <div className="flex flex-col items-center relative">
                         <h3 className="mb-2 text-center">Fase 3</h3>
                         <div className="inline-block relative">
-                            <img src='/images/image3.jpg' alt={`Fase 3`} className="h-60 w-96 my-4 mx-3" />
+                            <img src='/images/mapa.png' alt={`Fase 3`} className="h-60 w-96 my-4 mx-3" />
                             <button
                                 className="bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded-l focus:outline-none absolute top-1/2 left-0 transform -translate-y-1/2 opacity-50"
                                 onClick={handlePrev}
