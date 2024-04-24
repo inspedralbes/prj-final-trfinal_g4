@@ -79,9 +79,6 @@ function Login() {
         Iniciar Sessió amb Google
       </button>
 
-      <button onClick={() => { signOut(); }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out hover:scale-110 mt-4">
-        Tancar Sessió
-      </button>
     </div>
   );
 }
