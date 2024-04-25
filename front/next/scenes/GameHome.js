@@ -88,10 +88,6 @@ export default class GameHome extends Phaser.Scene {
                         console.log(this.character1);
                         const w = this.character1.width;
                         const h = this.character1.height;
-                        console.log("character1 w", w);
-                        console.log("character1 h", h);
-                        console.log("character1 x", x);
-                        console.log("character1 y", y);
 
                         this.physics.add.existing(this.character1);
 
@@ -126,10 +122,6 @@ export default class GameHome extends Phaser.Scene {
 
                         const w = this.character2.width;
                         const h = this.character2.height;
-                        console.log("character2 w", w);
-                        console.log("character2 h", h);
-                        console.log("character2 x", x);
-                        console.log("character2 y", y);
 
                         this.physics.add.existing(this.character2);
 
@@ -161,13 +153,9 @@ export default class GameHome extends Phaser.Scene {
                 case 'endGame':
                     {
 
-                        this.flag_endGame = this.physics.add.sprite(x, y, 'flag');
+                        this.flag_endGame = this.physics.add.sprite(x, y, 'flag-movement');
                         const w = this.flag_endGame.width;
                         const h = this.flag_endGame.height;
-                        console.log("flag w", w);
-                        console.log("flag h", h);
-                        console.log("flag x", x);
-                        console.log("flag y", y);
 
                         this.physics.add.existing(this.flag_endGame);
 
@@ -175,11 +163,24 @@ export default class GameHome extends Phaser.Scene {
 
                         this.flag_endGame.setPosition(x, y);
 
+                        // this.flag_endGame.setFrame('flag', 'tile-out.png');
+
                         this.anims.create({
                             key: 'flagMove',
-                            frames: this.anims.generateFrameNames('flag', { start: 1, end: 25, prefix: 'tile0', suffix: '.png' }),
+                            frames: this.anims.generateFrameNames('flag-movement', { start: 0, end: 9, prefix: 'flag', suffix: '.png' }),
                             frameRate: 10,
-                            repeat: -1
+                            repeat: 5
+                        })
+
+                        this.physics.add.overlap(this.flag_endGame, this.character1, (flag, character1) => {
+                            if (!flag.anims.isPlaying) {
+                                flag.anims.play('flagMove', true).on('animationcomplete', () => {
+                                    flag.anims.stop('flagMove');
+                                });
+                                setTimeout(() => {
+                                    this.add.text(400, 300, '¡Fin del tutorial!', { fontSize: '32px', fill: '#fff' }).setOrigin(0.5);
+                                }, 5000);
+                            }
                         })
 
                         this.physics.add.collider(this.flag_endGame, gray);
@@ -211,6 +212,10 @@ export default class GameHome extends Phaser.Scene {
 
                         break;
                     }
+                case 'death':
+                    {
+
+                    }
 
             }
         });
@@ -219,21 +224,17 @@ export default class GameHome extends Phaser.Scene {
 
     update() {
 
-        if (this.physics.overlap(this.character1, this.platform)) {
-            // Define the maximum height for the platform
-            this.platform.setVelocityY(-60);
-            this.character1.setVelocityY(-60);
-            this.platform.anims.play('platformMoveUp', true);
-        } else {
-            this.platform.setVelocityY(60);
-            this.platform.anims.play('platformMoveUp', false);
-        }
+        // if (this.physics.overlap(this.character1, this.platform)) {
+        //     // Define the maximum height for the platform
+        //     this.platform.setVelocityY(-60);
+        //     this.character1.setVelocityY(-60);
+        //     this.platform.anims.play('platformMoveUp', true);
+        // } else {
+        //     this.platform.setVelocityY(60);
+        //     this.platform.anims.play('platformMoveUp', false);
+        // }
+        // this.flag_endGame.anims.play('flag-out', true);
 
-        if (this.physics.overlap(this.flag_endGame, this.character1)) {
-            this.flag_endGame.anims.play('flagMove', true);
-        } else {
-            this.flag_endGame.anims.play('flagMove', false);
-        }
 
         if (this.cursors.left.isDown) {
             this.character1.flipX = true;
