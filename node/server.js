@@ -7,7 +7,7 @@ const port = 3727;
 const server = createServer(app);
 
 var rooms = [];
-var lastRoom = 0;
+// var lastRoom = 0;
 
 const io = new Server(server, {
     cors: {
@@ -25,7 +25,15 @@ io.on('connection', (socket) => {
     //Create Room
     socket.on('createRoom', (addRoom) => {
         console.log('Room created');
-        
+        let newRoom = {
+            name: addRoom.name,
+            isPublic: addRoom.isPublic,
+            mode: addRoom.mode,
+            admin: socket.id,
+        }
+        rooms.push(newRoom);
+        console.log(rooms);
+        io.emit('allRooms', rooms);
     });
 
     //Disconnect

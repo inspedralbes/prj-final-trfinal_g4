@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { FaCheck } from "react-icons/fa6";
 import { useEffect } from 'react';
+import useStore from '../src/store';
 
 function Rooms() {
     const session = useSession();
@@ -10,14 +11,12 @@ function Rooms() {
 
     useEffect(() => {
         if (!session.data) {
-            console.log(session);
+            // console.log(session);
         }
     }, [session]);
 
-    const rooms = Array.from({ length: 20 }, (_, index) => ({
-        id: index + 1,
-        name: `Sala ${index + 1}`
-    }));
+    const rooms = useStore(state => state.rooms);
+    console.log(`Llega info: ${rooms}`);
 
     const inputRefs = Array.from({ length: 6 }, () => useRef(null));
 

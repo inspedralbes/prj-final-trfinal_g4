@@ -4,6 +4,7 @@ import Header from '../components/header';
 import { PiNumberCircleOne, PiNumberCircleTwo, PiNumberCircleThree } from 'react-icons/pi';
 import { TbLetterX } from "react-icons/tb";
 import Link from 'next/link';
+import socket from '../services/sockets';
 
 const Create = () => {
     // State para los valores de la sala
@@ -24,12 +25,14 @@ const Create = () => {
             mode: gameMode
         };
 
+        socket.emit('createRoom', roomInfo);
+
         setInfoRoom([...infoRoom, roomInfo]);
 
-        console.log('Creando sala con los siguientes valores:');
-        console.log('Nombre de la sala:', roomName);
-        console.log('Pública:', isPublic);
-        console.log('Modo de juego:', gameMode);
+        // console.log('Creando sala con los siguientes valores:');
+        // console.log('Nombre de la sala:', roomName);
+        // console.log('Pública:', isPublic);
+        // console.log('Modo de juego:', gameMode);
     };
 
     return (
