@@ -18,9 +18,17 @@ const io = new Server(server, {
     }
 });
 
+//connection
 io.on('connection', (socket) => {
     console.log (`Connected: ${socket.id}`);    
 
+    //Create Room
+    socket.on('createRoom', (addRoom) => {
+        console.log('Room created');
+        
+    });
+
+    //Disconnect
     socket.on('disconnect', () => {
         console.log(`Disconnected: ${socket.id}`);
     });
