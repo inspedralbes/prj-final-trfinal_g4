@@ -1,23 +1,29 @@
 import React, { useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const { session, loading } = useSession();
 
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
 
+    
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',session);
     return (
         <header className="bg-black bg-opacity-70 p-4 flex justify-between items-center">
             <Link href="/">
                 <span className="text-white">Chromatic Bond</span>
             </Link>
             <div className="flex items-center">
-                <Link href="/login">
-                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded mr-4 mt-4 md:mt-0">LOGIN</button>
-                </Link>
+            {!session && // Oculta el botón de login si hay una sesión activa
+                    <Link href="/login">
+                        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded mr-4 mt-4 md:mt-0">LOGIN</button>
+                    </Link>
+                }
                 <div className="profile relative text-white">
                     <FaUserCircle className="mx-4 text-3xl cursor-pointer" onClick={toggleDropdown} />
                     {dropdownOpen && (

@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { useEffect } from 'react';
+import Header from '../components/header';
 
 function Rooms() {
     const session = useSession();
@@ -74,19 +75,21 @@ function Rooms() {
         }
 
     return (
+        <div>
+        <Header />
             <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
-                {
+                {/* {
                     !session.data ? (
                         <div className="absolute top-4 right-4">
                             <button
                                 onClick={cerrarSesion}
                                 className="bg-red-500 hover:bg-red-700 text-white font-bold rounded-lg py-2 px-4"
-                            >
+                                >
                                 Cerrar Sesión
                             </button>
                         </div>
                     ) : null
-                }
+                } */}
                 <div className="flex w-4/12">
                     <div className="bg-white shadow-md rounded-lg p-4 flex-grow">
                         <div className="bg-gray-100 rounded-lg p-4">
@@ -95,12 +98,12 @@ function Rooms() {
                                 <ul>
                                     {rooms.map(room => (
                                         <li key={room.id} className="mb-2 text-gray-800">{room.name}</li>
-                                    ))}
+                                        ))}
                                 </ul>
                             </div>
                         </div>
                     </div>
-                </div>
+                                        </div>
 
                 <div className="w-32"></div>
 
@@ -111,15 +114,15 @@ function Rooms() {
                     <div className="grid grid-cols-7 gap-2">
                         {Array.from({ length: 6 }).map((_, index) => (
                             <input
-                                key={index}
-                                type="text"
-                                maxLength="1"
-                                ref={inputRefs[index]}
-                                className="bg-white border border-gray-300 rounded-lg px-1 py-1 focus:outline-none h-12 text-gray-800 placeholder-gray-500 text-base text-center caret-transparent"
-                                onChange={e => handleChange(index, e)}
-                                onKeyDown={e => handleKeyDown(index, e)}
+                            key={index}
+                            type="text"
+                            maxLength="1"
+                            ref={inputRefs[index]}
+                            className="bg-white border border-gray-300 rounded-lg px-1 py-1 focus:outline-none h-12 text-gray-800 placeholder-gray-500 text-base text-center caret-transparent"
+                            onChange={e => handleChange(index, e)}
+                            onKeyDown={e => handleKeyDown(index, e)}
                             />
-                        ))}
+                            ))}
                         <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded mb-14 h-12 focus:outline-none flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="40" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd" d="M 22.59375 3.5 L 8.0625 18.1875 L 1.40625 11.5625 L 0 13 L 8.0625 21 L 24 4.9375 Z"></path>
@@ -127,6 +130,7 @@ function Rooms() {
                         </button>
                     </div>
                 </div>
+                            </div>
             </div>
     );
 }
