@@ -34,23 +34,23 @@ function Rooms() {
     const handleKeyDown = (index, e) => {
         const { key } = e;
 
-        if (key === 'ArrowLeft' || key === 'ArrowRight') {
+        if (key == 'ArrowLeft' || key == 'ArrowRight') {
             e.preventDefault();
-            const nextIndex = key === 'ArrowLeft' ? index - 1 : index + 1;
+            const nextIndex = key == 'ArrowLeft' ? index - 1 : index + 1;
 
             if (nextIndex >= 0 && nextIndex < inputRefs.length) {
                 inputRefs[nextIndex].current.focus();
             }
-        } else if (key === 'Backspace') {
+        } else if (key == 'Backspace') {
             if (index > 0) {
-                if (inputRefs[index].current.value === '') {
+                if (inputRefs[index].current.value == '') {
                     inputRefs[index - 1].current.focus();
                 } else {
                     inputRefs[index].current.value = '';
                 }
             }
-        } else if (key === 'Delete') {
-            if (inputRefs[index].current.value === '') {
+        } else if (key == 'Delete') {
+            if (inputRefs[index].current.value == '') {
                 if (index < inputRefs.length - 1) {
                     inputRefs[index + 1].current.focus();
                 }

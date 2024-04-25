@@ -20,14 +20,15 @@ const io = new Server(server, {
 
 //connection
 io.on('connection', (socket) => {
-    console.log (`Connected: ${socket.id}`);    
+    console.log (`Connected: ${socket.id}`);
+    io.emit('allRooms', rooms);    
 
     //Create Room
     socket.on('createRoom', (addRoom) => {
         console.log('Room created');
         let newRoom = {
             name: addRoom.name,
-            isPublic: addRoom.isPublic,
+            isPublic: addRoom.public,
             mode: addRoom.mode,
             admin: socket.id,
         }
