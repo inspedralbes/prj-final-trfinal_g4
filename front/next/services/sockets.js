@@ -9,7 +9,7 @@ const socket = io(url);
 let store;
 
 setTimeout(() => {
-    store = useStore();
+    store = useStore;
 }, 500);
 
 //Recibir todas las rooms que hay en socket y actualizar el estate

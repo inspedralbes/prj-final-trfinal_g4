@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { login } from '../services/communicationManager';
 import { useRouter } from 'next/router';
 import { signIn, useSession } from 'next-auth/react';
+import useStore from '../src/store';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -11,6 +12,7 @@ function Login() {
   const [setSession] = useState(null);
   const username = localStorage.getItem('user');
   const token = localStorage.getItem('token');
+
 
 
   const session = useSession();
@@ -31,15 +33,21 @@ function Login() {
       password: password
     };
 
-    login(user)
-      .then((data) => {
-        localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('token', JSON.stringify(user.token));
+    login(user).then((data) => {
+        // console.log(data);
+        // console.log(JSON.stringify(data.user));
+        // console.log(JSON.stringify(data.token));
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('token', JSON.stringify(data.token));
+        useStore.setState({ user: JSON.stringify(data.user) });
+        useStore.setState({ token: JSON.stringify(data.token) });
+        // let userApi = useStore.getState().user;
+        // let tokenApi = useStore.getState().token;
+        // console.log(userApi + ' ' + tokenApi);
         router.push('/rooms');
-      })
-      .catch(() => {
+    }).catch(() => {
         alert('Error logging in');
-      });
+    });
       
   };
 
