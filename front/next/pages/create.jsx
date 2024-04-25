@@ -3,6 +3,7 @@ import Fases from '../components/fases';
 import Header from '../components/header';
 import { PiNumberCircleOne, PiNumberCircleTwo, PiNumberCircleThree } from 'react-icons/pi';
 import { TbLetterX } from "react-icons/tb";
+import Link from 'next/link';
 
 const Create = () => {
     // State para los valores de la sala
@@ -16,7 +17,7 @@ const Create = () => {
         console.log('Pública:', isPublic);
         console.log('Modo de juego:', gameMode);
     };
-    
+
     return (
         <div>
             <Header />
@@ -67,27 +68,30 @@ const Create = () => {
                         Crear Sala
                     </button>
                 </div>
-
-                {/* Parte derecha con las imágenes */}
-                <div className="w-3/4 mx-8 overflow-y-auto">
-                    <div className="flex flex-row justify-center items-center">
-                        <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 1">
-                            <PiNumberCircleOne className="text-black text-4xl absolute top-3 left-2 m-2" />
-                            <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
-                        </ImageWithOverlay>
-                        <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 2">
-                            <PiNumberCircleTwo className="text-black text-4xl absolute top-3 left-2 m-2" />
-                            <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
-                        </ImageWithOverlay>
-                        <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 3">
-                            <PiNumberCircleThree className="text-black text-4xl absolute top-3 left-2 m-2" />
-                            <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
-                        </ImageWithOverlay>
-                    </div>
-                </div>
-
-                <Fases fases={[1, 2, 3]} />
+                <Link href="/lobby">
+                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
+                        Crear Sala
+                    </button>
+                </Link>
             </div>
+            {/* Parte derecha con las imágenes */}
+            <div className="w-3/4 mx-8 overflow-y-auto">
+                <div className="flex flex-row justify-center items-center">
+                    <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 1">
+                        <PiNumberCircleOne className="text-black text-4xl absolute top-3 left-2 m-2" />
+                        <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
+                    </ImageWithOverlay>
+                    <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 2">
+                        <PiNumberCircleTwo className="text-black text-4xl absolute top-3 left-2 m-2" />
+                        <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
+                    </ImageWithOverlay>
+                    <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 3">
+                        <PiNumberCircleThree className="text-black text-4xl absolute top-3 left-2 m-2" />
+                        <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
+                    </ImageWithOverlay>
+                </div>
+            </div>
+            <Fases fases={[1, 2, 3]} />
         </div>
     );
 };
