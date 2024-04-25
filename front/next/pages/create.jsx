@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Fases from '../components/fases';
 import Header from '../components/header';
 import { PiNumberCircleOne, PiNumberCircleTwo, PiNumberCircleThree } from 'react-icons/pi';
@@ -10,8 +10,22 @@ const Create = () => {
     const [roomName, setRoomName] = useState('');
     const [isPublic, setIsPublic] = useState(false);
     const [gameMode, setGameMode] = useState('');
+    const [infoRoom, setInfoRoom] = useState([]);
+
+    useEffect(() => {
+        console.log('Información de la sala guardada:', infoRoom);
+    }, [infoRoom]);
 
     const handleCreateRoom = () => {
+        // Crear un objeto con la información de la sala
+        const roomInfo = {
+            name: roomName,
+            public: isPublic,
+            mode: gameMode
+        };
+
+        setInfoRoom([...infoRoom, roomInfo]);
+
         console.log('Creando sala con los siguientes valores:');
         console.log('Nombre de la sala:', roomName);
         console.log('Pública:', isPublic);
@@ -61,37 +75,31 @@ const Create = () => {
                             <option value="Modo 3">Random</option>
                         </select>
                     </div>
-                    <button
-                        className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none"
-                        onClick={handleCreateRoom}
-                    >
-                        Crear Sala
-                    </button>
                 </div>
                 <Link href="/lobby">
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
                         Crear Sala
                     </button>
                 </Link>
-            </div>
-            {/* Parte derecha con las imágenes */}
-            <div className="w-3/4 mx-8 overflow-y-auto">
-                <div className="flex flex-row justify-center items-center">
-                    <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 1">
-                        <PiNumberCircleOne className="text-black text-4xl absolute top-3 left-2 m-2" />
-                        <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
-                    </ImageWithOverlay>
-                    <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 2">
-                        <PiNumberCircleTwo className="text-black text-4xl absolute top-3 left-2 m-2" />
-                        <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
-                    </ImageWithOverlay>
-                    <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 3">
-                        <PiNumberCircleThree className="text-black text-4xl absolute top-3 left-2 m-2" />
-                        <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
-                    </ImageWithOverlay>
+                {/* Parte derecha con las imágenes */}
+                <div className="w-3/4 mx-8 overflow-y-auto">
+                    <div className="flex flex-row justify-center items-center">
+                        <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 1">
+                            <PiNumberCircleOne className="text-black text-4xl absolute top-3 left-2 m-2" />
+                            <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
+                        </ImageWithOverlay>
+                        <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 2">
+                            <PiNumberCircleTwo className="text-black text-4xl absolute top-3 left-2 m-2" />
+                            <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
+                        </ImageWithOverlay>
+                        <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 3">
+                            <PiNumberCircleThree className="text-black text-4xl absolute top-3 left-2 m-2" />
+                            <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
+                        </ImageWithOverlay>
+                    </div>
                 </div>
+                <Fases fases={[1, 2, 3]} />
             </div>
-            <Fases fases={[1, 2, 3]} />
         </div>
     );
 };
