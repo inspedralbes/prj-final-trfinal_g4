@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { FaCheck } from "react-icons/fa6";
@@ -6,33 +6,61 @@ import useStore from '../src/store';
 
 function Rooms() {
     const session = useSession();
-    const [rooms, setRooms] = useState([]);
+    const [rooms, setRooms] = useState(useStore.getState().rooms); 
 
     useEffect(() => {
         const intervalId = setInterval(() => {
             const roomsFromStore = useStore.getState().rooms;
             setRooms(roomsFromStore);
-            console.log(roomsFromStore);
         }, 1000);
-
         return () => clearInterval(intervalId);
     }, []);
+
+    useEffect(() => {
+        if (!session.data) {
+            // console.log(session);
+        }
+    }, [session]);
 
     const inputRefs = Array.from({ length: 6 }, () => useRef(null));
 
     const handleChange = (index, e) => {
         const { value } = e.target;
         const newValue = value.toUpperCase();
-
         e.target.value = newValue;
-
         if (index < inputRefs.length - 1) {
             inputRefs[index + 1].current.focus();
         }
     };
 
     const handleKeyDown = (index, e) => {
-        // Lógica para manejar las teclas
+        const { key } = e;
+        if (key == 'ArrowLeft' || key == 'ArrowRight') {
+            e.preventDefault();
+            const nextIndex = key == 'ArrowLeft' ? index - 1 : index + 1;
+            if (nextIndex >= 0 && nextIndex < inputRefs.length) {
+                inputRefs[nextIndex].current.focus();
+            }
+        } else if (key == 'Backspace') {
+            if (index > 0) {
+                if (inputRefs[index].current.value == '') {
+                    inputRefs[index - 1].current.focus();
+                } else {
+                    inputRefs[index].current.value = '';
+                }
+            }
+        } else if (key == 'Delete') {
+            if (inputRefs[index].current.value == '') {
+                if (index < inputRefs.length - 1) {
+                    inputRefs[index + 1].current.focus();
+                }
+            } else {
+                for (let i = index; i < inputRefs.length - 1; i++) {
+                    inputRefs[i].current.value = inputRefs[i + 1].current.value;
+                }
+                inputRefs[inputRefs.length - 1].current.value = '';
+            }
+        }
     };
 
     function cerrarSesion() {
@@ -45,19 +73,18 @@ function Rooms() {
 
     return (
         <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
-            {/* Botón de cerrar sesión */}
-            {!session.data && (
-                <div className="absolute top-4 right-4">
-                    <button
-                        onClick={cerrarSesion}
-                        className="bg-red-500 hover:bg-red-700 text-white font-bold rounded-lg py-2 px-4"
-                    >
-                        Cerrar Sesión
-                    </button>
-                </div>
-            )}
-
-            {/* Lista de salas disponibles */}
+            {
+                !session.data ? (
+                    <div className="absolute top-4 right-4">
+                        <button
+                            onClick={cerrarSesion}
+                            className="bg-red-500 hover:bg-red-700 text-white font-bold rounded-lg py-2 px-4"
+                        >
+                            Cerrar Sesión
+                        </button>
+                    </div>
+                ) : null
+            }
             <div className="flex w-4/12">
                 <div className="bg-white shadow-md rounded-lg p-4 flex-grow">
                     <div className="bg-gray-100 rounded-lg p-4">
@@ -73,10 +100,8 @@ function Rooms() {
                 </div>
             </div>
 
-            {/* Espacio en blanco */}
             <div className="w-32"></div>
 
-            {/* Crear sala y entrada de texto */}
             <div className="rounded-lg p-4 flex flex-col w-3/12">
                 <Link href="/create">
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded my-14 h-12 w-32 mx-40 focus:outline-none">CREAR SALA</button>
