@@ -8,8 +8,6 @@ const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     var token = localStorage.getItem('token');
     var user = localStorage.getItem('user');
-    useStore.setState({ token: token });
-    useStore.setState({ user: user });
 
     let content;
     const toggleDropdown = () => {
