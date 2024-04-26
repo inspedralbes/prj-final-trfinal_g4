@@ -14,10 +14,9 @@ function Login() {
   const token = localStorage.getItem('token');
 
 
-
+//GOOGLE LOGIN
   const session = useSession();
   // console.log(session);
-
   useEffect(() => {
     // Si hay una sesión activa, redirige al usuario a la página de /rooms
     if (session?.data) {
@@ -34,16 +33,10 @@ function Login() {
     };
 
     login(user).then((data) => {
-        // console.log(data);
-        // console.log(JSON.stringify(data.user));
-        // console.log(JSON.stringify(data.token));
         localStorage.setItem('user', JSON.stringify(data.user));
         localStorage.setItem('token', JSON.stringify(data.token));
         useStore.setState({ user: JSON.stringify(data.user) });
         useStore.setState({ token: JSON.stringify(data.token) });
-        // let userApi = useStore.getState().user;
-        // let tokenApi = useStore.getState().token;
-        // console.log(userApi + ' ' + tokenApi);
         router.push('/rooms');
     }).catch(() => {
         alert('Error logging in');
