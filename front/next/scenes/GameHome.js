@@ -10,6 +10,7 @@ export default class GameHome extends Phaser.Scene {
     grayView;
     flag_endGame;
     platform;
+    particles;
 
     constructor() {
         super('gamehome');
@@ -109,6 +110,8 @@ export default class GameHome extends Phaser.Scene {
                             repeat: -1
                         })
 
+
+
                         this.physics.add.collider(this.character1, gray);
                         this.physics.add.collider(this.character1, black);
                         // this.physics.add.collider(this.character1, this.character2);
@@ -163,8 +166,6 @@ export default class GameHome extends Phaser.Scene {
 
                         this.flag_endGame.setPosition(x, y);
 
-                        // this.flag_endGame.setFrame('flag', 'tile-out.png');
-
                         this.anims.create({
                             key: 'flagMove',
                             frames: this.anims.generateFrameNames('flag-movement', { start: 0, end: 9, prefix: 'flag', suffix: '.png' }),
@@ -176,10 +177,64 @@ export default class GameHome extends Phaser.Scene {
                             if (!flag.anims.isPlaying) {
                                 flag.anims.play('flagMove', true).on('animationcomplete', () => {
                                     flag.anims.stop('flagMove');
+
+                                    const message = this.add.text(300, 100, '¡Tutorial Completat!', { fontSize: '32px', fill: '#fff' }).setOrigin(0);
+                                    const background = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0x000000, 0.5).setOrigin(0);
+
+                                    message.setDepth(1);
+                                    background.setDepth(0);
+
+                                    // const emitter = this.add.particles(0, 0, 'confetti', {
+                                    //     scale: 0.5,
+                                    //     lifespan: 2000,
+                                    //     gravityY: -50,
+                                    //     frequency: 20,
+                                    //     maxVelocityX: 200,
+                                    //     maxVelocityY: 200,
+                                    //     blendMode: 'ADD'
+                                    // })
+
+                                    // const emitPoint = new Phaser.Geom.Point(0, 600, 800, 128);
+
+                                    // emitter.setPosition(emitPoint.x, emitPoint.y);
+
+                                    // emitter.createGravityWell({
+                                    //     x: 400,
+                                    //     y: 150,
+                                    //     power: 4.2,
+                                    //     epsilon: 250,
+                                    //     gravity: 100
+                                    // })
+                                    // ParticleEmitterManager(this, this.flag_endGame, this.character1);
+
+                                    // const leftConfeti = this.add.particles('confetti');
+                                    // const rightConfeti = this.add.particles('confetti');
+
+                                    // const emitterConfig = {
+                                    //     x: 0,
+                                    //     y: 0,
+                                    //     speed: 200,
+                                    //     scale: { start: 1, end: 0.5 },
+                                    //     alpha: { start: 1, end: 0 },
+                                    //     blendMode: 'ADD',
+
+                                    // }
+
+                                    // leftConfeti.createEmitter(emitterConfig);
+                                    // leftConfeti.setPosition(emitterConfig.x, this.sys.game.config.height / 2);
+                                    // leftConfeti.setAngle(-90, 90);
+
+                                    // rightConfeti.createEmitter(emitterConfig);
+                                    // rightConfeti.setPosition(this.sys.game.config.width, this.sys.game.config.height / 2);
+                                    // rightConfeti.setAngle(90, -90);
+
+                                    // setTimeout(() => {
+                                    //     leftConfeti.destroy();
+                                    //     rightConfeti.destroy();
+                                    // }, 5000);
+
                                 });
-                                setTimeout(() => {
-                                    this.add.text(400, 300, '¡Fin del tutorial!', { fontSize: '32px', fill: '#fff' }).setOrigin(0.5);
-                                }, 5000);
+
                             }
                         })
 
@@ -214,7 +269,9 @@ export default class GameHome extends Phaser.Scene {
                     }
                 case 'death':
                     {
-
+                        this.character1.setPosition(x, y);
+                        
+                        break;
                     }
 
             }
