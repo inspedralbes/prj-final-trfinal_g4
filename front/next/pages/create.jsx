@@ -16,21 +16,30 @@ const Create = () => {
         console.log('Información de la sala guardada:', infoRoom);
     }, [infoRoom]);
 
+    const generateRandomNumber = () => {
+        const randomNumber = Math.floor(Math.random() * 900000) + 100000;
+        return randomNumber;
+    };
+
     const handleCreateRoom = () => {
-        // Crear un objeto con la información de la sala
+        let code = generateRandomNumber();
+    
         const roomInfo = {
             name: roomName,
             public: isPublic,
-            mode: gameMode
+            mode: gameMode,
+            code: code
         };
-
+    
         setInfoRoom([...infoRoom, roomInfo]);
-
+    
         console.log('Creando sala con los siguientes valores:');
         console.log('Nombre de la sala:', roomName);
         console.log('Pública:', isPublic);
         console.log('Modo de juego:', gameMode);
+        console.log('Código de sala:', code);
     };
+    
 
     return (
         <div>
