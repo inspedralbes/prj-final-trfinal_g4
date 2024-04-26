@@ -18,7 +18,6 @@ const Create = () => {
     }, [infoRoom]);
 
     const handleCreateRoom = () => {
-        // Crear un objeto con la información de la sala
         const roomInfo = {
             name: roomName,
             public: isPublic,
@@ -26,13 +25,7 @@ const Create = () => {
         };
 
         socket.emit('createRoom', roomInfo);
-
         setInfoRoom([...infoRoom, roomInfo]);
-
-        // console.log('Creando sala con los siguientes valores:');
-        // console.log('Nombre de la sala:', roomName);
-        // console.log('Pública:', isPublic);
-        // console.log('Modo de juego:', gameMode);
     };
 
     return (
@@ -72,10 +65,10 @@ const Create = () => {
                             value={gameMode}
                             onChange={(e) => setGameMode(e.target.value)}
                         >
-                            <option value="">Seleccionar modo de juego...</option>
-                            <option value="Modo 1">Mapas Originales</option>
-                            <option value="Modo 2">Mapas de la Comunidad</option>
-                            <option value="Modo 3">Random</option>
+                            <option value="">Seleccionar mode de joc...</option>
+                            <option value="Mapes originals">Mapes originals</option>
+                            <option value="Mapes de la comunitat">Mapes de la comunitat</option>
+                            <option value="Aleatori">Aleatori</option>
                         </select>
                     </div>
                 </div>

@@ -24,15 +24,6 @@ function Rooms() {
 
     const inputRefs = Array.from({ length: 6 }, () => useRef(null));
 
-    const handleChange = (index, e) => {
-        const { value } = e.target;
-        const newValue = value.toUpperCase();
-        e.target.value = newValue;
-        if (index < inputRefs.length - 1) {
-            inputRefs[index + 1].current.focus();
-        }
-    };
-
     const handleKeyDown = (index, e) => {
         const { key } = e;
         if (key == 'ArrowLeft' || key == 'ArrowRight') {
@@ -63,6 +54,7 @@ function Rooms() {
         }
     };
 
+    //Google Sign Out
     function cerrarSesion() {
         signOut();
         if (!session.data) {
@@ -92,7 +84,7 @@ function Rooms() {
                         <div className="max-h-52 overflow-y-auto">
                             <ul>
                                 {rooms.map(room => (
-                                    <li key={room.id} className="mb-2 text-gray-800">{room.name}</li>
+                                    <li className="mb-2 text-gray-800">{room.name}</li>
                                 ))}
                             </ul>
                         </div>
@@ -106,6 +98,7 @@ function Rooms() {
                 <Link href="/create">
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded my-14 h-12 w-32 mx-40 focus:outline-none">CREAR SALA</button>
                 </Link>
+                {/* Codigo de la sala */}
                 <div className="grid grid-cols-7 gap-2">
                     {Array.from({ length: 6 }).map((_, index) => (
                         <input
