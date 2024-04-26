@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { FaCheck } from "react-icons/fa6";
 import { useEffect } from 'react';
+import { MdBusAlert } from "react-icons/md";
+import { GiCalavera } from "react-icons/gi";
 
 function Rooms() {
     const session = useSession();
@@ -84,6 +86,7 @@ function Rooms() {
                             className="bg-red-500 hover:bg-red-700 text-white font-bold rounded-lg py-2 px-4"
                         >
                             Cerrar Sesión
+                            <div><MdBusAlert /></div>
                         </button>
                     </div>
                 ) : null
@@ -92,10 +95,14 @@ function Rooms() {
                 <div className="bg-white shadow-md rounded-lg p-4 flex-grow">
                     <div className="bg-gray-100 rounded-lg p-4">
                         <h2 className="text-lg font-semibold mb-4">Salas Disponibles</h2>
+                        <div><GiCalavera /></div>
                         <div className="max-h-52 overflow-y-auto">
                             <ul>
+                                
                                 {rooms.map(room => (
                                     <li key={room.id} className="mb-2 text-gray-800">{room.name}</li>
+                                    
+                                    
                                 ))}
                             </ul>
                         </div>
