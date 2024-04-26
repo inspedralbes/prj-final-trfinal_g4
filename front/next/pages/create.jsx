@@ -6,15 +6,14 @@ import { TbLetterX } from "react-icons/tb";
 import Link from 'next/link';
 
 const Create = () => {
-    // State para los valores de la sala
     const [roomName, setRoomName] = useState('');
     const [isPublic, setIsPublic] = useState(false);
     const [gameMode, setGameMode] = useState('');
-    const [infoRoom, setInfoRoom] = useState([]);
+    const [selectedImages, setSelectedImages] = useState([]);
 
     useEffect(() => {
-        console.log('Información de la sala guardada:', infoRoom);
-    }, [infoRoom]);
+        console.log('Información de la sala guardada:', selectedImages);
+    }, [selectedImages]);
 
     const generateRandomNumber = () => {
         const randomNumber = Math.floor(Math.random() * 900000) + 100000;
@@ -27,19 +26,47 @@ const Create = () => {
         const roomInfo = {
             name: roomName,
             public: isPublic,
-            mode: gameMode,
-            code: code
+            mode: getGameModeName(gameMode),
+            code: code,
+            images: selectedImages
         };
     
-        setInfoRoom([...infoRoom, roomInfo]);
-    
-        console.log('Creando sala con los siguientes valores:');
-        console.log('Nombre de la sala:', roomName);
-        console.log('Pública:', isPublic);
-        console.log('Modo de juego:', gameMode);
-        console.log('Código de sala:', code);
+        console.log('Creando sala con la siguiente información:');
+        console.log('Información de la sala:', roomInfo);
+
+        // Aquí puedes realizar alguna acción con la información de la sala, como enviarla al servidor
+
+        // Limpiar el estado después de crear la sala
+        setRoomName('');
+        setIsPublic(false);
+        setGameMode('');
+        setSelectedImages([]);
     };
-    
+
+    const toggleImageSelection = (imageSrc) => {
+        // Verificar si la imagen ya está seleccionada
+        if (selectedImages.includes(imageSrc)) {
+            // Si la imagen está seleccionada, removerla del estado
+            setSelectedImages(selectedImages.filter(img => img !== imageSrc));
+        } else {
+            // Si la imagen no está seleccionada, añadirla al estado
+            setSelectedImages([...selectedImages, imageSrc]);
+        }
+    };
+
+    // Función para obtener el nombre del modo de juego
+    const getGameModeName = (mode) => {
+        switch (mode) {
+            case 'Modo 1':
+                return 'Mapas Originales';
+            case 'Modo 2':
+                return 'Mapas de la Comunidad';
+            case 'Modo 3':
+                return 'Random';
+            default:
+                return '';
+        }
+    };
 
     return (
         <div>
@@ -93,15 +120,30 @@ const Create = () => {
                 {/* Parte derecha con las imágenes */}
                 <div className="w-3/4 mx-8 overflow-y-auto">
                     <div className="flex flex-row justify-center items-center">
-                        <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 1">
+                        <ImageWithOverlay
+                            imageSrc="/images/random-game.png"
+                            altText="Imagen 1"
+                            onClick={() => toggleImageSelection("/images/random-game.png")}
+                            isSelected={selectedImages.includes("/images/random-game.png")}
+                        >
                             <PiNumberCircleOne className="text-black text-4xl absolute top-3 left-2 m-2" />
                             <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
                         </ImageWithOverlay>
-                        <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 2">
+                        <ImageWithOverlay
+                            imageSrc="/images/random-game.png"
+                            altText="Imagen 2"
+                            onClick={() => toggleImageSelection("/images/random-game2.png")}
+                            isSelected={selectedImages.includes("/images/random-game2.png")}
+                        >
                             <PiNumberCircleTwo className="text-black text-4xl absolute top-3 left-2 m-2" />
                             <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
                         </ImageWithOverlay>
-                        <ImageWithOverlay imageSrc="/images/random-game.png" altText="Imagen 3">
+                        <ImageWithOverlay
+                            imageSrc="/images/random-game.png"
+                            altText="Imagen 3"
+                            onClick={() => toggleImageSelection("/images/random-game3.png")}
+                            isSelected={selectedImages.includes("/images/random-game3.png")}
+                        >
                             <PiNumberCircleThree className="text-black text-4xl absolute top-3 left-2 m-2" />
                             <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
                         </ImageWithOverlay>
@@ -113,10 +155,10 @@ const Create = () => {
     );
 };
 
-const ImageWithOverlay = ({ imageSrc, altText, children }) => {
+const ImageWithOverlay = ({ imageSrc, altText, onClick, isSelected, children }) => {
     return (
-        <div className="relative">
-            <img src={imageSrc} alt={altText} className="h-60 w-96 my-4 mx-3 bg-zinc-400" />
+        <div className="relative" onClick={onClick}>
+            <img src={imageSrc} alt={altText} className={`h-60 w-96 my-4 mx-3 bg-zinc-400 ${isSelected ? 'border-4 border-blue-500' : ''}`} />
             {children}
         </div>
     );
