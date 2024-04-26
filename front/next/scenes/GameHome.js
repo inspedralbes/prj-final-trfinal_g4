@@ -306,7 +306,10 @@ export default class GameHome extends Phaser.Scene {
                     if ((platform.posY != platform.y || platform.posX != platform.x) && platformVelocityY == 0) {
                         platformVelocityY = 20;
                     }
-                    
+                    const hasMovedEnough = Math.abs(platform.x - platform.posX) >= platform.width * 3 || Math.abs(platform.y - platform.posY) >= platform.height * 3;
+                if (hasMovedEnough && platformVelocityY<0) {
+                    platformVelocityY=0;
+                }
                     if (platform.name.includes('up')) {
                         platform.body.setVelocityY(platformVelocityY);
                     } else {
