@@ -8,9 +8,7 @@ export default class GameHome extends Phaser.Scene {
     whiteView;
     blackView;
     grayView;
-    flag_endGame;
-    platform;
-    particles;
+    endGame;
     player = 1;
     buttons = [];
     constructor() {
@@ -18,10 +16,6 @@ export default class GameHome extends Phaser.Scene {
     }
     platforms = [];
     doors = [];
-
-    preload() {
-
-    }
 
     init() {
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -124,7 +118,6 @@ export default class GameHome extends Phaser.Scene {
 
                         this.character1.body.setSize(w * 0.50, h * 0.90);
 
-
                         this.character1.setPosition(x, y);
 
                         this.anims.create({
@@ -217,7 +210,7 @@ export default class GameHome extends Phaser.Scene {
                                     message.setDepth(1);
                                     background.setDepth(0);
 
-                                    
+
                                 });
 
                             }
@@ -225,28 +218,6 @@ export default class GameHome extends Phaser.Scene {
 
                         this.physics.add.collider(this.flag_endGame, gray);
 
-                        break;
-                    }
-                case 'platform_move_up-1':
-                    {
-                        this.platform = this.physics.add.sprite(x, y, 'platform');
-                        const w = this.platform.width * 1; // Double the width of the platform
-                        const h = this.platform.height;
-
-                        this.platform.scaleX = 1.5;
-
-                        this.physics.add.existing(this.platform);
-
-                        this.platform.body.setSize(w, h);
-
-                        this.platform.setPosition(x * 1.047, y);
-
-                        this.anims.create({
-                            key: 'platformMoveUp',
-                            frames: this.anims.generateFrameNames('platform', { start: 1, end: 25, prefix: 'tile00', suffix: '.png' }),
-                            frameRate: 10,
-                            repeat: -1
-                        })
                         break;
                     }
                 case 'button':
@@ -282,12 +253,11 @@ export default class GameHome extends Phaser.Scene {
                     this.physics.add.existing(platform);
                     platform.body.setSize(width, height);
                     platform.setBounce(0.2);
-                    platform.originX = platform.width / 2;
-                    platform.originY = platform.height / 2;
 
-                    platform.setPosition(x + (width / 2), y + (height / 2));
-                    platform.posX = x + (width / 2);
-                    platform.posY = y + (height / 2);
+                    platform.setPosition(x + (platform.body.width / 2), y + (platform.body.height / 2));
+                    platform.posX = platform.x;
+                    platform.posY = platform.y;
+                    platform.movement = findMovementParam(objData.properties);
                     platform.body.allowGravity = false;
                     platform.body.immovable = true;
                     platform.setInteractive();
@@ -299,7 +269,7 @@ export default class GameHome extends Phaser.Scene {
 
                     break;
                 }
-                
+
 
 
             }
@@ -334,14 +304,20 @@ export default class GameHome extends Phaser.Scene {
             }
         });
 
-
+        function findMovementParam(data) {
+            let returndata;
+            data.forEach(element => {
+                if (element.name == 'movement') {
+                    returndata = element.value;
+                }
+            });
+            return returndata;
+        }
 
 
     }
 
     update() {
-
-        
 
         this.buttons.forEach(button => {
             const isPlayer1Colliding = this.physics.overlap(button, this.character1);
@@ -353,20 +329,20 @@ export default class GameHome extends Phaser.Scene {
                 button.associated.forEach(platform => {
                     let platformVelocityY = 0;
                     if ((isPlayer1Colliding && button.name.includes('W')) || (isPlayer2Colliding && button.name.includes('B')) || ((isPlayer1Colliding || isPlayer2Colliding) && button.name.includes('G'))) {
-                        platformVelocityY = -20;
+                        platformVelocityY = -32;
                         console.log('colliding');
                         if (platform.name.includes('Fast')) {
-                            platformVelocityY -= 30;
+                            platformVelocityY -= 32;
                         }
                     }
                     if ((platform.posY != platform.y || platform.posX != platform.x) && platformVelocityY == 0) {
-                        platformVelocityY = 20;
+                        platformVelocityY = 32;
                         if (platform.name.includes('Fast')) {
-                            platformVelocityY += 30;
+                            platformVelocityY += 32;
                         }
                     }
 
-                    const hasMovedEnough = Math.abs(platform.x - platform.posX) >= platform.width * 3 || Math.abs(platform.y - platform.posY) >= platform.height * 3;
+                    const hasMovedEnough = Math.abs(platform.x - platform.posX) >= platform.body.width * 3 || Math.abs(platform.y - platform.posY) >= platform.body.height * 3;
                     if (hasMovedEnough && platformVelocityY < 0) {
                         platformVelocityY = 0;
                     }
@@ -463,6 +439,8 @@ export default class GameHome extends Phaser.Scene {
             }
         }
         changed = false;
+
+
 
     }
 

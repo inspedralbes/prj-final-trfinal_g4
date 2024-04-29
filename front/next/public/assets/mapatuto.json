@@ -147,7 +147,7 @@
                     0, 0, 0, 0, 0, 0, 49, 0, 29, 30, 31, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 7, 8, 8, 8, 8, 9, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 51, 52, 52, 52, 52, 53, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 995, 31, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 997, 31, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 7, 8, 8, 8, 30, 31, 41, 42, 0, 0,
                     0, 0, 0, 0, 0, 0, 29, 30, 30, 30, 30, 31, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 29, 30, 30, 30, 7, 8, 9, 0, 0, 0,
@@ -1026,6 +1026,12 @@
                  "height":103.5,
                  "id":6,
                  "name":"platform_up-4",
+                 "properties":[
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":300
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1048,6 +1054,12 @@
                  "height":13.3939727272727,
                  "id":18,
                  "name":"platformB_move_left-6",
+                 "properties":[
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":300
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1059,6 +1071,12 @@
                  "height":11.3333,
                  "id":19,
                  "name":"platformG_move_up-7",
+                 "properties":[
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":300
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1081,6 +1099,12 @@
                  "height":11.5,
                  "id":21,
                  "name":"platformG_move_up-1",
+                 "properties":[
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":300
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1158,6 +1182,12 @@
                  "height":9.33333,
                  "id":32,
                  "name":"platformG_move_left_Fast-2",
+                 "properties":[
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":300
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1191,6 +1221,12 @@
                  "height":143.5,
                  "id":37,
                  "name":"platform_down-5",
+                 "properties":[
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":300
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1199,17 +1235,6 @@
                  "y":48.5
                 },
             
-                {
-                 "height":143.5,
-                 "id":46,
-                 "name":"platform_down-5",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":14.375,
-                 "x":1536.75,
-                 "y":48.5
-                }, 
                 {
                  "height":8,
                  "id":38,
@@ -1298,8 +1323,7 @@
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":242,
-         "tilecount":242,
+         "tilecount":109,
          "tileheight":16,
          "tiles":[
                 {
@@ -2293,15 +2317,14 @@
         }, 
         {
          "columns":22,
-         "firstgid":243,
-         "firstgid":243,
+         "firstgid":242,
          "image":"..\/..\/..\/..\/..\/..\/prj-final-trfinal_g4\/front\/public\/assets\/tiled\/tilesets\/White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":109,
+         "tilecount":242,
          "tileheight":16,
          "tiles":[
                 {
@@ -3302,7 +3325,7 @@
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":109,
+         "tilecount":242,
          "tileheight":16,
          "tiles":[
                 {
@@ -4296,14 +4319,14 @@
         }, 
         {
          "columns":22,
-         "firstgid":725,
+         "firstgid":726,
          "image":"..\/..\/..\/..\/..\/..\/prj-final-trfinal_g4\/front\/public\/assets\/tiled\/tilesets\/White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":109,
+         "tilecount":242,
          "tileheight":16,
          "tiles":[
                 {
@@ -5297,14 +5320,14 @@
         }, 
         {
          "columns":22,
-         "firstgid":966,
+         "firstgid":968,
          "image":"..\/..\/..\/..\/..\/..\/prj-final-trfinal_g4\/front\/public\/assets\/tiled\/tilesets\/White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":109,
+         "tilecount":242,
          "tileheight":16,
          "tiles":[
                 {
@@ -6298,14 +6321,14 @@
         }, 
         {
          "columns":22,
-         "firstgid":1207,
+         "firstgid":1210,
          "image":"..\/..\/..\/..\/..\/..\/prj-final-trfinal_g4\/front\/public\/assets\/tiled\/tilesets\/White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":109,
+         "tilecount":242,
          "tileheight":16,
          "tiles":[
                 {
