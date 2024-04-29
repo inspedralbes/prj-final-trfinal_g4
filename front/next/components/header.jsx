@@ -40,7 +40,7 @@ const Header = () => {
 
         content = <div className="profile relative text-white">
             <FaUserCircle className="mx-4 text-3xl cursor-pointer" onClick={toggleDropdown} />
-            {dropdownOpen && (
+            {dropdownOpen && tancarSessio && (
                 <div className="dropdown absolute right-0 mt-2 bg-black bg-opacity-50 rounded-md shadow-lg">
                     {/* Dropdown content */}
                     <a href="#" className="block px-4 py-2 hover:bg-gray-800">Perfil</a>
