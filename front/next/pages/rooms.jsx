@@ -3,11 +3,13 @@ import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { FaCheck } from "react-icons/fa6";
 import useStore from '../src/store';
+import socket from '../services/sockets';
 
 function Rooms() {
     const session = useSession();
     const [rooms, setRooms] = useState(useStore.getState().rooms); 
 
+    //Mostrar salas pilladas desde el store en tiempo real (sockets.js)
     useEffect(() => {
         const intervalId = setInterval(() => {
             const roomsFromStore = useStore.getState().rooms;
@@ -63,6 +65,11 @@ function Rooms() {
         console.log(session.data);
     }
 
+    const clickAddRoom = (room) => {
+        console.log('Room added');
+        socket.emit('joinRoom', room);
+    };
+
     return (
         <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
             {
@@ -84,7 +91,7 @@ function Rooms() {
                         <div className="max-h-52 overflow-y-auto">
                             <ul>
                                 {rooms.map(room => (
-                                    <li className="mb-2 text-gray-800">{room.name}</li>
+                                    <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={clickAddRoom(room)}>{room.name}</li>
                                 ))}
                             </ul>
                         </div>

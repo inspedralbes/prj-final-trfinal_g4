@@ -31,9 +31,26 @@ io.on('connection', (socket) => {
             isPublic: addRoom.public,
             mode: addRoom.mode,
             admin: socket.id,
+            users: [socket.id]
         }
         rooms.push(newRoom);
         console.log(rooms);
+        io.emit('allRooms', rooms);
+    });
+
+    //Join Room
+    socket.on('joinRoom', (room) => {
+        console.log('Room joined');
+        console.log(room);
+        let findRoom = rooms.find(r => r == room);
+        if ( findRoom == undefined ) {
+            console.log('Room not found');
+            return;
+        } else {
+            console.log('Room found');
+            findRoom.users.push(socket.id);
+            socket.join(findRoom);
+        }
         io.emit('allRooms', rooms);
     });
 
