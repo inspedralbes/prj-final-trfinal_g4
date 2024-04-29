@@ -105,6 +105,9 @@ export default class GameHome extends Phaser.Scene {
             } else if (name.startsWith('door')) {
                 ogName = name;
                 name = 'door';
+            } else if (name.startsWith('box')) {
+                ogName = name;
+                name = 'box';
             }
             switch (name) {
                 case 'spawn-1':
@@ -246,7 +249,7 @@ export default class GameHome extends Phaser.Scene {
 
                     break;
                 }
-
+                
 
 
             }
@@ -262,28 +265,26 @@ export default class GameHome extends Phaser.Scene {
                     button.associated.push(platform);
                 }
             });
-            
+
         });
         this.platforms.forEach(platform => {
             if (platform.name.includes('W')) {
                 platform.setTint(0xffffff);
                 this.physics.add.collider(this.character1, platform);
-                this.physics.add.collider(this.grayView, platform);
-                this.physics.add.collider(this.whiteView, platform);
+
             } else if (platform.name.includes('B')) {
                 platform.setTint(0x303030);
                 this.physics.add.collider(this.character2, platform);
-                this.physics.add.collider(this.blackView, platform);
-                this.physics.add.collider(this.grayView, platform);
+
             } else {
                 platform.setTint(0x969696);
-                this.physics.add.collider(this.grayView, platform);
+
                 this.physics.add.collider(this.character1, platform);
                 this.physics.add.collider(this.character2, platform);
             }
         });
-        
-        
+
+
 
 
     }
@@ -296,20 +297,27 @@ export default class GameHome extends Phaser.Scene {
 
             // Update platform velocity based on colliding player and button content
             if (button.associated.length > 0) {
-                let platformVelocityY = 0;
-                if ((isPlayer1Colliding && button.name.includes('W')) || (isPlayer2Colliding && button.name.includes('B')) || ((isPlayer1Colliding || isPlayer2Colliding) && button.name.includes('G'))) {
-                    platformVelocityY = -20;
-                    console.log('colliding');
 
-                }
                 button.associated.forEach(platform => {
+                    let platformVelocityY = 0;
+                    if ((isPlayer1Colliding && button.name.includes('W')) || (isPlayer2Colliding && button.name.includes('B')) || ((isPlayer1Colliding || isPlayer2Colliding) && button.name.includes('G'))) {
+                        platformVelocityY = -20;
+                        console.log('colliding');
+                        if (platform.name.includes('Fast')) {
+                            platformVelocityY -= 30;
+                        }
+                    }
                     if ((platform.posY != platform.y || platform.posX != platform.x) && platformVelocityY == 0) {
                         platformVelocityY = 20;
+                        if (platform.name.includes('Fast')) {
+                            platformVelocityY += 30;
+                        }
                     }
+
                     const hasMovedEnough = Math.abs(platform.x - platform.posX) >= platform.width * 3 || Math.abs(platform.y - platform.posY) >= platform.height * 3;
-                if (hasMovedEnough && platformVelocityY<0) {
-                    platformVelocityY=0;
-                }
+                    if (hasMovedEnough && platformVelocityY < 0) {
+                        platformVelocityY = 0;
+                    }
                     if (platform.name.includes('up')) {
                         platform.body.setVelocityY(platformVelocityY);
                     } else {
@@ -321,9 +329,9 @@ export default class GameHome extends Phaser.Scene {
                                 platform.body.setVelocityX(platformVelocityY * -1);
                             }
                             else {
-                                if (platform.name.includes('down')){
+                                if (platform.name.includes('down')) {
                                     platform.body.setVelocityY(platformVelocityY * -1);
-                                } 
+                                }
                             }
                         }
                     }
