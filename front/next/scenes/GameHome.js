@@ -184,55 +184,7 @@ export default class GameHome extends Phaser.Scene {
                                     message.setDepth(1);
                                     background.setDepth(0);
 
-                                    // const emitter = this.add.particles(0, 0, 'confetti', {
-                                    //     scale: 0.5,
-                                    //     lifespan: 2000,
-                                    //     gravityY: -50,
-                                    //     frequency: 20,
-                                    //     maxVelocityX: 200,
-                                    //     maxVelocityY: 200,
-                                    //     blendMode: 'ADD'
-                                    // })
-
-                                    // const emitPoint = new Phaser.Geom.Point(0, 600, 800, 128);
-
-                                    // emitter.setPosition(emitPoint.x, emitPoint.y);
-
-                                    // emitter.createGravityWell({
-                                    //     x: 400,
-                                    //     y: 150,
-                                    //     power: 4.2,
-                                    //     epsilon: 250,
-                                    //     gravity: 100
-                                    // })
-                                    // ParticleEmitterManager(this, this.flag_endGame, this.character1);
-
-                                    // const leftConfeti = this.add.particles('confetti');
-                                    // const rightConfeti = this.add.particles('confetti');
-
-                                    // const emitterConfig = {
-                                    //     x: 0,
-                                    //     y: 0,
-                                    //     speed: 200,
-                                    //     scale: { start: 1, end: 0.5 },
-                                    //     alpha: { start: 1, end: 0 },
-                                    //     blendMode: 'ADD',
-
-                                    // }
-
-                                    // leftConfeti.createEmitter(emitterConfig);
-                                    // leftConfeti.setPosition(emitterConfig.x, this.sys.game.config.height / 2);
-                                    // leftConfeti.setAngle(-90, 90);
-
-                                    // rightConfeti.createEmitter(emitterConfig);
-                                    // rightConfeti.setPosition(this.sys.game.config.width, this.sys.game.config.height / 2);
-                                    // rightConfeti.setAngle(90, -90);
-
-                                    // setTimeout(() => {
-                                    //     leftConfeti.destroy();
-                                    //     rightConfeti.destroy();
-                                    // }, 5000);
-
+                                    
                                 });
 
                             }
