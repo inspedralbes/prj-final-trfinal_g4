@@ -23,7 +23,7 @@ export default class GameHome extends Phaser.Scene {
     }
 
     create() {
-        this.physics.world.setBounds(0, 0, 800, 600);
+        // this.physics.world.setBounds(0, 0, 800, 600);
 
         const map = this.make.tilemap({ key: 'mapa' });
         const tileset = map.addTilesetImage('tilesetWhite', 'tileset');
@@ -140,7 +140,7 @@ export default class GameHome extends Phaser.Scene {
 
                         // this.character1.body.setCollisionByProperty({ collides: true });
 
-                        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+                        // this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
                         this.cameras.main.startFollow(this.character1);
                         this.cameras.main.setZoom(2);
                         this.character1.setPushable(false);
@@ -347,7 +347,7 @@ export default class GameHome extends Phaser.Scene {
                         }
                     }
 
-                    const hasMovedEnough = Math.abs(platform.x - platform.posX) >= platform.body.width * 3 || Math.abs(platform.y - platform.posY) >= platform.body.height * 3;
+                    const hasMovedEnough = Math.abs(platform.body.x) >= platform.body.x+platform.movement || Math.abs(platform.body.y) >= platform.body.y+platform.movement;
                     if (hasMovedEnough && platformVelocityY < 0) {
                         platformVelocityY = 0;
                     }

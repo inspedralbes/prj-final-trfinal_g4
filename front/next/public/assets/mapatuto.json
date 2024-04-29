@@ -147,7 +147,7 @@
                     0, 0, 0, 0, 0, 0, 49, 0, 29, 30, 31, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 7, 8, 8, 8, 8, 9, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 51, 52, 52, 52, 52, 53, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 997, 31, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 995, 31, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 7, 8, 8, 8, 30, 31, 41, 42, 0, 0,
                     0, 0, 0, 0, 0, 0, 29, 30, 30, 30, 30, 31, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 29, 30, 30, 30, 7, 8, 9, 0, 0, 0,
@@ -1103,7 +1103,7 @@
                         {
                          "name":"movement",
                          "type":"float",
-                         "value":300
+                         "value":20
                         }],
                  "rotation":0,
                  "type":"",
@@ -1323,7 +1323,7 @@
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":109,
+         "tilecount":242,
          "tileheight":16,
          "tiles":[
                 {
@@ -2317,14 +2317,14 @@
         }, 
         {
          "columns":22,
-         "firstgid":242,
+         "firstgid":243,
          "image":"..\/..\/..\/..\/..\/..\/prj-final-trfinal_g4\/front\/public\/assets\/tiled\/tilesets\/White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":242,
+         "tilecount":109,
          "tileheight":16,
          "tiles":[
                 {
@@ -3325,7 +3325,7 @@
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":242,
+         "tilecount":109,
          "tileheight":16,
          "tiles":[
                 {
@@ -4319,14 +4319,14 @@
         }, 
         {
          "columns":22,
-         "firstgid":726,
+         "firstgid":725,
          "image":"..\/..\/..\/..\/..\/..\/prj-final-trfinal_g4\/front\/public\/assets\/tiled\/tilesets\/White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":242,
+         "tilecount":109,
          "tileheight":16,
          "tiles":[
                 {
@@ -5320,14 +5320,14 @@
         }, 
         {
          "columns":22,
-         "firstgid":968,
+         "firstgid":966,
          "image":"..\/..\/..\/..\/..\/..\/prj-final-trfinal_g4\/front\/public\/assets\/tiled\/tilesets\/White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":242,
+         "tilecount":109,
          "tileheight":16,
          "tiles":[
                 {
@@ -6321,14 +6321,14 @@
         }, 
         {
          "columns":22,
-         "firstgid":1210,
+         "firstgid":1207,
          "image":"..\/..\/..\/..\/..\/..\/prj-final-trfinal_g4\/front\/public\/assets\/tiled\/tilesets\/White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":242,
+         "tilecount":109,
          "tileheight":16,
          "tiles":[
                 {
