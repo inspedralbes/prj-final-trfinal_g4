@@ -41,6 +41,7 @@ export function register(user) {
 }
 
 export function logout(token) {
+    console.log('su puta madre');
     return new Promise((resolve, reject) => {
         fetch(`${url}logout`, {
             method: 'POST',
