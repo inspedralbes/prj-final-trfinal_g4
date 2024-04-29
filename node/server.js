@@ -40,7 +40,6 @@ io.on('connection', (socket) => {
 
     //Join Room
     socket.on('joinRoom', (room) => {
-        console.log('Room joined');
         console.log(room);
         let findRoom = rooms.find(r => r == room);
         if ( findRoom == undefined ) {
@@ -48,6 +47,7 @@ io.on('connection', (socket) => {
             return;
         } else {
             console.log('Room found');
+            console.log('Room joined');
             findRoom.users.push(socket.id);
             socket.join(findRoom);
         }

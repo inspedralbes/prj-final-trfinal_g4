@@ -66,8 +66,9 @@ function Rooms() {
     }
 
     const clickAddRoom = (room) => {
-        console.log('Room added');
+        console.log('Try room join: ', room);
         socket.emit('joinRoom', room);
+        window.location.href = '/lobby';
     };
 
     return (
@@ -90,8 +91,8 @@ function Rooms() {
                         <h2 className="text-lg font-semibold mb-4">Salas Disponibles</h2>
                         <div className="max-h-52 overflow-y-auto">
                             <ul>
-                                {rooms.map(room => (
-                                    <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={clickAddRoom(room)}>{room.name}</li>
+                            {rooms.map(room => (
+                                    <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={()=>clickAddRoom(room)}>{room.name}</li>
                                 ))}
                             </ul>
                         </div>
