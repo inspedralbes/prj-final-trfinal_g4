@@ -259,6 +259,8 @@ export default class GameHome extends Phaser.Scene {
                     platform.posY = platform.y;
                     platform.movement = findMovementParam(objData.properties);
                     platform.body.allowGravity = false;
+
+                    
                     platform.body.immovable = true;
                     platform.setInteractive();
                     platform.name = ogName;
@@ -266,10 +268,8 @@ export default class GameHome extends Phaser.Scene {
 
                     this.platforms.push(platform);
 
-
                     break;
                 }
-
 
 
             }
