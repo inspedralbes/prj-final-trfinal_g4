@@ -8,7 +8,9 @@ export default class GameHome extends Phaser.Scene {
     whiteView;
     blackView;
     grayView;
-    endGame;
+    flag_endGame;
+    platform;
+    particles;
     player = 1;
     buttons = [];
     constructor() {
@@ -64,7 +66,7 @@ export default class GameHome extends Phaser.Scene {
 
                 if (tileW && tileW.index > 0) {
                     // console.log(tileW);
-                    // tileW.tint = 0xffffff;
+                    tileW.tint = 0xffffff;
                 }
             }
         }
@@ -92,7 +94,7 @@ export default class GameHome extends Phaser.Scene {
 
         const objectsLayer = map.getObjectLayer('Objects')
         objectsLayer.objects.forEach(objData => {
-            let { x = 0, y = 0, name, width = 0, height = 0 } = objData
+            let { x = 0, y = 0, name, width = 0, height = 0, xFlag = 0, yFlag = 0 } = objData
             x = parseInt(x);
             y = parseInt(y);
             let ogName = "nope";
@@ -134,7 +136,7 @@ export default class GameHome extends Phaser.Scene {
 
                         this.anims.create({
                             key: 'walk',
-                            frames: this.anims.generateFrameNames('character1', { start: 1, end: 12, prefix: 'character1-run0', suffix: '.png' }),
+                            frames: this.anims.generateFrameNames('character1', { start: 1, end: 11, prefix: 'character1-run0', suffix: '.png' }),
                             frameRate: 10,
                             repeat: -1
                         })
@@ -158,10 +160,6 @@ export default class GameHome extends Phaser.Scene {
                         const w = this.character2.width;
                         const h = this.character2.height;
 
-
-
-
-
                         this.physics.add.existing(this.character2);
 
                         this.character2.body.setSize(w * 0.50, h * 0.90);
@@ -169,31 +167,83 @@ export default class GameHome extends Phaser.Scene {
                         this.character2.setPosition(x, y);
                         this.anims.create({
                             key: 'idle',
-                            frames: this.anims.generateFrameNames('character1', { start: 1, end: 11, prefix: 'character1-idle0', suffix: '.png' }),
+                            frames: this.anims.generateFrameNames('character1', { start: 1, end: 10, prefix: 'character1-idle0', suffix: '.png' }),
                             frameRate: 10,
                             repeat: -1
                         })
 
                         this.anims.create({
                             key: 'walk',
-                            frames: this.anims.generateFrameNames('character1', { start: 1, end: 12, prefix: 'character1-run0', suffix: '.png' }),
+                            frames: this.anims.generateFrameNames('character1', { start: 1, end: 11, prefix: 'character1-run0', suffix: '.png' }),
                             frameRate: 10,
                             repeat: -1
                         })
+
                         this.physics.add.collider(this.character2, gray);
                         this.physics.add.collider(this.character2, black);
                         this.physics.add.collider(this.character2, this.character1);
+
                         break;
                     };
 
                 case 'endGame':
                     {
-                        this.endGame = {
-                            End: this.physics.add.sprite(x + (width * 0.5), y + (height * 0.5), 'frag-out').setTint(0x303030),
-                        }
+
+                        this.flag_endGame = this.physics.add.sprite(x, y, 'flag-movement');
+                        const w = this.flag_endGame.width;
+                        const h = this.flag_endGame.height;
+
+                        this.physics.add.existing(this.flag_endGame);
+
+                        this.flag_endGame.body.setSize(w * 0.45, h - 3);
+
+                        this.flag_endGame.setPosition(x, y);
+
                         this.anims.create({
-                            key: 'flag-move',
-                            frames: this.anims.generateFrameNames('flag-movement', { start: 1, end: 26, prefix: 'frag-out00', suffix: '.png' }),
+                            key: 'flagMove',
+                            frames: this.anims.generateFrameNames('flag-movement', { start: 0, end: 9, prefix: 'flag', suffix: '.png' }),
+                            frameRate: 10,
+                            repeat: 5
+                        })
+
+                        this.physics.add.overlap(this.flag_endGame, this.character1, (flag, character1) => {
+                            if (!flag.anims.isPlaying) {
+                                flag.anims.play('flagMove', true).on('animationcomplete', () => {
+                                    flag.anims.stop('flagMove');
+
+                                    const message = this.add.text(300, 100, '¡Tutorial Completat!', { fontSize: '32px', fill: '#fff' }).setOrigin(0);
+                                    const background = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0x000000, 0.5).setOrigin(0);
+
+                                    message.setDepth(1);
+                                    background.setDepth(0);
+
+                                    
+                                });
+
+                            }
+                        })
+
+                        this.physics.add.collider(this.flag_endGame, gray);
+
+                        break;
+                    }
+                case 'platform_move_up-1':
+                    {
+                        this.platform = this.physics.add.sprite(x, y, 'platform');
+                        const w = this.platform.width * 1; // Double the width of the platform
+                        const h = this.platform.height;
+
+                        this.platform.scaleX = 1.5;
+
+                        this.physics.add.existing(this.platform);
+
+                        this.platform.body.setSize(w, h);
+
+                        this.platform.setPosition(x * 1.047, y);
+
+                        this.anims.create({
+                            key: 'platformMoveUp',
+                            frames: this.anims.generateFrameNames('platform', { start: 1, end: 25, prefix: 'tile00', suffix: '.png' }),
                             frameRate: 10,
                             repeat: -1
                         })
@@ -290,6 +340,8 @@ export default class GameHome extends Phaser.Scene {
     }
 
     update() {
+
+        
 
         this.buttons.forEach(button => {
             const isPlayer1Colliding = this.physics.overlap(button, this.character1);
