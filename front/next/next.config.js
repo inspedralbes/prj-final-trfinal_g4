@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-
 const nextConfig = {
     // webpackDevMiddleware: config => {
     //     config.watchOptions = {
