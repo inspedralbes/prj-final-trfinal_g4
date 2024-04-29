@@ -74,7 +74,7 @@ const Create = () => {
             <div className="flex items-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 flex-col p-8">
                 {/* Parte izquierda para crear la sala */}
                 <div className="flex flex-col justify-center items-center w-1/3">
-                    <h2 className="text-white text-2xl mb-2">Crear Sala</h2>
+                    <h1 className="text-white text-2xl mb-2">Crear Sala</h1>
                     <div className="w-full bg-white rounded-lg p-4 mb-3">
                         <label htmlFor="roomName" className="block text-gray-700 font-semibold mb-2">Nombre de la Sala:</label>
                         <input

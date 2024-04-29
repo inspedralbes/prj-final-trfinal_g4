@@ -18,7 +18,6 @@ const Fases = ({ fases }) => {
                 <div className="flex relative">
                     {/* Fase 1 */}
                     <div className="flex flex-col items-center relative">
-                        <h3 className="mb-2 text-center">Fase 1</h3>
                         <div className="inline-block relative">
                             <img src='/images/mapa.png' alt={`Fase 1`} className="h-60 w-96 my-4 mx-3" />
                             <button
@@ -37,7 +36,6 @@ const Fases = ({ fases }) => {
                     </div>
                     {/* Fase 2 */}
                     <div className="flex flex-col items-center relative mx-2">
-                        <h3 className="mb-2 text-center">Fase 2</h3>
                         <div className="inline-block relative">
                             <img src='/images/mapa.png' alt={`Fase 2`} className="h-60 w-96 my-4 mx-2" />
                             <button
@@ -56,7 +54,6 @@ const Fases = ({ fases }) => {
                     </div>
                     {/* Fase 3 */}
                     <div className="flex flex-col items-center relative">
-                        <h3 className="mb-2 text-center">Fase 3</h3>
                         <div className="inline-block relative">
                             <img src='/images/mapa.png' alt={`Fase 3`} className="h-60 w-96 my-4 mx-3" />
                             <button
