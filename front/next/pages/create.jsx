@@ -23,9 +23,14 @@ const Create = () => {
             public: isPublic,
             mode: gameMode
         };
-
-        socket.emit('createRoom', roomInfo);
-        setInfoRoom([...infoRoom, roomInfo]);
+        if (roomInfo.name == '' || roomInfo.mode == '') {
+            alert('Faltan datos por rellenar');
+            return;
+        } else {
+            socket.emit('createRoom', roomInfo);
+            setInfoRoom([...infoRoom, roomInfo]);
+            window.location.href = '/lobby';
+        }
     };
 
     return (
@@ -72,11 +77,10 @@ const Create = () => {
                         </select>
                     </div>
                 </div>
-                <Link href="/lobby">
+                
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
                         Crear Sala
                     </button>
-                </Link>
                 {/* Parte derecha con las imágenes */}
                 <div className="w-3/4 mx-8 overflow-y-auto">
                     <div className="flex flex-row justify-center items-center">

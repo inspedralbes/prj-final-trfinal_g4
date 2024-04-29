@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, use } from 'react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { FaCheck } from "react-icons/fa6";
@@ -7,12 +7,13 @@ import socket from '../services/sockets';
 
 function Rooms() {
     const session = useSession();
-    const [rooms, setRooms] = useState(useStore.getState().rooms); 
+    const [publicRooms, setPublicRooms] = useState(useStore.getState().publicRooms); 
+    const [rooms, setRooms] = useState(useStore.getState().rooms);
 
-    //Mostrar salas pilladas desde el store en tiempo real (sockets.js)
+    //Mostrar salas pilladas desde el store en tiempo real (públicas) (sockets.js)
     useEffect(() => {
         const intervalId = setInterval(() => {
-            const roomsFromStore = useStore.getState().rooms;
+            const roomsFromStore = useStore.getState().publicRooms;
             setRooms(roomsFromStore);
         }, 1000);
         return () => clearInterval(intervalId);
@@ -65,10 +66,10 @@ function Rooms() {
         console.log(session.data);
     }
 
-    const clickAddRoom = (room) => {
-        console.log('Try room join: ', room);
-        socket.emit('joinRoom', room);
-        window.location.href = '/lobby';
+    const clickAddRoom = (id) => {
+        console.log('Try room join: ', id);
+        socket.emit('joinRoom', id);
+        // window.location.href = '/lobby';
     };
 
     return (
@@ -91,8 +92,8 @@ function Rooms() {
                         <h2 className="text-lg font-semibold mb-4">Salas Disponibles</h2>
                         <div className="max-h-52 overflow-y-auto">
                             <ul>
-                            {rooms.map(room => (
-                                    <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={()=>clickAddRoom(room)}>{room.name}</li>
+                            {publicRooms.map(room => (
+                                    <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={()=>clickAddRoom(room.id)}>{room.name}</li>
                                 ))}
                             </ul>
                         </div>

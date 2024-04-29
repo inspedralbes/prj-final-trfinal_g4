@@ -7,7 +7,7 @@ const port = 3727;
 const server = createServer(app);
 
 var rooms = [];
-// var lastRoom = 0;
+var lastRoom = 0;
 
 const io = new Server(server, {
     cors: {
@@ -25,13 +25,17 @@ io.on('connection', (socket) => {
 
     //Create Room
     socket.on('createRoom', (addRoom) => {
+        let id = lastRoom++;
         console.log('Room created');
         let newRoom = {
             name: addRoom.name,
             isPublic: addRoom.public,
             mode: addRoom.mode,
             admin: socket.id,
-            users: [socket.id]
+            users: [socket.id],
+            id: id,
+            accessCode: addRoom.accessCode,
+            accesible: true
         }
         rooms.push(newRoom);
         console.log(rooms);
@@ -39,16 +43,19 @@ io.on('connection', (socket) => {
     });
 
     //Join Room
-    socket.on('joinRoom', (room) => {
-        console.log(room);
-        let findRoom = rooms.find(r => r == room);
-        if ( findRoom == undefined ) {
+    socket.on('joinRoom', (id) => {
+        console.log(id);
+        let findRoom = rooms.find(room => room.id == id);
+        console.log(findRoom);
+        if (findRoom == undefined) {
             console.log('Room not found');
             return;
         } else {
             console.log('Room found');
             console.log('Room joined');
             findRoom.users.push(socket.id);
+            findRoom.accesible = false;
+            console.log(findRoom);
             socket.join(findRoom);
         }
         io.emit('allRooms', rooms);
