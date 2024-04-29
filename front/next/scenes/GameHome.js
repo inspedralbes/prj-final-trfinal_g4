@@ -158,10 +158,6 @@ export default class GameHome extends Phaser.Scene {
                         const w = this.character2.width;
                         const h = this.character2.height;
 
-
-
-
-
                         this.physics.add.existing(this.character2);
 
                         this.character2.body.setSize(w * 0.50, h * 0.90);
@@ -239,6 +235,8 @@ export default class GameHome extends Phaser.Scene {
                     platform.posX = x + (width / 2);
                     platform.posY = y + (height / 2);
                     platform.body.allowGravity = false;
+
+                    
                     platform.body.immovable = true;
                     platform.setInteractive();
                     platform.name = ogName;
@@ -246,11 +244,9 @@ export default class GameHome extends Phaser.Scene {
 
                     this.platforms.push(platform);
 
-
                     break;
                 }
                 
-
 
             }
         });
