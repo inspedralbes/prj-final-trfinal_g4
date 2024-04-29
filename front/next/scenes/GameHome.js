@@ -141,7 +141,8 @@ export default class GameHome extends Phaser.Scene {
                             repeat: -1
                         })
                         this.physics.add.collider(this.character1, white);
-                        this.physics.add.collider(this.character1, gray);
+                       
+                        
 
 
                         // this.character1.body.setCollisionByProperty({ collides: true });
@@ -179,7 +180,7 @@ export default class GameHome extends Phaser.Scene {
                             repeat: -1
                         })
 
-                        this.physics.add.collider(this.character2, gray);
+                        
                         this.physics.add.collider(this.character2, black);
                         this.physics.add.collider(this.character2, this.character1);
 
@@ -333,9 +334,10 @@ export default class GameHome extends Phaser.Scene {
                 this.physics.add.collider(this.character2, platform);
             }
         });
-
-
-
+        this.physics.add.collider(this.character1, gray);
+        this.physics.add.collider(gray, this.character1);
+        this.physics.add.collider(this.character2, gray);
+        this.physics.add.collider(gray, this.character2);
 
     }
 
@@ -366,7 +368,7 @@ export default class GameHome extends Phaser.Scene {
                         }
                     }
 
-                    const hasMovedEnough = Math.abs(platform.x - platform.posX) >= platform.width * 3 || Math.abs(platform.y - platform.posY) >= platform.height * 3;
+                    const hasMovedEnough = Math.abs(platform.x - platform.posX) >= platform.width * 10 || Math.abs(platform.y - platform.posY) >= platform.height * 10;
                     if (hasMovedEnough && platformVelocityY < 0) {
                         platformVelocityY = 0;
                     }
