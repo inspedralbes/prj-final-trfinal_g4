@@ -21,7 +21,8 @@ const io = new Server(server, {
 //connection
 io.on('connection', (socket) => {
     console.log (`Connected: ${socket.id}`);
-    io.emit('allRooms', rooms);    
+    // io.emit('allRooms', rooms);    
+    socket.emit('allRooms', rooms);
 
     //Create Room
     socket.on('createRoom', (addRoom) => {

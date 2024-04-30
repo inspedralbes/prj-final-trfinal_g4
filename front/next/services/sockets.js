@@ -10,10 +10,6 @@ const socket = io(url);
 socket.on('allRooms', (rooms) => {
     // console.log(rooms);
     useStore.setState({ rooms });
-    let publicRooms = rooms.filter(room => room.isPublic);
-    useStore.setState({ publicRooms });
-    let accesibleRooms = rooms.filter(room => room.accesible == true);
-    useStore.setState({ accesibleRooms });
     // console.log(useStore.getState().publicRooms);
 });
 

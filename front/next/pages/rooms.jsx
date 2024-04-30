@@ -7,57 +7,42 @@ import socket from '../services/sockets';
 
 function Rooms() {
     const session = useSession();
-    const [publicRooms, setPublicRooms] = useState(useStore.getState().publicRooms); 
     const [rooms, setRooms] = useState(useStore.getState().rooms);
+    const [ showRooms, setShowRooms ] = useState([]);
 
     //Mostrar salas pilladas desde el store en tiempo real (públicas) (sockets.js)
     useEffect(() => {
         const intervalId = setInterval(() => {
-            const roomsFromStore = useStore.getState().publicRooms;
-            setRooms(roomsFromStore);
+            const roomsFromStore = useStore.getState().rooms;
+            let newShowRooms = [];
+            roomsFromStore.forEach(room => {
+                if (room.accesible == true && room.isPublic == true) {
+                    newShowRooms.push(room);
+                }
+            });
+            setShowRooms(newShowRooms);
         }, 1000);
         return () => clearInterval(intervalId);
     }, []);
 
+    const clickAddRoom = (id) => {
+        console.log('Try room join: ', id);
+        socket.emit('joinRoom', id);
+        // window.location.href = '/lobby';
+    };
+
+    const inputRefs = Array.from({ length: 6 }, () => useRef(null));
+
+    
+
+    // Google Session
     useEffect(() => {
         if (!session.data) {
             // console.log(session);
         }
     }, [session]);
 
-    const inputRefs = Array.from({ length: 6 }, () => useRef(null));
-
-    const handleKeyDown = (index, e) => {
-        const { key } = e;
-        if (key == 'ArrowLeft' || key == 'ArrowRight') {
-            e.preventDefault();
-            const nextIndex = key == 'ArrowLeft' ? index - 1 : index + 1;
-            if (nextIndex >= 0 && nextIndex < inputRefs.length) {
-                inputRefs[nextIndex].current.focus();
-            }
-        } else if (key == 'Backspace') {
-            if (index > 0) {
-                if (inputRefs[index].current.value == '') {
-                    inputRefs[index - 1].current.focus();
-                } else {
-                    inputRefs[index].current.value = '';
-                }
-            }
-        } else if (key == 'Delete') {
-            if (inputRefs[index].current.value == '') {
-                if (index < inputRefs.length - 1) {
-                    inputRefs[index + 1].current.focus();
-                }
-            } else {
-                for (let i = index; i < inputRefs.length - 1; i++) {
-                    inputRefs[i].current.value = inputRefs[i + 1].current.value;
-                }
-                inputRefs[inputRefs.length - 1].current.value = '';
-            }
-        }
-    };
-
-    //Google Sign Out
+    // Google Sign Out
     function cerrarSesion() {
         signOut();
         if (!session.data) {
@@ -65,12 +50,6 @@ function Rooms() {
         }
         console.log(session.data);
     }
-
-    const clickAddRoom = (id) => {
-        console.log('Try room join: ', id);
-        socket.emit('joinRoom', id);
-        // window.location.href = '/lobby';
-    };
 
     return (
         <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
@@ -92,7 +71,7 @@ function Rooms() {
                         <h2 className="text-lg font-semibold mb-4">Salas Disponibles</h2>
                         <div className="max-h-52 overflow-y-auto">
                             <ul>
-                            {publicRooms.map(room => (
+                            {showRooms.map(room => (
                                     <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={()=>clickAddRoom(room.id)}>{room.name}</li>
                                 ))}
                             </ul>

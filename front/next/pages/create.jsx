@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import Fases from '../components/fases';
 import Header from '../components/header';
 import { PiNumberCircleOne, PiNumberCircleTwo, PiNumberCircleThree } from 'react-icons/pi';
 import { TbLetterX } from "react-icons/tb";
 import Link from 'next/link';
 import socket from '../services/sockets';
+import useStore from '../src/store';
 
 const Create = () => {
     // State para los valores de la sala
@@ -12,10 +13,33 @@ const Create = () => {
     const [isPublic, setIsPublic] = useState(false);
     const [gameMode, setGameMode] = useState('');
     const [infoRoom, setInfoRoom] = useState([]);
+    // Rooms para comprovar codigos de acceso 
+    const [rooms , setRooms] = useState(useStore.getState().rooms);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            const roomsFromStore = useStore.getState().rooms;
+            setRooms(roomsFromStore);
+        }, 1000);
+        return () => clearInterval(intervalId);
+    }, []);
 
     useEffect(() => {
         console.log('Información de la sala guardada:', infoRoom);
     }, [infoRoom]);
+
+
+    function generateAccessCode() {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let accessCode = '';
+    
+        for (let i = 0; i < 6; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            accessCode += characters[randomIndex];
+        }
+    
+        return accessCode;
+    }
 
     const handleCreateRoom = () => {
         const roomInfo = {
@@ -27,6 +51,16 @@ const Create = () => {
             alert('Faltan datos por rellenar');
             return;
         } else {
+            let accessCode;
+
+            if (!isPublic) {
+                do {
+                    accessCode = generateAccessCode();
+                } while (rooms.some((room) => room.accessCode == accessCode));
+                console.log(accessCode);
+                roomInfo.accessCode = accessCode;
+            }
+
             socket.emit('createRoom', roomInfo);
             setInfoRoom([...infoRoom, roomInfo]);
             window.location.href = '/lobby';
