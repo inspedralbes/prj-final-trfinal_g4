@@ -33,8 +33,6 @@ function Rooms() {
 
     const inputRefs = Array.from({ length: 6 }, () => useRef(null));
 
-    
-
     // Google Session
     useEffect(() => {
         if (!session.data) {
