@@ -340,29 +340,48 @@ export default class GameHome extends Phaser.Scene {
                             platformVelocityY -= 32;
                         }
                     }
-                    if ((platform.posY != platform.y || platform.posX != platform.x) && platformVelocityY == 0) {
-                        platformVelocityY = 32;
-                        if (platform.name.includes('Fast')) {
-                            platformVelocityY += 32;
-                        }
-                    }
+                   
 
                     const hasMovedEnough = Math.abs(platform.body.x) >= platform.body.x+platform.movement || Math.abs(platform.body.y) >= platform.body.y+platform.movement;
                     if (hasMovedEnough && platformVelocityY < 0) {
                         platformVelocityY = 0;
                     }
                     if (platform.name.includes('up')) {
+                        if (platform.y<platform.posY && platformVelocityY == 0) {
+                            platformVelocityY = 32;
+                            if (platform.name.includes('Fast')) {
+                                platformVelocityY += 32;
+                            }
+                        }
                         platform.body.setVelocityY(platformVelocityY);
                     } else {
+                        
                         if (platform.name.includes('left')) {
-
+                            if (platform.x<platform.posX && platformVelocityY == 0) {
+                                platformVelocityY = 32;
+                                if (platform.name.includes('Fast')) {
+                                    platformVelocityY += 32;
+                                }
+                            }
                             platform.body.setVelocityX(platformVelocityY);
                         } else {
                             if (platform.name.includes('right')) {
+                                if (platform.x>platform.posX && platformVelocityY == 0) {
+                                    platformVelocityY = 32;
+                                    if (platform.name.includes('Fast')) {
+                                        platformVelocityY += 32;
+                                    }
+                                }
                                 platform.body.setVelocityX(platformVelocityY * -1);
                             }
                             else {
                                 if (platform.name.includes('down')) {
+                                    if (platform.y>platform.posY && platformVelocityY == 0) {
+                                        platformVelocityY = 32;
+                                        if (platform.name.includes('Fast')) {
+                                            platformVelocityY += 32;
+                                        }
+                                    }
                                     platform.body.setVelocityY(platformVelocityY * -1);
                                 }
                             }
