@@ -1,3 +1,4 @@
+// Create.js
 import React, { useState, useEffect } from 'react';
 import Fases from '../components/fases';
 import Header from '../components/header';
@@ -22,7 +23,7 @@ const Create = () => {
 
     const handleCreateRoom = () => {
         let code = generateRandomNumber();
-    
+
         const roomInfo = {
             name: roomName,
             public: isPublic,
@@ -30,7 +31,7 @@ const Create = () => {
             code: code,
             images: selectedImages
         };
-    
+
         console.log('Creando sala con la siguiente información:');
         console.log('Información de la sala:', roomInfo);
 
@@ -71,10 +72,10 @@ const Create = () => {
     return (
         <div>
             <Header />
-            <div className="flex items-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 flex-col p-8">
+            <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-8">
                 {/* Parte izquierda para crear la sala */}
-                <div className="flex flex-col justify-center items-center w-1/3">
-                    <h1 className="text-white text-2xl mb-2">Crear Sala</h1>
+                <div className="flex flex-col justify-center items-center w-full sm:w-1/3 mb-8">
+                    <h1 className="text-white text-4xl font-bold mb-4">Crear Sala</h1>
                     <div className="w-full bg-white rounded-lg p-4 mb-3">
                         <label htmlFor="roomName" className="block text-gray-700 font-semibold mb-2">Nombre de la Sala:</label>
                         <input
@@ -111,42 +112,42 @@ const Create = () => {
                             <option value="Modo 3">Random</option>
                         </select>
                     </div>
+                    <Link href="/lobby">
+                        <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
+                            Crear Sala
+                        </button>
+                    </Link>
                 </div>
-                <Link href="/lobby">
-                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
-                        Crear Sala
-                    </button>
-                </Link>
                 {/* Parte derecha con las imágenes */}
-                <div className="w-3/4 mx-8 overflow-y-auto">
-                    <div className="flex flex-row justify-center items-center">
-                        <ImageWithOverlay
+                <div className="w-full sm:w-3/4 flex flex-col sm:flex-row items-center justify-center">
+                    <div className="flex flex-col sm:flex-row items-center justify-center sm:flex-wrap gap-x-4">
+                        <CustomImageWithOverlay
                             imageSrc="/images/random-game.png"
                             altText="Imagen 1"
                             onClick={() => toggleImageSelection("/images/random-game.png")}
                             isSelected={selectedImages.includes("/images/random-game.png")}
                         >
-                            <PiNumberCircleOne className="text-black text-4xl absolute top-3 left-2 m-2" />
-                            <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
-                        </ImageWithOverlay>
-                        <ImageWithOverlay
+                            <PiNumberCircleOne className="text-black text-4xl absolute top-4 left-1 m-2" />
+                            <TbLetterX className="text-black text-2xl absolute top-4 right-1 m-2" />
+                        </CustomImageWithOverlay>
+                        <CustomImageWithOverlay
                             imageSrc="/images/random-game.png"
                             altText="Imagen 2"
                             onClick={() => toggleImageSelection("/images/random-game2.png")}
                             isSelected={selectedImages.includes("/images/random-game2.png")}
                         >
-                            <PiNumberCircleTwo className="text-black text-4xl absolute top-3 left-2 m-2" />
-                            <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
-                        </ImageWithOverlay>
-                        <ImageWithOverlay
+                            <PiNumberCircleTwo className="text-black text-4xl absolute top-4 left-1 m-2" />
+                            <TbLetterX className="text-black text-2xl absolute top-4 right-1 m-2" />
+                        </CustomImageWithOverlay>
+                        <CustomImageWithOverlay
                             imageSrc="/images/random-game.png"
                             altText="Imagen 3"
                             onClick={() => toggleImageSelection("/images/random-game3.png")}
                             isSelected={selectedImages.includes("/images/random-game3.png")}
                         >
-                            <PiNumberCircleThree className="text-black text-4xl absolute top-3 left-2 m-2" />
-                            <TbLetterX className="text-black text-2xl absolute top-3 right-2 m-2" />
-                        </ImageWithOverlay>
+                            <PiNumberCircleThree className="text-black text-4xl absolute top-4 left-1 m-2" />
+                            <TbLetterX className="text-black text-2xl absolute top-4 right-1 m-2" />
+                        </CustomImageWithOverlay>
                     </div>
                 </div>
                 <Fases fases={[1, 2, 3]} />
@@ -155,13 +156,14 @@ const Create = () => {
     );
 };
 
-const ImageWithOverlay = ({ imageSrc, altText, onClick, isSelected, children }) => {
+const CustomImageWithOverlay = ({ imageSrc, altText, onClick, isSelected, children }) => {
     return (
-        <div className="relative" onClick={onClick}>
-            <img src={imageSrc} alt={altText} className={`h-60 w-96 my-4 mx-3 bg-zinc-400 ${isSelected ? 'border-4 border-blue-500' : ''}`} />
+        <div className="relative flex-shrink-0 mb-4 sm:mb-0 sm:mr-4 sm:mx-3">
+            <img src={imageSrc} alt={altText} className={`h-60 sm:h-72 w-80 sm:w-96 my-4 bg-zinc-400 ${isSelected ? 'border-4 border-blue-500' : ''}`} />
             {children}
         </div>
     );
 };
 
 export default Create;
+
