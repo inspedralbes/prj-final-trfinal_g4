@@ -159,6 +159,87 @@ export function createUser(user) {
     });
 }
 
+export function createMap(mapData) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}maps/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${mapData.token}`
+            },
+            body: JSON.stringify(mapData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            resolve(data);
+        })
+        .catch(error => {
+            reject(error);
+        });
+    });
+}
+
+
+export function getMaps() {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}maps/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            resolve(data);
+        })
+        .catch(error => {
+            reject(error);
+        });
+    });
+}
+
+export function updateMap(mapData) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}maps/${mapData.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${mapData.token}`
+            },
+            body: JSON.stringify(mapData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            resolve(data);
+        })
+        .catch(error => {
+            reject(error);
+        });
+    });
+}
+
+export function destroyMap(mapData) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}maps/${mapData.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${mapData.token}`
+            },
+            body: JSON.stringify(mapData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            resolve(data);
+        })
+        .catch(error => {
+            reject(error);
+        });
+    });
+}
+
+
 
 
 
