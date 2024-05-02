@@ -28,7 +28,6 @@ export default class GameHome extends Phaser.Scene {
     }
 
     create() {
-        // this.physics.world.setBounds(0, 0, 800, 600);
 
         const map = this.make.tilemap({ key: 'mapa' });
         const tileset = map.addTilesetImage('tilesetWhite', 'tileset');
@@ -81,6 +80,7 @@ export default class GameHome extends Phaser.Scene {
                 }
             }
         }
+
         gray.setCollisionByProperty({ semicollides: true });
         white.setCollisionByProperty({ semicollides: true });
         black.setCollisionByProperty({ semicollides: true });
@@ -116,7 +116,6 @@ export default class GameHome extends Phaser.Scene {
             switch (name) {
                 case 'spawn-1':
                     {
-
                         this.character1 = this.physics.add.sprite(x, y, 'character1-idle');
                         console.log(this.character1);
                         const w = this.character1.width;
@@ -127,8 +126,6 @@ export default class GameHome extends Phaser.Scene {
 
                         this.character1.body.tint = 0x303030;
                         this.physics.add.existing(this.character1);
-
-
 
                         this.character1.setPosition(x, y);
 
@@ -154,9 +151,6 @@ export default class GameHome extends Phaser.Scene {
                         })
                         this.physics.add.collider(this.character1, white);
 
-                        // this.character1.body.setCollisionByProperty({ collides: true });
-
-                        // this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
                         this.cameras.main.startFollow(this.character1);
                         this.cameras.main.setZoom(2);
                         this.character1.setPushable(false);
@@ -194,7 +188,6 @@ export default class GameHome extends Phaser.Scene {
                             frameRate: 10,
                             repeat: -1
                         })
-
 
                         this.physics.add.collider(this.character2, black);
                         this.physics.add.collider(this.character2, this.character1);
@@ -235,7 +228,6 @@ export default class GameHome extends Phaser.Scene {
 
                                     message.setDepth(1);
                                     background.setDepth(0);
-
 
                                 });
 
@@ -286,11 +278,9 @@ export default class GameHome extends Phaser.Scene {
                     platform.movement = findMovementParam(objData.properties);
                     platform.body.allowGravity = false;
 
-
                     platform.body.immovable = true;
                     platform.setInteractive();
                     platform.name = ogName;
-
 
                     this.platforms.push(platform);
 
@@ -308,10 +298,8 @@ export default class GameHome extends Phaser.Scene {
                         deathZone.body.setAllowGravity(false);
 
                         this.death.push(deathZone);
-
-
                     }
-            }
+                }
         });
         this.whiteView = white;
         this.blackView = black;
@@ -385,13 +373,10 @@ export default class GameHome extends Phaser.Scene {
 
     update() {
 
-
-
         this.buttons.forEach(button => {
             const isPlayer1Colliding = this.physics.overlap(button, this.character1);
             const isPlayer2Colliding = this.physics.overlap(button, this.character2);
 
-            // Update platform velocity based on colliding player and button content
             if (button.associated.length > 0) {
 
                 button.associated.forEach(platform => {
@@ -403,8 +388,6 @@ export default class GameHome extends Phaser.Scene {
                             platformVelocityY -= 32;
                         }
                     }
-
-
                     const hasMovedEnough = Math.abs(platform.body.x) >= platform.body.x + platform.movement || Math.abs(platform.body.y) >= platform.body.y + platform.movement;
                     if (hasMovedEnough && platformVelocityY < 0) {
                         platformVelocityY = 0;
@@ -450,12 +433,7 @@ export default class GameHome extends Phaser.Scene {
                             }
                         }
                     }
-
-
-
-
                 });
-
 
             }
         });
@@ -480,7 +458,6 @@ export default class GameHome extends Phaser.Scene {
                 this.character1.flipX = false;
 
                 this.character1.setVelocityX(200);
-
 
                 this.character1.anims.play('walk', true);
 
@@ -509,7 +486,6 @@ export default class GameHome extends Phaser.Scene {
 
                 this.character2.setVelocityX(200);
 
-
                 this.character2.anims.play('walk', true);
 
             } else {
@@ -521,13 +497,9 @@ export default class GameHome extends Phaser.Scene {
                 console.log('jump');
                 this.character2.setVelocityY(-280);
 
-
-
             }
         }
         changed = false;
-
-
 
     }
 
