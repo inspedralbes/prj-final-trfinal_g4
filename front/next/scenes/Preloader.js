@@ -13,6 +13,7 @@ export default class Preloader extends Phaser.Scene {
         // this.load.atlas('character1', 'assets/character1.png', 'assets/character1.json');
         this.load.atlas('character1', 'assets/character1.png', 'assets/character1.json');
         this.load.atlas('flag-movement', 'assets/flag-movement.png', 'assets/flag-movement.json');
+        this.load.atlas('death', 'assets/appearing-character.png', 'assets/appearing-character.json');
         this.load.atlas('platform', 'assets/platform.png', 'assets/platform.json');
         this.load.image('tileset', 'assets/White-terrain.png');
         this.load.tilemapTiledJSON('mapa', 'assets/mapatuto.json');

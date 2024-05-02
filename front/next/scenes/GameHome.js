@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { set } from 'zod';
 
 export default class GameHome extends Phaser.Scene {
     activePointer;
@@ -13,6 +14,7 @@ export default class GameHome extends Phaser.Scene {
     buttons = [];
     spawns = [];
     death = [];
+    animationPlaying = false;
 
     constructor() {
         super('gamehome');
@@ -126,9 +128,16 @@ export default class GameHome extends Phaser.Scene {
                         this.character1.body.tint = 0x303030;
                         this.physics.add.existing(this.character1);
 
-                        this.character1.body.setSize(w * 0.50, h * 0.90);
+
 
                         this.character1.setPosition(x, y);
+
+                        this.anims.create({
+                            key: 'death',
+                            frames: this.anims.generateFrameNames('death', { start: 6, end: 0, prefix: 'tile00', suffix: '.png' }),
+                            frameRate: 10,
+                            repeat: 0,
+                        });
 
                         this.anims.create({
                             key: 'idle',
@@ -153,8 +162,10 @@ export default class GameHome extends Phaser.Scene {
                         this.character1.setPushable(false);
 
                         this.spawns.push({ spawn1X, spawn1Y });
+                        this.character1.body.setSize(w * 0.50, h * 0.90);
                         console.log("1", this.spawns);
                         break;
+
                     }
                 case 'spawn-2':
                     {
@@ -299,9 +310,6 @@ export default class GameHome extends Phaser.Scene {
                         this.death.push(deathZone);
 
 
-
-
-
                     }
             }
         });
@@ -349,21 +357,35 @@ export default class GameHome extends Phaser.Scene {
         this.physics.add.collider(gray, this.character1);
         this.physics.add.collider(this.character2, gray);
         this.physics.add.collider(gray, this.character2);
+        window.character1 = this.character1;
+        this.death.forEach(death => {
+            this.physics.add.overlap(death, this.character1, (death, character1) => {
+                this.animationPlaying = true;
+                this.character1.anims.play('death', true);
+                this.character2.anims.play('death', true);
+                setTimeout(() => {
+                    this.character1.setPosition(this.spawns[0].spawn1X, this.spawns[0].spawn1Y);
+                    this.character2.setPosition(this.spawns[1].spawn2X, this.spawns[1].spawn2Y);
+                    this.animationPlaying = false;
+                }, 1000);
+            })
+            this.physics.add.overlap(death, this.character2, (death, character2) => {
+                this.animationPlaying = true;
+                this.character1.anims.play('death', true);
+                this.character2.anims.play('death', true);
+                setTimeout(() => {
+                    this.character1.setPosition(this.spawns[0].spawn1X, this.spawns[0].spawn1Y);
+                    this.character2.setPosition(this.spawns[1].spawn2X, this.spawns[1].spawn2Y);
+                    this.animationPlaying = false;
+                }, 1000);
+            })
+        });
 
     }
 
     update() {
 
-        this.death.forEach(death => {
-            const isPlayer1OverlapDeathZone = this.physics.overlap(death, this.character1);
-            const isPlayer2OverlapDeathZone = this.physics.overlap(death, this.character2);
 
-            if (isPlayer1OverlapDeathZone || isPlayer2OverlapDeathZone) {
-                this.character1.setPosition(this.spawns[0].spawn1X, this.spawns[0].spawn1Y);
-                this.character2.setPosition(this.spawns[1].spawn2X, this.spawns[1].spawn2Y);
-            }
-
-        })
 
         this.buttons.forEach(button => {
             const isPlayer1Colliding = this.physics.overlap(button, this.character1);
