@@ -11,6 +11,9 @@ export default class GameHome extends Phaser.Scene {
     endGame;
     player = 1;
     buttons = [];
+    spawns = [];
+    death = [];
+
     constructor() {
         super('gamehome');
     }
@@ -104,7 +107,10 @@ export default class GameHome extends Phaser.Scene {
             } else if (name.startsWith('box')) {
                 ogName = name;
                 name = 'box';
+            } else if (name.startsWith('spawn')) {
+
             }
+
             switch (name) {
                 case 'spawn-1':
                     {
@@ -113,6 +119,10 @@ export default class GameHome extends Phaser.Scene {
                         console.log(this.character1);
                         const w = this.character1.width;
                         const h = this.character1.height;
+
+                        const spawn1X = x;
+                        const spawn1Y = y;
+
                         this.character1.body.tint = 0x303030;
                         this.physics.add.existing(this.character1);
 
@@ -134,9 +144,6 @@ export default class GameHome extends Phaser.Scene {
                             repeat: -1
                         })
                         this.physics.add.collider(this.character1, white);
-                       
-                        
-
 
                         // this.character1.body.setCollisionByProperty({ collides: true });
 
@@ -144,6 +151,9 @@ export default class GameHome extends Phaser.Scene {
                         this.cameras.main.startFollow(this.character1);
                         this.cameras.main.setZoom(2);
                         this.character1.setPushable(false);
+
+                        this.spawns.push({ spawn1X, spawn1Y });
+                        console.log("1", this.spawns);
                         break;
                     }
                 case 'spawn-2':
@@ -155,7 +165,8 @@ export default class GameHome extends Phaser.Scene {
                         const h = this.character2.height;
 
                         this.physics.add.existing(this.character2);
-
+                        const spawn2X = x;
+                        const spawn2Y = y;
                         this.character2.body.setSize(w * 0.50, h * 0.90);
 
                         this.character2.setPosition(x, y);
@@ -173,9 +184,12 @@ export default class GameHome extends Phaser.Scene {
                             repeat: -1
                         })
 
-                        
+
                         this.physics.add.collider(this.character2, black);
                         this.physics.add.collider(this.character2, this.character1);
+
+                        this.spawns.push({ spawn2X, spawn2Y });
+                        console.log("1, 2", this.spawns);
 
                         break;
                     };
@@ -261,7 +275,7 @@ export default class GameHome extends Phaser.Scene {
                     platform.movement = findMovementParam(objData.properties);
                     platform.body.allowGravity = false;
 
-                    
+
                     platform.body.immovable = true;
                     platform.setInteractive();
                     platform.name = ogName;
@@ -272,7 +286,23 @@ export default class GameHome extends Phaser.Scene {
                     break;
                 }
 
+                case 'death':
+                    {
+                        const deathZone = this.add.zone(x, y, width, height);
+                        deathZone.setOrigin(0).setAlpha(0);
 
+                        this.physics.add.existing(deathZone);
+                        this.physics.world.enable(deathZone);
+
+                        deathZone.body.setAllowGravity(false);
+
+                        this.death.push(deathZone);
+
+
+
+
+
+                    }
             }
         });
         this.whiteView = white;
@@ -324,6 +354,17 @@ export default class GameHome extends Phaser.Scene {
 
     update() {
 
+        this.death.forEach(death => {
+            const isPlayer1OverlapDeathZone = this.physics.overlap(death, this.character1);
+            const isPlayer2OverlapDeathZone = this.physics.overlap(death, this.character2);
+
+            if (isPlayer1OverlapDeathZone || isPlayer2OverlapDeathZone) {
+                this.character1.setPosition(this.spawns[0].spawn1X, this.spawns[0].spawn1Y);
+                this.character2.setPosition(this.spawns[1].spawn2X, this.spawns[1].spawn2Y);
+            }
+
+        })
+
         this.buttons.forEach(button => {
             const isPlayer1Colliding = this.physics.overlap(button, this.character1);
             const isPlayer2Colliding = this.physics.overlap(button, this.character2);
@@ -340,14 +381,14 @@ export default class GameHome extends Phaser.Scene {
                             platformVelocityY -= 32;
                         }
                     }
-                   
 
-                    const hasMovedEnough = Math.abs(platform.body.x) >= platform.body.x+platform.movement || Math.abs(platform.body.y) >= platform.body.y+platform.movement;
+
+                    const hasMovedEnough = Math.abs(platform.body.x) >= platform.body.x + platform.movement || Math.abs(platform.body.y) >= platform.body.y + platform.movement;
                     if (hasMovedEnough && platformVelocityY < 0) {
                         platformVelocityY = 0;
                     }
                     if (platform.name.includes('up')) {
-                        if (platform.y<platform.posY && platformVelocityY == 0) {
+                        if (platform.y < platform.posY && platformVelocityY == 0) {
                             platformVelocityY = 32;
                             if (platform.name.includes('Fast')) {
                                 platformVelocityY += 32;
@@ -355,9 +396,9 @@ export default class GameHome extends Phaser.Scene {
                         }
                         platform.body.setVelocityY(platformVelocityY);
                     } else {
-                        
+
                         if (platform.name.includes('left')) {
-                            if (platform.x<platform.posX && platformVelocityY == 0) {
+                            if (platform.x < platform.posX && platformVelocityY == 0) {
                                 platformVelocityY = 32;
                                 if (platform.name.includes('Fast')) {
                                     platformVelocityY += 32;
@@ -366,7 +407,7 @@ export default class GameHome extends Phaser.Scene {
                             platform.body.setVelocityX(platformVelocityY);
                         } else {
                             if (platform.name.includes('right')) {
-                                if (platform.x>platform.posX && platformVelocityY == 0) {
+                                if (platform.x > platform.posX && platformVelocityY == 0) {
                                     platformVelocityY = 32;
                                     if (platform.name.includes('Fast')) {
                                         platformVelocityY += 32;
@@ -376,7 +417,7 @@ export default class GameHome extends Phaser.Scene {
                             }
                             else {
                                 if (platform.name.includes('down')) {
-                                    if (platform.y>platform.posY && platformVelocityY == 0) {
+                                    if (platform.y > platform.posY && platformVelocityY == 0) {
                                         platformVelocityY = 32;
                                         if (platform.name.includes('Fast')) {
                                             platformVelocityY += 32;
