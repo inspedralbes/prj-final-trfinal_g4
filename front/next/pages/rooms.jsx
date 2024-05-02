@@ -7,13 +7,15 @@ import socket from '../services/sockets';
 
 function Rooms() {
     const session = useSession();
-    const [rooms, setRooms] = useState(useStore.getState().rooms);
-    const [ showRooms, setShowRooms ] = useState([]);
+    const [ showRooms, setShowRooms ] = useState([]); // Mostrar salas públicas
+    const [roomCode, setRoomCode] = useState(Array.from({ length: 6 }, () => '')); // Código de la sala
+    var rooms = useStore.getState().rooms; // Salas
 
     //Mostrar salas pilladas desde el store en tiempo real (públicas) (sockets.js)
     useEffect(() => {
         const intervalId = setInterval(() => {
             const roomsFromStore = useStore.getState().rooms;
+            rooms = roomsFromStore;
             let newShowRooms = [];
             roomsFromStore.forEach(room => {
                 if (room.accesible == true && room.isPublic == true) {
@@ -25,13 +27,67 @@ function Rooms() {
         return () => clearInterval(intervalId);
     }, []);
 
-    const clickAddRoom = (id) => {
+    // Unirse a la sala pública
+    const addPublicRoom = (id) => {
         console.log('Try room join: ', id);
         socket.emit('joinRoom', id);
         // window.location.href = '/lobby';
     };
 
+    // Codigo de la sala
     const inputRefs = Array.from({ length: 6 }, () => useRef(null));
+
+    // Estado del código de la sala
+    const handleInputChange = (index, event) => {
+        const { value } = event.target;
+        const newRoomCode = [...roomCode];
+        newRoomCode[index] = value.toUpperCase(); // Convierte a mayúsculas
+        setRoomCode(newRoomCode);
+    };
+
+    // Unirse a la sala privada
+    const addPrivateRoom = () => {
+        console.log('hola');
+        let code = roomCode;
+        console.log(code);
+        console.log(rooms);
+        // console.log('Try room join: ', code);
+        // socket.emit('joinRoom', code);
+        // window.location.href = '/lobby';
+    };
+
+    // Navegación entre inputs
+    const handleKeyDown = (index, e) => {
+        const { key } = e;
+        if (key === 'ArrowLeft' || key === 'ArrowRight') {
+            e.preventDefault();
+            const nextIndex = key === 'ArrowLeft' ? index - 1 : index + 1;
+            if (nextIndex >= 0 && nextIndex < inputRefs.length) {
+                inputRefs[nextIndex].current.focus();
+            }
+        } else if (key === 'Backspace') {
+            if (index > 0 && inputRefs[index].current.value === '') {
+                inputRefs[index - 1].current.focus();
+            } else if (index === 0 && inputRefs[index].current.value === '') {
+                // Si estamos en el primer input y está vacío, enfocamos el input anterior si existe
+                if (inputRefs[index - 1]) {
+                    inputRefs[index - 1].current.focus();
+                }
+            } else {
+                inputRefs[index].current.value = ''; // Eliminar el carácter
+            }
+        } else if (key === 'Delete') {
+            if (inputRefs[index].current.value === '' && index < inputRefs.length - 1) {
+                inputRefs[index + 1].current.focus();
+            } else {
+                // Mover los caracteres hacia atrás y limpiar el último campo
+                for (let i = index; i < inputRefs.length - 1; i++) {
+                    inputRefs[i].current.value = inputRefs[i + 1].current.value;
+                }
+                inputRefs[inputRefs.length - 1].current.value = '';
+            }
+        }
+    };    
 
     // Google Session
     useEffect(() => {
@@ -70,7 +126,7 @@ function Rooms() {
                         <div className="max-h-52 overflow-y-auto">
                             <ul>
                             {showRooms.map(room => (
-                                    <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={()=>clickAddRoom(room.id)}>{room.name}</li>
+                                    <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={()=>addPublicRoom(room.id)}>{room.name}</li>
                                 ))}
                             </ul>
                         </div>
@@ -92,12 +148,13 @@ function Rooms() {
                             type="text"
                             maxLength="1"
                             ref={inputRefs[index]}
-                            className="bg-white border border-gray-300 rounded-lg px-1 py-1 focus:outline-none h-12 text-gray-800 placeholder-gray-500 text-base text-center caret-transparent"
-                            onChange={e => handleChange(index, e)}
+                            value={roomCode[index].toUpperCase()}
+                            className="bg-white border border-gray-300 rounded-lg px-1 py-1 focus:outline-none h-12 text-gray-800 placeholder-gray-500 text-base text-center"
+                            onChange={e => handleInputChange(index, e)}
                             onKeyDown={e => handleKeyDown(index, e)}
                         />
                     ))}
-                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded mb-14 h-12 focus:outline-none flex items-center justify-center">
+                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded mb-14 h-12 focus:outline-none flex items-center justify-center" onClick={()=>addPrivateRoom()}>
                         <FaCheck className="text-2xl" />
                     </button>
                 </div>
