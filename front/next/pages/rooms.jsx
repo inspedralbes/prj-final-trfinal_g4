@@ -31,7 +31,7 @@ function Rooms() {
     const addPublicRoom = (id) => {
         console.log('Try room join: ', id);
         socket.emit('joinRoom', id);
-        // window.location.href = '/lobby';
+        window.location.href = '/lobby';
     };
 
     // Codigo de la sala
@@ -47,13 +47,23 @@ function Rooms() {
 
     // Unirse a la sala privada
     const addPrivateRoom = () => {
-        console.log('hola');
-        let code = roomCode;
+        let code = roomCode.join('');
         console.log(code);
         console.log(rooms);
-        // console.log('Try room join: ', code);
-        // socket.emit('joinRoom', code);
-        // window.location.href = '/lobby';
+        if ( code.length < 6 ) {
+            alert('El codi no està sencer')
+        } else {
+            console.log('Try room join: ', code);
+
+            // rooms.forEach( room => {
+            //     if (room.accesCode == code) {
+            //         socket.emit('joinRoom', room.id);
+            //         window.location.href = '/lobby';
+            //     }
+            // })
+            // socket.emit('joinRoom', code);
+            // window.location.href = '/lobby';
+        }
     };
 
     // Navegación entre inputs
