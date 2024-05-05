@@ -7,7 +7,8 @@ const useStore = create((set) => ({
     setToken: (token) => set({ token }),
     rooms: [],
     setRooms: (rooms) => set({ rooms }),
-    accessCodes: []
+    room: [],
+    setRoom: (room) => set({ room })
 }));
 
 export default useStore;

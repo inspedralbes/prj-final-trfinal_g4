@@ -1,65 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, use } from 'react';
 import Loading from '../components/loading';
+import useStore from '../src/store';
 
 const Lobby = () => {
-    const [loading, setLoading] = useState(true);
-    const [buttonState, setButtonState] = useState(true);
-    const [message, setMessage] = useState('');
-    const [chatMessages, setChatMessages] = useState([]);
-    const messagesEndRef = useRef(null);
-
-    useEffect(() => {
-        // Simulate loading time
-        const timer = setTimeout(() => {
-            setLoading(false);
-        }, 2000);
-
-        return () => clearTimeout(timer);
-    }, []);
-
-    useEffect(() => {
-        scrollToBottom();
-    }, [chatMessages]);
+    const [room, setRoom] = useState(useStore.getState().room);
 
     const handleButtonClick = () => {
-        setButtonState((prevState) => (prevState + 1) % 3);
+        console.log('Iniciar Joc');
+        console.log(`Enviar a /game als usuers de la room: ${room}`);
     };
-
-    const handleMessageChange = (event) => {
-        setMessage(event.target.value);
-    };
-
-    const handleSendMessage = () => {
-        if (message.trim() != '') {
-            setChatMessages([...chatMessages, { text: message, sender: 'me' }]);
-            setMessage('');
-        }
-    };
-
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    let buttonColorClass = '';
-    let buttonText = '';
-
-    switch (buttonState) {
-        case 0:
-            buttonColorClass = 'bg-blue-500 hover:bg-blue-700';
-            buttonText = 'Listo';
-            break;
-        case 1:
-            buttonColorClass = 'bg-green-500 hover:bg-green-700';
-            buttonText = 'Esperando...';
-            break;
-        case 2:
-            buttonColorClass = 'bg-red-500 hover:bg-red-700';
-            buttonText = 'Iniciar';
-            break;
-        default:
-            buttonColorClass = 'bg-blue-500 hover:bg-blue-700';
-            buttonText = 'Listo';
-    }
 
     return (
         <div className='bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4  text-white'>
@@ -159,9 +108,9 @@ const Lobby = () => {
                         <h1 className='text-3xl font-bold mb-3 mt-5'>Informació de partida</h1>
                         <div className='bg-white rounded-lg w-[350px] text-black'>
                             <p className='text-2xl font-bold mt-2'>Nom de la sala:</p>
-                            <p className='text-2xl'>Sala de proves</p>
+                            <p className='text-2xl'>{room.name}</p>
                             <p className='text-2xl font-bold'>Mode joc:</p>
-                            <p className='text-2xl'>Normal</p>
+                            <p className='text-2xl'>{room.mode}</p>
                             <p className='text-2xl font-bold'>Mapes seleccionats:</p>
                             <ul className='text-2xl font-bold flex items-center justify-center text-center mb-4 mt-2'>
                                 <li>
@@ -178,10 +127,9 @@ const Lobby = () => {
                     </div>
                 </div>
             </div>
-            {/* <button className={`text-white text-2xl font-bold py-2 px-4 w-40 rounded mt-5 ${buttonColorClass}`} onClick={handleButtonClick}>
-                {buttonText}
+            {/* <button className=`text-white text-2xl font-bold py-2 px-4 w-40 rounded mt-5 bg-red-500 hover:bg-red-700` onClick={handleButtonClick}>
+                Iniciar Joc
             </button> */}
-            {/* {loading ? <Loading /> : <h1>Data Loaded!</h1>} */}
         </div>
     );
 };

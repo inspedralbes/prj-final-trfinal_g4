@@ -28,9 +28,11 @@ function Rooms() {
     }, []);
 
     // Unirse a la sala pública
-    const addPublicRoom = (id) => {
-        console.log('Try room join: ', id);
-        socket.emit('joinRoom', id);
+    const addPublicRoom = (room) => {
+        // Guardar información de la sala
+        useStore.setState({ room: room });
+        console.log('Try room join: ', room.id);
+        socket.emit('joinRoom', room.id);
         window.location.href = '/lobby';
     };
 
@@ -54,31 +56,31 @@ function Rooms() {
             alert('El codi no està sencer')
         } else {
             console.log('Try room join: ', code);
-
-            // rooms.forEach( room => {
-            //     if (room.accesCode == code) {
-            //         socket.emit('joinRoom', room.id);
-            //         window.location.href = '/lobby';
-            //     }
-            // })
-            // socket.emit('joinRoom', code);
-            // window.location.href = '/lobby';
+            rooms.forEach( room => {
+                if (room.accesCode == code) {
+                    // Guardar información de la sala
+                    useStore.setState({ room: room });
+                    console.log('Room found: ', room.id);
+                    socket.emit('joinRoom', room.id);
+                    window.location.href = '/lobby';
+                }
+            });
         }
     };
 
     // Navegación entre inputs
     const handleKeyDown = (index, e) => {
         const { key } = e;
-        if (key === 'ArrowLeft' || key === 'ArrowRight') {
+        if (key == 'ArrowLeft' || key == 'ArrowRight') {
             e.preventDefault();
-            const nextIndex = key === 'ArrowLeft' ? index - 1 : index + 1;
+            const nextIndex = key == 'ArrowLeft' ? index - 1 : index + 1;
             if (nextIndex >= 0 && nextIndex < inputRefs.length) {
                 inputRefs[nextIndex].current.focus();
             }
-        } else if (key === 'Backspace') {
-            if (index > 0 && inputRefs[index].current.value === '') {
+        } else if (key == 'Backspace') {
+            if (index > 0 && inputRefs[index].current.value == '') {
                 inputRefs[index - 1].current.focus();
-            } else if (index === 0 && inputRefs[index].current.value === '') {
+            } else if (index == 0 && inputRefs[index].current.value == '') {
                 // Si estamos en el primer input y está vacío, enfocamos el input anterior si existe
                 if (inputRefs[index - 1]) {
                     inputRefs[index - 1].current.focus();
@@ -86,8 +88,8 @@ function Rooms() {
             } else {
                 inputRefs[index].current.value = ''; // Eliminar el carácter
             }
-        } else if (key === 'Delete') {
-            if (inputRefs[index].current.value === '' && index < inputRefs.length - 1) {
+        } else if (key == 'Delete') {
+            if (inputRefs[index].current.value == '' && index < inputRefs.length - 1) {
                 inputRefs[index + 1].current.focus();
             } else {
                 // Mover los caracteres hacia atrás y limpiar el último campo
@@ -136,7 +138,7 @@ function Rooms() {
                         <div className="max-h-52 overflow-y-auto">
                             <ul>
                             {showRooms.map(room => (
-                                    <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={()=>addPublicRoom(room.id)}>{room.name}</li>
+                                    <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={()=>addPublicRoom(room)}>{room.name}</li>
                                 ))}
                             </ul>
                         </div>

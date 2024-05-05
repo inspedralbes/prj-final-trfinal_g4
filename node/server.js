@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
             return;
         } else {
             console.log('Room found');
-            console.log('Room joined');
+            // console.log('Room joined');
             findRoom.users.push(socket.id);
             findRoom.accesible = false;
             console.log(findRoom);
