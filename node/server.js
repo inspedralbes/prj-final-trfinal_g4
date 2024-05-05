@@ -24,15 +24,15 @@ io.on('connection', (socket) => {
     socket.emit('allRooms', rooms);
 
     //Create Room
-    socket.on('createRoom', (addRoom) => {
+    socket.on('createRoom', (addRoom, userAdmin) => {
         let id = lastRoom++;
         console.log('Room created');
         let newRoom = {
             name: addRoom.name,
             isPublic: addRoom.public,
             mode: addRoom.mode,
-            admin: socket.id,
-            users: [socket.id],
+            admin: [socket.id, userAdmin],
+            users: [socket.id, userAdmin],
             id: id,
             accessCode: addRoom.accessCode,
             accesible: true
@@ -43,7 +43,7 @@ io.on('connection', (socket) => {
     });
 
     //Join Room
-    socket.on('joinRoom', (id) => {
+    socket.on('joinRoom', (id, userName) => {
         console.log(id);
         let findRoom = rooms.find(room => room.id == id);
         console.log(findRoom);
@@ -53,7 +53,8 @@ io.on('connection', (socket) => {
         } else {
             console.log('Room found');
             // console.log('Room joined');
-            findRoom.users.push(socket.id);
+            let newUser = [socket.id, userName];
+            findRoom.users.push(newUser);
             findRoom.accesible = false;
             console.log(findRoom);
             socket.join(findRoom);
