@@ -6,8 +6,16 @@ import { logout } from '../services/communicationManager';
 
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    var token = localStorage.getItem('token');
-    var user = localStorage.getItem('user');
+    var tokenStore = useStore(state => state.token);
+    var userStore = useStore(state => state.user);
+
+    if (tokenStore.empty && userStore.empty) {
+        var token = tokenStore;
+        var user = userStore;
+    } else if (typeof localStorage != 'undefined') {    
+        var token = localStorage.getItem('token');
+        var user = localStorage.getItem('user');
+    }
 
     let content;
     const toggleDropdown = () => {
@@ -29,8 +37,6 @@ const Header = () => {
             alert('Error logging out');
         });
     };
-
-    console.log('me cago en la puta madre de Fabio')
     
     if (token) {
         useStore.setState({ token: token });
