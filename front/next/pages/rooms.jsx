@@ -8,7 +8,6 @@ import Header from '../components/header';
 function Rooms() {
     const session = useSession();
 
-
     useEffect(() => {
         if (!session.data) {
             console.log(session);

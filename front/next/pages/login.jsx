@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { login } from '../services/communicationManager';
 import { useRouter } from 'next/router';
 import { signIn, useSession } from 'next-auth/react';
@@ -13,14 +13,18 @@ function Login() {
   const username = localStorage.getItem('user');
   const token = localStorage.getItem('token');
 
-
-//GOOGLE LOGIN
+  // GOOGLE LOGIN
   const session = useSession();
   // console.log(session);
   useEffect(() => {
     // Si hay una sesión activa, redirige al usuario a la página de /rooms
     if (session?.data) {
-      router.push('/rooms');
+      if (session.data.user.admin) {
+        console.log("admin", session.data.user.admin);
+        router.push('/adminPanel');
+      } else {
+        router.push('/rooms');
+      }
     }
   }, [session, router]);
 
@@ -33,15 +37,25 @@ function Login() {
     };
 
     login(user).then((data) => {
-        localStorage.setItem('user', JSON.stringify(data.user));
-        localStorage.setItem('token', JSON.stringify(data.token));
-        useStore.setState({ user: JSON.stringify(data.user) });
-        useStore.setState({ token: JSON.stringify(data.token) });
+      console.log("data login", data);
+      console.log("data admin", data.admin);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('token', JSON.stringify(data.token));
+      useStore.setState({ user: JSON.stringify(data.user) });
+      useStore.setState({ token: JSON.stringify(data.token) });
+      if (data.admin === 1) {
+        useStore.setState({ admin: true });
+        console.log("admin", data.admin);
+        console.log("admin", data.admin);
+        router.push('/adminPanel');
+      } else {
+        console.log("admin", data.admin);
         router.push('/rooms');
+      }
     }).catch(() => {
-        alert('Error logging in');
+      alert('Error logging in');
     });
-      
+
   };
 
   async function loginGoogle() {
