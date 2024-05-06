@@ -8,7 +8,7 @@ import socket from '../services/sockets';
 
 function Rooms() {
     const session = useSession();
-    const [ showRooms, setShowRooms ] = useState([]); // Mostrar salas públicas
+    const [showRooms, setShowRooms] = useState([]); // Mostrar salas públicas
     const [roomCode, setRoomCode] = useState(Array.from({ length: 6 }, () => '')); // Código de la sala
     var rooms = useStore.getState().rooms; // Salas
 
@@ -53,11 +53,11 @@ function Rooms() {
         let code = roomCode.join('');
         console.log(code);
         console.log(rooms);
-        if ( code.length < 6 ) {
+        if (code.length < 6) {
             alert('El codi no està sencer')
         } else {
             console.log('Try room join: ', code);
-            rooms.forEach( room => {
+            rooms.forEach(room => {
                 if (room.accesCode == code) {
                     // Guardar información de la sala
                     useStore.setState({ room: room });
@@ -100,7 +100,7 @@ function Rooms() {
                 inputRefs[inputRefs.length - 1].current.value = '';
             }
         }
-    };    
+    };
 
     // Google Session
     useEffect(() => {
@@ -119,47 +119,49 @@ function Rooms() {
     }
 
     return (
-        <div className="flex flex-col md:flex-row justify-center items-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
-            <div className="flex flex-col w-full md:w-4/12 justify-center md:justify-start">
-                <div className="bg-white shadow-md rounded-lg p-4 flex-grow">
-                    <div className="bg-gray-100 rounded-lg p-4">
-                        <h2 className="text-lg font-semibold mb-4">Salas Disponibles</h2>
-                        <div className="max-h-52 overflow-y-auto">
-                            <ul>
-                                {showRooms.map(room => (
-                                    <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={()=>addPublicRoom(room)}>{room.name}</li>
-                                ))}
-                            </ul>
+        <div> <Header />
+            <div className="flex flex-col md:flex-row justify-center items-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
+                <div className="flex flex-col w-full md:w-4/12 justify-center md:justify-start">
+                    <div className="bg-white shadow-md rounded-lg p-4 flex-grow">
+                        <div className="bg-gray-100 rounded-lg p-4">
+                            <h2 className="text-lg font-semibold mb-4">Salas Disponibles</h2>
+                            <div className="max-h-52 overflow-y-auto">
+                                <ul>
+                                    {showRooms.map(room => (
+                                        <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={() => addPublicRoom(room)}>{room.name}</li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="w-0 md:w-32"></div>
+                <div className="w-0 md:w-32"></div>
 
-            <div className="rounded-lg p-4 flex flex-col w-full md:w-3/12 justify-center items-center md:items-start mt-4 md:mt-0">
-                <div className='flex justify-center items-center md:justify-start'>
-                    <Link href="/create">
-                        <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded my-14 h-12 w-32 mx-40 focus:outline-none">CREAR SALA</button>
-                    </Link>
-                </div>
-                {/* Codigo de la sala */}
-                <div className="grid grid-cols-7 gap-2">
-                    {Array.from({ length: 6 }).map((_, index) => (
-                        <input
-                            key={index}
-                            type="text"
-                            maxLength="1"
-                            ref={inputRefs[index]}
-                            value={roomCode[index].toUpperCase()}
-                            className="bg-white border border-gray-300 rounded-lg px-1 py-1 focus:outline-none h-12 text-gray-800 placeholder-gray-500 text-base text-center caret-transparent"
-                            onChange={e => handleInputChange(index, e)}
-                            onKeyDown={e => handleKeyDown(index, e)}
-                        />
-                    ))}
-                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded mb-14 h-12 focus:outline-none flex items-center justify-center">
-                        <FaCheck className="text-2xl" />
-                    </button>
+                <div className="rounded-lg p-4 flex flex-col w-full md:w-3/12 justify-center items-center md:items-start mt-4 md:mt-0">
+                    <div className='flex justify-center items-center md:justify-start'>
+                        <Link href="/create">
+                            <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded my-14 h-12 w-32 mx-40 focus:outline-none">CREAR SALA</button>
+                        </Link>
+                    </div>
+                    {/* Codigo de la sala */}
+                    <div className="grid grid-cols-7 gap-2">
+                        {Array.from({ length: 6 }).map((_, index) => (
+                            <input
+                                key={index}
+                                type="text"
+                                maxLength="1"
+                                ref={inputRefs[index]}
+                                value={roomCode[index].toUpperCase()}
+                                className="bg-white border border-gray-300 rounded-lg px-1 py-1 focus:outline-none h-12 text-gray-800 placeholder-gray-500 text-base text-center caret-transparent"
+                                onChange={e => handleInputChange(index, e)}
+                                onKeyDown={e => handleKeyDown(index, e)}
+                            />
+                        ))}
+                        <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded mb-14 h-12 focus:outline-none flex items-center justify-center">
+                            <FaCheck className="text-2xl" />
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

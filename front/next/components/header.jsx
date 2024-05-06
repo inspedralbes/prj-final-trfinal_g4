@@ -9,7 +9,7 @@ const Header = () => {
     var tokenStore = useStore(state => state.token);
     var userStore = useStore(state => state.user);
 
-    if (tokenStore.empty && userStore.empty) {
+    if (tokenStore == null && userStore == null) {
         var token = tokenStore;
         var user = userStore;
     } else if (typeof localStorage != 'undefined') {    
@@ -21,8 +21,6 @@ const Header = () => {
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
-
-    console.log(token);
 
     const tancarSessio = () => {
         console.log(token);
