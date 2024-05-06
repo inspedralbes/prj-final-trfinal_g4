@@ -4,8 +4,6 @@ import Link from 'next/link';
 import useStore from '../src/store';
 import { logout } from '../services/communicationManager';
 
-
-
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     var token = localStorage.getItem('token');
@@ -18,7 +16,7 @@ const Header = () => {
 
     console.log(token);
 
-   const tancarSessio = () => {
+    const tancarSessio = () => {
         console.log(token);
         let tokenClean = token.replace(/^"|"$/g, '');
         logout(tokenClean).then((data) => {
