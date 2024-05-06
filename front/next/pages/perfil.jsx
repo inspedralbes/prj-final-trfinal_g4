@@ -51,23 +51,23 @@ const Perfil = () => {
             <Header />
             <div className="flex h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
                 {/* Información del perfil */}
-                <div className="bg-white flex justify-center items-center w-1/4">
-                    <div className="max-w-md">
-                        <div className="bg-white rounded-lg p-4 mb-4">
+                <div className="bg-blue-700 text-white flex flex-col justify-center items-center w-1/4 pt-20">
+                    {/* <div className="max-w-md">
+                        <div className="bg-white rounded-lg p-4 mb-4 shadow-md"> */}
                             <div className="mb-4 flex items-center">
-                                <label className="block text-gray-700 font-semibold w-1/3">Nombre:</label>
-                                <p className="text-gray-700">Nombre de usuario</p>
+                                <label className="block font-semibold w-1/3">Nombre:</label>
+                                <p>Nombre de usuario</p>
                             </div>
                             <div className="mb-4 flex items-center">
-                                <label className="block text-gray-700 font-semibold w-1/3">Imagen:</label>
-                                <img src="/path/to/user/image" alt="User" className="w-24 h-24 rounded-full" />
+                                <label className="block font-semibold w-1/3">Correo:</label>
+                                <p>correo@example.com</p>
                             </div>
                             <div className="mb-4 flex items-center">
-                                <label className="block text-gray-700 font-semibold w-1/3">Correo:</label>
-                                <p className="text-gray-700">correo@example.com</p>
+                                <label className="block font-semibold w-1/3">Imagen:</label>
+                                <img src="/images/random.jpg" alt="User" className="w-24 h-24 rounded-full" />
                             </div>
-                        </div>
-                    </div>
+                        {/* </div>
+                    </div> */}
                 </div>
 
                 {/* Formulario de editar perfil */}
