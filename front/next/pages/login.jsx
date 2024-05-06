@@ -4,6 +4,7 @@ import { login } from '../services/communicationManager';
 import { useRouter } from 'next/router';
 import { signIn, useSession } from 'next-auth/react';
 import useStore from '../src/store';
+import ErrorPopup from '../components/errorPopup';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -37,12 +38,21 @@ function Login() {
         localStorage.setItem('token', JSON.stringify(data.token));
         useStore.setState({ user: JSON.stringify(data.user) });
         useStore.setState({ token: JSON.stringify(data.token) });
-        router.push('/rooms');
+        if(data.token) {
+          console.log('que haces puto imbecil');
+          router.push('/rooms');
+        }
     }).catch(() => {
-        alert('Error logging in');
+        if (session.error) {
+          console.log(session.error);
+          <ErrorPopup message={session.error} />
+        }
     });
       
   };
+
+  
+
 
   async function loginGoogle() {
     await signIn('google');
