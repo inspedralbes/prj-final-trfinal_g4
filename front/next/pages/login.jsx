@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { login } from '../services/communicationManager';
 import { useRouter } from 'next/router';
 import { signIn, useSession } from 'next-auth/react';
+import useStore from '../src/store';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -13,9 +14,9 @@ function Login() {
   const token = localStorage.getItem('token');
 
 
+//GOOGLE LOGIN
   const session = useSession();
   // console.log(session);
-
   useEffect(() => {
     // Si hay una sesión activa, redirige al usuario a la página de /rooms
     if (session?.data) {
@@ -31,15 +32,15 @@ function Login() {
       password: password
     };
 
-    login(user)
-      .then((data) => {
-        localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('token', JSON.stringify(user.token));
+    login(user).then((data) => {
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('token', JSON.stringify(data.token));
+        useStore.setState({ user: JSON.stringify(data.user) });
+        useStore.setState({ token: JSON.stringify(data.token) });
         router.push('/rooms');
-      })
-      .catch(() => {
+    }).catch(() => {
         alert('Error logging in');
-      });
+    });
       
   };
 

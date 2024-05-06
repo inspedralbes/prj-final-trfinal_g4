@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState, use } from 'react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { FaCheck } from "react-icons/fa6";
+import Header from '../components/header';
 import useStore from '../src/store';
 import socket from '../services/sockets';
 
@@ -118,19 +119,9 @@ function Rooms() {
     }
 
     return (
+        <div>
+        <Header />
         <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
-            {
-                !session.data ? (
-                    <div className="absolute top-4 right-4">
-                        <button
-                            onClick={cerrarSesion}
-                            className="bg-red-500 hover:bg-red-700 text-white font-bold rounded-lg py-2 px-4"
-                        >
-                            Cerrar Sesión
-                        </button>
-                    </div>
-                ) : null
-            }
             <div className="flex w-4/12">
                 <div className="bg-white shadow-md rounded-lg p-4 flex-grow">
                     <div className="bg-gray-100 rounded-lg p-4">
@@ -171,6 +162,7 @@ function Rooms() {
                     </button>
                 </div>
             </div>
+        </div>
         </div>
     );
 }

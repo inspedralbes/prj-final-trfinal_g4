@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App\Http\Controllers;
@@ -85,6 +84,7 @@ class MapController extends Controller
         $mapToUpdate->name = $request->name;
         $mapToUpdate->description = $request->description;
         $img = $request->file('img');
+        dd($img);
         $path = $img->storeAs('/images',$img->getClientOriginalName());
         $mapToUpdate->image = $path;
         $map= $request->file('map');
