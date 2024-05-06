@@ -10,7 +10,7 @@ const Header = () => {
     };
 
     return (
-        <header className="bg-black bg-opacity-70 p-4 flex justify-between items-center">
+        <header className="bg-gray-900 p-4 flex justify-between items-center top-0 absolute w-full">
             <Link href="/">
                 <span className="text-white">Chromatic Bond</span>
             </Link>
