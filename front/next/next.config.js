@@ -6,8 +6,8 @@ const nextConfig = {
             aggregateTimeout: 300,
         }
         return config
-    },
-    output: 'export'
+    }
+    // output: 'export'
 };
 
 module.exports = nextConfig;

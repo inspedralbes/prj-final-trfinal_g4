@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, use } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
 import { FaCheck } from "react-icons/fa6";
@@ -33,8 +33,20 @@ function Rooms() {
         // Guardar información de la sala
         useStore.setState({ room: room });
         console.log('Try room join: ', room.id);
-        socket.emit('joinRoom', room.id);
-        window.location.href = '/lobby';
+        if ( useStore.getState().user == null ){
+            let userName = 'user' + Math.floor(Math.random() * 1000);
+            useStore.setState({ user: { name: userName } });
+            console.log('UserName: ', useStore.getState().user.name);
+            // socket.emit('joinRoom', room.id, userName);
+            // window.location.href = '/lobby';
+        } else {
+            let userName = useStore.getState().user.name || localStorage.getItem('user');
+            console.log('UserName: ', userName);
+            // socket.emit('joinRoom', room.id, userName);
+            // window.location.href = '/lobby';
+        }
+        // socket.emit('joinRoom', room.id);
+        // window.location.href = '/lobby';
     };
 
     // Codigo de la sala
@@ -62,8 +74,17 @@ function Rooms() {
                     // Guardar información de la sala
                     useStore.setState({ room: room });
                     console.log('Room found: ', room.id);
-                    socket.emit('joinRoom', room.id);
-                    window.location.href = '/lobby';
+                    if ( useStore.getState().user == null ){
+                        let userName = 'user' + Math.floor(Math.random() * 1000);
+                        useStore.setState({ user: { name: userName } });
+                        console.log('UserName: ', useStore.getState().user.name);
+                        // socket.emit('joinRoom', room.id, userName);
+                        // window.location.href = '/lobby';
+                    } else {
+                        console.log('UserName: ', useStore.getState().user.name);
+                        // socket.emit('joinRoom', room.id, useStore.getState().user.name);
+                        // window.location.href = '/lobby';
+                    }
                 }
             });
         }
@@ -119,7 +140,8 @@ function Rooms() {
     }
 
     return (
-        <div> <Header />
+        <div> 
+            <Header />
             <div className="flex flex-col md:flex-row justify-center items-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
                 <div className="flex flex-col w-full md:w-4/12 justify-center md:justify-start">
                     <div className="bg-white shadow-md rounded-lg p-4 flex-grow">
@@ -158,7 +180,7 @@ function Rooms() {
                                 onKeyDown={e => handleKeyDown(index, e)}
                             />
                         ))}
-                        <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded mb-14 h-12 focus:outline-none flex items-center justify-center">
+                        <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded mb-14 h-12 focus:outline-none flex items-center justify-center" onClick={() => addPrivateRoom()}>
                             <FaCheck className="text-2xl" />
                         </button>
                     </div>

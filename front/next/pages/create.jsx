@@ -47,6 +47,7 @@ const Create = () => {
             setSelectedImages([...selectedImages, imageSrc]);
         }
     };
+
     const handleCreateRoom = () => {
         // Crear un objeto con la información de la sala
         const roomInfo = {
@@ -67,9 +68,20 @@ const Create = () => {
                 console.log(accessCode);
                 roomInfo.accessCode = accessCode;
             }
-            socket.emit('createRoom', roomInfo);
-            setInfoRoom([...infoRoom, roomInfo]);
-            window.location.href = '/lobby';
+            if (useStore.getState().user == null) {
+                let userName = 'user' + Math.floor(Math.random() * 1000);
+                useStore.setState({ user: { name: userName } });
+                console.log('UserName: ', useStore.getState().user.name);
+                socket.emit('createRoom', roomInfo, userName);
+                setInfoRoom([...infoRoom, roomInfo]);
+                window.location.href = '/lobby';
+            } else {
+                let userName = useStore.getState().user.name || localStorage.getItem('user');
+                console.log('UserName: ', userName);
+                socket.emit('createRoom', roomInfo, userName);
+                setInfoRoom([...infoRoom, roomInfo]);
+                window.location.href = '/lobby';
+            }
         }
     };
 
