@@ -28,7 +28,6 @@ const Create = () => {
         console.log('Información de la sala guardada:', infoRoom);
     }, [infoRoom]);
 
-
     function generateAccessCode() {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         let accessCode = '';
@@ -50,7 +49,6 @@ const Create = () => {
             return;
         } else {
             let accessCode;
-
             if (!isPublic) {
                 do {
                     accessCode = generateAccessCode();
@@ -58,7 +56,6 @@ const Create = () => {
                 console.log(accessCode);
                 roomInfo.accessCode = accessCode;
             }
-
             socket.emit('createRoom', roomInfo);
             setInfoRoom([...infoRoom, roomInfo]);
             window.location.href = '/lobby';

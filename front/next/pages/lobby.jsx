@@ -3,7 +3,16 @@ import Loading from '../components/loading';
 import useStore from '../src/store';
 
 const Lobby = () => {
+    const [rooms, setRooms] = useState(useStore.getState().rooms);
     const [room, setRoom] = useState(useStore.getState().room);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            const roomsFromStore = useStore.getState().rooms;
+            setRooms(roomsFromStore);
+        }, 1000);
+        return () => clearInterval(intervalId);
+    }, []);
 
     const handleButtonClick = () => {
         console.log('Iniciar Joc');
