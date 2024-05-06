@@ -4,21 +4,25 @@ import Link from 'next/link';
 import useStore from '../src/store';
 import { logout } from '../services/communicationManager';
 
-
-
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    var token = localStorage.getItem('token');
-    var user = localStorage.getItem('user');
+    var tokenStore = useStore(state => state.token);
+    var userStore = useStore(state => state.user);
+
+    if (tokenStore == null && userStore == null) {
+        var token = tokenStore;
+        var user = userStore;
+    } else if (typeof localStorage != 'undefined') {    
+        var token = localStorage.getItem('token');
+        var user = localStorage.getItem('user');
+    }
 
     let content;
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
 
-    console.log(token);
-
-   const tancarSessio = () => {
+    const tancarSessio = () => {
         console.log(token);
         let tokenClean = token.replace(/^"|"$/g, '');
         logout(tokenClean).then((data) => {
@@ -32,8 +36,6 @@ const Header = () => {
         });
 
     };
-
-    console.log('me cago en la puta madre de Fabio')
     
     if (token) {
         useStore.setState({ token: token });
