@@ -35,7 +35,8 @@ io.on('connection', (socket) => {
             users: [socket.id, userAdmin],
             id: id,
             accessCode: addRoom.accessCode,
-            accesible: true
+            accesible: true,
+            status: 'Waiting'
         }
         rooms.push(newRoom);
         console.log(rooms);
@@ -56,6 +57,7 @@ io.on('connection', (socket) => {
             let newUser = [socket.id, userName];
             findRoom.users.push(newUser);
             findRoom.accesible = false;
+            findRoom.status = 'inLobby';
             console.log(findRoom);
             socket.join(findRoom);
         }

@@ -134,7 +134,7 @@ function Rooms() {
     function cerrarSesion() {
         signOut();
         if (!session.data) {
-            window.location.href = '/';
+            // window.location.href = '/';
         }
         console.log(session.data);
     }
