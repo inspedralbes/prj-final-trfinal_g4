@@ -12,8 +12,9 @@ const IndexPage = () => {
 
       </div>
       <div className="flex-1 flex flex-col justify-center items-center">
-        <h1 className="text-4xl font-bold text-white mb-8">CHROMATIC BOND</h1>
+        <h1 className="text-4xl font-bold text-white mb-8">CHROMATIC BONDssss</h1>
         <Link href="/rooms">
+          <button className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">JUGAR</button>
           <button className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">JUGAR</button>
         </Link>
       </div>
