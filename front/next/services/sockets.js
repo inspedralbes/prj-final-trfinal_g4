@@ -1,15 +1,14 @@
 import io from 'socket.io-client';
-import { useState, useEffect } from 'react';
+import useStore from '../src/store';
 
 const url = 'http://localhost:3727';
 // const url = 'http://'; // Add production url here
 
 const socket = io(url);
 
-let state;
-let effect;
+//Recibir todas las rooms que hay en socket y actualizar el estate
+socket.on('allRooms', (rooms) => {
+    useStore.setState({ rooms });
+});
 
-setTimeout(() => {
-    state = useState;
-    effect = useEffect;
-}, 500);
+export default socket;

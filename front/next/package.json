@@ -14,14 +14,17 @@
     "@vercel/postgres": "^0.5.0",
     "clsx": "^2.0.0",
     "next": "^14.0.2",
+    "phaser": "3.51",
     "next-auth": "^4.24.7",
     "phaser": "3.51",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^5.2.0",
     "react-router-dom": "^6.22.3",
     "socket.io-client": "^4.7.5",
     "typescript": "5.2.2",
-    "zod": "^3.22.2"
+    "zod": "^3.22.2",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.1",
