@@ -300,6 +300,7 @@ export default class GameHome extends Phaser.Scene {
                     platform.posX = platform.x;
                     platform.posY = platform.y;
                     platform.movement = findMovementParam(objData.properties);
+                    console.log("move up", platform.movement);
                     platform.body.allowGravity = false;
 
 
@@ -409,8 +410,9 @@ export default class GameHome extends Phaser.Scene {
                                 platformVelocityY += 32;
                             }
                         }
-                        let hasMovedEnough = Math.abs(platform.body.x) >= platform.body.x + platform.movement || Math.abs(platform.body.y) >= platform.body.y + platform.movement;
+                        let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
                         if (hasMovedEnough && platformVelocityY < 0) {
+                            console.log(platform.movement)
                             platformVelocityY = 0;
                         }
                         platform.body.setVelocityY(platformVelocityY);
@@ -424,7 +426,7 @@ export default class GameHome extends Phaser.Scene {
                                 }
                             }
 
-                            let hasMovedEnough = Math.abs(platform.body.x) >= platform.body.x + platform.movement || Math.abs(platform.body.y) >= platform.body.y + platform.movement;
+                            let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
                             if (hasMovedEnough && platformVelocityY < 0) {
                                 platformVelocityY = 0;
                             }
@@ -437,7 +439,7 @@ export default class GameHome extends Phaser.Scene {
                                         platformVelocityY += 32;
                                     }
                                 }
-                                let hasMovedEnough = Math.abs(platform.body.x) >= platform.body.x + platform.movement || Math.abs(platform.body.y) >= platform.body.y + platform.movement;
+                                let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
                                 if (hasMovedEnough && platformVelocityY < 0) {
                                     platformVelocityY = 0;
                                 }
@@ -451,7 +453,7 @@ export default class GameHome extends Phaser.Scene {
                                             platformVelocityY += 32;
                                         }
                                     }
-                                    let hasMovedEnough = Math.abs(platform.body.x) >= platform.body.x + platform.movement || Math.abs(platform.body.y) >= platform.body.y + platform.movement;
+                                    let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
                                     if (hasMovedEnough && platformVelocityY < 0) {
                                         platformVelocityY = 0;
                                     }

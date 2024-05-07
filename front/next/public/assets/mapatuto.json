@@ -1075,7 +1075,7 @@
                         {
                          "name":"movement",
                          "type":"float",
-                         "value":300
+                         "value":200
                         }],
                  "rotation":0,
                  "type":"",
@@ -1103,7 +1103,7 @@
                         {
                          "name":"movement",
                          "type":"float",
-                         "value":20
+                         "value":100
                         }],
                  "rotation":0,
                  "type":"",
@@ -1186,7 +1186,7 @@
                         {
                          "name":"movement",
                          "type":"float",
-                         "value":300
+                         "value":100
                         }],
                  "rotation":0,
                  "type":"",
