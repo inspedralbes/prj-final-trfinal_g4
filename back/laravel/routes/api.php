@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\SaveController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportedMapsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,12 @@ Route::get('/allUsers', [UserController::class, 'showAllUsers']);
 Route::post('/users', [UserController::class, 'store']);
 Route::put('/users/{user}', [UserController::class, 'update']);
 Route::delete('/users/{user}', [UserController::class, 'destroy']);
+
+Route::get('/reportedMaps', [ReportedMapsController::class, 'index']);
+Route::get('/reportedMaps/{reportedMap} ', [ReportedMapsController::class, 'show']);
+Route::post('/reportedMaps', [ReportedMapsController::class, 'store']);
+Route::delete('/reportedMaps/{reportedMap}', [ReportedMapsController::class, 'destroy']);
+Route::get('/reportedMapsByUser/{user}', [ReportedMapsController::class, 'getReportedMapsByUser']);
 
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'store']);

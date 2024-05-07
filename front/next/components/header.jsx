@@ -4,8 +4,6 @@ import Link from 'next/link';
 import useStore from '../src/store';
 import { logout } from '../services/communicationManager';
 
-
-
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     var token = localStorage.getItem('token');

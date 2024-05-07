@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('saves', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();;
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->enum('state', array(0,1,2,3));
             $table->foreignId('FirstMap')->constrained('maps')->onDelete('cascade');
             $table->foreignId('SecondMap')->constrained('maps')->onDelete('cascade');
