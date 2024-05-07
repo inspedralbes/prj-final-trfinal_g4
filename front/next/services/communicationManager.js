@@ -1,4 +1,4 @@
-const url = 'http://localhost:8000/api/'; 
+const url = 'http://localhost:8000/api/';
 
 export function login(user) {
     return new Promise((resolve, reject) => {
@@ -9,15 +9,21 @@ export function login(user) {
             },
             body: JSON.stringify(user)
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => {
+                if (response.status == 200) {
+                    return response.json();
+                } else {
+                    reject('Error al iniciar sesión: ' + response.status)
+                }
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
-  
+
 }
 
 export function register(user) {
@@ -30,13 +36,19 @@ export function register(user) {
             },
             body: JSON.stringify(user)
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    reject('Error al registrar usuario: ' + response.status)
+                }
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
@@ -50,18 +62,18 @@ export function logout(token) {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
 // fetch eliminar usuario
-export function destroyUser(user){
+export function destroyUser(user) {
     return new Promise((resolve, reject) => {
         fetch(`${url}users/${user}`, {
             method: 'DELETE',
@@ -71,17 +83,17 @@ export function destroyUser(user){
             },
             body: JSON.stringify(user)
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
-export function updateUser(user){
+export function updateUser(user) {
     return new Promise((resolve, reject) => {
         fetch(`${url}users/`, {
             method: 'PUT',
@@ -91,13 +103,13 @@ export function updateUser(user){
             },
             body: JSON.stringify(user)
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
@@ -109,14 +121,19 @@ export function getUsers() {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user.token}`
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+        }).then(response => {
+                if (response.status == 200) {
+                    return response.json();
+                } else {
+                    reject('Error al obtener usuarios: ' + response.status)
+                }
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
@@ -129,13 +146,13 @@ export function getUser(user) {
                 'Authorization': `Bearer ${user.token}`
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
@@ -149,13 +166,13 @@ export function createUser(user) {
             },
             body: JSON.stringify(user)
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
@@ -169,13 +186,13 @@ export function createMap(mapData) {
             },
             body: JSON.stringify(mapData)
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
@@ -189,13 +206,13 @@ export function getMaps() {
                 'Authorization': `Bearer ${user.token}`
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
@@ -209,13 +226,13 @@ export function updateMap(mapData) {
             },
             body: JSON.stringify(mapData)
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
@@ -229,13 +246,13 @@ export function destroyMap(mapData) {
             },
             body: JSON.stringify(mapData)
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 

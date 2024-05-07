@@ -15,17 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return response()->json(User::all());
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json(User::all(), 200);
     }
 
     /**
@@ -46,8 +36,7 @@ class UserController extends Controller
                 'message' => 'User created!',
                 'user' => $newUser->name,
                 'token' => $newUser->createToken('AppToken')->plainTextToken
-
-            ]
+            ], 200
         );
     }
     public function login(Request $request){
@@ -55,13 +44,13 @@ class UserController extends Controller
         if(!$user || !Hash::check($request->password, $user->password)){
             return response()->json([
                 'message' => 'Bad credentials'
-            ]);
+            ],401);
         }
         return response()->json([
             'message' => 'Logged in!',
             'user' => $user->name,
             'token' => $user->createToken('AppToken')->plainTextToken
-        ]);
+        ], 200);
 
     }
 
@@ -71,6 +60,7 @@ class UserController extends Controller
             'message' => 'Logged out!'
         ]);
     }
+    
     /**
      * Display the specified resource.
      *
@@ -81,7 +71,6 @@ class UserController extends Controller
     {
         return response()->json($user);
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -99,7 +88,7 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'User updated!'
-        ]);
+        ],200);
     }
 
     /**
