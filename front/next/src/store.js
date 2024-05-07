@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 
 const useStore = create((set) => ({
-    user: [],
+    user: Array,
     setUser: (user) => set({ user }),
-    token: [],
+    token: String,
     setToken: (token) => set({ token }),
     rooms: [],
     setRooms: (rooms) => set({ rooms }),

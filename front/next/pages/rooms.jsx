@@ -45,8 +45,6 @@ function Rooms() {
             // socket.emit('joinRoom', room.id, userName);
             // window.location.href = '/lobby';
         }
-        // socket.emit('joinRoom', room.id);
-        // window.location.href = '/lobby';
     };
 
     // Codigo de la sala
