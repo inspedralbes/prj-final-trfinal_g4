@@ -1,4 +1,12 @@
 { "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"json",
+         "target":"..\/..\/..\/..\/..\/..\/chromatic-bond-v13\/prj-final-trfinal_g4\/front\/next\/public\/assets\/mapatuto.json"
+        }
+    },
  "height":52,
  "infinite":true,
  "layers":[
@@ -147,7 +155,7 @@
                     0, 0, 0, 0, 0, 0, 49, 0, 29, 30, 31, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 7, 8, 8, 8, 8, 9, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 51, 52, 52, 52, 52, 53, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 995, 31, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 998, 31, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 7, 8, 8, 8, 30, 31, 41, 42, 0, 0,
                     0, 0, 0, 0, 0, 0, 29, 30, 30, 30, 30, 31, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 29, 30, 30, 30, 7, 8, 9, 0, 0, 0,
@@ -1113,7 +1121,7 @@
                  "y":169.060606060606
                 }, 
                 {
-                 "height":426,
+                 "height":298,
                  "id":24,
                  "name":"death",
                  "rotation":0,
@@ -1121,40 +1129,18 @@
                  "visible":true,
                  "width":813.333,
                  "x":1746,
-                 "y":592.667
+                 "y":720.667
                 }, 
                 {
-                 "height":179.333,
-                 "id":27,
-                 "name":"death",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":148.667,
-                 "x":1595.333,
-                 "y":838.667
-                }, 
-                {
-                 "height":684,
+                 "height":574,
                  "id":25,
                  "name":"death",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":1653.82,
-                 "x":-60.485,
-                 "y":333.3333
-                }, 
-                {
-                 "height":101,
-                 "id":28,
-                 "name":"death",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":742.818,
-                 "x":-59.485,
-                 "y":231.3333
+                 "width":1733.82,
+                 "x":-140.485,
+                 "y":443.3333
                 }, 
                 {
                  "height":6.75758,
@@ -1233,8 +1219,7 @@
                  "width":14.375,
                  "x":1536.75,
                  "y":48.5
-                },
-            
+                }, 
                 {
                  "height":8,
                  "id":38,
@@ -1256,7 +1241,8 @@
                  "width":17,
                  "x":2639.67,
                  "y":384.061
-                }, 
+                },
+            
                 {
                  "height":16,
                  "id":43,
@@ -1317,7 +1303,7 @@
         {
          "columns":22,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/..\/..\/..\/..\/Desktop\/tilesets\/Free\/Terrain\/White-terrain.png",
+         "image":"White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
@@ -2324,7 +2310,7 @@
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":109,
+         "tilecount":242,
          "tileheight":16,
          "tiles":[
                 {
@@ -3318,14 +3304,14 @@
         }, 
         {
          "columns":22,
-         "firstgid":484,
+         "firstgid":485,
          "image":"..\/..\/..\/..\/..\/..\/prj-final-trfinal_g4\/front\/public\/assets\/tiled\/tilesets\/White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":109,
+         "tilecount":242,
          "tileheight":16,
          "tiles":[
                 {
@@ -4319,14 +4305,14 @@
         }, 
         {
          "columns":22,
-         "firstgid":725,
+         "firstgid":727,
          "image":"..\/..\/..\/..\/..\/..\/prj-final-trfinal_g4\/front\/public\/assets\/tiled\/tilesets\/White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":109,
+         "tilecount":242,
          "tileheight":16,
          "tiles":[
                 {
@@ -5320,14 +5306,14 @@
         }, 
         {
          "columns":22,
-         "firstgid":966,
+         "firstgid":969,
          "image":"..\/..\/..\/..\/..\/..\/prj-final-trfinal_g4\/front\/public\/assets\/tiled\/tilesets\/White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":109,
+         "tilecount":242,
          "tileheight":16,
          "tiles":[
                 {
@@ -6321,14 +6307,14 @@
         }, 
         {
          "columns":22,
-         "firstgid":1207,
+         "firstgid":1211,
          "image":"..\/..\/..\/..\/..\/..\/prj-final-trfinal_g4\/front\/public\/assets\/tiled\/tilesets\/White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":109,
+         "tilecount":242,
          "tileheight":16,
          "tiles":[
                 {

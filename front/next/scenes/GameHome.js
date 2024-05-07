@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
-// const { Body, Bodies } = require('phaser');
-// const { GameObjects } = require('phaser');
+import { set } from 'zod';
 
 export default class GameHome extends Phaser.Scene {
     activePointer;
@@ -13,6 +12,10 @@ export default class GameHome extends Phaser.Scene {
     endGame;
     player = 1;
     buttons = [];
+    spawns = [];
+    death = [];
+    animationPlaying = false;
+
     constructor() {
         super('gamehome');
     }
@@ -25,7 +28,6 @@ export default class GameHome extends Phaser.Scene {
     }
 
     create() {
-        // this.physics.world.setBounds(0, 0, 800, 600);
 
         const map = this.make.tilemap({ key: 'mapa' });
         const tileset = map.addTilesetImage('tilesetWhite', 'tileset');
@@ -78,6 +80,7 @@ export default class GameHome extends Phaser.Scene {
                 }
             }
         }
+
         gray.setCollisionByProperty({ semicollides: true });
         white.setCollisionByProperty({ semicollides: true });
         black.setCollisionByProperty({ semicollides: true });
@@ -106,21 +109,32 @@ export default class GameHome extends Phaser.Scene {
             } else if (name.startsWith('box')) {
                 ogName = name;
                 name = 'box';
+            } else if (name.startsWith('spawn')) {
+
             }
+
             switch (name) {
                 case 'spawn-1':
                     {
-
                         this.character1 = this.physics.add.sprite(x, y, 'character1-idle');
                         console.log(this.character1);
                         const w = this.character1.width;
                         const h = this.character1.height;
+
+                        const spawn1X = x;
+                        const spawn1Y = y;
+
                         this.character1.body.tint = 0x303030;
                         this.physics.add.existing(this.character1);
 
-                        this.character1.body.setSize(w * 0.50, h * 0.90);
-
                         this.character1.setPosition(x, y);
+
+                        this.anims.create({
+                            key: 'death',
+                            frames: this.anims.generateFrameNames('death', { start: 6, end: 0, prefix: 'tile00', suffix: '.png' }),
+                            frameRate: 10,
+                            repeat: 0,
+                        });
 
                         this.anims.create({
                             key: 'idle',
@@ -144,7 +158,13 @@ export default class GameHome extends Phaser.Scene {
                         this.character1.setPushable(false);
                         this.cameras.main.startFollow(this.character1);
                         this.cameras.main.setZoom(2);
+                        this.character1.setPushable(false);
+
+                        this.spawns.push({ spawn1X, spawn1Y });
+                        this.character1.body.setSize(w * 0.50, h * 0.90);
+                        console.log("1", this.spawns);
                         break;
+
                     }
                 case 'spawn-2':
                     {
@@ -155,7 +175,8 @@ export default class GameHome extends Phaser.Scene {
                         const h = this.character2.height;
                         this.character2.body.tint = 0x303030;
                         this.physics.add.existing(this.character2);
-
+                        const spawn2X = x;
+                        const spawn2Y = y;
                         this.character2.body.setSize(w * 0.50, h * 0.90);
 
                         this.character2.setPosition(x, y);
@@ -173,6 +194,7 @@ export default class GameHome extends Phaser.Scene {
                             frameRate: 10,
                             repeat: -1
                         })
+
                         this.physics.add.collider(this.character2, black);
 
 
@@ -182,6 +204,9 @@ export default class GameHome extends Phaser.Scene {
 
                         this.character2.setPushable(false);
                         this.cameras.main.setZoom(2);
+
+                        this.spawns.push({ spawn2X, spawn2Y });
+                        console.log("1, 2", this.spawns);
                         break;
                     };
 
@@ -215,7 +240,6 @@ export default class GameHome extends Phaser.Scene {
 
                                     message.setDepth(1);
                                     background.setDepth(0);
-
 
                                 });
 
@@ -308,29 +332,24 @@ export default class GameHome extends Phaser.Scene {
                     platform.setInteractive();
                     platform.name = ogName;
 
-                    // this.physics.add.collider(platform, playerPlatformCollision);
-
-                    // this.physics.add.collider(this.character2, platform, playerPlatformCollision);
-
                     this.platforms.push(platform);
 
                     break;
                 }
-                case 'box': {
-                    console.log('box');
-                    let box = this.physics.add.sprite(x, y, 'box');
-                    const w = box.width;
-                    const h = box.height;
-                    this.physics.add.existing(box);
-                    box.body.setSize(w * 0.50, h * 0.90);
-                    box.setPosition(x, y);
-                    box.setInteractive();
-                    box.name = ogName;
-                    break;
+
+                case 'death':
+                    {
+                        const deathZone = this.add.zone(x, y, width, height);
+                        deathZone.setOrigin(0).setAlpha(0);
+
+                        this.physics.add.existing(deathZone);
+                        this.physics.world.enable(deathZone);
+
+                        deathZone.body.setAllowGravity(false);
+
+                        this.death.push(deathZone);
+                    }
                 }
-
-
-            }
         });
         window.platforms = this.platforms;
         this.whiteView = white;
@@ -380,6 +399,30 @@ export default class GameHome extends Phaser.Scene {
         this.physics.add.collider(this.character1, this.character2);
         this.physics.add.collider(this.character2, this.character1);
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        window.character1 = this.character1;
+        this.death.forEach(death => {
+            this.physics.add.overlap(death, this.character1, (death, character1) => {
+                this.animationPlaying = true;
+                this.character1.anims.play('death', true);
+                this.character2.anims.play('death', true);
+                setTimeout(() => {
+                    this.character1.setPosition(this.spawns[0].spawn1X, this.spawns[0].spawn1Y);
+                    this.character2.setPosition(this.spawns[1].spawn2X, this.spawns[1].spawn2Y);
+                    this.animationPlaying = false;
+                }, 1000);
+            })
+            this.physics.add.overlap(death, this.character2, (death, character2) => {
+                this.animationPlaying = true;
+                this.character1.anims.play('death', true);
+                this.character2.anims.play('death', true);
+                setTimeout(() => {
+                    this.character1.setPosition(this.spawns[0].spawn1X, this.spawns[0].spawn1Y);
+                    this.character2.setPosition(this.spawns[1].spawn2X, this.spawns[1].spawn2Y);
+                    this.animationPlaying = false;
+                }, 1000);
+            })
+        });
+
     }
 
     update() {
@@ -388,7 +431,6 @@ export default class GameHome extends Phaser.Scene {
             const isPlayer1Colliding = this.physics.overlap(button, this.character1);
             const isPlayer2Colliding = this.physics.overlap(button, this.character2);
 
-            // Update platform velocity based on colliding player and button content
             if (button.associated.length > 0) {
 
                 button.associated.forEach(platform => {
@@ -400,9 +442,10 @@ export default class GameHome extends Phaser.Scene {
                             platformVelocityY -= 32;
                         }
                     }
-
-
-
+                    const hasMovedEnough = Math.abs(platform.body.x) >= platform.body.x + platform.movement || Math.abs(platform.body.y) >= platform.body.y + platform.movement;
+                    if (hasMovedEnough && platformVelocityY < 0) {
+                        platformVelocityY = 0;
+                    }
                     if (platform.name.includes('up')) {
                         if (platform.y < platform.posY && platformVelocityY == 0) {
                             platformVelocityY = 32;
@@ -462,12 +505,7 @@ export default class GameHome extends Phaser.Scene {
                             }
                         }
                     }
-
-
-
-
                 });
-
 
             }
         });
@@ -497,7 +535,6 @@ export default class GameHome extends Phaser.Scene {
 
                 this.character1.setVelocityX(200);
 
-
                 this.character1.anims.play('walk', true);
 
             } else {
@@ -525,7 +562,6 @@ export default class GameHome extends Phaser.Scene {
 
                 this.character2.setVelocityX(200);
 
-
                 this.character2.anims.play('walk', true);
 
             } else {
@@ -537,13 +573,9 @@ export default class GameHome extends Phaser.Scene {
                 console.log('jump');
                 this.character2.setVelocityY(-280);
 
-
-
             }
         }
         changed = false;
-
-
 
     }
 
