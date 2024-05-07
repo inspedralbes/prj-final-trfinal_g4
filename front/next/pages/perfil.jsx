@@ -51,7 +51,7 @@ const Perfil = () => {
             <Header />
             <div className="flex h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
                 {/* Información del perfil */}
-                <div className="bg-blue-700 text-white flex flex-col justify-center items-center w-1/5 pt-20">
+                <div className="bg-gray-700 text-white flex flex-col justify-center items-center w-1/5 pt-20">
                     <div className="mb-8 flex flex-col items-center text-xl w-full">
                         <img src="/images/random.jpg" alt="User" className="w-36 h-36 rounded-full" />
                     </div>
