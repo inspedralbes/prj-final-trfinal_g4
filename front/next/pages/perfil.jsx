@@ -3,6 +3,7 @@ import Header from '../components/header';
 
 const Perfil = () => {
     const [newName, setNewName] = useState('');
+    const [newUsername, setNewUsername] = useState('');
     const [newEmail, setNewEmail] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -10,6 +11,10 @@ const Perfil = () => {
 
     const handleNameChange = (event) => {
         setNewName(event.target.value);
+    };
+
+    const handleUsernameChange = (event) => {
+        setNewUsername(event.target.value);
     };
 
     const handleEmailChange = (event) => {
@@ -33,6 +38,7 @@ const Perfil = () => {
 
         // Aquí puedes manejar los datos del formulario, como enviarlos al servidor
         console.log('Nuevo nombre:', newName);
+        console.log('Nuevo username:', newUsername);
         console.log('Nuevo email:', newEmail);
         console.log('Nueva contraseña:', newPassword);
         console.log('Confirmar nueva contraseña:', confirmNewPassword);
@@ -40,6 +46,7 @@ const Perfil = () => {
 
         // Limpia el formulario después de enviar
         setNewName('');
+        setNewUsername('');
         setNewEmail('');
         setNewPassword('');
         setConfirmNewPassword('');
@@ -75,13 +82,23 @@ const Perfil = () => {
                         <h2 className="text-3xl font-bold mb-8 text-gray-800">Editar perfil</h2>
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="mb-6">
-                                <label htmlFor="newName" className="block text-gray-700 font-semibold mb-2">Nuevo username:</label>
+                                <label htmlFor="newName" className="block text-gray-700 font-semibold mb-2">Nuevo nombre:</label>
                                 <input
                                     id="newName"
                                     type="text"
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
                                     value={newName}
                                     onChange={handleNameChange}
+                                />
+                            </div>
+                            <div className="mb-6">
+                                <label htmlFor="newUsername" className="block text-gray-700 font-semibold mb-2">Nuevo username:</label>
+                                <input
+                                    id="newUsername"
+                                    type="text"
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
+                                    value={newUsername}
+                                    onChange={handleUsernameChange}
                                 />
                             </div>
                             <div className="mb-6">
