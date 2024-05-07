@@ -1,4 +1,3 @@
-// Create.js
 import React, { useState, useEffect } from 'react';
 import Fases from '../components/fases';
 import Header from '../components/header';
@@ -112,11 +111,9 @@ const Create = () => {
                             <option value="Modo 3">Random</option>
                         </select>
                     </div>
-                    <Link href="/lobby">
-                        <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
-                            Crear Sala
-                        </button>
-                    </Link>
+                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
+                        Crear Sala
+                    </button>
                 </div>
                 {/* Parte derecha con las imágenes */}
                 <div className="w-full sm:w-3/4 flex flex-col sm:flex-row items-center justify-center">
@@ -159,11 +156,10 @@ const Create = () => {
 const CustomImageWithOverlay = ({ imageSrc, altText, onClick, isSelected, children }) => {
     return (
         <div className="relative flex-shrink-0 mb-4 sm:mb-0 sm:mr-4 sm:mx-3">
-            <img src={imageSrc} alt={altText} className={`h-60 sm:h-72 w-80 sm:w-96 my-4 bg-zinc-400 ${isSelected ? 'border-4 border-blue-500' : ''}`} />
+            <img src={imageSrc} alt={altText} className={`h-60 sm:h-72 w-80 sm:w-96 my-4 bg-zinc-400 ${isSelected ? 'border-4 border-blue-500' : ''}`} onClick={onClick} />
             {children}
         </div>
     );
 };
 
 export default Create;
-
