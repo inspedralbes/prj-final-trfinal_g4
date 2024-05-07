@@ -51,23 +51,22 @@ const Perfil = () => {
             <Header />
             <div className="flex h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
                 {/* Información del perfil */}
-                <div className="bg-blue-700 text-white flex flex-col justify-center items-center w-1/4 pt-20">
-                    {/* <div className="max-w-md">
-                        <div className="bg-white rounded-lg p-4 mb-4 shadow-md"> */}
-                            <div className="mb-4 flex items-center">
-                                <label className="block font-semibold w-1/3">Nombre:</label>
-                                <p>Nombre de usuario</p>
-                            </div>
-                            <div className="mb-4 flex items-center">
-                                <label className="block font-semibold w-1/3">Correo:</label>
-                                <p>correo@example.com</p>
-                            </div>
-                            <div className="mb-4 flex items-center">
-                                <label className="block font-semibold w-1/3">Imagen:</label>
-                                <img src="/images/random.jpg" alt="User" className="w-24 h-24 rounded-full" />
-                            </div>
-                        {/* </div>
-                    </div> */}
+                <div className="bg-blue-700 text-white flex flex-col justify-center items-center w-1/5 pt-20">
+                    <div className="mb-8 flex flex-col items-center text-xl w-full">
+                        <img src="/images/random.jpg" alt="User" className="w-36 h-36 rounded-full" />
+                    </div>
+                    <div className="mb-8 flex items-center text-xl w-full">
+                        <label className="block font-semibold w-1/3 -mr-16 ml-16">Nom: </label>
+                        <p className="inline-block whitespace-nowrap">Nom</p>
+                    </div>
+                    <div className="mb-8 flex items-center text-xl w-full">
+                        <label className="block font-semibold w-1/3 -mr-3 ml-16">Username: </label>
+                        <p className="inline-block whitespace-nowrap">Nom d'usuari</p>
+                    </div>
+                    <div className="mb-8 flex items-center text-xl w-full">
+                        <label className="block font-semibold w-1/3 -mr-16 ml-16">Correu: </label>
+                        <p className="inline-block whitespace-nowrap ml-4">correu@example.com</p>
+                    </div>
                 </div>
 
                 {/* Formulario de editar perfil */}
@@ -75,8 +74,8 @@ const Perfil = () => {
                     <div className="w-4/6 max-w-xl bg-gray-100 rounded-lg shadow-lg p-8 mr-10"> {/* Ajuste de clases para hacerlo más ancho y agregar margen */}
                         <h2 className="text-3xl font-bold mb-8 text-gray-800">Editar perfil</h2>
                         <form onSubmit={handleSubmit} className="space-y-6">
-                            <div>
-                                <label htmlFor="newName" className="block text-gray-700 font-semibold mb-2">Nuevo nombre:</label>
+                            <div className="mb-6">
+                                <label htmlFor="newName" className="block text-gray-700 font-semibold mb-2">Nuevo username:</label>
                                 <input
                                     id="newName"
                                     type="text"
@@ -85,7 +84,7 @@ const Perfil = () => {
                                     onChange={handleNameChange}
                                 />
                             </div>
-                            <div>
+                            <div className="mb-6">
                                 <label htmlFor="newEmail" className="block text-gray-700 font-semibold mb-2">Nuevo correo:</label>
                                 <input
                                     id="newEmail"
@@ -95,7 +94,7 @@ const Perfil = () => {
                                     onChange={handleEmailChange}
                                 />
                             </div>
-                            <div>
+                            <div className="mb-6">
                                 <label htmlFor="newPassword" className="block text-gray-700 font-semibold mb-2">Nueva contraseña:</label>
                                 <input
                                     id="newPassword"
@@ -105,7 +104,7 @@ const Perfil = () => {
                                     onChange={handleNewPasswordChange}
                                 />
                             </div>
-                            <div>
+                            <div className="mb-6">
                                 <label htmlFor="confirmNewPassword" className="block text-gray-700 font-semibold mb-2">Confirmar nueva contraseña:</label>
                                 <input
                                     id="confirmNewPassword"
@@ -115,7 +114,7 @@ const Perfil = () => {
                                     onChange={handleConfirmNewPasswordChange}
                                 />
                             </div>
-                            <div>
+                            <div className="mb-6">
                                 <label htmlFor="newImage" className="block text-gray-700 font-semibold mb-2">Nueva imagen:</label>
                                 <input
                                     id="newImage"
