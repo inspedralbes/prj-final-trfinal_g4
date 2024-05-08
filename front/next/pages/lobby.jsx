@@ -2,11 +2,16 @@ import React, { useState, useEffect, useRef, use } from 'react';
 import Loading from '../components/loading';
 import Header from '../components/header';
 import useStore from '../src/store';
-
+import Link from 'next/link';
+// import { Socket } from 'dgram';
+import socket from '../services/sockets';
 const Lobby = () => {
     const [rooms, setRooms] = useState(useStore.getState().rooms);
     const [room, setRoom] = useState(useStore.getState().room);
-
+    const emitStart= ()=> {
+        console.log('Emitiendo startGame');
+        socket.emit('startGame', room);
+    }
     useEffect(() => {
         const intervalId = setInterval(() => {
             const roomsFromStore = useStore.getState().rooms;
@@ -15,10 +20,8 @@ const Lobby = () => {
         return () => clearInterval(intervalId);
     }, []);
 
-    const handleButtonClick = () => {
-        console.log('Iniciar Joc');
-        console.log(`Enviar a /game als usuers de la room: ${room}`);
-    };
+     
+  
 
     return (
         <div>
@@ -139,9 +142,11 @@ const Lobby = () => {
                         </div>
                     </div>
                 </div>
-                {/* <button className=`text-white text-2xl font-bold py-2 px-4 w-40 rounded mt-5 bg-red-500 hover:bg-red-700` onClick={handleButtonClick}>
-                    Iniciar Joc
-                </button> */}
+       
+                    <button className="text-white text-2xl font-bold py-2 px-4 w-40 rounded mt-5 bg-red-500 hover:bg-red-700" onClick={emitStart}>
+                        Iniciar Joc
+                    </button>
+
             </div>
         </div>
     );

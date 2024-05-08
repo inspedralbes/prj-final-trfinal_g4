@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import { set } from 'zod';
+import  useStore  from '../src/store';
+import socket from '../services/sockets';
 
 export default class GameHome extends Phaser.Scene {
     activePointer;
@@ -10,7 +12,7 @@ export default class GameHome extends Phaser.Scene {
     blackView;
     grayView;
     endGame;
-    player = 1;
+    player = 1;    
     buttons = [];
     spawns = [];
     death = [];
@@ -31,7 +33,7 @@ export default class GameHome extends Phaser.Scene {
 
         const map = this.make.tilemap({ key: 'mapa' });
         const tileset = map.addTilesetImage('tilesetWhite', 'tileset');
-
+        
         const gray = map.createLayer('gray', tileset);
 
         const rows = gray.height;
@@ -381,7 +383,13 @@ export default class GameHome extends Phaser.Scene {
                 this.physics.add.collider(this.character2, platform);
             }
         });
-
+        function selectPlayer() {
+            if(useStore.getState().playerData.id == useStore.getState().gameData.players[0].id){
+                return 1;
+            } else {
+                return 2;
+            }
+        }
         function findMovementParam(data) {
             let returndata;
             data.forEach(element => {
@@ -422,7 +430,7 @@ export default class GameHome extends Phaser.Scene {
                 }, 1000);
             })
         });
-
+        this.player=selectPlayer();
     }
 
     update() {
@@ -510,19 +518,12 @@ export default class GameHome extends Phaser.Scene {
             }
         });
 
-        let changed = false;
-        if (this.activePointer.isDown) {
-            changed = true;
-        }
-        if (this.activePointer.up && changed) {
-            this.player % 2 == 0 ? this.player = 1 : this.player = 2;
-            changed = false;
-        }
         
         if (this.player == 1) {
             this.whiteView.setAlpha(1);
             this.blackView.setAlpha(0);
             this.grayView.setAlpha(1);
+            this.cameras.main.setBackgroundColor("#ffffff");
             this.cameras.main.startFollow(this.character1);
             if (this.cursors.left.isDown) {
                 this.character1.flipX = true;
@@ -551,6 +552,7 @@ export default class GameHome extends Phaser.Scene {
             this.whiteView.setAlpha(0);
             this.blackView.setAlpha(1);
             this.grayView.setAlpha(1);
+            this.cameras.main.setBackgroundColor("#303030");
             if (this.cursors.left.isDown) {
                 this.character2.flipX = true;
 
@@ -575,7 +577,7 @@ export default class GameHome extends Phaser.Scene {
 
             }
         }
-        changed = false;
+
 
     }
 

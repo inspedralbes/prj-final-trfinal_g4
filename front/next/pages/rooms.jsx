@@ -5,8 +5,10 @@ import { FaCheck } from "react-icons/fa6";
 import Header from '../components/header';
 import useStore from '../src/store';
 import socket from '../services/sockets';
+import { useRouter } from 'next/router';
 
 function Rooms() {
+    const router=useRouter();
     const session = useSession();
     const [showRooms, setShowRooms] = useState([]); // Mostrar salas públicas
     const [roomCode, setRoomCode] = useState(Array.from({ length: 6 }, () => '')); // Código de la sala
@@ -33,20 +35,24 @@ function Rooms() {
         // Guardar información de la sala
         useStore.setState({ room: room });
         console.log('Try room join: ', room.id);
-        if ( useStore.getState().user == null ){
+        if (useStore.getState().user.length == 0){
             let userName = 'user' + Math.floor(Math.random() * 1000);
             useStore.setState({ user: { name: userName } });
             console.log('UserName: ', useStore.getState().user.name);
-            // socket.emit('joinRoom', room.id, userName);
-            // window.location.href = '/lobby';
+            let buildData={"id": room.id, "username": userName};
+            socket.emit('joinRoom',buildData) ;
+
+            
         } else {
-            let userName = useStore.getState().user.name || localStorage.getItem('user');
-            console.log('UserName: ', userName);
-            // socket.emit('joinRoom', room.id, userName);
-            // window.location.href = '/lobby';
+            let userName = useStore.getState().user[0] || localStorage.getItem('user');
+            console.log('UserName: ', useStore.getState().user[0]);
+            let buildData={"id": room.id, "username": userName}
+            socket.emit('joinRoom', buildData);
+
+            
         }
         // socket.emit('joinRoom', room.id);
-        // window.location.href = '/lobby';
+        router.push('/lobby');
     };
 
     // Codigo de la sala
