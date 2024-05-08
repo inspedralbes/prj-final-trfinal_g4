@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { signIn, useSession } from 'next-auth/react';
 import Header from '../components/header';
 import useStore from '../src/store';
-import ErrorPopup from '../components/ErrorPopup';
+import ErrorPopup from '../components/errorPopup';
 
 function Login() {
   const [email, setEmail] = useState('');
