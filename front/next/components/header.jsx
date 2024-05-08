@@ -27,6 +27,8 @@ const Header = () => {
                 
                 setToken(storedToken);
                 setUser(storedUser);
+                useStore.setState({ token: storedToken });
+                useStore.setState({ user: storedUser });
             } catch (e) {
                 console.log('Error retrieving token and user from localStorage:', e);
             }

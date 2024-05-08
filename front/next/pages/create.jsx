@@ -68,7 +68,7 @@ const Create = () => {
                 console.log(accessCode);
                 roomInfo.accessCode = accessCode;
             }
-            if (useStore.getState().user == Array) {
+            if (useStore.getState().user == null) {
                 let userName = 'user' + Math.floor(Math.random() * 1000);
                 useStore.setState({ user: { name: userName } });
                 console.log('UserName: ', useStore.getState().user.name);
@@ -76,7 +76,8 @@ const Create = () => {
                 setInfoRoom([...infoRoom, roomInfo]);
                 window.location.href = '/lobby';
             } else {
-                let userName = useStore.getState().user.name || localStorage.getItem('user');
+                // console.log('User:', useStore.getState().user);
+                let userName = useStore.getState().user || localStorage.getItem('user');
                 console.log('UserName: ', userName);
                 socket.emit('createRoom', roomInfo, userName);
                 setInfoRoom([...infoRoom, roomInfo]);
