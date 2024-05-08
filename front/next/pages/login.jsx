@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { login } from '../services/communicationManager';
 import { useRouter } from 'next/router';
 import { signIn, useSession } from 'next-auth/react';
 import Header from '../components/header';
 import useStore from '../src/store';
-import ErrorPopup from '../components/errorPopup';
+import ErrorPopup from '../components/ErrorPopup';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -15,8 +15,9 @@ function Login() {
   const username = localStorage.getItem('user');
   const token = localStorage.getItem('token');
 
+  const [sessionIncomplete, setSessionIncomplete] = useState(null);
 
-//GOOGLE LOGIN
+  //GOOGLE LOGIN
   const session = useSession();
   // console.log(session);
   useEffect(() => {
@@ -26,33 +27,33 @@ function Login() {
     }
   }, [session, router]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Verificar si los campos están incompletos
+    if (!email || !password) {
+      setSessionIncomplete('El formulario está incompleto. Por favor, completa todos los campos.');
+      return;
+    }
 
     const user = {
       email: email,
       password: password
     };
 
-    login(user).then((data) => {
-        localStorage.setItem('user', JSON.stringify(data.user));
-        localStorage.setItem('token', JSON.stringify(data.token));
-        useStore.setState({ user: JSON.stringify(data.user) });
-        useStore.setState({ token: JSON.stringify(data.token) });
-        if(data.token) {
-          console.log('que haces puto imbecil');
-          router.push('/rooms');
-        }
-    }).catch(() => {
-        if (session.error) {
-          console.log(session.error);
-          <ErrorPopup message={session.error} />
-        }
-    });
-      
+    try {
+      const data = await login(user);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('token', JSON.stringify(data.token));
+      useStore.setState({ user: JSON.stringify(data.user) });
+      useStore.setState({ token: JSON.stringify(data.token) });
+      router.push('/rooms');
+    } catch (error) {
+      setSessionIncomplete(error.message);
+    }
   };
 
-  async function loginGoogle() {
+  const loginGoogle = async () => {
     await signIn('google');
   }
 
@@ -60,6 +61,7 @@ function Login() {
     <div>
       <Header />
       <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4">
+        {sessionIncomplete && <ErrorPopup type="incomplete" message={sessionIncomplete} />}
         <form className="bg-white shadow-md rounded-lg px-8 py-6 max-w-md w-full" onSubmit={handleSubmit}>
           <h2 className="text-3xl font-semibold text-center mb-4">Inicia Sessió</h2>
           <div className="mb-4">
@@ -83,7 +85,6 @@ function Login() {
             >
               Iniciar Sessió
             </button>
-            {/* Enlace para registro */}
             <Link href="/register">
               <p className="text-blue-500 hover:text-blue-700 font-semibold text-sm mt-4">Registra't</p>
             </Link>
