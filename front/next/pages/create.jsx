@@ -68,7 +68,7 @@ const Create = () => {
                 console.log(accessCode);
                 roomInfo.accessCode = accessCode;
             }
-            if (useStore.getState().user == null) {
+            if (useStore.getState().user == Array) {
                 let userName = 'user' + Math.floor(Math.random() * 1000);
                 useStore.setState({ user: { name: userName } });
                 console.log('UserName: ', useStore.getState().user.name);
