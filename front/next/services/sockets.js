@@ -1,7 +1,6 @@
 import io from 'socket.io-client';
 import useStore from '../src/store';
-import { useRouter } from 'next/router';
-const router = useRouter();
+
 const url = 'http://localhost:3727';
 // const url = 'http://'; // Add production url here
 
@@ -14,10 +13,9 @@ socket.on('allRooms', (rooms) => {
 
 socket.on('gameStarted', (data)=>{
     useStore.setState({ localUserSocketId: socket.id });
-    let playerData=data.playersData.find(player=>player.id==socket.id);
-    useStore.setState({playerData: playerData})
-    useStore.setState({gameData: data})
-    router.push('/game');
+    let playerData = data.playersData.find(player => player.id == socket.id);
+    useStore.setState({playerData: playerData});
+    useStore.setState({gameData: data});
 });
 
 export default socket;

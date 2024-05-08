@@ -3,15 +3,20 @@ import Loading from '../components/loading';
 import Header from '../components/header';
 import useStore from '../src/store';
 import Link from 'next/link';
-// import { Socket } from 'dgram';
 import socket from '../services/sockets';
+import { useRouter } from 'next/router';
+
 const Lobby = () => {
     const [rooms, setRooms] = useState(useStore.getState().rooms);
     const [room, setRoom] = useState(useStore.getState().room);
+    const router = useRouter();
+
     const emitStart= ()=> {
         console.log('Emitiendo startGame');
         socket.emit('startGame', room);
+        router.push('/game');
     }
+
     useEffect(() => {
         const intervalId = setInterval(() => {
             const roomsFromStore = useStore.getState().rooms;
@@ -26,9 +31,6 @@ const Lobby = () => {
         }, 1000);
         return () => clearInterval(intervalId);
     }, []);
-
-     
-  
 
     return (
         <div>

@@ -18,7 +18,6 @@ const io = new Server(server, {
     }
 });
 
-
 function findRoomByUser(userId) {
     let findRoom;
     rooms.forEach(room => {
@@ -33,6 +32,7 @@ function findRoomByUser(userId) {
     });
     return findRoom;
 }
+
 //connection
 io.on('connection', (socket) => {
     console.log (`Connected: ${socket.id}`);
@@ -85,6 +85,7 @@ io.on('connection', (socket) => {
         }
         io.emit('allRooms', rooms);
     });
+
     socket.on('startGame', ()=>{
         let room = findRoomByUser(socket.id);
         console.log("choto",room);
