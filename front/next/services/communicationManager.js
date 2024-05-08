@@ -103,12 +103,10 @@ export function updateUser(user) {
 
 export function getUsers() {
     return new Promise((resolve, reject) => {
-
         fetch(`${url}allUsers/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
             }
         })
             .then(response => response.json())
@@ -184,6 +182,24 @@ export function createMap(mapData) {
 export function getMaps() {
     return new Promise((resolve, reject) => {
         fetch(`${url}maps/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+export function getReportedMaps() {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}reportedMaps/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
