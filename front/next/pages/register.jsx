@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 function Register (){
   
   const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -15,12 +16,13 @@ function Register (){
     const handleSubmit = async (e) => {
       e.preventDefault();
 
-      if (!name || !email || !password || !confirmPassword) {
+      if (!name || !username || !email || !password || !confirmPassword) {
         alert('Please fill in all fields');
         return;
       }
         const user = {
           name: name,
+          username: username,
           email: email,
           password: password,
         };
@@ -47,6 +49,13 @@ function Register (){
           <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Nom</label>
           <input type="text" id="name" name="name"
             value={name} onChange={(e) => setName(e.target.value)} required
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2">Username</label>
+          <input type="text" id="username" name="username"
+            value={username} onChange={(e) => setUsername(e.target.value)} required
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
