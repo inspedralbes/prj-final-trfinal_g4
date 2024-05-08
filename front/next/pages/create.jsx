@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import Fases from '../components/fases';
 import Header from '../components/header';
 import { PiNumberCircleOne, PiNumberCircleTwo, PiNumberCircleThree } from 'react-icons/pi';
@@ -70,8 +70,8 @@ const Create = () => {
             }
             if (useStore.getState().user == null) {
                 let userName = 'user' + Math.floor(Math.random() * 1000);
-                useStore.setState({ user: { name: userName } });
-                console.log('UserName: ', useStore.getState().user.name);
+                useStore.setState({ user: userName });
+                console.log('UserName: ', useStore.getState().user);
                 socket.emit('createRoom', roomInfo, userName);
                 setInfoRoom([...infoRoom, roomInfo]);
                 window.location.href = '/lobby';
@@ -172,7 +172,7 @@ const Create = () => {
     );
 };
 
-const CustomImageWithOverlay = ({ imageSrc, altText, onClick, isSelected, children }) => {
+const CustomImageWithOverlay = ({ imageSrc, altText, isSelected, children }) => {
     return (
         <div className="relative flex-shrink-0 mb-4 sm:mb-0 sm:mr-4 sm:mx-3">
             <img src={imageSrc} alt={altText} className={`h-60 sm:h-72 w-80 sm:w-96 my-4 bg-zinc-400 ${isSelected ? 'border-4 border-blue-500' : ''}`} />

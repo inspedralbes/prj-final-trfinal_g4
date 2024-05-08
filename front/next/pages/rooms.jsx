@@ -36,14 +36,14 @@ function Rooms() {
         if ( useStore.getState().user == null ){
             let userName = 'user' + Math.floor(Math.random() * 1000);
             useStore.setState({ user: { name: userName } });
-            console.log('UserName: ', useStore.getState().user.name);
-            // socket.emit('joinRoom', room.id, userName);
-            // window.location.href = '/lobby';
+            console.log('UserName: ', useStore.getState().user);
+            socket.emit('joinRoom', room.id, userName);
+            window.location.href = '/lobby';
         } else {
-            let userName = useStore.getState().user.name || localStorage.getItem('user');
+            let userName = useStore.getState().user || localStorage.getItem('user');
             console.log('UserName: ', userName);
-            // socket.emit('joinRoom', room.id, userName);
-            // window.location.href = '/lobby';
+            socket.emit('joinRoom', room.id, userName);
+            window.location.href = '/lobby';
         }
     };
 
@@ -74,14 +74,14 @@ function Rooms() {
                     console.log('Room found: ', room.id);
                     if ( useStore.getState().user == null ){
                         let userName = 'user' + Math.floor(Math.random() * 1000);
-                        useStore.setState({ user: { name: userName } });
-                        console.log('UserName: ', useStore.getState().user.name);
-                        // socket.emit('joinRoom', room.id, userName);
-                        // window.location.href = '/lobby';
+                        useStore.setState({ user: userName });
+                        console.log('UserName: ', useStore.getState().user);
+                        socket.emit('joinRoom', room.id, userName);
+                        window.location.href = '/lobby';
                     } else {
-                        console.log('UserName: ', useStore.getState().user.name);
-                        // socket.emit('joinRoom', room.id, useStore.getState().user.name);
-                        // window.location.href = '/lobby';
+                        console.log('UserName: ', useStore.getState().user);
+                        socket.emit('joinRoom', room.id, useStore.getState().user);
+                        window.location.href = '/lobby';
                     }
                 }
             });
