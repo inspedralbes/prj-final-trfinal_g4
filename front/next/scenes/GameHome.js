@@ -1,4 +1,7 @@
 import Phaser from 'phaser';
+import { set } from 'zod';
+import  useStore  from '../src/store';
+import socket from '../services/sockets';
 
 export default class GameHome extends Phaser.Scene {
     activePointer;
@@ -8,20 +11,18 @@ export default class GameHome extends Phaser.Scene {
     whiteView;
     blackView;
     grayView;
-    flag_endGame;
-    platform;
-    particles;
-    player = 1;
+    endGame;
+    player = 1;    
     buttons = [];
+    spawns = [];
+    death = [];
+    animationPlaying = false;
+
     constructor() {
         super('gamehome');
     }
     platforms = [];
     doors = [];
-
-    preload() {
-
-    }
 
     init() {
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -29,11 +30,10 @@ export default class GameHome extends Phaser.Scene {
     }
 
     create() {
-        this.physics.world.setBounds(0, 0, 800, 600);
 
         const map = this.make.tilemap({ key: 'mapa' });
         const tileset = map.addTilesetImage('tilesetWhite', 'tileset');
-
+        
         const gray = map.createLayer('gray', tileset);
 
         const rows = gray.height;
@@ -82,6 +82,7 @@ export default class GameHome extends Phaser.Scene {
                 }
             }
         }
+
         gray.setCollisionByProperty({ semicollides: true });
         white.setCollisionByProperty({ semicollides: true });
         black.setCollisionByProperty({ semicollides: true });
@@ -110,22 +111,32 @@ export default class GameHome extends Phaser.Scene {
             } else if (name.startsWith('box')) {
                 ogName = name;
                 name = 'box';
+            } else if (name.startsWith('spawn')) {
+
             }
+
             switch (name) {
                 case 'spawn-1':
                     {
-
                         this.character1 = this.physics.add.sprite(x, y, 'character1-idle');
                         console.log(this.character1);
                         const w = this.character1.width;
                         const h = this.character1.height;
+
+                        const spawn1X = x;
+                        const spawn1Y = y;
+
                         this.character1.body.tint = 0x303030;
                         this.physics.add.existing(this.character1);
 
-                        this.character1.body.setSize(w * 0.50, h * 0.90);
-
-
                         this.character1.setPosition(x, y);
+
+                        this.anims.create({
+                            key: 'death',
+                            frames: this.anims.generateFrameNames('death', { start: 6, end: 0, prefix: 'tile00', suffix: '.png' }),
+                            frameRate: 10,
+                            repeat: 0,
+                        });
 
                         this.anims.create({
                             key: 'idle',
@@ -141,33 +152,40 @@ export default class GameHome extends Phaser.Scene {
                             repeat: -1
                         })
                         this.physics.add.collider(this.character1, white);
-                        this.physics.add.collider(this.character1, gray);
 
 
                         // this.character1.body.setCollisionByProperty({ collides: true });
 
-                        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+                        this.character1.setPushable(false);
                         this.cameras.main.startFollow(this.character1);
                         this.cameras.main.setZoom(2);
                         this.character1.setPushable(false);
+
+                        this.spawns.push({ spawn1X, spawn1Y });
+                        this.character1.body.setSize(w * 0.50, h * 0.90);
+                        console.log("1", this.spawns);
                         break;
+
                     }
                 case 'spawn-2':
                     {
 
                         this.character2 = this.physics.add.sprite(x, y, 'character1-idle').setTint(0x303030);
-                        this.character2.setPushable(false);
+                        console.log(this.character2);
                         const w = this.character2.width;
                         const h = this.character2.height;
-
+                        this.character2.body.tint = 0x303030;
                         this.physics.add.existing(this.character2);
-
+                        const spawn2X = x;
+                        const spawn2Y = y;
                         this.character2.body.setSize(w * 0.50, h * 0.90);
 
                         this.character2.setPosition(x, y);
+
                         this.anims.create({
                             key: 'idle',
-                            frames: this.anims.generateFrameNames('character1', { start: 1, end: 10, prefix: 'character1-idle0', suffix: '.png' }),
+                            frames: this.anims.generateFrameNames('character1', { start: 1, end: 11, prefix: 'character1-idle0', suffix: '.png' }),
                             frameRate: 10,
                             repeat: -1
                         })
@@ -179,10 +197,18 @@ export default class GameHome extends Phaser.Scene {
                             repeat: -1
                         })
 
-                        this.physics.add.collider(this.character2, gray);
                         this.physics.add.collider(this.character2, black);
-                        this.physics.add.collider(this.character2, this.character1);
 
+
+
+
+                        // this.character1.body.setCollisionByProperty({ collides: true });
+
+                        this.character2.setPushable(false);
+                        this.cameras.main.setZoom(2);
+
+                        this.spawns.push({ spawn2X, spawn2Y });
+                        console.log("1, 2", this.spawns);
                         break;
                     };
 
@@ -217,7 +243,6 @@ export default class GameHome extends Phaser.Scene {
                                     message.setDepth(1);
                                     background.setDepth(0);
 
-                                    
                                 });
 
                             }
@@ -225,28 +250,6 @@ export default class GameHome extends Phaser.Scene {
 
                         this.physics.add.collider(this.flag_endGame, gray);
 
-                        break;
-                    }
-                case 'platform_move_up-1':
-                    {
-                        this.platform = this.physics.add.sprite(x, y, 'platform');
-                        const w = this.platform.width * 1; // Double the width of the platform
-                        const h = this.platform.height;
-
-                        this.platform.scaleX = 1.5;
-
-                        this.physics.add.existing(this.platform);
-
-                        this.platform.body.setSize(w, h);
-
-                        this.platform.setPosition(x * 1.047, y);
-
-                        this.anims.create({
-                            key: 'platformMoveUp',
-                            frames: this.anims.generateFrameNames('platform', { start: 1, end: 25, prefix: 'tile00', suffix: '.png' }),
-                            frameRate: 10,
-                            repeat: -1
-                        })
                         break;
                     }
                 case 'button':
@@ -276,34 +279,81 @@ export default class GameHome extends Phaser.Scene {
                     }
                 case 'platform': {
                     console.log('platform');
-                    let platform = this.physics.add.image(width, height, 'platform');
-                    platform.setTintFill(0xffffff);
+                    let platform = this.physics.add.sprite(x+(width/2), y+(height/2), 'platform');
+                    platform.setOrigin(0.5, 0.5);
+                    if (width < height) {
+                       
+                        console.log(platform.scaleX, platform.scaleY);
+                        platform.setSizeToFrame();
+                        
+                        platform.displayHeight = width;
+                        platform.displayWidth = height;
+                        // platform.body.setSize(platform.height*platform.scaleY, platform.width*platform.scaleX);
+                        // platform.body.height = platform.displayWidth;
+                        // platform.body.width = platform.displayHeight;
+                        platform.scaleY = platform.scaleX;
+                        platform.setSize(platform.body.height,platform.body.width);
+                        platform.angle = 90;
+                        
+                    } else {
+                        platform.displayWidth = width;
+                        platform.scaleY = platform.scaleX;
+                        platform.setPosition(x + (platform.body.width / 2), y + (platform.body.height / 2));
+                    }
+                    
+                    if (platform.name.includes('W')) {
+                        platform.setTintFill(0xffffff);
+                    } else if (platform.name.includes('B')) {
+                        platform.setTintFill(0x303030);
+                    } else {
+                        platform.setTintFill(0x969696);
+                    }
 
                     this.physics.add.existing(platform);
-                    platform.body.setSize(width, height);
-                    platform.setBounce(0.2);
-                    platform.originX = platform.width / 2;
-                    platform.originY = platform.height / 2;
+                    // Add missing imports for required packages
 
-                    platform.setPosition(x + (width / 2), y + (height / 2));
-                    platform.posX = x + (width / 2);
-                    platform.posY = y + (height / 2);
-                    platform.body.allowGravity = false;
+                    // Add missing imports for required packages
+                    
+                   
+                    // platform.body.setCollisionMask(this.character1.body.collisionMask | this.character2.body.collisionMask);
+                    // platform.body.setSize(width, height);
 
                     
+                    // platform.body.setCollisionMask(this.character1.body.setCollisionMask | this.character2.body.setCollisionMask)                    // platform.body.setSize(width, height);
+                    platform.setBounce(0.2);
+
+                    
+                    platform.posX = platform.x;
+                    platform.posY = platform.y;
+                    platform.movement = findMovementParam(objData.properties);
+                    console.log("move up", platform.movement);
+                    platform.body.allowGravity = false;
+
+
                     platform.body.immovable = true;
                     platform.setInteractive();
                     platform.name = ogName;
-
 
                     this.platforms.push(platform);
 
                     break;
                 }
-                
 
-            }
+                case 'death':
+                    {
+                        const deathZone = this.add.zone(x, y, width, height);
+                        deathZone.setOrigin(0).setAlpha(0);
+
+                        this.physics.add.existing(deathZone);
+                        this.physics.world.enable(deathZone);
+
+                        deathZone.body.setAllowGravity(false);
+
+                        this.death.push(deathZone);
+                    }
+                }
         });
+        window.platforms = this.platforms;
         this.whiteView = white;
         this.blackView = black;
         this.grayView = gray;
@@ -333,79 +383,147 @@ export default class GameHome extends Phaser.Scene {
                 this.physics.add.collider(this.character2, platform);
             }
         });
+        function selectPlayer() {
+            if(useStore.getState().playerData.id == useStore.getState().gameData.players[0].id){
+                return 1;
+            } else {
+                return 2;
+            }
+        }
+        function findMovementParam(data) {
+            let returndata;
+            data.forEach(element => {
+                if (element.name == 'movement') {
+                    returndata = element.value;
+                }
+            });
+            return returndata;
+        }
 
-
-
-
+        this.physics.add.collider(this.character1, gray);
+        this.physics.add.collider(gray, this.character1);
+        this.physics.add.collider(this.character2, gray);
+        this.physics.add.collider(gray, this.character2);
+        this.physics.add.collider(this.character1, this.character2);
+        this.physics.add.collider(this.character2, this.character1);
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        window.character1 = this.character1;
+        this.death.forEach(death => {
+            this.physics.add.overlap(death, this.character1, (death, character1) => {
+                this.animationPlaying = true;
+                this.character1.anims.play('death', true);
+                this.character2.anims.play('death', true);
+                setTimeout(() => {
+                    this.character1.setPosition(this.spawns[0].spawn1X, this.spawns[0].spawn1Y);
+                    this.character2.setPosition(this.spawns[1].spawn2X, this.spawns[1].spawn2Y);
+                    this.animationPlaying = false;
+                }, 1000);
+            })
+            this.physics.add.overlap(death, this.character2, (death, character2) => {
+                this.animationPlaying = true;
+                this.character1.anims.play('death', true);
+                this.character2.anims.play('death', true);
+                setTimeout(() => {
+                    this.character1.setPosition(this.spawns[0].spawn1X, this.spawns[0].spawn1Y);
+                    this.character2.setPosition(this.spawns[1].spawn2X, this.spawns[1].spawn2Y);
+                    this.animationPlaying = false;
+                }, 1000);
+            })
+        });
+        this.player=selectPlayer();
     }
 
     update() {
-
-        
 
         this.buttons.forEach(button => {
             const isPlayer1Colliding = this.physics.overlap(button, this.character1);
             const isPlayer2Colliding = this.physics.overlap(button, this.character2);
 
-            // Update platform velocity based on colliding player and button content
             if (button.associated.length > 0) {
 
                 button.associated.forEach(platform => {
                     let platformVelocityY = 0;
                     if ((isPlayer1Colliding && button.name.includes('W')) || (isPlayer2Colliding && button.name.includes('B')) || ((isPlayer1Colliding || isPlayer2Colliding) && button.name.includes('G'))) {
-                        platformVelocityY = -20;
+                        platformVelocityY = -32;
                         console.log('colliding');
                         if (platform.name.includes('Fast')) {
-                            platformVelocityY -= 30;
+                            platformVelocityY -= 32;
                         }
                     }
-                    if ((platform.posY != platform.y || platform.posX != platform.x) && platformVelocityY == 0) {
-                        platformVelocityY = 20;
-                        if (platform.name.includes('Fast')) {
-                            platformVelocityY += 30;
-                        }
-                    }
-
-                    const hasMovedEnough = Math.abs(platform.x - platform.posX) >= platform.width * 3 || Math.abs(platform.y - platform.posY) >= platform.height * 3;
+                    const hasMovedEnough = Math.abs(platform.body.x) >= platform.body.x + platform.movement || Math.abs(platform.body.y) >= platform.body.y + platform.movement;
                     if (hasMovedEnough && platformVelocityY < 0) {
                         platformVelocityY = 0;
                     }
                     if (platform.name.includes('up')) {
+                        if (platform.y < platform.posY && platformVelocityY == 0) {
+                            platformVelocityY = 32;
+                            if (platform.name.includes('Fast')) {
+                                platformVelocityY += 32;
+                            }
+                        }
+                        let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
+                        if (hasMovedEnough && platformVelocityY < 0) {
+                            console.log(platform.movement)
+                            platformVelocityY = 0;
+                        }
                         platform.body.setVelocityY(platformVelocityY);
                     } else {
-                        if (platform.name.includes('left')) {
 
+                        if (platform.name.includes('left')) {
+                            if (platform.x < platform.posX && platformVelocityY == 0) {
+                                platformVelocityY = 32;
+                                if (platform.name.includes('Fast')) {
+                                    platformVelocityY += 32;
+                                }
+                            }
+
+                            let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
+                            if (hasMovedEnough && platformVelocityY < 0) {
+                                platformVelocityY = 0;
+                            }
                             platform.body.setVelocityX(platformVelocityY);
                         } else {
                             if (platform.name.includes('right')) {
+                                if (platform.x > platform.posX && platformVelocityY == 0) {
+                                    platformVelocityY = 32;
+                                    if (platform.name.includes('Fast')) {
+                                        platformVelocityY += 32;
+                                    }
+                                }
+                                let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
+                                if (hasMovedEnough && platformVelocityY < 0) {
+                                    platformVelocityY = 0;
+                                }
                                 platform.body.setVelocityX(platformVelocityY * -1);
                             }
                             else {
                                 if (platform.name.includes('down')) {
+                                    if (platform.y > platform.posY && platformVelocityY == 0) {
+                                        platformVelocityY = 32;
+                                        if (platform.name.includes('Fast')) {
+                                            platformVelocityY += 32;
+                                        }
+                                    }
+                                    let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
+                                    if (hasMovedEnough && platformVelocityY < 0) {
+                                        platformVelocityY = 0;
+                                    }
                                     platform.body.setVelocityY(platformVelocityY * -1);
                                 }
                             }
                         }
                     }
-
-
-
-
                 });
-
 
             }
         });
 
-        let changed = false;
-        if (this.activePointer.isDown && !changed) {
-            this.player % 2 == 0 ? this.player = 1 : this.player = 2;
-            changed = true;
-        }
+        
         if (this.player == 1) {
             this.whiteView.setAlpha(1);
             this.blackView.setAlpha(0);
             this.grayView.setAlpha(1);
+            this.cameras.main.setBackgroundColor("#ffffff");
             this.cameras.main.startFollow(this.character1);
             if (this.cursors.left.isDown) {
                 this.character1.flipX = true;
@@ -417,7 +535,6 @@ export default class GameHome extends Phaser.Scene {
                 this.character1.flipX = false;
 
                 this.character1.setVelocityX(200);
-
 
                 this.character1.anims.play('walk', true);
 
@@ -435,6 +552,7 @@ export default class GameHome extends Phaser.Scene {
             this.whiteView.setAlpha(0);
             this.blackView.setAlpha(1);
             this.grayView.setAlpha(1);
+            this.cameras.main.setBackgroundColor("#303030");
             if (this.cursors.left.isDown) {
                 this.character2.flipX = true;
 
@@ -445,7 +563,6 @@ export default class GameHome extends Phaser.Scene {
                 this.character2.flipX = false;
 
                 this.character2.setVelocityX(200);
-
 
                 this.character2.anims.play('walk', true);
 
@@ -458,11 +575,9 @@ export default class GameHome extends Phaser.Scene {
                 console.log('jump');
                 this.character2.setVelocityY(-280);
 
-
-
             }
         }
-        changed = false;
+
 
     }
 

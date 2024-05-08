@@ -5,8 +5,10 @@ import { FaCheck } from "react-icons/fa6";
 import Header from '../components/header';
 import useStore from '../src/store';
 import socket from '../services/sockets';
+import { useRouter } from 'next/router';
 
 function Rooms() {
+    const router = useRouter();
     const session = useSession();
     const [showRooms, setShowRooms] = useState([]); // Mostrar salas públicas
     const [roomCode, setRoomCode] = useState(Array.from({ length: 6 }, () => '')); // Código de la sala
@@ -33,17 +35,19 @@ function Rooms() {
         // Guardar información de la sala
         useStore.setState({ room: room });
         console.log('Try room join: ', room.id);
-        if ( useStore.getState().user == null ){
+        if (useStore.getState().user == null){
             let userName = 'user' + Math.floor(Math.random() * 1000);
             useStore.setState({ user: { name: userName } });
-            console.log('UserName: ', useStore.getState().user);
-            socket.emit('joinRoom', room.id, userName);
-            window.location.href = '/lobby';
+            console.log('UserName: ', useStore.getState().user.name);
+            let buildData={"id": room.id, "username": userName};
+            socket.emit('joinRoom',buildData) ;
+            router.push('/lobby');
         } else {
-            let userName = useStore.getState().user || localStorage.getItem('user');
+            let userName = useStore.getState().user.name || localStorage.getItem('user');
             console.log('UserName: ', userName);
-            socket.emit('joinRoom', room.id, userName);
-            window.location.href = '/lobby';
+            let buildData={"id": room.id, "username": userName}
+            socket.emit('joinRoom', buildData);
+            router.push('/lobby');
         }
     };
 
@@ -74,14 +78,14 @@ function Rooms() {
                     console.log('Room found: ', room.id);
                     if ( useStore.getState().user == null ){
                         let userName = 'user' + Math.floor(Math.random() * 1000);
-                        useStore.setState({ user: userName });
-                        console.log('UserName: ', useStore.getState().user);
-                        socket.emit('joinRoom', room.id, userName);
-                        window.location.href = '/lobby';
+                        useStore.setState({ user: { name: userName } });
+                        console.log('UserName: ', useStore.getState().user.name);
+                        socket.emit('joinRoom', {id: room.id, username: userName});
+                        router.push('/lobby');
                     } else {
-                        console.log('UserName: ', useStore.getState().user);
-                        socket.emit('joinRoom', room.id, useStore.getState().user);
-                        window.location.href = '/lobby';
+                        console.log('UserName: ', useStore.getState().user.name);
+                        socket.emit('joinRoom', {id: room.id, username: useStore.getState().user.name});
+                        router.push('/lobby');
                     }
                 }
             });

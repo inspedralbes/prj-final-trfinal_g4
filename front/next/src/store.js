@@ -8,7 +8,13 @@ const useStore = create((set) => ({
     rooms: [],
     setRooms: (rooms) => set({ rooms }),
     room: null,
-    setRoom: (room) => set({ room })
+    setRoom: (room) => set({ room }),
+    playerData: [],
+    setPlayerData: (playerData) => set({ playerData }),
+    gameData: [],
+    setGameData: (gameData) => set({ gameData }),
+    localUserSocketId: [],
+    setLocalUserSocketId: (localUserSocketId) => set({ localUserSocketId }),
 }));
 
 export default useStore;

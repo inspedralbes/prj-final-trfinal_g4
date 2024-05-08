@@ -1,10 +1,11 @@
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect } from 'react';
 import Fases from '../components/fases';
 import Header from '../components/header';
 import { PiNumberCircleOne, PiNumberCircleTwo, PiNumberCircleThree } from 'react-icons/pi';
 import { TbLetterX } from "react-icons/tb";
 import socket from '../services/sockets';
 import useStore from '../src/store';
+import { useRouter } from 'next/router';
 
 const Create = () => {
     const [roomName, setRoomName] = useState('');
@@ -14,6 +15,7 @@ const Create = () => {
     const [infoRoom, setInfoRoom] = useState([]);
     // Rooms para comprovar codigos de acceso 
     const [rooms , setRooms] = useState(useStore.getState().rooms);
+    const router = useRouter();
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -49,6 +51,7 @@ const Create = () => {
     };
 
     const handleCreateRoom = () => {
+        
         // Crear un objeto con la información de la sala
         const roomInfo = {
             name: roomName,
@@ -68,20 +71,19 @@ const Create = () => {
                 console.log(accessCode);
                 roomInfo.accessCode = accessCode;
             }
-            if (useStore.getState().user == null) {
+            if (useStore.getState().user == null){
                 let userName = 'user' + Math.floor(Math.random() * 1000);
-                useStore.setState({ user: userName });
-                console.log('UserName: ', useStore.getState().user);
-                socket.emit('createRoom', roomInfo, userName);
+                useStore.setState({ user: { name: userName } });
+                console.log('UserName: ', useStore.getState().user.name);
+                socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userName});
                 setInfoRoom([...infoRoom, roomInfo]);
-                window.location.href = '/lobby';
+                router.push('/lobby');
             } else {
-                // console.log('User:', useStore.getState().user);
-                let userName = useStore.getState().user || localStorage.getItem('user');
+                let userName = useStore.getState().user.name || localStorage.getItem('user');
                 console.log('UserName: ', userName);
-                socket.emit('createRoom', roomInfo, userName);
+                socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userName});
                 setInfoRoom([...infoRoom, roomInfo]);
-                window.location.href = '/lobby';
+                router.push('/lobby');
             }
         }
     };
@@ -130,7 +132,6 @@ const Create = () => {
                         </select>
                     </div>
                 </div>
-                
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
                         Crear Sala
                     </button>
