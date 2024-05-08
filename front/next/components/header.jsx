@@ -16,10 +16,15 @@ const Header = () => {
         if (tokenStore !== null && userStore !== null) {
             setToken(tokenStore);
             setUser(userStore);
+
+            console.log('Token and user from store:', tokenStore, userStore);
         } else {
             try {
                 const storedToken = localStorage.getItem('token');
                 const storedUser = localStorage.getItem('user');
+
+                console.log('Token and user from localStorage:', storedToken, storedUser);
+                
                 setToken(storedToken);
                 setUser(storedUser);
             } catch (e) {
@@ -33,16 +38,18 @@ const Header = () => {
     };
 
     const logoutHandler = () => {
-        if (token) {
+        console.log('Cerrando sesión logoutHandler');
+        let tokenClean = token.replace(/['"]+/g, '');
+        if (tokenClean) {
             console.log('Cerrando sesión');
-            console.log('Token:', token);
-            logout(token).then(() => {
+            console.log('Token:', tokenClean);
+            logout(tokenClean).then(() => {
                 localStorage.removeItem('user');
                 localStorage.removeItem('token');
                 useStore.setState({ user: null });
                 useStore.setState({ token: null });
-        setToken(null);
-        setUser(null);
+                setToken(null);
+                setUser(null);
                 console.log('Sesión cerrada');
             }).catch(() => {
                 alert('Error cerrando sesión');
@@ -50,6 +57,8 @@ const Header = () => {
         }
         setDropdownOpen(false);
     };
+
+    console.log('Token:', token);
 
     let content;
     if (token && user) {
