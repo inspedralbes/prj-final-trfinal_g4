@@ -6,6 +6,7 @@ import { PiNumberCircleOne, PiNumberCircleTwo, PiNumberCircleThree } from 'react
 import { TbLetterX } from "react-icons/tb";
 import socket from '../services/sockets';
 import useStore from '../src/store';
+import { useRouter } from 'next/router';
 
 const Create = () => {
     const [roomName, setRoomName] = useState('');
@@ -13,7 +14,7 @@ const Create = () => {
     const [gameMode, setGameMode] = useState('');
     const [selectedImages, setSelectedImages] = useState([]);
     const [infoRoom, setInfoRoom] = useState([]);
-   
+    const router=useRouter();
     // Rooms para comprovar codigos de acceso 
     const [rooms , setRooms] = useState(useStore.getState().rooms);
 
@@ -28,6 +29,13 @@ const Create = () => {
     useEffect(() => {
         console.log('Información de la sala guardada:', infoRoom);
     }, [infoRoom]);
+
+    useEffect(() => {
+        console.log('Salas:', useStore.getState().room);
+        if (useStore.getState().room!=null) {
+            router.push('/lobby');
+        }
+       });
 
     function generateAccessCode() {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -133,11 +141,10 @@ const Create = () => {
                         </select>
                     </div>
                 </div>
-                    <Link href="/lobby">
+                 
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
                         Crear Sala
                     </button>
-                    </Link>
                 {/* Parte derecha con las imágenes */}
                 <div className="w-full sm:w-3/4 flex flex-col sm:flex-row items-center justify-center">
                     <div className="flex flex-col sm:flex-row items-center justify-center sm:flex-wrap gap-x-4">

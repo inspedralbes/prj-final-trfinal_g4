@@ -3,11 +3,13 @@ import Loading from '../components/loading';
 import Header from '../components/header';
 import useStore from '../src/store';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 // import { Socket } from 'dgram';
 import socket from '../services/sockets';
 const Lobby = () => {
     const [rooms, setRooms] = useState(useStore.getState().rooms);
     const [room, setRoom] = useState(useStore.getState().room);
+    const router = useRouter();
     const emitStart= ()=> {
         console.log('Emitiendo startGame');
         socket.emit('startGame', room);
@@ -19,7 +21,14 @@ const Lobby = () => {
         }, 1000);
         return () => clearInterval(intervalId);
     }, []);
-
+    useEffect(() => {
+        console.log('gData:', useStore.getState().room.status);
+        if (useStore.getState().room!=null && useStore.getState().room.status == 'Playing'){
+            console.log("entro aqui")
+            router.push('/game');
+        }
+        
+    });
      
   
 

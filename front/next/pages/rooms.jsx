@@ -52,7 +52,6 @@ function Rooms() {
             
         }
         // socket.emit('joinRoom', room.id);
-        router.push('/lobby');
     };
 
     // Codigo de la sala
@@ -144,6 +143,12 @@ function Rooms() {
         }
         console.log(session.data);
     }
+
+    useEffect(() => {
+       if(useStore.getState().room != null){
+           router.push('/lobby');
+       }
+    });
 
     return (
         <div> 

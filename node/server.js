@@ -22,10 +22,8 @@ const io = new Server(server, {
 function findRoomByUser(userId) {
     let findRoom;
     rooms.forEach(room => {
-        console.log("ThisUsers",room.users[0]);
-        console.log("ThisUsers2",userId);
         room.users.forEach(user => {
-            console.log("ThisUsers1",user);
+
             if (user.id == userId) {
                 findRoom = room;
             }
@@ -33,9 +31,20 @@ function findRoomByUser(userId) {
     });
     return findRoom;
 }
+
+function nextColor(player) {
+    let colorIndex = player.colorsUnlocked.indexOf(player.color);
+    let colorToReturn;
+    if(colorIndex == player.colorsUnlocked.length - 1){
+       colorToReturn=player.colorsUnlocked[0]
+    } else {
+        colorToReturn=player.colorsUnlocked[colorIndex + 1]
+    }
+    return colorToReturn;
+}
 //connection
 io.on('connection', (socket) => {
-    console.log (`Connected: ${socket.id}`);
+    console.log(`Connected: ${socket.id}`);
     socket.emit('allRooms', rooms);
 
     //Create Room
@@ -47,12 +56,12 @@ io.on('connection', (socket) => {
             isPublic: data.addRoom.public,
             mode: data.addRoom.mode,
             admin: [socket.id, data.userAdmin],
-            users: [{id:socket.id, name:data.userAdmin}],
+            users: [{ id: socket.id, name: data.userAdmin }],
             id: id,
             accessCode: data.addRoom.accessCode,
             accesible: true,
             status: 'Waiting',
-            game:{
+            game: {
                 maps: ["mapatuto", "mapatuto2", "mapatuto3"],
                 currentMap: "mapatuto",
                 players: [],
@@ -63,11 +72,12 @@ io.on('connection', (socket) => {
         rooms.push(newRoom);
         console.log(rooms);
         io.emit('allRooms', rooms);
+        io.to(newRoom.id).emit('InfoRoom', newRoom);
     });
 
     //Join Room
     socket.on('joinRoom', (data) => {
-        console.log("PENE",data);
+        console.log("PENE", data);
         let findRoom = rooms.find(room => room.id == data.id);
         console.log(findRoom);
         if (findRoom == undefined) {
@@ -76,7 +86,7 @@ io.on('connection', (socket) => {
         } else {
             console.log('Room found');
             console.log('PENEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE', findRoom.users);
-            let newUser = {"id":socket.id, "name":data.username};
+            let newUser = { "id": socket.id, "name": data.username };
             findRoom.users.push(newUser);
             findRoom.accesible = false;
             findRoom.status = 'inLobby';
@@ -84,40 +94,63 @@ io.on('connection', (socket) => {
             socket.join(findRoom.id);
         }
         io.emit('allRooms', rooms);
+        io.to(findRoom.id).emit('InfoRoom', findRoom);
     });
-    socket.on('startGame', ()=>{
+    socket.on('startGame', () => {
         let room = findRoomByUser(socket.id);
-        console.log("choto",room);
+        console.log("choto", room);
         room.status = 'Playing';
         io.emit('allRooms', rooms);
         room.game.players = room.users;
-        room.game.playersData ={
-            player1: {
-                id: room.users[0].id,
-                name: room.users[0].name,
-                x: 0,
-                y: 0,
-                direction: 'right',
-                colorsAvailable: ['white','red'],
-                colorsUnlocked: ['white'],
-                color: 'white'
-            },
-            player2: {
-                id: room.users[1].id,
-                name: room.users[1].name,
-                x: 0,
-                y: 0,
-                direction: 'right',
-                colorsAvailable: ['black','blue'],
-                colorsUnlocked: ['black'],
-                color: 'black'
-            }
-        }
-        io.to(room.id).emit('gameStarted', room.game);
+        room.game.playersData =
+            [
+                {
+                    id: room.users[0].id,
+                    name: room.users[0].name,
+                    x: 0,
+                    y: 0,
+                    direction: 'right',
+                    colorsAvailable: ['white', 'red', 'green'],
+                    colorsUnlocked: ['white', 'red'],
+                    color: 'white'
+                },
+                {
+                    id: room.users[1].id,
+                    name: room.users[1].name,
+                    x: 0,
+                    y: 0,
+                    direction: 'right',
+                    colorsAvailable: ['black', 'blue', 'orange'],
+                    colorsUnlocked: ['black'],
+                    color: 'black'
+                }
+            ];
+
+        socket.emit('gameStarted', room);
     })
     //Disconnect
     socket.on('disconnect', () => {
         console.log(`Disconnected: ${socket.id}`);
+    });
+
+    socket.on('updatePosition', (data) => {
+        let room = findRoomByUser(socket.id);
+        let player = room.game.playersData.find(player => player.id == socket.id);
+        player.x = data.x;
+        player.y = data.y;
+        player.direction = data.direction;
+        // console.log('updatePosition', player);
+        io.to(room.id).emit('updatePositionFront', room.game.playersData);
+    });
+
+    socket.on('changeColor', () => {
+        let room = findRoomByUser(socket.id);
+        let player = room.game.playersData.find(player => player.id == socket.id);
+        let newColor = nextColor(player);
+        if(newColor){
+            player.color = newColor;
+        }
+        io.to(room.id).emit('changeColorFront', player);
     });
 });
 
