@@ -89,7 +89,7 @@ class UserController extends Controller
     {
         return response()->json(User::all());
     }
-
+    
 
     /**
      * Update the specified resource in storage.

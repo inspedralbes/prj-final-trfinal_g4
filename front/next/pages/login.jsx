@@ -21,7 +21,7 @@ function Login() {
     if (session?.data) {
       if (session.data.user.admin) {
         console.log("admin", session.data.user.admin);
-        router.push('/adminPanel');
+        router.push('/admin');
       } else {
         router.push('/rooms');
       }
@@ -47,7 +47,7 @@ function Login() {
         useStore.setState({ admin: true });
         console.log("admin", data.admin);
         console.log("admin", data.admin);
-        router.push('/adminPanel');
+        router.push('/admin');
       } else {
         console.log("admin", data.admin);
         router.push('/rooms');

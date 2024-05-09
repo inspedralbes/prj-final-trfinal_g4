@@ -7,10 +7,17 @@ import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { getMaps } from '../services/communicationManager';
 import { getReportedMaps } from '../services/communicationManager';
 import { getUsers } from '../services/communicationManager';
+import { destroyMap } from '../services/communicationManager';
+import { MdOutlineFileDownload } from "react-icons/md";
+import { MdOutlineReportProblem } from "react-icons/md";
+import { RiDeleteBinLine } from "react-icons/ri";
+import './styles.css';
+
 function AdminPanel() {
     const [maps, setMaps] = useState([]);
     const [reportedMaps, setReportedMaps] = useState([]); // Add reportedMaps state
     const [allUsers, setUsers] = useState([]); // Add users state
+    const [deleteMap, setDestroyMap] = useState([]); // Add destroyMap state
     const [selectedIcon, setSelectedIcon] = useState(null);
 
     useEffect(() => {
@@ -26,6 +33,9 @@ function AdminPanel() {
             .then((data) => setUsers(data))
             .catch((error) => console.error('Error fetching users: ', error))
 
+        destroyMap()
+            .then((data) => setDestroyMap(data))
+            .catch((error) => console.error('Error deleting map:', error));
     }, []);
 
     const handleIconClick = (iconName) => {
@@ -53,15 +63,38 @@ function AdminPanel() {
             </div>
 
             {selectedIcon === 'maps' && (
-                <div className="flex flex-grow justify-center items-center">
+                <div className="container-maps">
                     {maps.length > 0 && (
-                        <ul>
+                        <ul className='Grid_content_maps'>
                             {maps.map((map) => (
-                                <div key={map.id}>
-                                    <img src={`http://localhost:8000/${map.image}`} style={{ width: '400px', height: '250px', borderRadius: '10%' }} />
-                                    <p>{map.name}</p>
-                                    <p>{map.description}</p>
-                                    <p>{map.user_id}</p>
+                                <div key={map.id} className='info-map'>
+                                    <div className='info-map_container-img'>
+                                        <img className="info-map-img" src={`http://localhost:8000/${map.image}`} style={{ width: '250px', height: '200px', borderRadius: '7%' }} />
+                                    </div>
+                                    <div className="info-map_container-datos">
+
+                                        <p>Name: <span>{map.name}</span></p>
+                                        <p>Description: <span>{map.description}</span></p>
+                                        {allUsers.length > 0 && (
+                                            <p>Owner: <span>{allUsers.find(user => user.id === map.user_id).name}</span></p>
+                                        )}
+                                        <div className='grid-container-iconos'>
+                                            <div>
+                                                <MdOutlineReportProblem style={{ color: 'orange', fontSize: '3em', cursor: 'pointer' }} />
+                                            </div>
+                                            <div>
+                                                <MdOutlineFileDownload style={{ color: 'green', fontSize: '3em', cursor: 'pointer' }} />
+                                            </div>
+                                            <div>
+                                                <RiDeleteBinLine style={{ color: 'red', fontSize: '2.8em', cursor: 'pointer' }} onClick={() => handleIconClick('deleteMap')} />
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+
                                 </div>
                             ))}
                         </ul>
@@ -89,7 +122,7 @@ function AdminPanel() {
                 <div className="">
                     <div className="">
                         {allUsers.length > 0 && (
-                            <ul className='grid grid-cols-3'>
+                            <ul className=''>
                                 {allUsers.map((user) => (
                                     <li key={user.id} className=" text-white ">
                                         <p className="">{user.name}</p>

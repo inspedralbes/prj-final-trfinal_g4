@@ -241,7 +241,6 @@ export function destroyMap(mapData) {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${mapData.token}`
             },
             body: JSON.stringify(mapData)
         })
