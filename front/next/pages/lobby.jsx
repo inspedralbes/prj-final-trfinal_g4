@@ -5,20 +5,28 @@ import socket from '../services/sockets';
 import { useRouter } from 'next/router';
 
 const Lobby = () => {
-    const room = useStore.getState().room;
+    var room = useStore.getState().room;
     const router = useRouter();
 
-    var contentOtherUser;
+    useEffect(() => {
+        if (useStore.getState().room != room) {
+            room = useStore.getState().room;
+        }
+    }, [useStore.getState().room]); 
+
+    console.log('ROOM: ', room);
+    console.log('ROOM USERS: ', room.users);
 
     var adminUser = room.admin[1];
     var otherUser = '';
     
-    if (room.users.lenght > 0) {
+    if (room.users.length > 1) {
         otherUser = room.users[1].name;
+        console.log('OTHER USER: ', otherUser);
     }
 
     if (otherUser != '') {
-        contentOtherUser = <div id='userRandom' className='flex items-center mt-2 mb-2'>
+        var contentOtherUser = <div id='userRandom' className='flex items-center mt-2 mb-2'>
                                 <div className='flex items-center'>
                                     <img src="/images/random.jpg" alt="Venti" className='w-10 h-10 ml-2 rounded-full' />
                                     <p className='text-2xl ml-3 mt-1 mr-4'>{otherUser}</p>
@@ -149,7 +157,6 @@ const Lobby = () => {
                     <button className="text-white text-2xl font-bold py-2 px-4 w-40 rounded mt-5 bg-red-500 hover:bg-red-700" onClick={emitStart}>
                         Iniciar Joc
                     </button>
-
             </div>
         </div>
     );

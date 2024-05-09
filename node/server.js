@@ -77,7 +77,7 @@ io.on('connection', (socket) => {
         } else {
             console.log('Room found');
             console.log('PENEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE', findRoom.users);
-            let newUser = {"id":socket.id, "name":data.username};
+            let newUser = {id:socket.id, name:data.username};
             findRoom.users.push(newUser);
             findRoom.accesible = false;
             findRoom.status = 'inLobby';

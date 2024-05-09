@@ -76,7 +76,7 @@ function Rooms() {
         } else {
             console.log('Try room join: ', code);
             rooms.forEach(room => {
-                if (room.accesCode == code) {
+                if (room.accessCode == code) {
                     // Guardar información de la sala
                     useStore.setState({ room: room });
                     console.log('Room found: ', room.id);
@@ -85,15 +85,9 @@ function Rooms() {
                         useStore.setState({ user: { name: userName } });
                         console.log('UserName: ', useStore.getState().user.name);
                         socket.emit('joinRoom', {id: room.id, username: userName});
-                        if ( useStore.getState().room != null) {
-                            router.push('/lobby');
-                        }
                     } else {
                         console.log('UserName: ', useStore.getState().user.name);
                         socket.emit('joinRoom', {id: room.id, username: useStore.getState().user.name});
-                        if ( useStore.getState().room != null) {
-                            router.push('/lobby');
-                        }
                     }
                 }
             });
