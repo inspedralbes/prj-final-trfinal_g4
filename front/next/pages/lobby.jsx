@@ -5,6 +5,7 @@ import useStore from '../src/store';
 import Link from 'next/link';
 import socket from '../services/sockets';
 import { useRouter } from 'next/router';
+import { io } from 'socket.io-client';
 
 const Lobby = () => {
     const [rooms, setRooms] = useState(useStore.getState().rooms);
@@ -15,6 +16,12 @@ const Lobby = () => {
         console.log('Emitiendo startGame');
         socket.emit('startGame', room);
         router.push('/game');
+    }
+
+    const salirSala = () => {
+        console.log('Saliendo de la sala');
+        socket.emit('exitRoom', room.id);
+        router.push('/rooms');
     }
 
     // useEffect(() => {
@@ -118,7 +125,7 @@ const Lobby = () => {
                                             <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
                                         </svg>
                                     </button>
-                                    <button className='bg-red-500 hover:bg-red-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mr-2 rounded-lg'>
+                                    <button className='bg-red-500 hover:bg-red-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mr-2 rounded-lg' onClick={()=>salirSala()}>
                                         <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                             <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
                                         </svg>

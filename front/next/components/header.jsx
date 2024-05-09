@@ -42,6 +42,7 @@ const Header = () => {
     const logoutHandler = () => {
         console.log('Cerrando sesión logoutHandler');
         let tokenClean = token.replace(/['"]+/g, '');
+        
         if (tokenClean) {
             console.log('Cerrando sesión');
             console.log('Token:', tokenClean);

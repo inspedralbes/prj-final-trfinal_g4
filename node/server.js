@@ -88,6 +88,25 @@ io.on('connection', (socket) => {
         io.to(findRoom.id).emit('newInfoRoom', findRoom);
     });
 
+    //Exit Room
+    socket.on('exitRoom', ()=>{
+        let room = findRoomByUser(socket.id);
+        console.log("Room AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",room);
+        console.log("Room users eeeeeeeeeeeeeeeeeeeeeeeeeeeee",room.users);
+        console.log("users length ", room.users.length);
+        if (room.users.length == 2) {
+            console.log(`Disconnected: ${socket.id}`);
+                console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+                // Aquí puedes agregar la lógica para desconectar a la persona
+                // Por ejemplo, puedes buscar la sala a la que pertenece y eliminarla
+                let userIndex = room.users.findIndex(user => user.id == socket.id);
+                if (userIndex != -1) {
+                    room.users.splice(userIndex, 1);
+                }
+                console.log(room);
+        }
+    });
+
     socket.on('startGame', ()=>{
         let room = findRoomByUser(socket.id);
         console.log("choto",room);
@@ -118,6 +137,8 @@ io.on('connection', (socket) => {
         }
         io.to(room.id).emit('gameStarted', room.game);
     });
+
+
 
     //Disconnect
     socket.on('disconnect', () => {
