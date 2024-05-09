@@ -30,8 +30,8 @@ const ErrorPopup = ({ type, message }) => {
   
   popupPosition = "top-36";
 
-  console.log(popupColor);
-  console.log(popupPosition);
+  console.log("🗣️ 🗣️ 🔥 ‼️ 💯  yo this shit fire: ", popupColor);
+  console.log("🇷 🇦 🇨 🇮 🇳 🇬  🇩 🇪  🇸 🇦 🇳 🇹 🇦 🇳 🇩 🇪 🇷: ", popupPosition);
 
   return (
     <div className={`fixed left-0 w-full ${popupPosition} flex justify-center z-50`}>

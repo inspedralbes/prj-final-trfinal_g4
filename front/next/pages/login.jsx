@@ -16,6 +16,8 @@ function Login() {
   const token = localStorage.getItem('token');
 
   const [sessionIncomplete, setSessionIncomplete] = useState(null);
+  const [sessionError, setSessionError] = useState(null);
+  // const [sessionSuccess, setSessionSuccess] = useState(null);
 
   //GOOGLE LOGIN
   const session = useSession();
@@ -30,7 +32,6 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Verificar si los campos están incompletos
     if (!email || !password) {
       setSessionIncomplete('El formulario está incompleto. Por favor, completa todos los campos.');
       return;
@@ -48,8 +49,9 @@ function Login() {
       useStore.setState({ user: JSON.stringify(data.user) });
       useStore.setState({ token: JSON.stringify(data.token) });
       router.push('/rooms');
+      // setSessionSuccess('Inicio de sesión exitoso.');
     } catch (error) {
-      setSessionIncomplete(error.message);
+      setSessionError('Credenciales de inicio de sesión incorrectas. Por favor, verifica tus datos.');
     }
   };
 
@@ -62,6 +64,8 @@ function Login() {
       <Header />
       <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4">
         {sessionIncomplete && <ErrorPopup type="incomplete" message={sessionIncomplete} />}
+        {sessionError && <ErrorPopup type="error" message={sessionError} />}
+        {/* {sessionSuccess && <ErrorPopup type="success" message={sessionSuccess} />} */}
         <form className="bg-white shadow-md rounded-lg px-8 py-6 max-w-md w-full" onSubmit={handleSubmit}>
           <h2 className="text-3xl font-semibold text-center mb-4">Inicia Sessió</h2>
           <div className="mb-4">

@@ -122,6 +122,7 @@ function Rooms() {
         <div> <Header />
             <div className="flex flex-col md:flex-row justify-center items-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
                 <div className="flex flex-col w-full md:w-4/12 justify-center md:justify-start">
+                    
                     <div className="bg-white shadow-md rounded-lg p-4 flex-grow">
                         <div className="bg-gray-100 rounded-lg p-4">
                             <h2 className="text-lg font-semibold mb-4">Salas Disponibles</h2>
