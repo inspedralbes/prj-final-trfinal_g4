@@ -17,20 +17,20 @@ const Header = () => {
             setToken(tokenStore);
             setUser(userStore);
 
-            console.log('Token and user from store:', tokenStore, userStore);
+            // console.log('Token and user from store:', tokenStore, userStore);
         } else {
             try {
                 const storedToken = localStorage.getItem('token');
                 const storedUser = localStorage.getItem('user');
 
-                console.log('Token and user from localStorage:', storedToken, storedUser);
+                // console.log('Token and user from localStorage:', storedToken, storedUser);
                 
                 setToken(storedToken);
                 setUser(storedUser);
                 useStore.setState({ token: storedToken });
                 useStore.setState({ user: storedUser });
             } catch (e) {
-                console.log('Error retrieving token and user from localStorage:', e);
+                // console.log('Error retrieving token and user from localStorage:', e);
             }
         }
     }, []);
@@ -40,11 +40,11 @@ const Header = () => {
     };
 
     const logoutHandler = () => {
-        console.log('Cerrando sesión logoutHandler');
+        // console.log('Cerrando sesión logoutHandler');
         let tokenClean = token.replace(/['"]+/g, '');
         if (tokenClean) {
-            console.log('Cerrando sesión');
-            console.log('Token:', tokenClean);
+            // console.log('Cerrando sesión');
+            // console.log('Token:', tokenClean);
             logout(tokenClean).then(() => {
                 localStorage.removeItem('user');
                 localStorage.removeItem('token');
@@ -52,7 +52,7 @@ const Header = () => {
                 useStore.setState({ token: null });
                 setToken(null);
                 setUser(null);
-                console.log('Sesión cerrada');
+                // console.log('Sesión cerrada');
             }).catch(() => {
                 alert('Error cerrando sesión');
             });
@@ -60,7 +60,7 @@ const Header = () => {
         setDropdownOpen(false);
     };
 
-    console.log('Token:', token);
+    // console.log('Token:', token);
 
     let content;
     if (token && user) {

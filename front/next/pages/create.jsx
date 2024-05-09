@@ -12,7 +12,6 @@ const Create = () => {
     const [isPublic, setIsPublic] = useState(false);
     const [gameMode, setGameMode] = useState('');
     const [selectedImages, setSelectedImages] = useState([]);
-    const [infoRoom, setInfoRoom] = useState([]);
     // Rooms para comprovar codigos de acceso 
     const [rooms , setRooms] = useState(useStore.getState().rooms);
     const router = useRouter();
@@ -24,10 +23,6 @@ const Create = () => {
         }, 1000);
         return () => clearInterval(intervalId);
     }, []);
-
-    useEffect(() => {
-        console.log('Información de la sala guardada:', infoRoom);
-    }, [infoRoom]);
 
     function generateAccessCode() {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -50,8 +45,13 @@ const Create = () => {
         }
     };
 
+    useEffect(() => {
+        if (useStore.getState().room != null) {
+            router.push('/lobby');
+        }
+    }, [useStore.getState().room]);    
+
     const handleCreateRoom = () => {
-        
         // Crear un objeto con la información de la sala
         const roomInfo = {
             name: roomName,
@@ -71,19 +71,15 @@ const Create = () => {
                 console.log(accessCode);
                 roomInfo.accessCode = accessCode;
             }
-            if (useStore.getState().user == null){
+            if (useStore.getState().user == null) {
                 let userName = 'user' + Math.floor(Math.random() * 1000);
                 useStore.setState({ user: { name: userName } });
                 console.log('UserName: ', useStore.getState().user.name);
                 socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userName});
-                setInfoRoom([...infoRoom, roomInfo]);
-                router.push('/lobby');
             } else {
                 let userName = useStore.getState().user.name || localStorage.getItem('user');
                 console.log('UserName: ', userName);
                 socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userName});
-                setInfoRoom([...infoRoom, roomInfo]);
-                router.push('/lobby');
             }
         }
     };

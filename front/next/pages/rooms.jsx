@@ -30,6 +30,12 @@ function Rooms() {
         return () => clearInterval(intervalId);
     }, []);
 
+    useEffect(() => {
+        if (useStore.getState().room != null) {
+            router.push('/lobby');
+        }
+    }, [useStore.getState().room]);    
+
     // Unirse a la sala pública
     const addPublicRoom = (room) => {
         // Guardar información de la sala
@@ -40,14 +46,12 @@ function Rooms() {
             useStore.setState({ user: { name: userName } });
             console.log('UserName: ', useStore.getState().user.name);
             let buildData={"id": room.id, "username": userName};
-            socket.emit('joinRoom',buildData) ;
-            router.push('/lobby');
+            socket.emit('joinRoom',buildData);
         } else {
             let userName = useStore.getState().user.name || localStorage.getItem('user');
             console.log('UserName: ', userName);
             let buildData={"id": room.id, "username": userName}
             socket.emit('joinRoom', buildData);
-            router.push('/lobby');
         }
     };
 
@@ -81,11 +85,15 @@ function Rooms() {
                         useStore.setState({ user: { name: userName } });
                         console.log('UserName: ', useStore.getState().user.name);
                         socket.emit('joinRoom', {id: room.id, username: userName});
-                        router.push('/lobby');
+                        if ( useStore.getState().room != null) {
+                            router.push('/lobby');
+                        }
                     } else {
                         console.log('UserName: ', useStore.getState().user.name);
                         socket.emit('joinRoom', {id: room.id, username: useStore.getState().user.name});
-                        router.push('/lobby');
+                        if ( useStore.getState().room != null) {
+                            router.push('/lobby');
+                        }
                     }
                 }
             });
@@ -152,7 +160,7 @@ function Rooms() {
                             <div className="max-h-52 overflow-y-auto">
                                 <ul>
                                     {showRooms.map(room => (
-                                        <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={() => addPublicRoom(room)}>{room.name}</li>
+                                        <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" key={room.id} onClick={() => addPublicRoom(room)}>{room.name}</li>
                                     ))}
                                 </ul>
                             </div>
