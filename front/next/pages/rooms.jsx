@@ -136,7 +136,7 @@ function Rooms() {
     function cerrarSesion() {
         signOut();
         if (!session.data) {
-            // window.location.href = '/';
+            // router.push('/');
         }
         console.log(session.data);
     }

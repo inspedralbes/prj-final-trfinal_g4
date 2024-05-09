@@ -59,10 +59,11 @@ io.on('connection', (socket) => {
                 playersData: []
             }
         }
-        socket.join(newRoom.id);
         rooms.push(newRoom);
         console.log(rooms);
+        socket.join(newRoom.id);
         io.emit('allRooms', rooms);
+        io.to(newRoom.id).emit('newInfoRoom', newRoom);
     });
 
     //Join Room
@@ -84,6 +85,7 @@ io.on('connection', (socket) => {
             socket.join(findRoom.id);
         }
         io.emit('allRooms', rooms);
+        io.to(findRoom.id).emit('newInfoRoom', findRoom);
     });
 
     socket.on('startGame', ()=>{
@@ -115,7 +117,8 @@ io.on('connection', (socket) => {
             }
         }
         io.to(room.id).emit('gameStarted', room.game);
-    })
+    });
+
     //Disconnect
     socket.on('disconnect', () => {
         console.log(`Disconnected: ${socket.id}`);

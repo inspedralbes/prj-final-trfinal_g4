@@ -11,6 +11,11 @@ socket.on('allRooms', (rooms) => {
     useStore.setState({ rooms });
 });
 
+socket.on('newInfoRoom', (room) => {
+    useStore.setState({ room });
+    console.log(`New INFO ROOM: ${room}`);
+});
+
 socket.on('gameStarted', (data)=>{
     useStore.setState({ localUserSocketId: socket.id });
     let playerData = data.playersData.find(player => player.id == socket.id);

@@ -17,20 +17,19 @@ const Lobby = () => {
         router.push('/game');
     }
 
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            const roomsFromStore = useStore.getState().rooms;
-            if ( roomsFromStore != rooms) {
-                setRooms(roomsFromStore);
-                rooms.forEach(room => {
-                    
-                });
-            } else {
-                console.log('No hi ha canvis en les sales');
-            }
-        }, 1000);
-        return () => clearInterval(intervalId);
-    }, []);
+    // useEffect(() => {
+    //     const intervalId = setInterval(() => {
+    //         const roomsFromStore = useStore.getState().rooms;
+    //         if ( roomsFromStore != rooms) {
+    //             setRooms(roomsFromStore);
+    //             rooms.forEach(room => {
+    //             });
+    //         } else {
+    //             console.log('No hi ha canvis en les sales');
+    //         }
+    //     }, 1000);
+    //     return () => clearInterval(intervalId);
+    // }, []);
 
     return (
         <div>
