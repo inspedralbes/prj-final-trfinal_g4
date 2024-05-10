@@ -15,8 +15,8 @@ const Create = () => {
     const [selectedImages, setSelectedImages] = useState([]);
     // Rooms para comprovar codigos de acceso 
     const [rooms , setRooms] = useState(useStore.getState().rooms);
-    const router = useRouter();
     const [popupMessage, setPopupMessage] = useState(null);
+    const router = useRouter();
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -25,6 +25,12 @@ const Create = () => {
         }, 1000);
         return () => clearInterval(intervalId);
     }, []);
+
+    useEffect(() => {
+        if (useStore.getState().room != null) {
+            router.push('/lobby');
+        }
+    }, [useStore.getState().room]);
 
     function generateAccessCode() {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -42,13 +48,7 @@ const Create = () => {
         } else {
             setSelectedImages([...selectedImages, imageSrc]);
         }
-    };
-
-    useEffect(() => {
-        if (useStore.getState().room != null) {
-            router.push('/lobby');
-        }
-    }, [useStore.getState().room]);    
+    };    
 
     const handleCreateRoom = () => {
         const roomInfo = {
@@ -57,7 +57,7 @@ const Create = () => {
             mode: gameMode,
             images: selectedImages
         };
-        if (roomInfo.name === '' || roomInfo.mode === '') {
+        if (roomInfo.name == '' || roomInfo.mode == '') {
             setPopupMessage('Faltan datos por rellenar');
             return;
         } else {
@@ -65,7 +65,7 @@ const Create = () => {
             if (!isPublic) {
                 do {
                     accessCode = generateAccessCode();
-                } while (rooms.some((room) => room.accessCode === accessCode));
+                } while (rooms.some((room) => room.accessCode == accessCode));
                 console.log(accessCode);
                 roomInfo.accessCode = accessCode;
             }

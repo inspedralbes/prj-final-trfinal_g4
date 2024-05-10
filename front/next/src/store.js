@@ -11,7 +11,7 @@ const useStore = create((set) => ({
     setRoom: (room) => set({ room }),
     playerData: [],
     setPlayerData: (playerData) => set({ playerData }),
-    gameData: [],
+    gameData: null,
     setGameData: (gameData) => set({ gameData }),
     localUserSocketId: [],
     setLocalUserSocketId: (localUserSocketId) => set({ localUserSocketId }),

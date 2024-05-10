@@ -52,6 +52,14 @@ const Lobby = () => {
         router.push('/game');
     }
 
+    useEffect(() => {
+        console.log('gData:', useStore.getState().room.status);
+        if (useStore.getState().room!=null && useStore.getState().room.status == 'Playing'){
+            console.log("entro aqui")
+            router.push('/game');
+        }
+    });
+
     return (
         <div>
             <Header />
