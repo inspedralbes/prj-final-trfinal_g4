@@ -3,12 +3,18 @@ import Header from '../components/header';
 
 const Perfil = () => {
     const [newName, setNewName] = useState('');
+    const [newUsername, setNewUsername] = useState('');
     const [newEmail, setNewEmail] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
+    const [newImage, setNewImage] = useState(null);
 
     const handleNameChange = (event) => {
         setNewName(event.target.value);
+    };
+
+    const handleUsernameChange = (event) => {
+        setNewUsername(event.target.value);
     };
 
     const handleEmailChange = (event) => {
@@ -23,97 +29,124 @@ const Perfil = () => {
         setConfirmNewPassword(event.target.value);
     };
 
+    const handleImageChange = (event) => {
+        setNewImage(event.target.files[0]);
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
         // Aquí puedes manejar los datos del formulario, como enviarlos al servidor
         console.log('Nuevo nombre:', newName);
+        console.log('Nuevo username:', newUsername);
         console.log('Nuevo email:', newEmail);
         console.log('Nueva contraseña:', newPassword);
         console.log('Confirmar nueva contraseña:', confirmNewPassword);
+        console.log('Nueva imagen:', newImage);
 
         // Limpia el formulario después de enviar
         setNewName('');
+        setNewUsername('');
         setNewEmail('');
         setNewPassword('');
         setConfirmNewPassword('');
+        setNewImage(null);
     };
 
     return (
         <div>
             <Header />
-            <div className="flex items-center justify-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-8">
-                <div className="w-full max-w-4xl flex justify-between">
-                    {/* Información del perfil */}
-                    <div className="w-1/3 pr-4 flex flex-col justify-center items-start">
-                        <div>
-                            <h2 className="text-3xl font-bold mb-4 text-white">Información del perfil</h2>
-                            <div className="bg-white rounded-lg p-4 mb-4">
-                                <div className="mb-4 flex items-center">
-                                    <label className="block text-gray-700 font-semibold w-1/3">Nombre:</label>
-                                    <p className="text-gray-700">Nombre de usuario</p>
-                                </div>
-                                <div className="mb-4 flex items-center">
-                                    <label className="block text-gray-700 font-semibold w-1/3">Imagen:</label>
-                                    <img src="/path/to/user/image" alt="User" className="w-24 h-24 rounded-full" />
-                                </div>
-                                <div className="mb-4 flex items-center">
-                                    <label className="block text-gray-700 font-semibold w-1/3">Correo:</label>
-                                    <p className="text-gray-700">correo@example.com</p>
-                                </div>
-                            </div>
-                        </div>
+            <div className="flex h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
+                {/* Información del perfil */}
+                <div className="bg-gray-700 text-white flex flex-col justify-center items-center w-1/5 pt-20">
+                    <div className="mb-8 flex flex-col items-center text-xl w-full">
+                        <img src="/images/random.jpg" alt="User" className="w-36 h-36 rounded-full" />
                     </div>
-                    {/* Formulario de editar perfil */}
-                    <div className="w-2/3 pl-4 flex justify-center items-center">
-                        <div>
-                            <h2 className="text-3xl font-bold mb-4 text-white">Editar perfil</h2>
-                            <form onSubmit={handleSubmit} className="bg-white rounded-lg p-8">
-                                <div className="mb-4">
-                                    <label htmlFor="newName" className="block text-gray-700 font-semibold mb-2">Nuevo nombre:</label>
-                                    <input
-                                        id="newName"
-                                        type="text"
-                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
-                                        value={newName}
-                                        onChange={handleNameChange}
-                                    />
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="newEmail" className="block text-gray-700 font-semibold mb-2">Nuevo correo:</label>
-                                    <input
-                                        id="newEmail"
-                                        type="email"
-                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
-                                        value={newEmail}
-                                        onChange={handleEmailChange}
-                                    />
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="newPassword" className="block text-gray-700 font-semibold mb-2">Nueva contraseña:</label>
-                                    <input
-                                        id="newPassword"
-                                        type="password"
-                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
-                                        value={newPassword}
-                                        onChange={handleNewPasswordChange}
-                                    />
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="confirmNewPassword" className="block text-gray-700 font-semibold mb-2">Confirmar nueva contraseña:</label>
-                                    <input
-                                        id="confirmNewPassword"
-                                        type="password"
-                                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
-                                        value={confirmNewPassword}
-                                        onChange={handleConfirmNewPasswordChange}
-                                    />
-                                </div>
-                                <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none">
+                    <div className="mb-8 flex items-center text-xl w-full">
+                        <label className="block font-semibold w-1/3 -mr-16 ml-16">Nom: </label>
+                        <p className="inline-block whitespace-nowrap">Nom</p>
+                    </div>
+                    <div className="mb-8 flex items-center text-xl w-full">
+                        <label className="block font-semibold w-1/3 -mr-3 ml-16">Username: </label>
+                        <p className="inline-block whitespace-nowrap">Nom d'usuari</p>
+                    </div>
+                    <div className="mb-8 flex items-center text-xl w-full">
+                        <label className="block font-semibold w-1/3 -mr-16 ml-16">Correu: </label>
+                        <p className="inline-block whitespace-nowrap ml-4">correu@example.com</p>
+                    </div>
+                </div>
+
+                {/* Formulario de editar perfil */}
+                <div className="flex-1 pt-20 flex items-center justify-center"> {/* Ajuste de clases para centrar */}
+                    <div className="w-4/6 max-w-xl bg-gray-100 rounded-lg shadow-lg p-8 mr-10"> {/* Ajuste de clases para hacerlo más ancho y agregar margen */}
+                        <h2 className="text-3xl font-bold mb-8 text-gray-800">Editar perfil</h2>
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            <div className="mb-6">
+                                <label htmlFor="newName" className="block text-gray-700 font-semibold mb-2">Nuevo nombre:</label>
+                                <input
+                                    id="newName"
+                                    type="text"
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
+                                    value={newName}
+                                    onChange={handleNameChange}
+                                />
+                            </div>
+                            <div className="mb-6">
+                                <label htmlFor="newUsername" className="block text-gray-700 font-semibold mb-2">Nuevo username:</label>
+                                <input
+                                    id="newUsername"
+                                    type="text"
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
+                                    value={newUsername}
+                                    onChange={handleUsernameChange}
+                                />
+                            </div>
+                            <div className="mb-6">
+                                <label htmlFor="newEmail" className="block text-gray-700 font-semibold mb-2">Nuevo correo:</label>
+                                <input
+                                    id="newEmail"
+                                    type="email"
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
+                                    value={newEmail}
+                                    onChange={handleEmailChange}
+                                />
+                            </div>
+                            <div className="mb-6">
+                                <label htmlFor="newPassword" className="block text-gray-700 font-semibold mb-2">Nueva contraseña:</label>
+                                <input
+                                    id="newPassword"
+                                    type="password"
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
+                                    value={newPassword}
+                                    onChange={handleNewPasswordChange}
+                                />
+                            </div>
+                            <div className="mb-6">
+                                <label htmlFor="confirmNewPassword" className="block text-gray-700 font-semibold mb-2">Confirmar nueva contraseña:</label>
+                                <input
+                                    id="confirmNewPassword"
+                                    type="password"
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
+                                    value={confirmNewPassword}
+                                    onChange={handleConfirmNewPasswordChange}
+                                />
+                            </div>
+                            <div className="mb-6">
+                                <label htmlFor="newImage" className="block text-gray-700 font-semibold mb-2">Nueva imagen:</label>
+                                <input
+                                    id="newImage"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                    className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
+                                />
+                            </div>
+                            <div className="flex justify-center">
+                                <button type="submit" className="w-1/3 bg-green-500 hover:bg-green-700 text-white font-bold rounded px-8 py-4 focus:outline-none">
                                     Enviar
                                 </button>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -124,7 +124,13 @@ const Create = () => {
                             <option value="Aleatori">Aleatori</option>
                         </select>
                     </div>
+<<<<<<< HEAD
                     {popupMessage && <ErrorPopup type={popupMessage === 'Faltan datos por rellenar' ? 'incomplete' : 'success'} message={popupMessage} />}
+=======
+                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
+                        Crear Sala
+                    </button>
+>>>>>>> origin/funcionalidades-diseño
                 </div>
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
                         Crear Sala
@@ -170,7 +176,7 @@ const Create = () => {
 const CustomImageWithOverlay = ({ imageSrc, altText, isSelected, children }) => {
     return (
         <div className="relative flex-shrink-0 mb-4 sm:mb-0 sm:mr-4 sm:mx-3">
-            <img src={imageSrc} alt={altText} className={`h-60 sm:h-72 w-80 sm:w-96 my-4 bg-zinc-400 ${isSelected ? 'border-4 border-blue-500' : ''}`} />
+            <img src={imageSrc} alt={altText} className={`h-60 sm:h-72 w-80 sm:w-96 my-4 bg-zinc-400 ${isSelected ? 'border-4 border-blue-500' : ''}`} onClick={onClick} />
             {children}
         </div>
     );
