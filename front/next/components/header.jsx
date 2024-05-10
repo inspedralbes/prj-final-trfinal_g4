@@ -3,7 +3,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import Link from 'next/link';
 import useStore from '../src/store';
 import { logout } from '../services/communicationManager';
-import ErrorPopup from '../components/errorPopup'; // Importa el componente de popup de error
+import ErrorPopup from '../components/errorPopup';
 
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -63,7 +63,7 @@ const Header = () => {
                 setUser(null);
                 // console.log('Sesión cerrada');
             }).catch(() => {
-                alert('Error cerrando sesión');
+                alert('Error tancant la sessió.');
             });
         }
         setDropdownOpen(false);

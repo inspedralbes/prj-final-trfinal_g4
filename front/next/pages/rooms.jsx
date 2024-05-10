@@ -58,11 +58,10 @@ function Rooms() {
     // Codigo de la sala
     const inputRefs = Array.from({ length: 6 }, () => useRef(null));
 
-    // Estado del código de la sala
     const handleInputChange = (index, event) => {
         const { value } = event.target;
         const newRoomCode = [...roomCode];
-        newRoomCode[index] = value.toUpperCase(); // Convierte a mayúsculas
+        newRoomCode[index] = value.toUpperCase();
         setRoomCode(newRoomCode);
     };
 
@@ -107,18 +106,16 @@ function Rooms() {
             if (index > 0 && inputRefs[index].current.value == '') {
                 inputRefs[index - 1].current.focus();
             } else if (index == 0 && inputRefs[index].current.value == '') {
-                // Si estamos en el primer input y está vacío, enfocamos el input anterior si existe
                 if (inputRefs[index - 1]) {
                     inputRefs[index - 1].current.focus();
                 }
             } else {
-                inputRefs[index].current.value = ''; // Eliminar el carácter
+                inputRefs[index].current.value = '';
             }
         } else if (key == 'Delete') {
             if (inputRefs[index].current.value == '' && index < inputRefs.length - 1) {
                 inputRefs[index + 1].current.focus();
             } else {
-                // Mover los caracteres hacia atrás y limpiar el último campo
                 for (let i = index; i < inputRefs.length - 1; i++) {
                     inputRefs[i].current.value = inputRefs[i + 1].current.value;
                 }
@@ -151,7 +148,7 @@ function Rooms() {
                     
                     <div className="bg-white shadow-md rounded-lg p-4 flex-grow">
                         <div className="bg-gray-100 rounded-lg p-4">
-                            <h2 className="text-lg font-semibold mb-4">Salas Disponibles</h2>
+                            <h2 className="text-lg font-semibold mb-4">Sales disponibles</h2>
                             <div className="max-h-52 overflow-y-auto">
                                 <ul>
                                     {showRooms.map(room => (

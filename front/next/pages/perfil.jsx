@@ -67,7 +67,7 @@ const Perfil = () => {
                         <p className="inline-block whitespace-nowrap">Nom</p>
                     </div>
                     <div className="mb-8 flex items-center text-xl w-full">
-                        <label className="block font-semibold w-1/3 -mr-3 ml-16">Username: </label>
+                        <label className="block font-semibold w-1/3 -mr-3 ml-16">Nom d'usuari: </label>
                         <p className="inline-block whitespace-nowrap">Nom d'usuari</p>
                     </div>
                     <div className="mb-8 flex items-center text-xl w-full">
@@ -77,12 +77,12 @@ const Perfil = () => {
                 </div>
 
                 {/* Formulario de editar perfil */}
-                <div className="flex-1 pt-20 flex items-center justify-center"> {/* Ajuste de clases para centrar */}
-                    <div className="w-4/6 max-w-xl bg-gray-100 rounded-lg shadow-lg p-8 mr-10"> {/* Ajuste de clases para hacerlo más ancho y agregar margen */}
+                <div className="flex-1 pt-20 flex items-center justify-center">
+                    <div className="w-4/6 max-w-xl bg-gray-100 rounded-lg shadow-lg p-8 mr-10">
                         <h2 className="text-3xl font-bold mb-8 text-gray-800">Editar perfil</h2>
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="mb-6">
-                                <label htmlFor="newName" className="block text-gray-700 font-semibold mb-2">Nuevo nombre:</label>
+                                <label htmlFor="newName" className="block text-gray-700 font-semibold mb-2">Nou nom:</label>
                                 <input
                                     id="newName"
                                     type="text"
@@ -92,7 +92,7 @@ const Perfil = () => {
                                 />
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="newUsername" className="block text-gray-700 font-semibold mb-2">Nuevo username:</label>
+                                <label htmlFor="newUsername" className="block text-gray-700 font-semibold mb-2">Nou nom d'usuari:</label>
                                 <input
                                     id="newUsername"
                                     type="text"
@@ -102,7 +102,7 @@ const Perfil = () => {
                                 />
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="newEmail" className="block text-gray-700 font-semibold mb-2">Nuevo correo:</label>
+                                <label htmlFor="newEmail" className="block text-gray-700 font-semibold mb-2">Nou correu:</label>
                                 <input
                                     id="newEmail"
                                     type="email"
@@ -112,7 +112,7 @@ const Perfil = () => {
                                 />
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="newPassword" className="block text-gray-700 font-semibold mb-2">Nueva contraseña:</label>
+                                <label htmlFor="newPassword" className="block text-gray-700 font-semibold mb-2">Nova contrasenya:</label>
                                 <input
                                     id="newPassword"
                                     type="password"
@@ -122,7 +122,7 @@ const Perfil = () => {
                                 />
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="confirmNewPassword" className="block text-gray-700 font-semibold mb-2">Confirmar nueva contraseña:</label>
+                                <label htmlFor="confirmNewPassword" className="block text-gray-700 font-semibold mb-2">Confirmar nova contrasenya:</label>
                                 <input
                                     id="confirmNewPassword"
                                     type="password"
@@ -132,7 +132,7 @@ const Perfil = () => {
                                 />
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="newImage" className="block text-gray-700 font-semibold mb-2">Nueva imagen:</label>
+                                <label htmlFor="newImage" className="block text-gray-700 font-semibold mb-2">Nova imatge:</label>
                                 <input
                                     id="newImage"
                                     type="file"

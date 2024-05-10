@@ -16,8 +16,8 @@ import './styles.css';
 
 function AdminPanel() {
     const [maps, setMaps] = useState([]);
-    const [reportedMaps, setReportedMaps] = useState([]); // Add reportedMaps state
-    const [allUsers, setUsers] = useState([]); // Add users state
+    const [reportedMaps, setReportedMaps] = useState([]);
+    const [allUsers, setUsers] = useState([]);
     const [selectedIcon, setSelectedIcon] = useState(null);
 
     useEffect(() => {

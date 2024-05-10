@@ -37,7 +37,7 @@ function Login() {
     e.preventDefault();
 
     if (!email || !password) {
-      setSessionIncomplete('El formulario está incompleto. Por favor, completa todos los campos.');
+      setSessionIncomplete('El formulari està incomplet, si us plau, omple tots els camps.');
       return;
     }
 
@@ -79,7 +79,7 @@ function Login() {
         {sessionError && <ErrorPopup type="error" message={sessionError} />}
         {/* {sessionSuccess && <ErrorPopup type="success" message={sessionSuccess} />} */}
         <form className="bg-white shadow-md rounded-lg px-8 py-6 max-w-md w-full" onSubmit={handleSubmit}>
-          <h2 className="text-3xl font-semibold text-center mb-4">Inicia Sessió</h2>
+          <h2 className="text-3xl font-semibold text-center mb-4">Iniciar Sessió</h2>
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Correu electrònic</label>
             <input type="email" id="email" name="email"
@@ -99,7 +99,7 @@ function Login() {
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out hover:scale-110"
             >
-              Iniciar Sessió
+              Inicia Sessió
             </button>
             <Link href="/register">
               <p className="text-blue-500 hover:text-blue-700 font-semibold text-sm mt-4">Registra't</p>

@@ -12,14 +12,14 @@ const Lobby = () => {
         if (useStore.getState().room != room) {
             room = useStore.getState().room;
         }
-    }, [useStore.getState().room]); 
+    }, [useStore.getState().room]);
 
     // console.log('ROOM: ', room);
     // console.log('ROOM USERS: ', room.users);
 
     var adminUser = room.admin[1];
     var otherUser = '';
-    
+
     if (room.users.length > 1) {
         otherUser = room.users[1].name.replace(/['"]+/g, '');
         // console.log('OTHER USER: ', otherUser);
@@ -27,26 +27,26 @@ const Lobby = () => {
 
     if (otherUser != '') {
         var contentOtherUser = <div id='userRandom' className='flex items-center mt-2 mb-2'>
-                                <div className='flex items-center'>
-                                    <img src="/images/random.jpg" alt="Venti" className='w-10 h-10 ml-2 rounded-full' />
-                                    <p className='text-2xl ml-3 mt-1 mr-4'>{otherUser}</p>
-                                </div>
-                                <div id='buttons-check' className='flex items-center ml-auto'>
-                                    <button className='bg-green-500 hover:bg-green-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mx-2 rounded-lg'>
-                                        <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
-                                        </svg>
-                                    </button>
-                                    <button className='bg-red-500 hover:bg-red-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mr-2 rounded-lg'>
-                                        <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
+            <div className='flex items-center'>
+                <img src="/images/random.jpg" alt="Venti" className='w-10 h-10 ml-2 rounded-full' />
+                <p className='text-2xl ml-3 mt-1 mr-4'>{otherUser}</p>
+            </div>
+            <div id='buttons-check' className='flex items-center ml-auto'>
+                <button className='bg-green-500 hover:bg-green-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mx-2 rounded-lg'>
+                    <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                    </svg>
+                </button>
+                <button className='bg-red-500 hover:bg-red-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mr-2 rounded-lg'>
+                    <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
     }
 
-    const emitStart= ()=> {
+    const emitStart = () => {
         // console.log('Emitiendo startGame');
         socket.emit('startGame', room);
         router.push('/game');
@@ -54,7 +54,7 @@ const Lobby = () => {
 
     useEffect(() => {
         // console.log('gData:', useStore.getState().room.status);
-        if (useStore.getState().room!=null && useStore.getState().room.status == 'Playing'){
+        if (useStore.getState().room != null && useStore.getState().room.status == 'Playing') {
             // console.log("entro aqui")
             router.push('/game');
         }
@@ -75,7 +75,7 @@ const Lobby = () => {
                                     <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start'>
                                         <div>
                                             <span className='px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600'>
-                                                Hola! ¿Cómo estás? (otro)
+                                                Hola! Com estas? (altre usuari)
                                             </span>
                                         </div>
                                     </div>
@@ -88,7 +88,7 @@ const Lobby = () => {
                                     <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end'>
                                         <div>
                                             <span className='px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white'>
-                                                ¡Hola! Bien y tú? (tu)
+                                                Hola! Bé i tu? (tu)
                                             </span>
                                         </div>
                                     </div>
@@ -162,9 +162,9 @@ const Lobby = () => {
                         </div>
                     </div>
                 </div>
-                    <button className="text-white text-2xl font-bold py-2 px-4 w-40 rounded mt-5 bg-red-500 hover:bg-red-700" onClick={emitStart}>
-                        Iniciar Joc
-                    </button>
+                <button className="text-white text-2xl font-bold py-2 px-4 w-40 rounded mt-5 bg-red-500 hover:bg-red-700" onClick={emitStart}>
+                    Iniciar Joc
+                </button>
             </div>
         </div>
     );

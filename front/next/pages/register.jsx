@@ -9,7 +9,7 @@ function Register() {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState(''); // Nuevo estado para el campo username
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [registrationError, setRegistrationError] = useState(null);
@@ -27,7 +27,7 @@ function Register() {
     const user = {
       name: name,
       email: email,
-      username: username, // Agregar el campo username al objeto user
+      username: username,
       password: password,
     };
 
@@ -91,7 +91,6 @@ function Register() {
             <Link href="/login">
               <p className="text-gray-700 text-sm mt-4">Ja tens compte? Inicia sessió</p>
             </Link>
-            {/* Enlace para iniciar sesión */}
           </div>
         </form>
       </div>
