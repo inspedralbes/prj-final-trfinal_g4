@@ -1,10 +1,11 @@
 import Link from 'next/link';
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { login } from '../services/communicationManager';
 import { useRouter } from 'next/router';
 import { signIn, useSession } from 'next-auth/react';
 import Header from '../components/header';
 import useStore from '../src/store';
+import ErrorPopup from '../components/errorPopup';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -14,8 +15,11 @@ function Login() {
   const username = localStorage.getItem('user');
   const token = localStorage.getItem('token');
 
+  const [sessionIncomplete, setSessionIncomplete] = useState(null);
+  const [sessionError, setSessionError] = useState(null);
+  // const [sessionSuccess, setSessionSuccess] = useState(null);
 
-//GOOGLE LOGIN
+  //GOOGLE LOGIN
   const session = useSession();
   // console.log(session);
   useEffect(() => {
@@ -25,8 +29,13 @@ function Login() {
     }
   }, [session, router]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!email || !password) {
+      setSessionIncomplete('El formulario está incompleto. Por favor, completa todos los campos.');
+      return;
+    }
 
     const user = {
       email: email,
@@ -44,7 +53,7 @@ function Login() {
       });
   };
 
-  async function loginGoogle() {
+  const loginGoogle = async () => {
     await signIn('google');
   }
 
@@ -52,6 +61,9 @@ function Login() {
     <div>
       <Header />
       <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4">
+        {sessionIncomplete && <ErrorPopup type="incomplete" message={sessionIncomplete} />}
+        {sessionError && <ErrorPopup type="error" message={sessionError} />}
+        {/* {sessionSuccess && <ErrorPopup type="success" message={sessionSuccess} />} */}
         <form className="bg-white shadow-md rounded-lg px-8 py-6 max-w-md w-full" onSubmit={handleSubmit}>
           <h2 className="text-3xl font-semibold text-center mb-4">Inicia Sessió</h2>
           <div className="mb-4">
@@ -75,7 +87,6 @@ function Login() {
             >
               Iniciar Sessió
             </button>
-            {/* Enlace para registro */}
             <Link href="/register">
               <p className="text-blue-500 hover:text-blue-700 font-semibold text-sm mt-4">Registra't</p>
             </Link>

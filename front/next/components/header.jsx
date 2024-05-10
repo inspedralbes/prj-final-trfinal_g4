@@ -3,6 +3,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import Link from 'next/link';
 import useStore from '../src/store';
 import { logout } from '../services/communicationManager';
+import ErrorPopup from '../components/errorPopup'; // Importa el componente de popup de error
 
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -91,6 +92,7 @@ const Header = () => {
             </Link>
             <div className="flex items-center">
                 {content}
+                {errorMessage && <ErrorPopup message={errorMessage} />} {/* Mostrar el popup de error si hay un mensaje de error */}
             </div>
         </header>
     );

@@ -6,6 +6,7 @@ import { TbLetterX } from "react-icons/tb";
 import socket from '../services/sockets';
 import useStore from '../src/store';
 import { useRouter } from 'next/router';
+import ErrorPopup from '../components/errorPopup';
 
 const Create = () => {
     const [roomName, setRoomName] = useState('');
@@ -15,6 +16,7 @@ const Create = () => {
     // Rooms para comprovar codigos de acceso 
     const [rooms , setRooms] = useState(useStore.getState().rooms);
     const router = useRouter();
+    const [popupMessage, setPopupMessage] = useState(null);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -35,12 +37,9 @@ const Create = () => {
     }
 
     const toggleImageSelection = (imageSrc) => {
-        // Verificar si la imagen ya está seleccionada
         if (selectedImages.includes(imageSrc)) {
-            // Si la imagen está seleccionada, removerla del estado
             setSelectedImages(selectedImages.filter(img => img !== imageSrc));
         } else {
-            // Si la imagen no está seleccionada, añadirla al estado
             setSelectedImages([...selectedImages, imageSrc]);
         }
     };
@@ -52,22 +51,21 @@ const Create = () => {
     }, [useStore.getState().room]);    
 
     const handleCreateRoom = () => {
-        // Crear un objeto con la información de la sala
         const roomInfo = {
             name: roomName,
             public: isPublic,
             mode: gameMode,
             images: selectedImages
         };
-        if (roomInfo.name == '' || roomInfo.mode == '') {
-            alert('Faltan datos por rellenar');
+        if (roomInfo.name === '' || roomInfo.mode === '') {
+            setPopupMessage('Faltan datos por rellenar');
             return;
         } else {
             let accessCode;
             if (!isPublic) {
                 do {
                     accessCode = generateAccessCode();
-                } while (rooms.some((room) => room.accessCode == accessCode));
+                } while (rooms.some((room) => room.accessCode === accessCode));
                 console.log(accessCode);
                 roomInfo.accessCode = accessCode;
             }
@@ -88,7 +86,6 @@ const Create = () => {
         <div>
             <Header />
             <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-8">
-                {/* Parte izquierda para crear la sala */}
                 <div className="flex flex-col justify-center items-center w-full sm:w-1/3 mb-8">
                     <h1 className="text-white text-4xl font-bold mb-4">Crear Sala</h1>
                     <div className="w-full bg-white rounded-lg p-4 mb-3">
@@ -127,6 +124,7 @@ const Create = () => {
                             <option value="Aleatori">Aleatori</option>
                         </select>
                     </div>
+                    {popupMessage && <ErrorPopup type={popupMessage === 'Faltan datos por rellenar' ? 'incomplete' : 'success'} message={popupMessage} />}
                 </div>
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
                         Crear Sala
