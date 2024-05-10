@@ -18,16 +18,20 @@ const Header = () => {
         if (tokenStore !== null && userStore !== null) {
             setToken(tokenStore);
             setUser(userStore);
-
             // console.log('Token and user from store:', tokenStore, userStore);
         } else {
+            console.log('jjjjjjjjjjjjj')
             try {
                 const storedToken = localStorage.getItem('token');
                 var storedUser = localStorage.getItem('user');
-                if (storedUser) {
+                console.log('kkkkkkkkkk')
+                console.log(storedUser)
+                if (storedUser != null ) {
                     const parsedUser = JSON.parse(storedUser);
                     storedUser = parsedUser.name;
-                    console.log(userName); // Imprimirá el objeto de usuario: { name: 'John', email: 'john@example.com', token: 'token_value' }
+                    storedUser.replace(/['"]+/g, '');
+                    console.log(storedUser);
+                    console.log('aaaaaaaaaaaaaaa');
                 }
                 // console.log('Token and user from localStorage:', storedToken, storedUser);
                 setToken(storedToken);
