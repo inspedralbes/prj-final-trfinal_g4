@@ -41,13 +41,14 @@ io.on('connection', (socket) => {
     //Create Room
     socket.on('createRoom', (data) => {
         let id = lastRoom++;
+        console.log(data)
         console.log('Room created');
         let newRoom = {
             name: data.addRoom.name,
             isPublic: data.addRoom.public,
             mode: data.addRoom.mode,
             admin: [socket.id, data.userAdmin],
-            users: [{id:socket.id, name:data.userAdmin}],
+            users: [ {id:socket.id, name:data.userAdmin} ],
             id: id,
             accessCode: data.addRoom.accessCode,
             accesible: true,

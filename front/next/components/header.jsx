@@ -7,6 +7,7 @@ import ErrorPopup from '../components/errorPopup'; // Importa el componente de p
 
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
     const [token, setToken] = useState(null);
     const [user, setUser] = useState(null);
 
@@ -22,10 +23,13 @@ const Header = () => {
         } else {
             try {
                 const storedToken = localStorage.getItem('token');
-                const storedUser = localStorage.getItem('user');
-
+                var storedUser = localStorage.getItem('user');
+                if (storedUser) {
+                    const parsedUser = JSON.parse(storedUser);
+                    storedUser = parsedUser.name;
+                    console.log(userName); // Imprimirá el objeto de usuario: { name: 'John', email: 'john@example.com', token: 'token_value' }
+                }
                 // console.log('Token and user from localStorage:', storedToken, storedUser);
-                
                 setToken(storedToken);
                 setUser(storedUser);
                 useStore.setState({ token: storedToken });
@@ -70,9 +74,9 @@ const Header = () => {
                 <FaUserCircle className="mx-4 text-3xl cursor-pointer" onClick={toggleDropdown} />
                 {dropdownOpen && (
                     <div className="dropdown absolute right-0 mt-2 bg-black bg-opacity-50 rounded-md shadow-lg">
-                        <a href="#" className="block px-4 py-2 hover:bg-gray-800">Perfil</a>
-                        <a href="#" className="block px-4 py-2 hover:bg-gray-800">Mapas</a>
-                        <button onClick={logoutHandler} className="block px-4 py-2 hover:bg-gray-800">Logout</button>
+                        <a href="/perfil" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Perfil</a>
+                        <a href="/mapas" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Mapas</a>
+                        <button onClick={logoutHandler} className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Logout</button>
                     </div>
                 )}
             </div>

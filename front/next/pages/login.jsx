@@ -43,7 +43,7 @@ function Login() {
     };
 
     login(user).then((data) => {
-        localStorage.setItem('user', { user: { name: JSON.stringify(data.user) }});
+        localStorage.setItem('user', JSON.stringify({ name: JSON.stringify(data.user) }));
         localStorage.setItem('token', JSON.stringify(data.token));
         useStore.setState({ user: { name: JSON.stringify(data.user) }});
         useStore.setState({ token: JSON.stringify(data.token) });

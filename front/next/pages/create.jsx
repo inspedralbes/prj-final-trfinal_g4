@@ -73,11 +73,13 @@ const Create = () => {
                 let userName = 'user' + Math.floor(Math.random() * 1000);
                 useStore.setState({ user: { name: userName } });
                 console.log('UserName: ', useStore.getState().user.name);
-                socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userName});
+                socket.emit('createRoom', { addRoom: roomInfo, userAdmin: userName });
             } else {
                 let userName = useStore.getState().user.name || localStorage.getItem('user');
+                console.log(localStorage.getItem('user'));
                 console.log('UserName: ', userName);
-                socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userName});
+                let userNameClean = userNameClean.replace(/['"]+/g, '');
+                socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userNameClean});
             }
         }
     };
@@ -124,17 +126,11 @@ const Create = () => {
                             <option value="Aleatori">Aleatori</option>
                         </select>
                     </div>
-<<<<<<< HEAD
                     {popupMessage && <ErrorPopup type={popupMessage === 'Faltan datos por rellenar' ? 'incomplete' : 'success'} message={popupMessage} />}
-=======
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
                         Crear Sala
                     </button>
->>>>>>> origin/funcionalidades-diseño
                 </div>
-                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
-                        Crear Sala
-                    </button>
                 {/* Parte derecha con las imágenes */}
                 <div className="w-full sm:w-3/4 flex flex-col sm:flex-row items-center justify-center">
                     <div className="flex flex-col sm:flex-row items-center justify-center sm:flex-wrap gap-x-4">
@@ -176,7 +172,7 @@ const Create = () => {
 const CustomImageWithOverlay = ({ imageSrc, altText, isSelected, children }) => {
     return (
         <div className="relative flex-shrink-0 mb-4 sm:mb-0 sm:mr-4 sm:mx-3">
-            <img src={imageSrc} alt={altText} className={`h-60 sm:h-72 w-80 sm:w-96 my-4 bg-zinc-400 ${isSelected ? 'border-4 border-blue-500' : ''}`} onClick={onClick} />
+            <img src={imageSrc} alt={altText} className={`h-60 sm:h-72 w-80 sm:w-96 my-4 bg-zinc-400 ${isSelected ? 'border-4 border-blue-500' : ''}`} />
             {children}
         </div>
     );
