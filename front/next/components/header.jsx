@@ -29,11 +29,11 @@ const Header = () => {
                 if (storedUser != null ) {
                     const parsedUser = JSON.parse(storedUser);
                     storedUser = parsedUser.name;
-                    storedUser.replace(/['"]+/g, '');
                     console.log(storedUser);
                     console.log('aaaaaaaaaaaaaaa');
                 }
                 // console.log('Token and user from localStorage:', storedToken, storedUser);
+                storedUser.replace(/['"]+/g, '');
                 setToken(storedToken);
                 setUser(storedUser);
                 useStore.setState({ token: storedToken });

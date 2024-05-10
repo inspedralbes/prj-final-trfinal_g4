@@ -21,7 +21,7 @@ const Lobby = () => {
     var otherUser = '';
     
     if (room.users.length > 1) {
-        otherUser = room.users[1].name;
+        otherUser = room.users[1].name.replace(/['"]+/g, '');
         console.log('OTHER USER: ', otherUser);
     }
 

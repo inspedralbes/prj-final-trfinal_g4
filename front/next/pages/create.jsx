@@ -76,9 +76,12 @@ const Create = () => {
                 socket.emit('createRoom', { addRoom: roomInfo, userAdmin: userName });
             } else {
                 let userName = useStore.getState().user.name || localStorage.getItem('user');
-                console.log(localStorage.getItem('user'));
+                console.log('localStorage: ' + localStorage.getItem('user'));
                 console.log('UserName: ', userName);
-                let userNameClean = userNameClean.replace(/['"]+/g, '');
+                const parsedUser = JSON.parse(userName);
+                let userNameForClean = parsedUser.name;
+                let userNameClean = userNameForClean.replace(/['"]+/g, '');
+                console.log('UserNameClean: ', userNameClean);
                 socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userNameClean});
             }
         }
