@@ -50,9 +50,9 @@ function AdminPanel() {
         }
     }
 
-    const handleDownloadFile = async (mapId) => {
+    const handleDownloadFile = async (mapId, mapName) => {
         try {
-            await downloadFile(mapId);
+            await downloadFile(mapId, mapName);
             console.log("Map downloaded!!!");
         } catch (error) {
             console.error('Error downloading map:', error);
@@ -101,7 +101,7 @@ function AdminPanel() {
                                             </div>
                                             <div>
 
-                                                <MdOutlineFileDownload style={{ color: 'green', fontSize: '3em', cursor: 'pointer' }} onClick={() => handleDownloadFile(map.id)} />
+                                                <MdOutlineFileDownload style={{ color: 'green', fontSize: '3em', cursor: 'pointer' }} onClick={() => handleDownloadFile(map.id, map.name)} />
                                             </div>
                                             <div>
                                                 <RiDeleteBinLine style={{ color: 'red', fontSize: '2.8em', cursor: 'pointer' }} onClick={() => handleDeleteMap(map.id)} />

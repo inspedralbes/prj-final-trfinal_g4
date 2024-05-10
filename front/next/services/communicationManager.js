@@ -255,6 +255,7 @@ export function destroyMap(mapData) {
 }
 
 export function downloadFile(mapId, mapName) {
+    console.log("map name", mapName);
     console.log("map info", mapId);
     return new Promise((resolve, reject) => {
         fetch(`${url}download/${mapId}`, {
@@ -262,7 +263,8 @@ export function downloadFile(mapId, mapName) {
         })
             .then(response => {
                 const contentDisposition = response.headers.get('Content-Disposition');
-                let filename = 'mapatuto';
+                const randomNumber = Math.floor(Math.random() * 900000) + 100000;
+                let filename = mapName + '_' + randomNumber;
                 console.log(" contentDisposition", contentDisposition);
                 if (contentDisposition) {
                     const filenameMatch = contentDisposition.match(/filename=([^ ]*)/i);
