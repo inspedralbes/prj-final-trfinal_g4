@@ -237,7 +237,7 @@ export function updateMap(mapData) {
 
 export function destroyMap(mapData) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}maps/${mapData.id}`, {
+        fetch(`${url}maps/${mapData}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

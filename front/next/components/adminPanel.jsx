@@ -17,7 +17,6 @@ function AdminPanel() {
     const [maps, setMaps] = useState([]);
     const [reportedMaps, setReportedMaps] = useState([]); // Add reportedMaps state
     const [allUsers, setUsers] = useState([]); // Add users state
-    const [deleteMap, setDestroyMap] = useState([]); // Add destroyMap state
     const [selectedIcon, setSelectedIcon] = useState(null);
 
     useEffect(() => {
@@ -33,13 +32,21 @@ function AdminPanel() {
             .then((data) => setUsers(data))
             .catch((error) => console.error('Error fetching users: ', error))
 
-        destroyMap()
-            .then((data) => setDestroyMap(data))
-            .catch((error) => console.error('Error deleting map:', error));
     }, []);
 
     const handleIconClick = (iconName) => {
         setSelectedIcon(iconName);
+    }
+
+    const handleDeleteMap = async (mapId) => {
+        try {
+            console.log("map id", mapId);
+            await destroyMap(mapId);
+            console.log("Map deleted");
+            setMaps(maps.filter(map => map.id !== mapId));
+        } catch (error) {
+            console.error('Error deleting map:', error);
+        }
     }
 
     return (
@@ -86,7 +93,7 @@ function AdminPanel() {
                                                 <MdOutlineFileDownload style={{ color: 'green', fontSize: '3em', cursor: 'pointer' }} />
                                             </div>
                                             <div>
-                                                <RiDeleteBinLine style={{ color: 'red', fontSize: '2.8em', cursor: 'pointer' }} onClick={() => handleIconClick('deleteMap')} />
+                                                <RiDeleteBinLine style={{ color: 'red', fontSize: '2.8em', cursor: 'pointer' }} onClick={() => handleDeleteMap(map.id)} />
                                             </div>
 
                                         </div>
