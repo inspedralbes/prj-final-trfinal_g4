@@ -130,6 +130,12 @@ class MapController extends Controller
             ], 404);
         }
 
-        return response()->download($path);
+        $filename = $map->name . '.json';
+
+        $headers = [
+            'Content-Disposition' => 'attachment; filename=' . $filename,
+        ];
+
+        return response()->download($path, $filename, $headers);
     }
 }

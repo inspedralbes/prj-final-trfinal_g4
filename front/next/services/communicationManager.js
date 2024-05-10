@@ -254,17 +254,36 @@ export function destroyMap(mapData) {
     });
 }
 
-export function downloadFile(mapId) {
+export function downloadFile(mapId, mapName) {
+    console.log("map info", mapId);
     return new Promise((resolve, reject) => {
         fetch(`${url}download/${mapId}`, {
             method: 'GET',
         })
-            .then(response => response.blob())
-            .then(blob => {
+            .then(response => {
+                const contentDisposition = response.headers.get('Content-Disposition');
+                let filename = 'mapatuto';
+                console.log(" contentDisposition", contentDisposition);
+                if (contentDisposition) {
+                    const filenameMatch = contentDisposition.match(/filename=([^ ]*)/i);
+                    if (filenameMatch) {
+                        filename = filenameMatch[1];
+                        console.log("filenameMatch", filenameMatch);
+                    }
+
+
+                }
+
+                console.log('Updated filename:', filename); // Add this line
+
+                return response.blob().then(blob => ({ blob, filename }));
+            })
+            .then(({ blob, filename }) => {
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `${mapId}.json`;
+                a.download = filename;
+                console.log("filename ", filename);
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
