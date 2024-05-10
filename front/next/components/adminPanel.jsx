@@ -41,9 +41,9 @@ function AdminPanel() {
 
     const handleDeleteMap = async (mapId) => {
         try {
-            console.log("map id", mapId);
+            // console.log("map id", mapId);
             await destroyMap(mapId);
-            console.log("Map deleted");
+            // console.log("Map deleted");
             setMaps(maps.filter(map => map.id !== mapId));
         } catch (error) {
             console.error('Error deleting map:', error);
@@ -53,7 +53,7 @@ function AdminPanel() {
     const handleDownloadFile = async (mapId) => {
         try {
             await downloadFile(mapId);
-            console.log("Map downloaded!!!");
+            // console.log("Map downloaded!!!");
         } catch (error) {
             console.error('Error downloading map:', error);
         }

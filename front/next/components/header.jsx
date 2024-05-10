@@ -20,17 +20,17 @@ const Header = () => {
             setUser(userStore);
             // console.log('Token and user from store:', tokenStore, userStore);
         } else {
-            console.log('jjjjjjjjjjjjj')
+            // console.log('jjjjjjjjjjjjj')
             try {
                 const storedToken = localStorage.getItem('token');
                 var storedUser = localStorage.getItem('user');
-                console.log('kkkkkkkkkk')
-                console.log(storedUser)
+                // console.log('kkkkkkkkkk')
+                // console.log(storedUser)
                 if (storedUser != null ) {
                     const parsedUser = JSON.parse(storedUser);
                     storedUser = parsedUser.name;
-                    console.log(storedUser);
-                    console.log('aaaaaaaaaaaaaaa');
+                    // console.log(storedUser);
+                    // console.log('aaaaaaaaaaaaaaa');
                 }
                 // console.log('Token and user from localStorage:', storedToken, storedUser);
                 storedUser.replace(/['"]+/g, '');

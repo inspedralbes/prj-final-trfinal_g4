@@ -27,10 +27,10 @@ function Mapas() {
         event.preventDefault();
 
         // Aquí puedes manejar los datos del formulario, como enviarlos al servidor
-        console.log('Nombre:', nombre);
-        console.log('Fase:', fase);
-        console.log('Archivo:', archivo);
-        console.log('Miniatura:', miniatura);
+        // console.log('Nombre:', nombre);
+        // console.log('Fase:', fase);
+        // console.log('Archivo:', archivo);
+        // console.log('Miniatura:', miniatura);
 
         // Limpia el formulario después de enviar
         setNombre('');

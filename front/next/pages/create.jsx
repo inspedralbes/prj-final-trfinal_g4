@@ -66,22 +66,22 @@ const Create = () => {
                 do {
                     accessCode = generateAccessCode();
                 } while (rooms.some((room) => room.accessCode == accessCode));
-                console.log(accessCode);
+                // console.log(accessCode);
                 roomInfo.accessCode = accessCode;
             }
             if (useStore.getState().user == null) {
                 let userName = 'user' + Math.floor(Math.random() * 1000);
                 useStore.setState({ user: { name: userName } });
-                console.log('UserName: ', useStore.getState().user.name);
+                // console.log('UserName: ', useStore.getState().user.name);
                 socket.emit('createRoom', { addRoom: roomInfo, userAdmin: userName });
             } else {
                 let userName = useStore.getState().user.name || localStorage.getItem('user');
-                console.log('localStorage: ' + localStorage.getItem('user'));
-                console.log('UserName: ', userName);
+                // console.log('localStorage: ' + localStorage.getItem('user'));
+                // console.log('UserName: ', userName);
                 const parsedUser = JSON.parse(userName);
                 let userNameForClean = parsedUser.name;
                 let userNameClean = userNameForClean.replace(/['"]+/g, '');
-                console.log('UserNameClean: ', userNameClean);
+                // console.log('UserNameClean: ', userNameClean);
                 socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userNameClean});
             }
         }

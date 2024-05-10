@@ -14,15 +14,15 @@ const Lobby = () => {
         }
     }, [useStore.getState().room]); 
 
-    console.log('ROOM: ', room);
-    console.log('ROOM USERS: ', room.users);
+    // console.log('ROOM: ', room);
+    // console.log('ROOM USERS: ', room.users);
 
     var adminUser = room.admin[1];
     var otherUser = '';
     
     if (room.users.length > 1) {
         otherUser = room.users[1].name.replace(/['"]+/g, '');
-        console.log('OTHER USER: ', otherUser);
+        // console.log('OTHER USER: ', otherUser);
     }
 
     if (otherUser != '') {
@@ -47,15 +47,15 @@ const Lobby = () => {
     }
 
     const emitStart= ()=> {
-        console.log('Emitiendo startGame');
+        // console.log('Emitiendo startGame');
         socket.emit('startGame', room);
         router.push('/game');
     }
 
     useEffect(() => {
-        console.log('gData:', useStore.getState().room.status);
+        // console.log('gData:', useStore.getState().room.status);
         if (useStore.getState().room!=null && useStore.getState().room.status == 'Playing'){
-            console.log("entro aqui")
+            // console.log("entro aqui")
             router.push('/game');
         }
     });

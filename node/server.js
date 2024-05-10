@@ -44,14 +44,14 @@ function nextColor(player) {
 
 //connection
 io.on('connection', (socket) => {
-    console.log(`Connected: ${socket.id}`);
+    // console.log(`Connected: ${socket.id}`);
     socket.emit('allRooms', rooms);
 
     //Create Room
     socket.on('createRoom', (data) => {
         let id = lastRoom++;
-        console.log(data)
-        console.log('Room created');
+        // console.log(data)
+        // console.log('Room created');
         let newRoom = {
             name: data.addRoom.name,
             isPublic: data.addRoom.public,
@@ -70,7 +70,7 @@ io.on('connection', (socket) => {
             }
         }
         rooms.push(newRoom);
-        console.log(rooms);
+        // console.log(rooms);
         socket.join(newRoom.id);
         io.emit('allRooms', rooms);
         io.to(newRoom.id).emit('newInfoRoom', newRoom);
@@ -78,20 +78,20 @@ io.on('connection', (socket) => {
 
     //Join Room
     socket.on('joinRoom', (data) => {
-        console.log("PENE", data);
+        // console.log("PENE", data);
         let findRoom = rooms.find(room => room.id == data.id);
-        console.log(findRoom);
+        // console.log(findRoom);
         if (findRoom == undefined) {
-            console.log('Room not found');
+            // console.log('Room not found');
             return;
         } else {
-            console.log('Room found');
-            console.log('PENEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE', findRoom.users);
+            // console.log('Room found');
+            // console.log('PENEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE', findRoom.users);
             let newUser = { id: socket.id, name: data.username };
             findRoom.users.push(newUser);
             findRoom.accesible = false;
             findRoom.status = 'inLobby';
-            console.log(findRoom);
+            // console.log(findRoom);
             socket.join(findRoom.id);
         }
         io.emit('allRooms', rooms);
@@ -100,7 +100,7 @@ io.on('connection', (socket) => {
 
     socket.on('startGame', ()=>{
         let room = findRoomByUser(socket.id);
-        console.log("choto", room);
+        // console.log("choto", room);
         room.status = 'Playing';
         io.emit('allRooms', rooms);
         room.game.players = room.users;
@@ -152,10 +152,10 @@ io.on('connection', (socket) => {
 
     //Disconnect
     socket.on('disconnect', () => {
-        console.log(`Disconnected: ${socket.id}`);
+        // console.log(`Disconnected: ${socket.id}`);
     });
 });
 
 server.listen(port, () => {
-    console.log(`Server running on port ${port}`)
+    // console.log(`Server running on port ${port}`)
 })

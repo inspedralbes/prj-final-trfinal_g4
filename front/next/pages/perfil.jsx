@@ -37,12 +37,12 @@ const Perfil = () => {
         event.preventDefault();
 
         // Aquí puedes manejar los datos del formulario, como enviarlos al servidor
-        console.log('Nuevo nombre:', newName);
-        console.log('Nuevo username:', newUsername);
-        console.log('Nuevo email:', newEmail);
-        console.log('Nueva contraseña:', newPassword);
-        console.log('Confirmar nueva contraseña:', confirmNewPassword);
-        console.log('Nueva imagen:', newImage);
+        // console.log('Nuevo nombre:', newName);
+        // console.log('Nuevo username:', newUsername);
+        // console.log('Nuevo email:', newEmail);
+        // console.log('Nueva contraseña:', newPassword);
+        // console.log('Confirmar nueva contraseña:', confirmNewPassword);
+        // console.log('Nueva imagen:', newImage);
 
         // Limpia el formulario después de enviar
         setNewName('');
