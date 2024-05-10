@@ -152,7 +152,7 @@ function Rooms() {
                             <div className="max-h-52 overflow-y-auto">
                                 <ul>
                                     {showRooms.map(room => (
-                                        <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={() => addPublicRoom(room)}>{room.name}</li>
+                                        <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={() => addPublicRoom(room)} key = {room.id} >{room.name}</li>
                                     ))}
                                 </ul>
                             </div>

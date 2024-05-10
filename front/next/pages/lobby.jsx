@@ -17,26 +17,28 @@ const Lobby = () => {
         socket.emit('startGame', room);
         router.push('/game');
     }
-
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaa', room.id);
+    console.log('VIVA HITLER', room);
+    console.log('quiero una cbr 650r y a la mama de fabian', rooms);
     const salirSala = () => {
         console.log('Saliendo de la sala');
-        socket.emit('exitRoom', room.id);
+        socket.emit('exitRoom', { id: room.id });
         router.push('/rooms');
+        // Además de redireccionar, aquí deberías actualizar la lista de salas
+        const updatedRooms = rooms.filter(r => r.id !== room.id);
+        setRooms(updatedRooms);
     }
+    
 
-    // useEffect(() => {
-    //     const intervalId = setInterval(() => {
-    //         const roomsFromStore = useStore.getState().rooms;
-    //         if ( roomsFromStore != rooms) {
-    //             setRooms(roomsFromStore);
-    //             rooms.forEach(room => {
-    //             });
-    //         } else {
-    //             console.log('No hi ha canvis en les sales');
-    //         }
-    //     }, 1000);
-    //     return () => clearInterval(intervalId);
-    // }, []);
+    useEffect(() => {
+        socket.on('allRooms', (updatedRooms) => {
+            setRooms(updatedRooms);
+        });
+        return () => {
+            socket.off('allRooms');
+        };
+    }, []);
+    
 
     return (
         <div>

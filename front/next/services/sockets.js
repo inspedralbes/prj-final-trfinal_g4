@@ -23,4 +23,5 @@ socket.on('gameStarted', (data)=>{
     useStore.setState({gameData: data});
 });
 
+
 export default socket;

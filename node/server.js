@@ -1,3 +1,4 @@
+const e = require('express');
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
@@ -86,24 +87,47 @@ io.on('connection', (socket) => {
         }
         io.emit('allRooms', rooms);
         io.to(findRoom.id).emit('newInfoRoom', findRoom);
+        console.log('soy gay', findRoom);
     });
 
     //Exit Room
-    socket.on('exitRoom', ()=>{
+    // socket.on('exitRoom', ()=>{
+    //     let room = findRoomByUser(socket.id);
+    //     console.log("Room AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",room);
+    //     console.log("Room users eeeeeeeeeeeeeeeeeeeeeeeeeeeee",room.users);
+    //     console.log("users length ", room.users.length);
+    //     if (room.users.length == 2) {
+    //         console.log(`Disconnected: ${socket.id}`);
+    //             console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+    //             // Aquí puedes agregar la lógica para desconectar a la persona
+    //             // Por ejemplo, puedes buscar la sala a la que pertenece y eliminarla
+    //             let userIndex = room.users.findIndex(user => user.id == socket.id);
+    //             if (userIndex != -1) {
+    //                 room.users.splice(userIndex, 1);
+    //             }
+    //             console.log(room);
+    //     }
+    // });
+
+    
+    socket.on('exitRoom', (data) => {
         let room = findRoomByUser(socket.id);
-        console.log("Room AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",room);
-        console.log("Room users eeeeeeeeeeeeeeeeeeeeeeeeeeeee",room.users);
+        console.log("Room AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", room);
+        console.log("Room users eeeeeeeeeeeeeeeeeeeeeeeeeeeee", room.users);
         console.log("users length ", room.users.length);
-        if (room.users.length == 2) {
+        let roomIndex = rooms.find(room => room.id == data.id);
+        if (room.users.length > 1) {
             console.log(`Disconnected: ${socket.id}`);
-                console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-                // Aquí puedes agregar la lógica para desconectar a la persona
-                // Por ejemplo, puedes buscar la sala a la que pertenece y eliminarla
-                let userIndex = room.users.findIndex(user => user.id == socket.id);
-                if (userIndex != -1) {
-                    room.users.splice(userIndex, 1);
-                }
-                console.log(room);
+            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+            // Aquí puedes agregar la lógica para desconectar a la persona
+            // Por ejemplo, puedes buscar al usuario y eliminarlo de la sala
+            let userIndex = room.users.findIndex(user => user.id == socket.id);
+            if (userIndex != -1) {
+                room.users.splice(userIndex, 1);
+                roomIndex.accesible = true; 
+            }
+            console.log(room);
+            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',userIndex);
         }
     });
 
