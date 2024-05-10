@@ -19,13 +19,17 @@ function Login() {
   const [sessionError, setSessionError] = useState(null);
   // const [sessionSuccess, setSessionSuccess] = useState(null);
 
-  //GOOGLE LOGIN
   const session = useSession();
   // console.log(session);
   useEffect(() => {
     // Si hay una sesión activa, redirige al usuario a la página de /rooms
     if (session?.data) {
-      router.push('/rooms');
+      if (session.data.user.admin) {
+        console.log("admin", session.data.user.admin);
+        router.push('/admin');
+      } else {
+        router.push('/rooms');
+      }
     }
   }, [session, router]);
 
@@ -43,11 +47,21 @@ function Login() {
     };
 
     login(user).then((data) => {
-        localStorage.setItem('user', JSON.stringify({ name: JSON.stringify(data.user) }));
-        localStorage.setItem('token', JSON.stringify(data.token));
-        useStore.setState({ user: { name: JSON.stringify(data.user) }});
-        useStore.setState({ token: JSON.stringify(data.token) });
+      console.log("data login", data);
+      console.log("data admin", data.admin);
+      localStorage.setItem('user', JSON.stringify({ name: JSON.stringify(data.user) }));
+      localStorage.setItem('token', JSON.stringify(data.token));
+      useStore.setState({ user: { name: JSON.stringify(data.user) }});
+      useStore.setState({ token: JSON.stringify(data.token) });
+      if (data.admin == 1) {
+        useStore.setState({ admin: true });
+        console.log("admin", data.admin);
+        console.log("admin", data.admin);
+        router.push('/admin');
+      } else {
+        console.log("admin", data.admin);
         router.push('/rooms');
+      }
     }).catch(() => {
         alert('Error logging in');
       });

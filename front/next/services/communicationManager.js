@@ -115,11 +115,10 @@ export function updateUser(user) {
 
 export function getUsers() {
     return new Promise((resolve, reject) => {
-        fetch(`${url}users/`, {
+        fetch(`${url}allUsers/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
             }
         }).then(response => {
                 if (response.status == 200) {
@@ -203,7 +202,24 @@ export function getMaps() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+export function getReportedMaps() {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}reportedMaps/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
             }
         })
             .then(response => response.json())
@@ -238,17 +254,38 @@ export function updateMap(mapData) {
 
 export function destroyMap(mapData) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}maps/${mapData.id}`, {
+        fetch(`${url}maps/${mapData}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${mapData.token}`
             },
             body: JSON.stringify(mapData)
         })
             .then(response => response.json())
             .then(data => {
                 resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+export function downloadFile(mapId) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}download/${mapId}`, {
+            method: 'GET',
+        })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${mapId}.json`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                resolve(blob);
             })
             .catch(error => {
                 reject(error);
