@@ -8,6 +8,7 @@ import { getMaps } from '../services/communicationManager';
 import { getReportedMaps } from '../services/communicationManager';
 import { getUsers } from '../services/communicationManager';
 import { destroyMap } from '../services/communicationManager';
+import { downloadFile } from '../services/communicationManager';
 import { MdOutlineFileDownload } from "react-icons/md";
 import { MdOutlineReportProblem } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -46,6 +47,15 @@ function AdminPanel() {
             setMaps(maps.filter(map => map.id !== mapId));
         } catch (error) {
             console.error('Error deleting map:', error);
+        }
+    }
+
+    const handleDownloadFile = async (mapId) => {
+        try {
+            await downloadFile(mapId);
+            console.log("Map downloaded!!!");
+        } catch (error) {
+            console.error('Error downloading map:', error);
         }
     }
 
@@ -90,7 +100,8 @@ function AdminPanel() {
                                                 <MdOutlineReportProblem style={{ color: 'orange', fontSize: '3em', cursor: 'pointer' }} />
                                             </div>
                                             <div>
-                                                <MdOutlineFileDownload style={{ color: 'green', fontSize: '3em', cursor: 'pointer' }} />
+
+                                                <MdOutlineFileDownload style={{ color: 'green', fontSize: '3em', cursor: 'pointer' }} onClick={() => handleDownloadFile(map.id)} />
                                             </div>
                                             <div>
                                                 <RiDeleteBinLine style={{ color: 'red', fontSize: '2.8em', cursor: 'pointer' }} onClick={() => handleDeleteMap(map.id)} />

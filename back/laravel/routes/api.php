@@ -24,6 +24,7 @@ Route::post('/maps', [MapController::class, 'store']);
 Route::put('/maps/{map}', [MapController::class, 'update']);
 Route::delete('/maps/{map}', [MapController::class, 'destroy']);
 Route::get('/mapsByDifficulty/{difficulty}', [MapController::class, 'mapsByDifficulty']);
+Route::get('download/{id}', [MapController::class, 'download']);
 
 Route::get('/saves', [SaveController::class, 'index']);
 Route::get('/saves/{save}', [SaveController::class, 'show']);
