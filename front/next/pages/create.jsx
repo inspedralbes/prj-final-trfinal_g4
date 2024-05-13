@@ -12,8 +12,7 @@ const Create = () => {
     const [roomName, setRoomName] = useState('');
     const [isPublic, setIsPublic] = useState(false);
     const [gameMode, setGameMode] = useState('');
-    const [selectedImages, setSelectedImages] = useState([]);
-    // Rooms para comprovar codigos de acceso 
+    const [selectedImages, setSelectedImages] = useState(['/images/random-game.png', '/images/random-game.png', '/images/random-game.png']); // Todas las imágenes son random-game.png
     const [rooms , setRooms] = useState(useStore.getState().rooms);
     const [popupMessage, setPopupMessage] = useState(null);
     const router = useRouter();
@@ -42,22 +41,22 @@ const Create = () => {
         return accessCode;
     }
 
-    const toggleImageSelection = (imageSrc) => {
-        if (selectedImages.includes(imageSrc)) {
-            setSelectedImages(selectedImages.filter(img => img !== imageSrc));
-        } else {
-            setSelectedImages([...selectedImages, imageSrc]);
-        }
-    };    
+    const handleImageSelection = (index, imageSrc) => {
+        setSelectedImages(prevImages => {
+            const updatedImages = [...prevImages];
+            updatedImages[index] = imageSrc;
+            return updatedImages;
+        });
+    };
 
     const handleCreateRoom = () => {
         const roomInfo = {
             name: roomName,
             public: isPublic,
             mode: gameMode,
-            images: selectedImages
+            images: selectedImages.filter(image => image !== null) // Remove null values
         };
-        if (roomInfo.name == '' || roomInfo.mode == '') {
+        if (roomInfo.name === '' || roomInfo.mode === '' || roomInfo.images.length === 0) {
             setPopupMessage('Faltan datos por rellenar');
             return;
         } else {
@@ -65,7 +64,7 @@ const Create = () => {
             if (!isPublic) {
                 do {
                     accessCode = generateAccessCode();
-                } while (rooms.some((room) => room.accessCode == accessCode));
+                } while (rooms.some((room) => room.accessCode === accessCode));
                 console.log(accessCode);
                 roomInfo.accessCode = accessCode;
             }
@@ -134,48 +133,34 @@ const Create = () => {
                         Crear Sala
                     </button>
                 </div>
-                {/* Parte derecha con las imágenes */}
-                <div className="w-full sm:w-3/4 flex flex-col sm:flex-row items-center justify-center">
-                    <div className="flex flex-col sm:flex-row items-center justify-center sm:flex-wrap gap-x-4">
+                <div className="w-full sm:w-3/4 flex sm:flexrow items-center justify-center sm:flex-wrap gap-x-4">
+                    {selectedImages.map((imageSrc, index) => (
                         <CustomImageWithOverlay
-                            imageSrc="/images/random-game.png"
-                            altText="Imagen 1"
-                            onClick={() => toggleImageSelection("/images/random-game.png")}
-                            isSelected={selectedImages.includes("/images/random-game.png")}
+                            key={index}
+                            imageSrc={imageSrc}
+                            altText={`Imagen ${index + 1}`}
+                            isSelected={imageSrc !== '/images/random-game.png'}
+                            icon={index === 0 ? <PiNumberCircleOne className="text-black text-4xl absolute top-4 left-1 m-2" /> : index === 1 ? <PiNumberCircleTwo className="text-black text-4xl absolute top-4 left-1 m-2" /> : <PiNumberCircleThree className="text-black text-4xl absolute top-4 left-1 m-2" />}
                         >
-                            <PiNumberCircleOne className="text-black text-4xl absolute top-4 left-1 m-2" />
                             <TbLetterX className="text-black text-2xl absolute top-4 right-1 m-2" />
                         </CustomImageWithOverlay>
-                        <CustomImageWithOverlay
-                            imageSrc="/images/random-game.png"
-                            altText="Imagen 2"
-                            onClick={() => toggleImageSelection("/images/random-game2.png")}
-                            isSelected={selectedImages.includes("/images/random-game2.png")}
-                        >
-                            <PiNumberCircleTwo className="text-black text-4xl absolute top-4 left-1 m-2" />
-                            <TbLetterX className="text-black text-2xl absolute top-4 right-1 m-2" />
-                        </CustomImageWithOverlay>
-                        <CustomImageWithOverlay
-                            imageSrc="/images/random-game.png"
-                            altText="Imagen 3"
-                            onClick={() => toggleImageSelection("/images/random-game3.png")}
-                            isSelected={selectedImages.includes("/images/random-game3.png")}
-                        >
-                            <PiNumberCircleThree className="text-black text-4xl absolute top-4 left-1 m-2" />
-                            <TbLetterX className="text-black text-2xl absolute top-4 right-1 m-2" />
-                        </CustomImageWithOverlay>
-                    </div>
+                    ))}
                 </div>
-                <Fases fases={[1, 2, 3]} />
+                <Fases fases={[1, 2, 3]} onImageClick={(imageSrc, phaseIndex) => setSelectedImages(prevImages => {
+                    const updatedImages = [...prevImages];
+                    updatedImages[phaseIndex] = imageSrc;
+                    return updatedImages;
+                })} />
             </div>
         </div>
     );
 };
 
-const CustomImageWithOverlay = ({ imageSrc, altText, isSelected, children }) => {
+const CustomImageWithOverlay = ({ imageSrc, altText, isSelected, children, icon }) => {
     return (
         <div className="relative flex-shrink-0 mb-4 sm:mb-0 sm:mr-4 sm:mx-3">
             <img src={imageSrc} alt={altText} className={`h-60 sm:h-72 w-80 sm:w-96 my-4 bg-zinc-400 ${isSelected ? 'border-4 border-blue-500' : ''}`} />
+            {icon}
             {children}
         </div>
     );
