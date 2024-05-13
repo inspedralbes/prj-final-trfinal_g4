@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Header from '../components/header';
 import useStore from '../src/store';
 import socket from '../services/sockets';
