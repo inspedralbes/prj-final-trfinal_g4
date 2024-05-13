@@ -126,7 +126,7 @@ io.on('connection', (socket) => {
                 }
             ];
 
-        socket.emit('gameStarted', room);
+        io.to(room.id).emit('gameStarted', room);
     })
     //Disconnect
     socket.on('disconnect', () => {
@@ -135,12 +135,14 @@ io.on('connection', (socket) => {
 
     socket.on('updatePosition', (data) => {
         let room = findRoomByUser(socket.id);
-        let player = room.game.playersData.find(player => player.id == socket.id);
-        player.x = data.x;
-        player.y = data.y;
-        player.direction = data.direction;
-        // console.log('updatePosition', player);
-        io.to(room.id).emit('updatePositionFront', room.game.playersData);
+        if(room){
+            let player = room.game.playersData.find(player => player.id == socket.id);
+            player.x = data.x;
+            player.y = data.y;
+            player.direction = data.direction;
+            // console.log('updatePosition', player);
+            io.to(room.id).emit('updatePositionFront', room.game.playersData);
+        }
     });
 
     socket.on('changeColor', () => {

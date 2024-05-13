@@ -4,23 +4,31 @@ import useStore from '../src/store';
 import socket from '../services/sockets';
 import { useEffect } from 'react';
 
-
 export default class GameHome extends Phaser.Scene {
     activePointer;
     cursors;
     character1;
     character2;
-    whiteView;
-    blackView;
-    grayView;
+    whiteView = null;
+    blackView = null;
+    grayView = null;
+    redView = null;
+    blueView = null;
+    purpleView = null;
+    greenView = null;
+    orangeView = null;
+    yellowView = null;
     endGame;
     player = 1;
     buttons = [];
     spawns = [];
     death = [];
     animationPlaying = false;
-    updateCharacterPosition;
-    colors=[{color:'white',hex:0xffffff},{color:'black',hex:0x303030},{color:'gray',hex:0x969696}, {color:'red',hex:0xff0000},{color:'green',hex:0x00ff00},{color:'blue',hex:0x0000ff},{color:'orange',hex:0xffa500}]
+    CharacterPosition;
+    handleCollision;
+    colors = [{ color: 'white', hex: 0xffffff }, { color: 'black', hex: 0x303030 }, { color: 'gray', hex: 0x969696 }, { color: 'red', hex: 0xf1090d }, { color: 'green', hex: 0x29b127 }, { color: 'blue', hex: 0x2b80ff }, { color: 'orange', hex: 0xe26b09 }, { color: 'yellow', hex: 0xdada00 }, { color: 'purple', hex: 0x91209e }]
+    disableBody;
+    enableBody;
 
     constructor() {
         super('gamehome');
@@ -37,65 +45,168 @@ export default class GameHome extends Phaser.Scene {
 
         const map = this.make.tilemap({ key: 'mapa' });
         const tileset = map.addTilesetImage('tilesetWhite', 'tileset');
+        let gray = null;
+        let white = null;
+        let black = null;
+        let red = null;
+        let blue = null;
+        let purple = null;
+        let orange = null;
+        let yellow = null;
+        let green = null;
+        if (map.layers.find(layer => layer.name === 'gray')) {
+            gray = map.createLayer('gray', tileset);
 
-        const gray = map.createLayer('gray', tileset);
+            const rows = gray.height;
 
-        const rows = gray.height;
+            for (let y = 0; y < rows; y++) {
+                const tilesInRow = gray.width;
+                for (let x = 0; x < tilesInRow; x++) {
+                    const tileG = gray.getTileAt(x, y);
 
-        for (let y = 0; y < rows; y++) {
-            const tilesInRow = gray.width;
-            for (let x = 0; x < tilesInRow; x++) {
-                const tileG = gray.getTileAt(x, y);
-
-                if (tileG && tileG.index > 0) { // White color check
-                    this.tweens.add({
-                        targets: tileG,
-                        tint: 0xffffff,
-                        duration: 1000,
-                        ease: 'Custom',
-                        delay: x * 50, // Optional delay per tile
-                        onComplete: () => {
-                            tileG.tint = 0x969696; // Change tint to gray after animation completes
-                        }
-                    });
+                    if (tileG && tileG.index > 0) { // White color check
+                        this.tweens.add({
+                            targets: tileG,
+                            tint: 0xffffff,
+                            duration: 1000,
+                            ease: 'Custom',
+                            delay: x * 50, // Optional delay per tile
+                            onComplete: () => {
+                                tileG.tint = this.colors.find(color => color.color == 'gray').hex; // Change tint to gray after animation completes
+                            }
+                        });
+                    }
                 }
             }
+            gray.setCollisionByProperty({ collides: true });
+            gray.setCollisionByProperty({ semicollides: true });
+            gray.immovable = true;
+
         }
+        console.log("chinga", map.layers);
+        if (map.layers.find(layer => layer.name === 'white')) {
+            console.log('white')
+            white = map.createLayer('white', tileset);
 
-        const white = map.createLayer('white', tileset);
+            for (let y = 0; y < white.height; y++) {
+                for (let x = 0; x < white.width; x++) {
+                    const tileW = white.getTileAt(x, y);
 
-        for (let y = 0; y < white.height; y++) {
-            for (let x = 0; x < white.width; x++) {
-                const tileW = white.getTileAt(x, y);
-
-                if (tileW && tileW.index > 0) {
-                    // console.log(tileW);
-                    tileW.tint = 0xffffff;
+                    if (tileW && tileW.index > 0) {
+                        // console.log(tileW);
+                        tileW.tint = this.colors.find(color => color.color == 'white').hex;
+                    }
                 }
             }
+            white.setCollisionByProperty({ semicollides: true });
+            white.setCollisionByProperty({ collides: true });
+            white.immovable = true;
         }
+        if (map.layers.find(layer => layer.name === 'black')) {
+            black = map.createLayer('black', tileset);
 
-        const black = map.createLayer('black', tileset);
+            for (let y = 0; y < black.height; y++) {
+                for (let x = 0; x < black.width; x++) {
+                    const tileB = black.getTileAt(x, y);
 
-        for (let y = 0; y < black.height; y++) {
-            for (let x = 0; x < black.width; x++) {
-                const tileB = black.getTileAt(x, y);
-
-                if (tileB && tileB.index > 0) {
-                    tileB.tint = 0x303030;
+                    if (tileB && tileB.index > 0) {
+                        tileB.tint = this.colors.find(color => color.color == 'black').hex;
+                    }
                 }
             }
+
+            black.setCollisionByProperty({ semicollides: true });
+            black.setCollisionByProperty({ collides: true });
+            black.immovable = true;
+        } if (map.layers.find(layer => layer.name === 'red')) {
+            red = map.createLayer('red', tileset);
+            for (let y = 0; y < red.height; y++) {
+                for (let x = 0; x < red.width; x++) {
+                    const tileR = red.getTileAt(x, y);
+
+                    if (tileR && tileR.index > 0) {
+                        tileR.tint = this.colors.find(color => color.color == 'red').hex;
+                    }
+                }
+            }
+
+            red.setCollisionByProperty({ semicollides: true });
+            red.setCollisionByProperty({ collides: true });
+            red.immovable = true;
+        } if (map.layers.find(layer => layer.name === 'blue')) {
+            blue = map.createLayer('blue', tileset);
+            for (let y = 0; y < blue.height; y++) {
+                for (let x = 0; x < blue.width; x++) {
+                    const tileB = blue.getTileAt(x, y);
+
+                    if (tileB && tileB.index > 0) {
+                        tileB.tint = this.colors.find(color => color.color == 'blue').hex;
+                    }
+                }
+            }
+
+            blue.setCollisionByProperty({ semicollides: true });
+            blue.setCollisionByProperty({ collides: true });
+            blue.immovable = true;
+        } if (map.layers.find(layer => layer.name === 'purple')) {
+            purple = map.createLayer('purple', tileset);
+            for (let y = 0; y < purple.height; y++) {
+                for (let x = 0; x < purple.width; x++) {
+                    const tileP = purple.getTileAt(x, y);
+                    if (tileP && tileP.index > 0) {
+                        tileP.tint = this.colors.find(color => color.color == 'purple').hex;
+                    }
+                }
+            }
+
+            purple.setCollisionByProperty({ semicollides: true });
+            purple.setCollisionByProperty({ collides: true });
+            purple.immovable = true;
+        } if (map.layers.find(layer => layer.name === 'green')) {
+            green = map.createLayer('green', tileset);
+            for (let y = 0; y < green.height; y++) {
+                for (let x = 0; x < green.width; x++) {
+                    const tileG = green.getTileAt(x, y);
+                    if (tileG && tileG.index > 0) {
+                        tileG.tint = this.colors.find(color => color.color == 'green').hex;
+                    }
+                }
+            }
+
+            green.setCollisionByProperty({ semicollides: true });
+            green.setCollisionByProperty({ collides: true });
+            green.immovable = true;
+        } if (map.layers.find(layer => layer.name === 'orange')) {
+            orange = map.createLayer('orange', tileset);
+            for (let y = 0; y < orange.height; y++) {
+                for (let x = 0; x < orange.width; x++) {
+                    const tileO = orange.getTileAt(x, y);
+                    if (tileO && tileO.index > 0) {
+                        tileO.tint = this.colors.find(color => color.color == 'orange').hex;
+                    }
+                }
+            }
+
+            orange.setCollisionByProperty({ semicollides: true });
+            orange.setCollisionByProperty({ collides: true });
+            orange.immovable = true;
+        } if (map.layers.find(layer => layer.name === 'yellow')) {
+            yellow = map.createLayer('yellow', tileset);
+            for (let y = 0; y < yellow.height; y++) {
+                for (let x = 0; x < yellow.width; x++) {
+                    const tileY = yellow.getTileAt(x, y);
+                    if (tileY && tileY.index > 0) {
+                        tileY.tint = this.colors.find(color => color.color == 'yellow').hex;
+                    }
+                }
+            }
+
+            yellow.setCollisionByProperty({ semicollides: true });
+            yellow.setCollisionByProperty({ collides: true });
+            yellow.immovable = true;
         }
 
-        gray.setCollisionByProperty({ semicollides: true });
-        white.setCollisionByProperty({ semicollides: true });
-        black.setCollisionByProperty({ semicollides: true });
-        gray.setCollisionByProperty({ collides: true });
-        white.setCollisionByProperty({ collides: true });
-        black.setCollisionByProperty({ collides: true });
-        gray.immovable = true;
-        white.immovable = true;
-        black.immovable = true;
+
 
         const objectsLayer = map.getObjectLayer('Objects')
         objectsLayer.objects.forEach(objData => {
@@ -155,7 +266,12 @@ export default class GameHome extends Phaser.Scene {
                             frameRate: 10,
                             repeat: -1
                         })
-                        this.physics.add.collider(this.character1, white);
+                        if (white) {
+                            this.physics.add.collider(this.character1, white);
+                        }
+                        if (red) {
+                            this.physics.add.collider(this.character1, red);
+                        }
 
 
                         // this.character1.body.setCollisionByProperty({ collides: true });
@@ -264,17 +380,45 @@ export default class GameHome extends Phaser.Scene {
                         const h = button.height;
                         this.physics.add.existing(button);
                         button.body.setSize(w * 0.50, h * 0.90);
-                        if (ogName.includes('W')) {
-                            button.setTint(0xffffff);
-                        } else if (ogName.includes('B')) {
-                            button.setTint(0x303030);
-                        } else {
-                            button.setTint(0x969696);
+                        switch (true) {
+                            case ogName.includes('Whi'):
+                                button.setTint(this.colors.find(color => color.color == 'white').hex);
+                                break;
+                            case ogName.includes('Bla'):
+                                button.setTint(this.colors.find(color => color.color == 'black').hex);
+                                break;
+                            case ogName.includes('Gra'):
+                                button.setTint(this.colors.find(color => color.color == 'gray').hex);
+                                break;
+                            case ogName.includes('Red'):
+                                button.setTint(this.colors.find(color => color.color == 'red').hex);
+                                break;
+                            case ogName.includes('Blu'):
+                                button.setTint(this.colors.find(color => color.color == 'blue').hex);
+                                break;
+                            case ogName.includes('Pur'):
+                                button.setTint(this.colors.find(color => color.color == 'purple').hex);
+                                break;
+                            case ogName.includes('Gre'):
+                                button.setTint(this.colors.find(color => color.color == 'green').hex);
+                                break;
+                            case ogName.includes('Ora'):
+                                button.setTint(this.colors.find(color => color.color == 'orange').hex);
+                                break;
+                            case ogName.includes('Yel'):
+                                button.setTint(this.colors.find(color => color.color == 'yellow').hex);
+                                break;
                         }
-
+                        console.log(gray);
                         this.physics.add.collider(button, gray);
                         this.physics.add.collider(button, white);
                         this.physics.add.collider(button, black);
+                        this.physics.add.collider(button, red);
+                        this.physics.add.collider(button, blue);
+                        this.physics.add.collider(button, purple);
+                        this.physics.add.collider(button, green);
+                        this.physics.add.collider(button, orange);
+                        this.physics.add.collider(button, yellow);
                         button.setPosition(x, y);
                         button.setInteractive();
                         button.name = ogName;
@@ -305,12 +449,34 @@ export default class GameHome extends Phaser.Scene {
                         platform.setPosition(x + (platform.body.width / 2), y + (platform.body.height / 2));
                     }
 
-                    if (platform.name.includes('W')) {
-                        platform.setTintFill(0xffffff);
-                    } else if (platform.name.includes('B')) {
-                        platform.setTintFill(0x303030);
-                    } else {
-                        platform.setTintFill(0x969696);
+                    switch (true) {
+                        case ogName.includes('Whi'):
+                            platform.setTint(this.colors.find(color => color.color == 'white').hex);
+                            break;
+                        case ogName.includes('Bla'):
+                            platform.setTint(this.colors.find(color => color.color == 'black').hex);
+                            break;
+                        case ogName.includes('Gra'):
+                            platform.setTint(this.colors.find(color => color.color == 'gray').hex);
+                            break;
+                        case ogName.includes('Red'):
+                            platform.setTint(this.colors.find(color => color.color == 'red').hex);
+                            break;
+                        case ogName.includes('Blu'):
+                            platform.setTint(this.colors.find(color => color.color == 'blue').hex);
+                            break;
+                        case ogName.includes('Pur'):
+                            platform.setTint(this.colors.find(color => color.color == 'purple').hex);
+                            break;
+                        case ogName.includes('Gre'):
+                            platform.setTint(this.colors.find(color => color.color == 'green').hex);
+                            break;
+                        case ogName.includes('Ora'):
+                            platform.setTint(this.colors.find(color => color.color == 'orange').hex);
+                            break;
+                        case ogName.includes('Yel'):
+                            platform.setTint(this.colors.find(color => color.color == 'yellow').hex);
+                            break;
                     }
 
                     this.physics.add.existing(platform);
@@ -358,9 +524,34 @@ export default class GameHome extends Phaser.Scene {
             }
         });
         window.platforms = this.platforms;
-        this.whiteView = white;
-        this.blackView = black;
-        this.grayView = gray;
+        console.log(white);
+        if (white) {
+            this.whiteView = white;
+        }
+        if (black) {
+            this.blackView = black;
+        }
+        if (gray) {
+            this.grayView = gray;
+        }
+        if (red) {
+            this.redView = red;
+        }
+        if (blue) {
+            this.blueView = blue;
+        }
+        if (purple) {
+            this.purpleView = purple;
+        }
+        if (orange) {
+            this.orangeView = orange;
+        }
+        if (yellow) {
+            this.yellowView = yellow;
+        }
+        if (green) {
+            this.greenView = green;
+        }
         this.buttons.forEach(button => {
             button.associated = [];
             this.platforms.forEach(platform => {
@@ -376,7 +567,7 @@ export default class GameHome extends Phaser.Scene {
                 platform.setTint(0xffffff);
                 this.physics.add.collider(this.character1, platform);
 
-            } else if (platform.name.includes('B')) {
+            } else if (platform.name.includes('Bla')) {
                 platform.setTint(0x303030);
                 this.physics.add.collider(this.character2, platform);
 
@@ -387,6 +578,62 @@ export default class GameHome extends Phaser.Scene {
                 this.physics.add.collider(this.character2, platform);
             }
         });
+        this.player = selectPlayer();
+        this.handleCollision = function (player1, player2, button) {
+            let toReturn = false;
+            if (player1) {
+                console.log(this.character1.tintTopLeft);
+                console.log(this.colors.find(color => color.color == 'white').hex);
+                let characterColor = this.colors.find(color => color.hex == this.character1.tintTopLeft).color;
+                switch (characterColor) {
+                    case 'white':
+                        if (button.name.includes('Whi') || button.name.includes('Gra')) {
+                            toReturn = true;
+                        }
+                        break;
+                    case 'red':
+                        if (button.name.includes('Red') || button.name.includes('Pur')) {
+                            toReturn = true;
+                        }
+                        break;
+                    case 'green':
+                        if (button.name.includes('Gre') || button.name.includes('Yel')) {
+                            toReturn = true;
+                        }
+                        break;
+                }
+            } else if (player2) {
+                console.log(this.colors.find(color => color.color == 'black').hex);
+                console.log(this.character2.tintTopLeft);
+                let characterColor = this.colors.find(color => color.hex == this.character2.tintTopLeft).color;
+                switch (characterColor) {
+                    case 'black':
+                        if (button.name.includes('Bla') || button.name.includes('Gra')) {
+                            toReturn = true;
+                        }
+                        break;
+                    case 'blue':
+                        if (button.name.includes('Blu') || button.name.includes('ur')) {
+                            toReturn = true;
+                        }
+                        break;
+                    case 'orange':
+                        if (button.name.includes('Ora') || button.name.includes('Yel')) {
+                            toReturn = true;
+                        }
+                        break;
+                }
+            }
+            return toReturn;
+        }
+        this.disableBody = function (view) {
+
+        }
+        this.enableBody = function (view) {
+            view.setCollisionByProperty({ collides: true });
+            view.setCollisionByProperty({ semicollides: true });
+            this.physics.add.collider(this.character1, view);
+        }
         function selectPlayer() {
             console.log(useStore.getState().playerData.id, "=", useStore.getState().gameData.players[0].id);
             if (useStore.getState().playerData.id == useStore.getState().gameData.players[0].id) {
@@ -451,21 +698,33 @@ export default class GameHome extends Phaser.Scene {
                 }, 1000);
             })
         });
-        this.player = selectPlayer();
 
+        console.log(this.player);
         setTimeout(() => {
             console.log(useStore.getState().gameData.playersData);
             this.updateCharacterPosition();
         }, 1000);
+        this.redView.setAlpha(0);
 
+        if (this.player == 1) {
+            this.whiteView.setAlpha(1);
+            this.blackView.setAlpha(0);
+            this.grayView.setAlpha(1);
+            this.cameras.main.setBackgroundColor("#ffffff");
+        } else {
+            this.whiteView.setAlpha(0);
+            this.blackView.setAlpha(1);
+            this.grayView.setAlpha(1);
+            this.cameras.main.setBackgroundColor("#303030");
+        }
+       
     }
 
     update() {
-        // useEffect(() => {
-
-
-        // });
-
+        if (this.cursors.space.keyup) {
+            socket.emit('changeColor');
+        }
+        
         this.buttons.forEach(button => {
             const isPlayer1Colliding = this.physics.overlap(button, this.character1);
             const isPlayer2Colliding = this.physics.overlap(button, this.character2);
@@ -474,7 +733,7 @@ export default class GameHome extends Phaser.Scene {
 
                 button.associated.forEach(platform => {
                     let platformVelocityY = 0;
-                    if ((isPlayer1Colliding && button.name.includes('W')) || (isPlayer2Colliding && button.name.includes('B')) || ((isPlayer1Colliding || isPlayer2Colliding) && button.name.includes('G'))) {
+                    if (this.handleCollision(isPlayer1Colliding, isPlayer2Colliding, button)) {
                         platformVelocityY = -32;
                         console.log('colliding');
                         if (platform.name.includes('Fast')) {
@@ -551,10 +810,7 @@ export default class GameHome extends Phaser.Scene {
 
 
         if (this.player == 1) {
-            this.whiteView.setAlpha(1);
-            this.blackView.setAlpha(0);
-            this.grayView.setAlpha(1);
-            this.cameras.main.setBackgroundColor("#ffffff");
+
             this.cameras.main.startFollow(this.character1);
             if (this.cursors.left.isDown) {
                 this.character1.flipX = true;
@@ -580,10 +836,6 @@ export default class GameHome extends Phaser.Scene {
             }
         } else {
             this.cameras.main.startFollow(this.character2);
-            this.whiteView.setAlpha(0);
-            this.blackView.setAlpha(1);
-            this.grayView.setAlpha(1);
-            this.cameras.main.setBackgroundColor("#303030");
             if (this.cursors.left.isDown) {
                 this.character2.flipX = true;
 
@@ -609,15 +861,139 @@ export default class GameHome extends Phaser.Scene {
             }
         }
         socket.on('updatePositionFront', (data) => {
-            if(this.player == 1){
+            if (this.player == 1) {
                 this.character2.x = data[1].x;
                 this.character2.y = data[1].y;
                 this.character2.flipX = data[1].direction;
             }
-            else{
+            else {
                 this.character1.x = data[0].x;
                 this.character1.y = data[0].y;
                 this.character1.flipX = data[0].direction;
+            }
+        });
+        socket.on('changeColorFront', (data) => {
+            console.log("Si");
+            if (data.id == socket.id) {
+                if (this.player == 1) {
+                    this.character1.setTint(this.colors.find(color => color.color == data.color).hex);
+                    if (data.color == 'white') {
+                        this.whiteView.setAlpha(1);
+                        if (this.whiteView.body) {
+                            this.whiteView.body.setEnable(true);
+                        }
+                        this.blackView.setAlpha(0);
+                        this.grayView.setAlpha(1);
+                        if (this.grayView.body) {
+                            this.grayView.body.setEnable(true);
+                        }
+                        if (this.redView != null) {
+                            this.redView.setAlpha(0);
+                            if (this.redView.body) {
+                                this.redView.body.setEnable(false);
+                            }
+                            // this.blueView.setAlpha(0);
+                            // this.purpleView.setAlpha(0);
+                        }
+                        if (this.greenView != null) {
+                            this.greenView.setAlpha(0);
+                            this.orangeView.setAlpha(0);
+                            this.yellowView.setAlpha(0);
+                        }
+                    } else {
+                        if (data.color == 'red') {
+                            this.redView.setAlpha(1);
+                            if (this.redView.body) {
+                                this.redView.body.setEnable(true);
+                            }
+                            // this.blueView.setAlpha(0);
+                            // this.purpleView.setAlpha(1);
+                            if (this.whiteView) {
+                                this.whiteView.setAlpha(0);
+                                if (this.whiteView.body) {
+                                    this.whiteView.body.setEnable(true);
+                                }
+                                this.blackView.setAlpha(0);
+                                this.grayView.setAlpha(0);
+                                if (this.grayView.body) {
+                                    this.grayView.body.setEnable(true);
+                                }
+                            }
+                            if (this.greenView) {
+                                this.greenView.setAlpha(0);
+                                this.orangeView.setAlpha(0);
+                                this.yellowView.setAlpha(0);
+                            }
+
+                        } else if (data.color == "green") {
+                            this.greenView.setAlpha(1);
+                            this.orangeView.setAlpha(0);
+                            this.yellowView.setAlpha(1);
+                            if (this.whiteView != null) {
+                                this.whiteView.setAlpha(0);
+                                this.blackView.setAlpha(0);
+                                this.grayView.setAlpha(0);
+                            }
+                            if (this.redView != null) {
+                                this.redView.setAlpha(0);
+                                this.blueView.setAlpha(0);
+                                this.purpleView.setAlpha(0);
+                            }
+                        }
+                    }
+                } else {
+                    if (this.colors.find(color => color.color == data.color).color == 'black') {
+                        this.whiteView.setAlpha(0);
+                        this.blackView.setAlpha(1);
+                        this.grayView.setAlpha(1);
+                        if (this.redView != null) {
+                            this.redView.setAlpha(0);
+                            this.redView.setActive(false);
+                            // this.blueView.setAlpha(0);
+                            // this.purpleView.setAlpha(0);
+                        }
+                        if (this.greenView != null) {
+                            this.greenView.setAlpha(0);
+                            this.orangeView.setAlpha(0);
+                            this.yellowView.setAlpha(0);
+                        }
+                    } else if (this.data.color == 'blue') {
+                        this.blueView.setAlpha(1);
+                        this.redView.setAlpha(0);
+                        this.purpleView.setAlpha(1);
+                        if (this.whiteView != null) {
+                            this.whiteView.setAlpha(0);
+                            this.blackView.setAlpha(0);
+                            this.grayView.setAlpha(0);
+                        }
+                        if (this.greenView != null) {
+                            this.greenView.setAlpha(0);
+                            this.orangeView.setAlpha(0);
+                            this.yellowView.setAlpha(0);
+                        }
+                    } else if (this.data.color == 'orange') {
+                        this.orangeView.setAlpha(1);
+                        this.greenView.setAlpha(0);
+                        this.yellowView.setAlpha(1);
+                        if (this.whiteView != null) {
+                            this.whiteView.setAlpha(0);
+                            this.blackView.setAlpha(0);
+                            this.grayView.setAlpha(0);
+                        }
+                        if (this.redView != null) {
+                            this.redView.setAlpha(0);
+                            this.blueView.setAlpha(0);
+                            this.purpleView.setAlpha(0);
+                        }
+                    }
+                }
+                this.cameras.main.setBackgroundColor(this.colors.find(color => color.color == data.color).hex);
+            } else {
+                if (this.player == 1) {
+                    this.character2.setTint(this.colors.find(color => color.color == data.color).hex);
+                } else {
+                    this.character1.setTint(this.colors.find(color => color.color == data.color).hex);
+                }
             }
         });
         if (this.player == 1) {

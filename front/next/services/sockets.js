@@ -31,4 +31,7 @@ socket.on('updatePositionFront', (data) => {
     useStore.setState({ playerData: data });
 });
 
+socket.on('changeColorFront', (data) =>{
+    useStore.setState({playerData: data})
+});
 export default socket;
