@@ -297,6 +297,25 @@ export function downloadFile(mapId, mapName) {
     });
 }
 
+export function destroyReport(mapId){
+    return new Promise((resolve, reject) => {
+        fetch(`${url}reportedMaps/${mapId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(mapId)
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
 
 
 

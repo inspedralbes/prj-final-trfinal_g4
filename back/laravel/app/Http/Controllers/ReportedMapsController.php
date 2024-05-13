@@ -47,7 +47,7 @@ class ReportedMapsController extends Controller
         return response()->json($newReportedMap, 201);
     }
 
-    public function destroy(ReportedMaps $reportedMap)
+    public function destroyReport(ReportedMaps $reportedMap)
     {
         $reportedMap->delete();
         return response()->json([

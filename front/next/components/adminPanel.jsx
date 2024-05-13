@@ -12,6 +12,7 @@ import { downloadFile } from '../services/communicationManager';
 import { MdOutlineFileDownload } from "react-icons/md";
 import { MdOutlineReportProblem } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { BsInfoCircle } from "react-icons/bs";
 import './styles.css';
 
 function AdminPanel() {
@@ -19,6 +20,9 @@ function AdminPanel() {
     const [reportedMaps, setReportedMaps] = useState([]); // Add reportedMaps state
     const [allUsers, setUsers] = useState([]); // Add users state
     const [selectedIcon, setSelectedIcon] = useState(null);
+    const [searchReportedMapById, setSearchReportedMapById] = useState('');
+
+
 
     useEffect(() => {
         getMaps()
@@ -50,6 +54,16 @@ function AdminPanel() {
         }
     }
 
+    const handleCancelReport = async (mapId) => {
+        try {
+            console.log("map id", mapId);
+            await destroyReport(mapId)
+            setReportedMaps(reportedMaps.filter(map => map.id !== mapId));
+        } catch (error) {
+            console.error('Error deleting map:', error);
+        }
+    }
+
     const handleDownloadFile = async (mapId, mapName) => {
         try {
             await downloadFile(mapId, mapName);
@@ -58,6 +72,8 @@ function AdminPanel() {
             console.error('Error downloading map:', error);
         }
     }
+
+    const filterByIdReportedMaps = searchReportedMapById ? reportedMaps.filter(map => map.map_id.toString().includes(searchReportedMapById)) : reportedMaps;
 
     return (
         <div className="flex  items-center h-screen bg-teal-900">
@@ -81,58 +97,98 @@ function AdminPanel() {
 
             {selectedIcon === 'maps' && (
                 <div className="container-maps">
+                    <div className='container-icon'>
+                        <FaRegMap style={{ fontSize: '12em', color: '#97D6F1' }} />
+                    </div>
                     {maps.length > 0 && (
-                        <ul className='Grid_content_maps'>
-                            {maps.map((map) => (
-                                <div key={map.id} className='info-map'>
-                                    <div className='info-map_container-img'>
-                                        <img className="info-map-img" src={`http://localhost:8000/${map.image}`} style={{ width: '250px', height: '200px', borderRadius: '7%' }} />
-                                    </div>
-                                    <div className="info-map_container-datos">
+                        <div className='container-principal'>
+                            <div className='container-titles'>
+                                <p>Image</p>
+                                <p>Name</p>
+                                <p>Description</p>
+                                <p>Author</p>
+                                <p>Options</p>
+                            </div>
+                            <br />
+                            <ul className='Grid_content_maps'>
 
-                                        <p>Name: <span>{map.name}</span></p>
-                                        <p>Description: <span>{map.description}</span></p>
-                                        {allUsers.length > 0 && (
-                                            <p>Owner: <span>{allUsers.find(user => user.id === map.user_id).name}</span></p>
-                                        )}
-                                        <div className='grid-container-iconos'>
-                                            <div>
-                                                <MdOutlineReportProblem style={{ color: 'orange', fontSize: '3em', cursor: 'pointer' }} />
-                                            </div>
-                                            <div>
+                                {maps.map((map) => (
+                                    <div key={map.id} className='info-map'>
+                                        <div className='info-map_container-img'>
+                                            <img className="info-map-img" src={`http://localhost:8000/${map.image}`} style={{ width: '250px', height: '150px', borderRadius: '7%' }} />
+                                        </div>
+                                        <div className="info-map_container-datos">
 
-                                                <MdOutlineFileDownload style={{ color: 'green', fontSize: '3em', cursor: 'pointer' }} onClick={() => handleDownloadFile(map.id, map.name)} />
+                                            <span>{map.name}</span>
+                                            <span>{map.description}</span>
+                                            {allUsers.length > 0 && (
+                                                <span>{allUsers.find(user => user.id === map.user_id).name}</span>
+                                            )}
+                                            <div className='grid-container-iconos'>
+                                                <div>
+                                                    <MdOutlineReportProblem style={{ color: 'orange', fontSize: '3em', cursor: 'pointer' }} />
+                                                </div>
+                                                <div>
+
+                                                    <MdOutlineFileDownload style={{ color: 'green', fontSize: '3em', cursor: 'pointer' }} onClick={() => handleDownloadFile(map.id, map.name)} />
+                                                </div>
+                                                <div>
+                                                    <RiDeleteBinLine style={{ color: 'red', fontSize: '2.8em', cursor: 'pointer' }} onClick={() => handleDeleteMap(map.id)} />
+                                                </div>
+
                                             </div>
-                                            <div>
-                                                <RiDeleteBinLine style={{ color: 'red', fontSize: '2.8em', cursor: 'pointer' }} onClick={() => handleDeleteMap(map.id)} />
-                                            </div>
+
 
                                         </div>
 
 
                                     </div>
-
-
-                                </div>
-                            ))}
-                        </ul>
+                                ))}
+                            </ul>
+                        </div>
                     )}
                 </div>
             )}
 
             {selectedIcon === 'reportedMaps' && (
-                <div className="flex-grow">
-                    {reportedMaps.length > 0 && (
-                        <ul>
-                            {reportedMaps.map((map) => (
-                                <div key={map.id}>
-                                    <p>{map.map_id}</p>
-                                    <p>{map.user_id}</p>
-                                    <p>{map.reason}</p>
-                                </div>
-                            ))}
-                        </ul>
+                <div className='container-reportedMaps'>
+                    <div className='container-icon'>
+                        <MdOutlineReportProblem style={{ fontSize: '12em', color: '#BF0A1D' }} />
+                    </div>
+                    {reportedMaps.length > 0 ? (
+                        <div>
+                            <div className='filter-reportedMaps'>
+                                <input
+                                    type="text"
+                                    placeholder='Search by map id'
+                                    value={searchReportedMapById}
+                                    onChange={(e) => setSearchReportedMapById(e.target.value)}
+                                    className='input-search'
+                                />
+                            </div>
+                            <ul className='lista-reportes'>
+                                {filterByIdReportedMaps.map((map) => (
+                                    <div key={map.id} className='info-reportedMap'>
+                                        <div className='span-content'>
+                                            <span> {map.map_id} </span>
+                                            {allUsers.length > 0 && (
+                                                <span>{allUsers.find(user => user.id === map.user_id).name}</span>
+                                            )}
+                                            <span> {map.reason} </span>
+                                            <button style={{ backgroundColor: '#BF0A1D', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer' }} onClick={() => handleCancelReport(map.id)}>Cancelar reporte</button>
+                                        </div>
+
+                                    </div>
+                                ))}
+                            </ul>
+                        </div>
+                    ) : (
+                        <div className='noReported-maps-container'>
+                            <BsInfoCircle style={{ color: 'blue', fontSize: '2em', padding: '2px' }} />
+                            <p className=''>No hay mapas reportados!</p>
+                        </div>
                     )}
+
                 </div>
             )}
 
