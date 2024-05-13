@@ -45,13 +45,17 @@ function Rooms() {
             let userName = 'user' + Math.floor(Math.random() * 1000);
             useStore.setState({ user: { name: userName } });
             console.log('UserName: ', useStore.getState().user.name);
-            let buildData={"id": room.id, "username": userName};
-            socket.emit('joinRoom',buildData);
+            // let buildData={"id": room.id, "username": userName};
+            socket.emit('joinRoom', { id: room.id, username: userName });
         } else {
             let userName = useStore.getState().user.name || localStorage.getItem('user');
+            console.log('localStorage: ' + localStorage.getItem('user'));
             console.log('UserName: ', userName);
-            let buildData={"id": room.id, "username": userName}
-            socket.emit('joinRoom', buildData);
+            const parsedUser = JSON.parse(userName);
+            let userNameForClean = parsedUser.name;
+            let userNameClean = userNameForClean.replace(/['"]+/g, '');
+            console.log('UserNameClean: ', userNameClean);
+            socket.emit('joinRoom', { id: room.id, username: userNameClean });
         }
     };
 
