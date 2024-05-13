@@ -5,6 +5,9 @@ import socket from '../services/sockets';
 import { useEffect } from 'react';
 
 export default class GameHome extends Phaser.Scene {
+    c1Red;
+    c1White;
+    pressable = true;
     activePointer;
     cursors;
     character1;
@@ -267,10 +270,10 @@ export default class GameHome extends Phaser.Scene {
                             repeat: -1
                         })
                         if (white) {
-                            this.physics.add.collider(this.character1, white);
+                            this.c1White=this.physics.add.collider(this.character1, white);
                         }
                         if (red) {
-                            this.physics.add.collider(this.character1, red);
+                            this.c1Red=this.physics.add.collider(this.character1, red);
                         }
 
 
@@ -721,8 +724,12 @@ export default class GameHome extends Phaser.Scene {
     }
 
     update() {
-        if (this.cursors.space.keyup) {
+        if (this.cursors.space.isDown&&this.pressable) {
             socket.emit('changeColor');
+            this.pressable = false;
+        }
+        if (this.cursors.space.isUp) {
+            this.pressable = true;
         }
         
         this.buttons.forEach(button => {
@@ -879,9 +886,7 @@ export default class GameHome extends Phaser.Scene {
                     this.character1.setTint(this.colors.find(color => color.color == data.color).hex);
                     if (data.color == 'white') {
                         this.whiteView.setAlpha(1);
-                        if (this.whiteView.body) {
-                            this.whiteView.body.setEnable(true);
-                        }
+                        this.c1White.active = true;
                         this.blackView.setAlpha(0);
                         this.grayView.setAlpha(1);
                         if (this.grayView.body) {
@@ -889,6 +894,7 @@ export default class GameHome extends Phaser.Scene {
                         }
                         if (this.redView != null) {
                             this.redView.setAlpha(0);
+                            this.c1Red.active = false;
                             if (this.redView.body) {
                                 this.redView.body.setEnable(false);
                             }
@@ -903,21 +909,17 @@ export default class GameHome extends Phaser.Scene {
                     } else {
                         if (data.color == 'red') {
                             this.redView.setAlpha(1);
-                            if (this.redView.body) {
-                                this.redView.body.setEnable(true);
-                            }
+                            this.c1Red.active = true;
+                           this.redView.setActive(true);    
                             // this.blueView.setAlpha(0);
                             // this.purpleView.setAlpha(1);
                             if (this.whiteView) {
                                 this.whiteView.setAlpha(0);
-                                if (this.whiteView.body) {
-                                    this.whiteView.body.setEnable(true);
-                                }
+                               this.c1White.active = false;
                                 this.blackView.setAlpha(0);
                                 this.grayView.setAlpha(0);
-                                if (this.grayView.body) {
-                                    this.grayView.body.setEnable(true);
-                                }
+                                this.grayView.setActive(false);
+                                this.blackView.setAlpha(0);
                             }
                             if (this.greenView) {
                                 this.greenView.setAlpha(0);
