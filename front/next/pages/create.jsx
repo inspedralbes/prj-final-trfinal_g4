@@ -58,7 +58,7 @@ const Create = () => {
             images: selectedImages
         };
         if (roomInfo.name == '' || roomInfo.mode == '') {
-            setPopupMessage('Faltan datos por rellenar');
+            setPopupMessage('Falten dades per omplir.');
             return;
         } else {
             let accessCode;
@@ -66,22 +66,22 @@ const Create = () => {
                 do {
                     accessCode = generateAccessCode();
                 } while (rooms.some((room) => room.accessCode == accessCode));
-                console.log(accessCode);
+                // console.log(accessCode);
                 roomInfo.accessCode = accessCode;
             }
             if (useStore.getState().user == null) {
                 let userName = 'user' + Math.floor(Math.random() * 1000);
                 useStore.setState({ user: { name: userName } });
-                console.log('UserName: ', useStore.getState().user.name);
+                // console.log('UserName: ', useStore.getState().user.name);
                 socket.emit('createRoom', { addRoom: roomInfo, userAdmin: userName });
             } else {
                 let userName = useStore.getState().user.name || localStorage.getItem('user');
-                console.log('localStorage: ' + localStorage.getItem('user'));
-                console.log('UserName: ', userName);
+                // console.log('localStorage: ' + localStorage.getItem('user'));
+                // console.log('UserName: ', userName);
                 const parsedUser = JSON.parse(userName);
                 let userNameForClean = parsedUser.name;
                 let userNameClean = userNameForClean.replace(/['"]+/g, '');
-                console.log('UserNameClean: ', userNameClean);
+                // console.log('UserNameClean: ', userNameClean);
                 socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userNameClean});
             }
         }
@@ -92,9 +92,9 @@ const Create = () => {
             <Header />
             <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-8">
                 <div className="flex flex-col justify-center items-center w-full sm:w-1/3 mb-8">
-                    <h1 className="text-white text-4xl font-bold mb-4">Crear Sala</h1>
+                    <h1 className="text-white text-4xl font-bold mb-4">Crear sala</h1>
                     <div className="w-full bg-white rounded-lg p-4 mb-3">
-                        <label htmlFor="roomName" className="block text-gray-700 font-semibold mb-2">Nombre de la Sala:</label>
+                        <label htmlFor="roomName" className="block text-gray-700 font-semibold mb-2">Nom de la Sala:</label>
                         <input
                             id="roomName"
                             type="text"
@@ -116,14 +116,13 @@ const Create = () => {
                                 </span>
                             </label>
                         </div>
-                        <label htmlFor="gameMode" className="block text-gray-700 font-semibold mb-2">Modo de Juego:</label>
+                        <label htmlFor="gameMode" className="block text-gray-700 font-semibold mb-2">Mode de joc:</label>
                         <select
                             id="gameMode"
                             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
                             value={gameMode}
                             onChange={(e) => setGameMode(e.target.value)}
                         >
-                            <option value="">Seleccionar mode de joc...</option>
                             <option value="Mapes originals">Mapes originals</option>
                             <option value="Mapes de la comunitat">Mapes de la comunitat</option>
                             <option value="Aleatori">Aleatori</option>

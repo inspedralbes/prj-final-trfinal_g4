@@ -9,7 +9,7 @@ const socket = io(url);
 //Recibir todas las rooms que hay en socket y actualizar el estate
 socket.on('allRooms', (rooms) => {
     useStore.setState({ rooms });
-    console.log(`Rooms: ${rooms}`)
+    console.log(`Rooms: ${rooms}`);
 });
 
 socket.on('newInfoRoom', (room) => {
@@ -20,7 +20,7 @@ socket.on('newInfoRoom', (room) => {
 
 socket.on('gameStarted', (data)=>{
     useStore.setState({ localUserSocketId: socket.id });
-    console.log(data);
+    // console.log(data);
     let playerData = data.game.playersData.find( player => player.id == socket.id );
     useStore.setState({playerData: playerData})
     useStore.setState({gameData: data.game})
@@ -30,5 +30,6 @@ socket.on('gameStarted', (data)=>{
 socket.on('updatePositionFront', (data) => {
     useStore.setState({ playerData: data });
 });
+
 
 export default socket;

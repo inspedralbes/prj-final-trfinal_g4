@@ -89,7 +89,7 @@ export default class Game extends Phaser.Scene {
         const PurpleView = map.createLayer('PurpleView', tilesetP);
         const pinchos = map.createLayer('PurpleDangers', tilesetP);
         let userToCompare=JSON.parse(localStorage.getItem('room'));
-                console.log('users', userToCompare.users[0].id);
+                // console.log('users', userToCompare.users[0].id);
         if (JSON.parse(localStorage.getItem('user')).id == JSON.parse(localStorage.getItem('room')).users[0].id) {
             BlueView = map.createLayer('BlueView', tilesetB)
             BlueView.setCollisionByProperty({ collides: true })
@@ -100,7 +100,7 @@ export default class Game extends Phaser.Scene {
         }
         // this.smoothedControls = new SmoothedHorizontalControl(0.0005);
         map.createLayer('pinchos', tilesetB);
-        console.log(PurpleView);
+        // console.log(PurpleView);
         PurpleView.setCollisionByProperty({ collides: true })
         
         
@@ -233,7 +233,7 @@ export default class Game extends Phaser.Scene {
                         
                         
                         if (JSON.parse(localStorage.getItem('user')).id == JSON.parse(localStorage.getItem('room')).users[0].id) {
-                            console.log('user', "EEEEEEEEEEE");
+                            // console.log('user', "EEEEEEEEEEE");
                             
                             // this.playerController = new PlayerController(
                             //     this,

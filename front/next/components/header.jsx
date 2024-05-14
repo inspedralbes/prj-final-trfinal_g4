@@ -3,7 +3,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import Link from 'next/link';
 import useStore from '../src/store';
 import { logout } from '../services/communicationManager';
-import ErrorPopup from '../components/errorPopup'; // Importa el componente de popup de error
+import ErrorPopup from '../components/errorPopup';
 
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -20,17 +20,17 @@ const Header = () => {
             setUser(userStore);
             // console.log('Token and user from store:', tokenStore, userStore);
         } else {
-            console.log('jjjjjjjjjjjjj')
+            // console.log('jjjjjjjjjjjjj')
             try {
                 const storedToken = localStorage.getItem('token');
                 var storedUser = localStorage.getItem('user');
-                console.log('kkkkkkkkkk')
-                console.log(storedUser)
+                // console.log('kkkkkkkkkk')
+                // console.log(storedUser)
                 if (storedUser != null ) {
                     const parsedUser = JSON.parse(storedUser);
                     storedUser = parsedUser.name;
-                    console.log(storedUser);
-                    console.log('aaaaaaaaaaaaaaa');
+                    // console.log(storedUser);
+                    // console.log('aaaaaaaaaaaaaaa');
                 }
                 // console.log('Token and user from localStorage:', storedToken, storedUser);
                 storedUser.replace(/['"]+/g, '');
@@ -51,6 +51,7 @@ const Header = () => {
     const logoutHandler = () => {
         // console.log('Cerrando sesión logoutHandler');
         let tokenClean = token.replace(/['"]+/g, '');
+        
         if (tokenClean) {
             // console.log('Cerrando sesión');
             // console.log('Token:', tokenClean);
@@ -63,7 +64,7 @@ const Header = () => {
                 setUser(null);
                 // console.log('Sesión cerrada');
             }).catch(() => {
-                alert('Error cerrando sesión');
+                alert('Error tancant la sessió.');
             });
         }
         setDropdownOpen(false);

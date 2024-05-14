@@ -1,3 +1,4 @@
+const e = require('express');
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
@@ -50,8 +51,6 @@ io.on('connection', (socket) => {
     //Create Room
     socket.on('createRoom', (data) => {
         let id = lastRoom++;
-        console.log(data)
-        console.log('Room created');
         let newRoom = {
             name: data.addRoom.name,
             isPublic: data.addRoom.public,
@@ -70,7 +69,6 @@ io.on('connection', (socket) => {
             }
         }
         rooms.push(newRoom);
-        console.log(rooms);
         socket.join(newRoom.id);
         io.emit('allRooms', rooms);
         io.to(newRoom.id).emit('newInfoRoom', newRoom);
@@ -78,29 +76,55 @@ io.on('connection', (socket) => {
 
     //Join Room
     socket.on('joinRoom', (data) => {
-        console.log("PENE", data);
         let findRoom = rooms.find(room => room.id == data.id);
-        console.log(findRoom);
         if (findRoom == undefined) {
-            console.log('Room not found');
             return;
         } else {
-            console.log('Room found');
-            console.log('PENEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE', findRoom.users);
             let newUser = { id: socket.id, name: data.username };
             findRoom.users.push(newUser);
             findRoom.accesible = false;
             findRoom.status = 'inLobby';
-            console.log(findRoom);
             socket.join(findRoom.id);
         }
         io.emit('allRooms', rooms);
         io.to(findRoom.id).emit('newInfoRoom', findRoom);
+        console.log('soy gay', findRoom);
+    });
+
+    socket.on('exitRoom', (data) => {
+        let room = findRoomByUser(socket.id);
+        console.log(`Socket ${socket.id} is leaving room ${room.id}`);
+        console.log("Room AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", room);
+        console.log("users length ", room.users.length);
+        if (socket.id == room.admin[0]) {   
+            console.log(`soy admin ${socket.id}`);  
+            console.log(`room admin ${room.admin[0]}`); 
+            console.log(`room users ${room.users}`);      
+            if (room.users.length > 1) {
+                room.admin[0] = room.users[1].id;
+                room.users.splice(0, 1);
+                room.accesible = true;
+                console.log("Room BBBBBBBBBBBBBBBBBBBBBBB", room);
+                socket.leave(room.id);
+                socket.emit('newInfoRoom', null);
+                io.to(room.id).emit('newInfoRoom', room);
+            } else {
+                rooms.splice(rooms.indexOf(room), 1);
+            }
+        } else {
+            room.users.splice(1, 1);
+            room.accesible = true;
+            console.log("Room CCCCCCCCCCCCCCCCCCCCCCCCCCCCC", room);
+            socket.leave(room.id);
+            socket.emit('newInfoRoom', null);
+            io.to(room.id).emit('newInfoRoom', room);
+        }
+        io.emit('allRooms', rooms);
     });
 
     socket.on('startGame', ()=>{
         let room = findRoomByUser(socket.id);
-        console.log("choto", room);
+        // console.log("choto", room);
         room.status = 'Playing';
         io.emit('allRooms', rooms);
         room.game.players = room.users;

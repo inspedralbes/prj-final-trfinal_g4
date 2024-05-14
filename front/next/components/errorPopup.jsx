@@ -5,9 +5,9 @@ const ErrorPopup = ({ type, message }) => {
   let popupPosition = "";
   let popupTextColor = "";
 
-  console.log(popupColor);
-  console.log(type);
-  console.log(message);
+  // console.log(popupColor);
+  // console.log(type);
+  // console.log(message);
 
   switch (type) {
     case "error":
@@ -30,8 +30,8 @@ const ErrorPopup = ({ type, message }) => {
   
   popupPosition = "top-36";
 
-  console.log("🗣️ 🗣️ 🔥 ‼️ 💯  yo this shit fire: ", popupColor);
-  console.log("🇷 🇦 🇨 🇮 🇳 🇬  🇩 🇪  🇸 🇦 🇳 🇹 🇦 🇳 🇩 🇪 🇷: ", popupPosition);
+  // console.log("🗣️ 🗣️ 🔥 ‼️ 💯  yo this shit fire: ", popupColor);
+  // console.log("🇷 🇦 🇨 🇮 🇳 🇬  🇩 🇪  🇸 🇦 🇳 🇹 🇦 🇳 🇩 🇪 🇷: ", popupPosition);
 
   return (
     <div className={`fixed left-0 w-full ${popupPosition} flex justify-center z-50`}>
