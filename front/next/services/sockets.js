@@ -14,8 +14,8 @@ socket.on('allRooms', (rooms) => {
 
 socket.on('newInfoRoom', (room) => {
     useStore.setState({ room });
-    console.log(`New INFO ROOM: ${room}`);
-    console.log(`Users: ${room.users}`);
+    // console.log(`New INFO ROOM: ${room}`);
+    // console.log(`Users: ${room.users}`);
 });
 
 socket.on('gameStarted', (data)=>{

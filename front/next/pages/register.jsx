@@ -32,8 +32,9 @@ function Register() {
     };
 
     try {
-      await register(user);
-      router.push('/login');
+      register(user).then(() => {
+        router.push('/login');
+      });
     } catch (error) {
       setRegistrationError('Error al registrar usuario. Por favor, inténtalo de nuevo.');
     }
