@@ -47,18 +47,68 @@
     border-radius: 10px;
 }
 
-.container-icon {
+.container-icon-report {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-left: auto;
     margin-right: auto;
-    box-shadow: 0 0 10px rgba(80, 14, 14, 0.638);
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: 0 0 10px rgba(138, 10, 10, 0.757);
     border-radius: 10px;
 
 }
 
-.container-reportedMaps {
+.container-icon-users {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: auto;
+    box-shadow: 0 0 10px rgba(61, 143, 237, 0.757);
+    border-radius: 10px;
+
+}
+
+.container-icon-maps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: 0 0 10px rgba(232, 127, 22, 0.757);
+    border-radius: 10px;
+
+}
+
+.users-view {
+    width: 80%;
+    height: 80%;
+    display: flex;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.lista-users {
+    width: 80%;
+    height: 40%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2em;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 20px;
+
+}
+
+.container {
     display: grid;
     grid-template-rows: 1fr 2fr;
     grid-template-columns: 1fr;
@@ -134,9 +184,28 @@
     margin-right: auto;
     justify-content: center;
     align-items: center;
-    background-color: aliceblue;
+    box-shadow: 0 0 10px rgba(232, 127, 22, 0.757);
     border-radius: 10px;
+}
 
+.a{
+    
+}
+
+.info-users {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    width: 100%;
+    color: white;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    padding: 30px 30px 30px 30px;
+    text-align: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(61, 143, 237, 0.757);
+    border-radius: 10px;
 }
 
 .container-reported-maps {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ReportedMaps;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReportedMapsController extends Controller
 {
@@ -45,6 +46,17 @@ class ReportedMapsController extends Controller
         $newReportedMap->reason = $request->reason;
         $newReportedMap->save();
         return response()->json($newReportedMap, 201);
+    }
+
+    public function getReportedReason()
+    {
+        $enumValues = DB::select(DB::raw("SHOW COLUMNS FROM reported_maps WHERE Field = 'reason'"))[0]->Type;
+        preg_match('/^enum\((.*)\)$/', $enumValues, $matches);
+        $enumValues = [];
+        foreach (explode(',', $matches[1]) as $value) {
+            $enumValues[] = trim($value, "'");
+        }
+        return response()->json($enumValues);
     }
 
     public function destroyReport(ReportedMaps $reportedMap)

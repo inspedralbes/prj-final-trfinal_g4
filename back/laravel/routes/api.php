@@ -45,6 +45,7 @@ Route::get('/reportedMaps/{reportedMap} ', [ReportedMapsController::class, 'show
 Route::post('/reportedMaps', [ReportedMapsController::class, 'store']);
 Route::delete('/reportedMaps/{reportedMap}', [ReportedMapsController::class, 'destroyReport']);
 Route::get('/reportedMapsByUser/{user}', [ReportedMapsController::class, 'getReportedMapsByUser']);
+Route::get('/reportedReasons', [ReportedMapsController::class, 'getReportedReason']);
 
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'store']);

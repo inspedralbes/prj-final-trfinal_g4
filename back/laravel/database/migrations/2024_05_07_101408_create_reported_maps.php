@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('map_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('reason');
+            $table->enum('reason', ['mapa incompleto', 'no valido', 'obsceno', 'contenido inapropiado', 'contenido duplicado', 'contenido violento', 'contenido sexual']);
             $table->timestamps();
         });
     }

@@ -13,6 +13,10 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import { MdOutlineReportProblem } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { BsInfoCircle } from "react-icons/bs";
+import { TiTickOutline } from "react-icons/ti";
+import { TiTimesOutline } from "react-icons/ti";
+import { GrUserAdmin } from "react-icons/gr";
+import { LuUser2 } from "react-icons/lu";
 import './styles.css';
 
 function AdminPanel() {
@@ -96,9 +100,9 @@ function AdminPanel() {
             </div>
 
             {selectedIcon === 'maps' && (
-                <div className="container-maps">
-                    <div className='container-icon'>
-                        <FaRegMap style={{ fontSize: '12em', color: '#97D6F1' }} />
+                <div className="container">
+                    <div className='container-icon-maps'>
+                        <FaRegMap style={{ fontSize: '12em', color: '#D5671C' }} />
                     </div>
                     {maps.length > 0 && (
                         <div className='container-principal'>
@@ -151,8 +155,8 @@ function AdminPanel() {
             )}
 
             {selectedIcon === 'reportedMaps' && (
-                <div className='container-reportedMaps'>
-                    <div className='container-icon'>
+                <div className='container'>
+                    <div className='container-icon-report'>
                         <MdOutlineReportProblem style={{ fontSize: '12em', color: '#BF0A1D' }} />
                     </div>
                     {reportedMaps.length > 0 ? (
@@ -193,20 +197,41 @@ function AdminPanel() {
             )}
 
             {selectedIcon === 'allUsers' && (
-                <div className="">
-                    <div className="">
-                        {allUsers.length > 0 && (
-                            <ul className=''>
-                                {allUsers.map((user) => (
-                                    <li key={user.id} className=" text-white ">
-                                        <p className="">{user.name}</p>
-                                        <p className="">{user.email}</p>
-                                        <p className="">{user.admin}</p>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
+                <div className="container">
+                    <div className="container-icon-users">
+                        <RiAdminLine style={{ fontSize: '12em', color: '#2C66E3' }} />
                     </div>
+                    {allUsers.length > 0 && (
+                        <div>
+                            <div className='users-view'>
+                                <ul className='lista-users'>
+                                    {allUsers.map((user) => (
+                                        <li key={user.id} className="info-users">
+                                            <div>
+                                                {user.admin === 0 ? (
+                                                    <LuUser2 style={{ fontSize: '2em', color: 'white', padding: '5px', borderRadius: '5px', boxShadow: '0 0 10px rgba(217, 213, 209, 0.88)' }} />
+                                                ) : (
+                                                    <GrUserAdmin style={{ fontSize: '2em', color: 'white', padding: '5px', borderRadius: '5px', boxShadow: '0 0 10px rgba(217, 213, 209, 0.88)' }} />
+                                                )
+                                                }
+                                            </div>
+                                            <p className="a">{user.name}</p>
+                                            <p className="">{user.email}</p>
+                                            <p className="">{user.admin === 1 ? <TiTickOutline style={{ fontSize: '2em', color: 'rgba(13, 129, 41 , 0.757)' }} /> : <TiTimesOutline style={{ fontSize: '2em', color: 'rgba(138, 10, 10, 0.757)' }} />}</p>
+                                            <div>
+                                                {user.admin === 0 ? (
+                                                    <button style={{ color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', boxShadow: '0 0 10px rgba(13, 129, 41 , 0.957)' }}>Hacer admin</button>
+                                                ) : (
+                                                    <button style={{ color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', boxShadow: '0 0 10px rgba(138, 10, 10, 0.957)' }}>Quitar admin</button>
+
+                                                )}
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
 
