@@ -5,28 +5,43 @@ import socket from '../services/sockets';
 import { useRouter } from 'next/router';
 
 const Lobby = () => {
-    var room = useStore.getState().room;
     const router = useRouter();
+    const [room, setRoom] = useState(useStore.getState().room);
 
     useEffect(() => {
-        if (useStore.getState().room != room) {
-            room = useStore.getState().room;
-        }
-    }, [useStore.getState().room]); 
+        const handleRoomChange = () => {
+            // Recargar la página cuando haya un cambio en la sala
+            router.reload();
+        };
+
+        // Suscribirse a cambios en la sala para el administrador
+        const unsubscribe = useStore.subscribe(
+            (state) => {
+                setRoom(state.room);
+            },
+            handleRoomChange
+        );
+
+        return () => {
+            unsubscribe();
+        };
+    }, [router.pathname]); // Asegúrate de suscribirte solo cuando cambie la ruta
 
     console.log('ROOM: ', room);
     console.log('ROOM USERS: ', room.users);
 
-    var adminUser = room.admin[1];
-    var otherUser = '';
-    
+    const adminUser = room.admin[1];
+    let otherUser = '';
+
     if (room.users.length > 1) {
         otherUser = room.users[1].name.replace(/['"]+/g, '');
         console.log('OTHER USER: ', otherUser);
     }
 
+    let contentOtherUser = null;
+
     if (otherUser != '') {
-        var contentOtherUser = <div id='userRandom' className='flex items-center mt-2 mb-2'>
+        contentOtherUser = <div id='userRandom' className='flex items-center mt-2 mb-2'>
                                 <div className='flex items-center'>
                                     <img src="/images/random.jpg" alt="Venti" className='w-10 h-10 ml-2 rounded-full' />
                                     <p className='text-2xl ml-3 mt-1 mr-4'>{otherUser}</p>
