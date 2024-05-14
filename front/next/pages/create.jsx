@@ -12,8 +12,8 @@ const Create = () => {
     const [roomName, setRoomName] = useState('');
     const [isPublic, setIsPublic] = useState(false);
     const [gameMode, setGameMode] = useState('');
-    const [selectedImages, setSelectedImages] = useState(['/images/random-game.png', '/images/random-game.png', '/images/random-game.png']); // Todas las imágenes son random-game.png
-    const [rooms , setRooms] = useState(useStore.getState().rooms);
+    const [selectedImages, setSelectedImages] = useState(['/images/random-game.png', '/images/random-game.png', '/images/random-game.png']);
+    const [rooms, setRooms] = useState(useStore.getState().rooms);
     const [popupMessage, setPopupMessage] = useState(null);
     const router = useRouter();
 
@@ -41,20 +41,12 @@ const Create = () => {
         return accessCode;
     }
 
-    const handleImageSelection = (index, imageSrc) => {
-        setSelectedImages(prevImages => {
-            const updatedImages = [...prevImages];
-            updatedImages[index] = imageSrc;
-            return updatedImages;
-        });
-    };
-
     const handleCreateRoom = () => {
         const roomInfo = {
             name: roomName,
             public: isPublic,
             mode: gameMode,
-            images: selectedImages.filter(image => image !== null) // Remove null values
+            images: selectedImages.filter(image => image !== '/images/random-game.png')
         };
         if (roomInfo.name === '' || roomInfo.mode === '' || roomInfo.images.length === 0) {
             setPopupMessage('Faltan datos por rellenar');
@@ -65,25 +57,28 @@ const Create = () => {
                 do {
                     accessCode = generateAccessCode();
                 } while (rooms.some((room) => room.accessCode === accessCode));
-                console.log(accessCode);
                 roomInfo.accessCode = accessCode;
             }
             if (useStore.getState().user == null) {
                 let userName = 'user' + Math.floor(Math.random() * 1000);
                 useStore.setState({ user: { name: userName } });
-                console.log('UserName: ', useStore.getState().user.name);
                 socket.emit('createRoom', { addRoom: roomInfo, userAdmin: userName });
             } else {
                 let userName = useStore.getState().user.name || localStorage.getItem('user');
-                console.log('localStorage: ' + localStorage.getItem('user'));
-                console.log('UserName: ', userName);
                 const parsedUser = JSON.parse(userName);
                 let userNameForClean = parsedUser.name;
                 let userNameClean = userNameForClean.replace(/['"]+/g, '');
-                console.log('UserNameClean: ', userNameClean);
-                socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userNameClean});
+                socket.emit('createRoom', { addRoom: roomInfo, userAdmin: userNameClean });
             }
         }
+    };
+
+    const handleImageClick = (imageSrc, phaseIndex) => {
+        setSelectedImages(prevImages => {
+            const updatedImages = [...prevImages];
+            updatedImages[phaseIndex] = imageSrc;
+            return updatedImages;
+        });
     };
 
     return (
@@ -133,35 +128,8 @@ const Create = () => {
                         Crear Sala
                     </button>
                 </div>
-                <div className="w-full sm:w-3/4 flex sm:flexrow items-center justify-center sm:flex-wrap gap-x-4">
-                    {selectedImages.map((imageSrc, index) => (
-                        <CustomImageWithOverlay
-                            key={index}
-                            imageSrc={imageSrc}
-                            altText={`Imagen ${index + 1}`}
-                            isSelected={imageSrc !== '/images/random-game.png'}
-                            icon={index === 0 ? <PiNumberCircleOne className="text-black text-4xl absolute top-4 left-1 m-2" /> : index === 1 ? <PiNumberCircleTwo className="text-black text-4xl absolute top-4 left-1 m-2" /> : <PiNumberCircleThree className="text-black text-4xl absolute top-4 left-1 m-2" />}
-                        >
-                            <TbLetterX className="text-black text-2xl absolute top-4 right-1 m-2" />
-                        </CustomImageWithOverlay>
-                    ))}
-                </div>
-                <Fases fases={[1, 2, 3]} onImageClick={(imageSrc, phaseIndex) => setSelectedImages(prevImages => {
-                    const updatedImages = [...prevImages];
-                    updatedImages[phaseIndex] = imageSrc;
-                    return updatedImages;
-                })} />
+                <Fases fases={[1, 2, 3]} selectedImages={selectedImages} onImageClick={handleImageClick} />
             </div>
-        </div>
-    );
-};
-
-const CustomImageWithOverlay = ({ imageSrc, altText, isSelected, children, icon }) => {
-    return (
-        <div className="relative flex-shrink-0 mb-4 sm:mb-0 sm:mr-4 sm:mx-3">
-            <img src={imageSrc} alt={altText} className={`h-60 sm:h-72 w-80 sm:w-96 my-4 bg-zinc-400 ${isSelected ? 'border-4 border-blue-500' : ''}`} />
-            {icon}
-            {children}
         </div>
     );
 };
