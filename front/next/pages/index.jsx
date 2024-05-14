@@ -5,7 +5,7 @@ import Header from '../components/header';
 
 const IndexPage = () => {
   return (
-    <div>
+    <div className="h-screen overflow-hidden">
       <Header />
       <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-between p-4">
         <div className="flex flex-col md:flex-row md:justify-between md:items-center">
