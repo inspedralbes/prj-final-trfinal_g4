@@ -3,9 +3,11 @@ import { FaUserCircle } from 'react-icons/fa';
 import Link from 'next/link';
 import useStore from '../src/store';
 import { logout } from '../services/communicationManager';
+import ErrorPopup from '../components/errorPopup';
 
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
     const [token, setToken] = useState(null);
     const [user, setUser] = useState(null);
 
@@ -16,21 +18,28 @@ const Header = () => {
         if (tokenStore !== null && userStore !== null) {
             setToken(tokenStore);
             setUser(userStore);
-
-            console.log('Token and user from store:', tokenStore, userStore);
+            // console.log('Token and user from store:', tokenStore, userStore);
         } else {
+            // console.log('jjjjjjjjjjjjj')
             try {
                 const storedToken = localStorage.getItem('token');
-                const storedUser = localStorage.getItem('user');
-
-                console.log('Token and user from localStorage:', storedToken, storedUser);
-                
+                var storedUser = localStorage.getItem('user');
+                // console.log('kkkkkkkkkk')
+                // console.log(storedUser)
+                if (storedUser != null ) {
+                    const parsedUser = JSON.parse(storedUser);
+                    storedUser = parsedUser.name;
+                    // console.log(storedUser);
+                    // console.log('aaaaaaaaaaaaaaa');
+                }
+                // console.log('Token and user from localStorage:', storedToken, storedUser);
+                storedUser.replace(/['"]+/g, '');
                 setToken(storedToken);
                 setUser(storedUser);
                 useStore.setState({ token: storedToken });
                 useStore.setState({ user: storedUser });
             } catch (e) {
-                console.log('Error retrieving token and user from localStorage:', e);
+                // console.log('Error retrieving token and user from localStorage:', e);
             }
         }
     }, []);
@@ -40,12 +49,12 @@ const Header = () => {
     };
 
     const logoutHandler = () => {
-        console.log('Cerrando sesión logoutHandler');
+        // console.log('Cerrando sesión logoutHandler');
         let tokenClean = token.replace(/['"]+/g, '');
         
         if (tokenClean) {
-            console.log('Cerrando sesión');
-            console.log('Token:', tokenClean);
+            // console.log('Cerrando sesión');
+            // console.log('Token:', tokenClean);
             logout(tokenClean).then(() => {
                 localStorage.removeItem('user');
                 localStorage.removeItem('token');
@@ -53,15 +62,15 @@ const Header = () => {
                 useStore.setState({ token: null });
                 setToken(null);
                 setUser(null);
-                console.log('Sesión cerrada');
+                // console.log('Sesión cerrada');
             }).catch(() => {
-                alert('Error cerrando sesión');
+                alert('Error tancant la sessió.');
             });
         }
         setDropdownOpen(false);
     };
 
-    console.log('Token:', token);
+    // console.log('Token:', token);
 
     let content;
     if (token && user) {
@@ -70,9 +79,9 @@ const Header = () => {
                 <FaUserCircle className="mx-4 text-3xl cursor-pointer" onClick={toggleDropdown} />
                 {dropdownOpen && (
                     <div className="dropdown absolute right-0 mt-2 bg-black bg-opacity-50 rounded-md shadow-lg">
-                        <a href="#" className="block px-4 py-2 hover:bg-gray-800">Perfil</a>
-                        <a href="#" className="block px-4 py-2 hover:bg-gray-800">Mapas</a>
-                        <button onClick={logoutHandler} className="block px-4 py-2 hover:bg-gray-800">Logout</button>
+                        <a href="/perfil" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Perfil</a>
+                        <a href="/mapas" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Mapas</a>
+                        <button onClick={logoutHandler} className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Logout</button>
                     </div>
                 )}
             </div>
@@ -92,6 +101,7 @@ const Header = () => {
             </Link>
             <div className="flex items-center">
                 {content}
+                {errorMessage && <ErrorPopup message={errorMessage} />} {/* Mostrar el popup de error si hay un mensaje de error */}
             </div>
         </header>
     );

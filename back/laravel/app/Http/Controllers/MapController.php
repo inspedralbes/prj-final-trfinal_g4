@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Map;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Type\Integer;
@@ -46,22 +47,22 @@ class MapController extends Controller
         }
         return $maps;
     }
-    
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $newMap= new Map();
+        $newMap = new Map();
         $newMap->name = $request->name;
         $newMap->description = $request->description;
 
         $img = $request->file('img');
-        $path = $img->storeAs('/images',$img->getClientOriginalName());
+        $path = $img->storeAs('/images', $img->getClientOriginalName());
         $newMap->image = $path;
-        $map= $request->file('map');
-        $pathMap = $map->storeAs('/public',$map->getClientOriginalName());
+        $map = $request->file('map');
+        $pathMap = $map->storeAs('/public', $map->getClientOriginalName());
         $newMap->mapRoute = $pathMap;
         $newMap->difficulty = $request->difficulty;
         $newMap->user_id = $request->user_id;
@@ -85,10 +86,10 @@ class MapController extends Controller
         $mapToUpdate->description = $request->description;
         $img = $request->file('img');
         dd($img);
-        $path = $img->storeAs('/images',$img->getClientOriginalName());
+        $path = $img->storeAs('/images', $img->getClientOriginalName());
         $mapToUpdate->image = $path;
-        $map= $request->file('map');
-        $pathMap = $map->storeAs('/public',$map->getClientOriginalName());
+        $map = $request->file('map');
+        $pathMap = $map->storeAs('/public', $map->getClientOriginalName());
         $mapToUpdate->mapRoute = $pathMap;
         $mapToUpdate->difficulty = $request->difficulty;
         $mapToUpdate->user_id = $request->user_id;
@@ -110,5 +111,25 @@ class MapController extends Controller
         return response()->json([
             'message' => 'Map deleted'
         ]);
+    }
+
+    public function download($id)
+    {
+        $map = Map::find($id);
+        if (!$map) {
+            return response()->json([
+                'error' => 'Map not found'
+            ], 404);
+        }
+
+        $path = public_path($map->mapRoute);
+
+        if (!file_exists($path)) {
+            return response()->json([
+                'error' => 'File not found'
+            ], 404);
+        }
+
+        return response()->download($path);
     }
 }

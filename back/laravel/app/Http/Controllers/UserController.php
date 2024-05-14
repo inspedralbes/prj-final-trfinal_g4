@@ -15,17 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return response()->json(User::all());
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json(User::all(), 200);
     }
 
     /**
@@ -45,32 +35,35 @@ class UserController extends Controller
             [
                 'message' => 'User created!',
                 'user' => $newUser->name,
+                'admin' => $newUser->admin,
                 'token' => $newUser->createToken('AppToken')->plainTextToken
-
-            ]
+            ], 200
         );
     }
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         $user = User::where('email', $request->email)->first();
-        if(!$user || !Hash::check($request->password, $user->password)){
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'message' => 'Bad credentials'
-            ]);
+            ],401);
         }
         return response()->json([
             'message' => 'Logged in!',
             'user' => $user->name,
+            'admin' => $user->admin,
             'token' => $user->createToken('AppToken')->plainTextToken
-        ]);
-
+        ], 200);
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         auth()->user()->tokens()->delete();
         return response()->json([
             'message' => 'Logged out!'
         ]);
     }
+    
     /**
      * Display the specified resource.
      *
@@ -82,6 +75,11 @@ class UserController extends Controller
         return response()->json($user);
     }
 
+    public function showAllUsers()
+    {
+        return response()->json(User::all());
+    }
+    
 
     /**
      * Update the specified resource in storage.
@@ -99,7 +97,7 @@ class UserController extends Controller
 
         return response()->json([
             'message' => 'User updated!'
-        ]);
+        ],200);
     }
 
     /**

@@ -1,3 +1,5 @@
+const withTM = require('next-transpile-modules')(['zustand', 'zukeeper']);
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     webpackDevMiddleware: config => {
@@ -7,7 +9,6 @@ const nextConfig = {
         }
         return config
     }
-    // output: 'export'
 };
 
-module.exports = nextConfig;
+module.exports = withTM(nextConfig);

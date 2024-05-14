@@ -27,10 +27,10 @@ function Mapas() {
         event.preventDefault();
 
         // Aquí puedes manejar los datos del formulario, como enviarlos al servidor
-        console.log('Nombre:', nombre);
-        console.log('Fase:', fase);
-        console.log('Archivo:', archivo);
-        console.log('Miniatura:', miniatura);
+        // console.log('Nombre:', nombre);
+        // console.log('Fase:', fase);
+        // console.log('Archivo:', archivo);
+        // console.log('Miniatura:', miniatura);
 
         // Limpia el formulario después de enviar
         setNombre('');
@@ -47,7 +47,7 @@ function Mapas() {
                     <h1 className="text-3xl font-bold mb-4">Enviar mapa</h1>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
-                            <label htmlFor="nombre" className="block text-gray-700 font-semibold mb-2">Nombre:</label>
+                            <label htmlFor="nombre" className="block text-gray-700 font-semibold mb-2">Nom:</label>
                             <input
                                 id="nombre"
                                 type="text"
@@ -80,7 +80,7 @@ function Mapas() {
                             />
                         </div>
                         <div>
-                            <label htmlFor="archivo" className="block text-gray-700 font-semibold mb-2">Archivo de mapa:</label>
+                            <label htmlFor="archivo" className="block text-gray-700 font-semibold mb-2">Archiu del mapa:</label>
                             <input
                                 id="archivo"
                                 type="file"
