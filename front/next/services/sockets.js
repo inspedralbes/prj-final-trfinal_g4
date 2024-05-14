@@ -9,7 +9,7 @@ const socket = io(url);
 //Recibir todas las rooms que hay en socket y actualizar el estate
 socket.on('allRooms', (rooms) => {
     useStore.setState({ rooms });
-    // console.log(`Rooms: ${rooms}`)
+    console.log(`Rooms: ${rooms}`);
 });
 
 socket.on('newInfoRoom', (room) => {

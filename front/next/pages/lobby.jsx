@@ -14,15 +14,16 @@ const Lobby = () => {
         }
     }, [useStore.getState().room]);
 
-    // console.log('ROOM: ', room);
-    // console.log('ROOM USERS: ', room.users);
-
     var adminUser = room.admin[1];
     var otherUser = '';
 
     if (room.users.length > 1) {
         otherUser = room.users[1].name.replace(/['"]+/g, '');
-        // console.log('OTHER USER: ', otherUser);
+    }
+
+    const salirSala = () => {
+        socket.emit('exitRoom', room);
+        router.push('/rooms');
     }
 
     if (otherUser != '') {
@@ -37,7 +38,7 @@ const Lobby = () => {
                         <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
                     </svg>
                 </button>
-                <button className='bg-red-500 hover:bg-red-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mr-2 rounded-lg'>
+                <button className='bg-red-500 hover:bg-red-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mr-2 rounded-lg' onClick={()=>salirSala()}>
                     <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                         <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
                     </svg>
