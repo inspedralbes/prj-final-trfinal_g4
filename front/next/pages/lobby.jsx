@@ -4,6 +4,7 @@ import useStore from '../src/store';
 import socket from '../services/sockets';
 import { useRouter } from 'next/router';
 
+
 const Lobby = () => {
     var room = useStore.getState().room;
     const router = useRouter();
@@ -11,6 +12,9 @@ const Lobby = () => {
     useEffect(() => {
         if (useStore.getState().room != room) {
             room = useStore.getState().room;
+        }
+        if (useStore.getState().room == null) {
+            router.push('/rooms');
         }
     }, [useStore.getState().room]);
 
@@ -23,8 +27,7 @@ const Lobby = () => {
 
     const salirSala = () => {
         socket.emit('exitRoom', room);
-        router.push('/rooms');
-    }
+    };
 
     if (otherUser != '') {
         var contentOtherUser = <div id='userRandom' className='flex items-center mt-2 mb-2'>

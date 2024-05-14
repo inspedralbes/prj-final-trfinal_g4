@@ -106,6 +106,7 @@ io.on('connection', (socket) => {
                 room.accesible = true;
                 console.log("Room BBBBBBBBBBBBBBBBBBBBBBB", room);
                 socket.leave(room.id);
+                socket.emit('newInfoRoom', null);
                 io.to(room.id).emit('newInfoRoom', room);
             } else {
                 rooms.splice(rooms.indexOf(room), 1);
@@ -115,6 +116,7 @@ io.on('connection', (socket) => {
             room.accesible = true;
             console.log("Room CCCCCCCCCCCCCCCCCCCCCCCCCCCCC", room);
             socket.leave(room.id);
+            socket.emit('newInfoRoom', null);
             io.to(room.id).emit('newInfoRoom', room);
         }
         io.emit('allRooms', rooms);
