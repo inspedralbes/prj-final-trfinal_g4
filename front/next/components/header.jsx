@@ -12,25 +12,28 @@ const Header = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const tokenStore = useStore.getState().token;
         const userStore = useStore.getState().user;
 
-        if (tokenStore !== null && userStore !== null) {
-            setToken(tokenStore);
-            setUser(userStore);
+        if ( userStore != null ) {
+            setToken(userStore.name);
+            setUser(userStore.token);
         } else {
             try {
-                const storedToken = localStorage.getItem('token');
-                var storedUser = localStorage.getItem('user');
-                if (storedUser != null ) {
-                    const parsedUser = JSON.parse(storedUser);
-                    storedUser = parsedUser.name;
+                const userLocalStorage = JSON.parse(localStorage.getItem('user'));
+
+                if (userLocalStorage != null) {
+                    var userName = userLocalStorage.name;
+                    var userToken = userLocalStorage.token;
+
+                    console.log('User:', userName);
+                    console.log('Token:', userToken);
+                    console.log('All data User:', userLocalStorage);
                 }
-                storedUser.replace(/['"]+/g, '');
-                setToken(storedToken);
-                setUser(storedUser);
-                useStore.setState({ token: storedToken });
-                useStore.setState({ user: storedUser });
+
+                useStore.setState({ user: userLocalStorage });
+
+                setToken(userToken);
+                setUser(userName);
             } catch (e) {
                 // console.log('Error retrieving token and user from localStorage:', e);
             }
@@ -47,13 +50,11 @@ const Header = () => {
         if (tokenClean) {
             logout(tokenClean).then(() => {
                 localStorage.removeItem('user');
-                localStorage.removeItem('token');
                 useStore.setState({ user: null });
-                useStore.setState({ token: null });
                 setToken(null);
                 setUser(null);
             }).catch(() => {
-                alert('Error tancant la sessió.');
+                setErrorMessage('Error tancant la sessió.');
             });
         }
         setDropdownOpen(false);

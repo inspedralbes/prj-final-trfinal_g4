@@ -79,7 +79,9 @@ class UserController extends Controller
         
         return response()->json([
             'message' => 'Logged in!',
-            'user' => $user->name,
+            'user' => $user->username,
+            'id' => $user->id,
+            'image' => $user->image,
             'admin' => $user->admin,
             'token' => $user->createToken('AppToken')->plainTextToken
         ], 200);

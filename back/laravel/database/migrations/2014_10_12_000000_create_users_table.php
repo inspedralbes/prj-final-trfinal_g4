@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('username');
-            $table->binary('image')->nullable()->default(null);
+            $table->binary('image')->nullable()->default('/images/profiles/default.png');
             $table->string('email')->unique();
             $table->string('password');
             $table->boolean('admin')->default(false);

@@ -12,12 +12,9 @@ function Login() {
   const [password, setPassword] = useState('');
   const router = useRouter();
   const [setSession] = useState(null);
-  const username = localStorage.getItem('user');
-  const token = localStorage.getItem('token');
 
   const [sessionIncomplete, setSessionIncomplete] = useState(null);
   const [sessionError, setSessionError] = useState(null);
-  // const [sessionSuccess, setSessionSuccess] = useState(null);
 
   const session = useSession();
   useEffect(() => {
@@ -44,12 +41,25 @@ function Login() {
     };
 
     login(user).then((data) => {
-      localStorage.setItem('user', JSON.stringify({ name: JSON.stringify(data.user) }));
-      localStorage.setItem('user', JSON.stringify({ id: JSON.stringify(data.id) }));
-      localStorage.setItem('token', JSON.stringify(data.token));
-      useStore.setState({ user: { name: JSON.stringify(data.user) }});
-      useStore.setState({ user: { id: JSON.stringify(data.id)} });
-      useStore.setState({ token: JSON.stringify(data.token) });
+      //datos de usuario (user, id, token, admin(boolean), image)
+      localStorage.setItem('user', 
+        JSON.stringify({ 
+          name: data.user, 
+          id: data.id,
+          admin: data.admin,
+          image: data.image,
+          token: data.token
+        })
+      );
+      useStore.setState({ 
+        user: { 
+          name: data.user, 
+          id: data.id,
+          admin: data.admin,
+          image: data.image,
+          token: data.token
+        }
+      });
       if (data.admin == 1) {
         useStore.setState({ admin: true });
         router.push('/admin');
