@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('mapRoute');
             $table->enum(('difficulty'), array(1, 2, 3));
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->boolean('default')->default(0);
             $table->timestamps();
         });
     }

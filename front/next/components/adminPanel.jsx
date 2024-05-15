@@ -26,8 +26,6 @@ function AdminPanel() {
     const [selectedIcon, setSelectedIcon] = useState(null);
     const [searchReportedMapById, setSearchReportedMapById] = useState('');
 
-
-
     useEffect(() => {
         getMaps()
             .then((data) => setMaps(data))

@@ -41,7 +41,6 @@ export function register(user) {
 }
 
 export function logout(token) {
-    console.log('su puta madre');
     return new Promise((resolve, reject) => {
         fetch(`${url}logout`, {
             method: 'POST',
@@ -101,13 +100,14 @@ export function updateUser(user) {
     });
 }
 
-export function getUsers() {
+export function getUsers(user) {
     return new Promise((resolve, reject) => {
         fetch(`${url}allUsers/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
+            body: JSON.stringify(user)
         })
             .then(response => response.json())
             .then(data => {
@@ -197,13 +197,14 @@ export function getMaps() {
     });
 }
 
-export function getReportedMaps() {
+export function getReportedMaps(user) {
     return new Promise((resolve, reject) => {
         fetch(`${url}reportedMaps/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
+            body: JSON.stringify(user)
         })
             .then(response => response.json())
             .then(data => {
@@ -215,7 +216,7 @@ export function getReportedMaps() {
     });
 }
 
-export function updateMap(mapData) {
+export function updateMap(mapData, user) {
     return new Promise((resolve, reject) => {
         fetch(`${url}maps/${mapData.id}`, {
             method: 'PUT',
@@ -223,7 +224,7 @@ export function updateMap(mapData) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${mapData.token}`
             },
-            body: JSON.stringify(mapData)
+            body: JSON.stringify({ mapData: mapData, user: user})
         })
             .then(response => response.json())
             .then(data => {
@@ -235,14 +236,14 @@ export function updateMap(mapData) {
     });
 }
 
-export function destroyMap(mapData) {
+export function destroyMap(mapData, user) {
     return new Promise((resolve, reject) => {
         fetch(`${url}maps/${mapData}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(mapData)
+            body: JSON.stringify({ mapData: mapData, user: user })
         })
             .then(response => response.json())
             .then(data => {
@@ -254,12 +255,13 @@ export function destroyMap(mapData) {
     });
 }
 
-export function downloadFile(mapId, mapName) {
+export function downloadFile(mapId, mapName, user) {
     console.log("map name", mapName);
     console.log("map info", mapId);
     return new Promise((resolve, reject) => {
         fetch(`${url}download/${mapId}`, {
             method: 'GET',
+            body: JSON.stringify({ mapId: mapId, mapName: mapName, user: user })
         })
             .then(response => {
                 const contentDisposition = response.headers.get('Content-Disposition');
@@ -297,14 +299,14 @@ export function downloadFile(mapId, mapName) {
     });
 }
 
-export function destroyReport(mapId){
+export function destroyReport(mapId, user) {
     return new Promise((resolve, reject) => {
         fetch(`${url}reportedMaps/${mapId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(mapId)
+            body: JSON.stringify({ mapId: mapId, user: user })
         })
             .then(response => response.json())
             .then(data => {

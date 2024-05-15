@@ -46,7 +46,6 @@ function Login() {
       if (data.admin === 1) {
         useStore.setState({ admin: true });
         console.log("admin", data.admin);
-        console.log("admin", data.admin);
         router.push('/admin');
       } else {
         console.log("admin", data.admin);
