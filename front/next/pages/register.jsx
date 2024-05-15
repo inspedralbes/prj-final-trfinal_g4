@@ -19,8 +19,11 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      setRegistrationError('Las contraseñas no coinciden.');
+    if (password != confirmPassword) {
+      setRegistrationError('Les contrasenyes no coincideixen.');
+      return;
+    } else if (password.length < 8) {
+      setRegistrationError('La contrasenya ha de tenir com a mínim 8 caràcters.');
       return;
     }
 
@@ -29,6 +32,7 @@ function Register() {
       email: email,
       username: username,
       password: password,
+      password_confirmation: confirmPassword
     };
 
     try {
@@ -70,14 +74,14 @@ function Register() {
           </div>
           <div className="mb-4">
             <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">Contrasenya</label>
-            <input type="password" id="password" name="password"
+            <input type="password" id="password" name="password" min={8}
               value={password} onChange={(e) => setPassword(e.target.value)} required
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
           <div className="mb-6">
             <label htmlFor="confirmPassword" className="block text-gray-700 text-sm font-bold mb-2">Confirmar Contrasenya</label>
-            <input type="password" id="confirmPassword" name="confirmPassword"
+            <input type="password" id="confirmPassword" name="confirmPassword" min={8}
               value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />

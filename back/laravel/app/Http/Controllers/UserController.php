@@ -26,20 +26,46 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'email' => 'required | email | unique:users,email',
+            'password' => 'required|confirmed',
+        ]); 
+
+        if (User::where('email', $request->email)->exists()) {
+            return response()->json([
+                'message' => 'Email already exists'
+            ], 400);
+        }
+
         $newUser = new User();
         $newUser->name = $request->name;
+        $newUser->username = $request->username;
         $newUser->email = $request->email;
         $newUser->password = Hash::make($request->password);
-        $newUser->save();
-        return response()->json(
-            [
+        
+        if ($request->admin) {
+            $newUser->admin = $request->admin;
+        }
+
+        if ($request->googleLogin) {
+            $newUser->googleLogin = $request->googleLogin;
+        }
+
+        if ($newUser->save() === false) {
+            return response()->json([
+                'message' => 'Error creating user'
+            ], 400);
+        } else {
+            return response()->json([
                 'message' => 'User created!',
                 'user' => $newUser->name,
                 'id' => $newUser->id,
                 'admin' => $newUser->admin,
                 'token' => $newUser->createToken('AppToken')->plainTextToken
-            ], 200
-        );
+            ], 200);
+        }
     }
     public function login(Request $request)
     {
