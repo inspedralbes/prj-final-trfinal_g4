@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 
 const Lobby = () => {
     const router = useRouter();
+    var user = useStore.getState().user;
     const [room, setRoom] = useState(useStore.getState().room);
 
     useEffect(() => {
@@ -63,15 +64,12 @@ const Lobby = () => {
     }
 
     const emitStart = () => {
-        // console.log('Emitiendo startGame');
         socket.emit('startGame', room);
         router.push('/game');
     }
 
     useEffect(() => {
-        // console.log('gData:', useStore.getState().room.status);
         if (useStore.getState().room != null && useStore.getState().room.status == 'Playing') {
-            // console.log("entro aqui")
             router.push('/game');
         }
     });
@@ -146,18 +144,20 @@ const Lobby = () => {
                                     <img src="/images/random.jpg" alt="Venti" className='w-10 h-10 ml-2 rounded-full' />
                                     <p className='text-2xl ml-3 mt-1 mr-4'>{adminUser}</p>
                                 </div>
-                                <div id='buttons-check' className='flex items-center ml-auto'>
-                                    <button className='bg-green-500 hover:bg-green-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mx-2 rounded-lg'>
-                                        <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
-                                        </svg>
-                                    </button>
-                                    <button className='bg-red-500 hover:bg-red-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mr-2 rounded-lg' onClick={()=>salirSala()}>
-                                        <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-                                        </svg>
-                                    </button>
-                                </div>
+                                { user == adminUser && (
+                                    <div id='buttons-check' className='flex items-center ml-auto'>
+                                        <button className='bg-green-500 hover:bg-green-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mx-2 rounded-lg'>
+                                            <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                                            </svg>
+                                        </button>
+                                        <button className='bg-red-500 hover:bg-red-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mr-2 rounded-lg' onClick={()=>salirSala()}>
+                                            <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                             {contentOtherUser}
                         </div>
