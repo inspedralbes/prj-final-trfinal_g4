@@ -26,9 +26,6 @@ const Lobby = () => {
         };
     }, [router.pathname]);
 
-    // console.log('ROOM: ', room);
-    // console.log('ROOM USERS: ', room.users);
-
     const adminUser = room && room.admin ? room.admin[1] : '';
     let otherUser = '';
 
@@ -40,6 +37,7 @@ const Lobby = () => {
 
     const salirSala = () => {
         socket.emit('exitRoom', room);
+        useStore.setState({ room: null });
         router.push('/rooms');
     };
 

@@ -44,6 +44,7 @@ function Rooms() {
         if (useStore.getState().user == null){
             let userName = 'user' + Math.floor(Math.random() * 1000);
             useStore.setState({ user: { name: userName } });
+            localStorage.setItem('user', JSON.stringify(useStore.getState().user));
             console.log('UserName: ', useStore.getState().user.name);
             // let buildData={"id": room.id, "username": userName};
             socket.emit('joinRoom', { id: room.id, username: userName });
