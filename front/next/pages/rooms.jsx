@@ -146,7 +146,7 @@ function Rooms() {
     }
 
     return (
-        <div> 
+        <div className="h-screen overflow-hidden">
             <Header />
             <div className="flex flex-col md:flex-row justify-center items-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
                 <div className="flex flex-col w-full md:w-4/12 justify-center md:justify-start">

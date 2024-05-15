@@ -12,9 +12,8 @@ const Create = () => {
     const [roomName, setRoomName] = useState('');
     const [isPublic, setIsPublic] = useState(false);
     const [gameMode, setGameMode] = useState('');
-    const [selectedImages, setSelectedImages] = useState([]);
-    // Rooms para comprovar codigos de acceso 
-    const [rooms , setRooms] = useState(useStore.getState().rooms);
+    const [selectedImages, setSelectedImages] = useState(['/images/random-game.png', '/images/random-game.png', '/images/random-game.png']);
+    const [rooms, setRooms] = useState(useStore.getState().rooms);
     const [popupMessage, setPopupMessage] = useState(null);
     const router = useRouter();
 
@@ -42,20 +41,12 @@ const Create = () => {
         return accessCode;
     }
 
-    const toggleImageSelection = (imageSrc) => {
-        if (selectedImages.includes(imageSrc)) {
-            setSelectedImages(selectedImages.filter(img => img !== imageSrc));
-        } else {
-            setSelectedImages([...selectedImages, imageSrc]);
-        }
-    };    
-
     const handleCreateRoom = () => {
         const roomInfo = {
             name: roomName,
             public: isPublic,
             mode: gameMode,
-            images: selectedImages
+            images: selectedImages.filter(image => image !== '/images/random-game.png')
         };
         if (roomInfo.name == '' || roomInfo.mode == '') {
             setPopupMessage('Falten dades per omplir.');
@@ -123,6 +114,7 @@ const Create = () => {
                             value={gameMode}
                             onChange={(e) => setGameMode(e.target.value)}
                         >
+                            <option value="">Seleccionar mode de joc...</option>
                             <option value="Mapes originals">Mapes originals</option>
                             <option value="Mapes de la comunitat">Mapes de la comunitat</option>
                             <option value="Aleatori">Aleatori</option>
@@ -133,49 +125,8 @@ const Create = () => {
                         Crear Sala
                     </button>
                 </div>
-                {/* Parte derecha con las imágenes */}
-                <div className="w-full sm:w-3/4 flex flex-col sm:flex-row items-center justify-center">
-                    <div className="flex flex-col sm:flex-row items-center justify-center sm:flex-wrap gap-x-4">
-                        <CustomImageWithOverlay
-                            imageSrc="/images/random-game.png"
-                            altText="Imagen 1"
-                            onClick={() => toggleImageSelection("/images/random-game.png")}
-                            isSelected={selectedImages.includes("/images/random-game.png")}
-                        >
-                            <PiNumberCircleOne className="text-black text-4xl absolute top-4 left-1 m-2" />
-                            <TbLetterX className="text-black text-2xl absolute top-4 right-1 m-2" />
-                        </CustomImageWithOverlay>
-                        <CustomImageWithOverlay
-                            imageSrc="/images/random-game.png"
-                            altText="Imagen 2"
-                            onClick={() => toggleImageSelection("/images/random-game2.png")}
-                            isSelected={selectedImages.includes("/images/random-game2.png")}
-                        >
-                            <PiNumberCircleTwo className="text-black text-4xl absolute top-4 left-1 m-2" />
-                            <TbLetterX className="text-black text-2xl absolute top-4 right-1 m-2" />
-                        </CustomImageWithOverlay>
-                        <CustomImageWithOverlay
-                            imageSrc="/images/random-game.png"
-                            altText="Imagen 3"
-                            onClick={() => toggleImageSelection("/images/random-game3.png")}
-                            isSelected={selectedImages.includes("/images/random-game3.png")}
-                        >
-                            <PiNumberCircleThree className="text-black text-4xl absolute top-4 left-1 m-2" />
-                            <TbLetterX className="text-black text-2xl absolute top-4 right-1 m-2" />
-                        </CustomImageWithOverlay>
-                    </div>
-                </div>
-                <Fases fases={[1, 2, 3]} />
+                <Fases fases={[1, 2, 3]} selectedImages={selectedImages} onImageClick={handleImageClick} />
             </div>
-        </div>
-    );
-};
-
-const CustomImageWithOverlay = ({ imageSrc, altText, isSelected, children }) => {
-    return (
-        <div className="relative flex-shrink-0 mb-4 sm:mb-0 sm:mr-4 sm:mx-3">
-            <img src={imageSrc} alt={altText} className={`h-60 sm:h-72 w-80 sm:w-96 my-4 bg-zinc-400 ${isSelected ? 'border-4 border-blue-500' : ''}`} />
-            {children}
         </div>
     );
 };

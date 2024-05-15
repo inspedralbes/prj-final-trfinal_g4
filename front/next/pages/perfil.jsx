@@ -54,7 +54,7 @@ const Perfil = () => {
     };
 
     return (
-        <div>
+        <div className="h-screen overflow-hidden">
             <Header />
             <div className="flex h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
                 {/* Información del perfil */}
@@ -77,8 +77,8 @@ const Perfil = () => {
                 </div>
 
                 {/* Formulario de editar perfil */}
-                <div className="flex-1 pt-20 flex items-center justify-center">
-                    <div className="w-4/6 max-w-xl bg-gray-100 rounded-lg shadow-lg p-8 mr-10">
+                <div className="flex-1 flex items-center justify-center mb-16"> {/* Ajuste de clases para centrar */}
+                    <div className="w-4/6 max-w-xl bg-gray-100 rounded-lg shadow-lg p-8 mr-10"> {/* Ajuste de clases para hacerlo más ancho y agregar margen */}
                         <h2 className="text-3xl font-bold mb-8 text-gray-800">Editar perfil</h2>
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="mb-6">

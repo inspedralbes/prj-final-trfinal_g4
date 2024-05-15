@@ -41,9 +41,9 @@ function Register() {
   };
 
   return (
-    <div>
+    <div className="h-screen overflow-hidden">
       <Header />
-      <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-[151%] flex flex-col justify-center items-center p-[9.05rem]">
+      <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-[95%] flex flex-col justify-center items-center p-[9.05rem]">
         {registrationError && <ErrorPopup type="error" message={registrationError} />}
         <form className="bg-white shadow-md rounded-lg px-8 py-6 max-w-md w-full" onSubmit={handleSubmit}>
           <h2 className="text-3xl font-semibold text-center mb-4">Registre</h2>

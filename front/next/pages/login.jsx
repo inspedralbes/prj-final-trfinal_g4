@@ -72,7 +72,7 @@ function Login() {
   }
 
   return (
-    <div>
+    <div className="h-screen overflow-hidden">
       <Header />
       <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4">
         {sessionIncomplete && <ErrorPopup type="incomplete" message={sessionIncomplete} />}
