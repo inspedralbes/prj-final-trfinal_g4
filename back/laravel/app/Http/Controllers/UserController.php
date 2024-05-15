@@ -106,7 +106,6 @@ class UserController extends Controller
     {
         return response()->json(User::all());
     }
-    
 
     /**
      * Update the specified resource in storage.
@@ -115,16 +114,66 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request)
     {
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = $request->password;
-        $user->save();
+        $request->validate([
+            'user_id' => 'required'
+        ]);
 
-        return response()->json([
-            'message' => 'User updated!'
-        ],200);
+        $user = User::find($request->user_id);
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        $user->name = $request->name;
+        $user->username = $request->username;
+
+        if ($request->email) {
+            $request->validate([
+                'email' => 'required | email | unique:users,email'
+            ]);
+            $user->email = $request->email;
+        }
+
+        if ( $request->password && $request->oldPassword) {
+            $request->validate([
+                'password' => 'required|confirmed'
+            ]);
+            if (!Hash::check($request->oldPassword, $user->password)) {
+                return response()->json([
+                    'message' => 'Old password is incorrect'
+                ], 400);
+            } else {
+                $user->password = Hash::make($request->password);
+            }
+        }
+
+        if ($request->hasFile('image')) {
+            $imgPath = $request->file('image')->storeAs('/images/profiles', $request->file('image')->getClientOriginalName());
+            $img = $request->file('image');
+            $imgName = $img->getClientOriginalName();
+            $img->move(public_path('images/profiles'), $imgName);
+            $user->image = $imgPath;
+        }
+
+        //booleans
+        $user->admin = $request->admin;
+        $user->googleLogin = $request->googleLogin;
+
+        if ($user->save() == false) {
+            return response()->json([
+                'message' => 'Error updating user'
+            ], 400);
+        } else {
+            return response()->json([
+                'message' => 'User updated!',
+                'user' => $user->name,
+                'id' => $user->id,
+                'admin' => $user->admin
+            ], 200);
+        }
     }
 
     /**

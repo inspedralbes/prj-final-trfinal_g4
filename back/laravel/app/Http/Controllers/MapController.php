@@ -48,7 +48,6 @@ class MapController extends Controller
         return $maps;
     }
 
-
     /**
      * Store a newly created resource in storage.
      */
@@ -103,31 +102,57 @@ class MapController extends Controller
         }
     }
 
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Map $map)
     {
+        if ($request->difficulty < 1 || $request->difficulty > 3) {
+            return response()->json([
+                'error' => 'Difficulty must be between 1 and 3'
+            ], 400);
+        }
+
         $mapToUpdate = Map::find($map)->first();
         if (!$mapToUpdate) {
             return response()->json([
                 'error' => 'Map not found'
             ], 404);
         }
+
         $mapToUpdate->name = $request->name;
         $mapToUpdate->description = $request->description;
-        $img = $request->file('img');
-        dd($img);
-        $path = $img->storeAs('/images', $img->getClientOriginalName());
-        $mapToUpdate->image = $path;
-        $map = $request->file('map');
-        $pathMap = $map->storeAs('/public', $map->getClientOriginalName());
-        $mapToUpdate->mapRoute = $pathMap;
+
+        if (request()->hasFile('img')) {
+            $imgPath = $request->file('img')->storeAs('/images/maps', $request->file('img')->getClientOriginalName());
+            $img = $request->file('img');
+            $imgName = $img->getClientOriginalName();
+            $img->move(public_path('images/maps'), $imgName);
+            $mapToUpdate->image = $imgPath;
+        }
+
+        if (request()->hasFile('map')) {
+            $mapPath = $request->file('map')->storeAs('/maps', $request->file('map')->getClientOriginalName());
+            $map = $request->file('map');
+            $mapName = $map->getClientOriginalName();
+            $map->move(public_path('maps'), $mapName);
+            $mapToUpdate->mapRoute = $mapPath;
+        } else {
+            return response()->json([
+                'error' => 'Map not found'
+            ], 404);
+        }
+
         $mapToUpdate->difficulty = $request->difficulty;
-        $mapToUpdate->user_id = $request->user_id;
-        $mapToUpdate->save();
-        return response()->json($mapToUpdate, 200);
+        $mapToUpdate->state = $request->state;
+
+        if ($mapToUpdate->save()) {
+            return response()->json($mapToUpdate, 200);
+        } else {
+            return response()->json([
+                'error' => 'Error updating the map'
+            ], 500);
+        }
     }
 
     /**
