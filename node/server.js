@@ -102,6 +102,7 @@ io.on('connection', (socket) => {
             console.log(`room users ${room.users}`);      
             if (room.users.length > 1) {
                 room.admin[0] = room.users[1].id;
+                room.admin[1] = room.users[1].name;
                 room.users.splice(0, 1);
                 room.accesible = true;
                 console.log("Room BBBBBBBBBBBBBBBBBBBBBBB", room);
