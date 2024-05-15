@@ -12,8 +12,10 @@ export function login(user) {
             .then(response => {
                 if (response.status == 200) {
                     return response.json();
+                } else if (response.status == 401) {
+                    reject('Error al iniciar sessió: Usuari o contrasenya incorrectes');
                 } else {
-                    reject('Error al iniciar sesión: ' + response.status)
+                    reject('Error al iniciar sessió: ' + response.status)
                 }
             })
             .then(data => {

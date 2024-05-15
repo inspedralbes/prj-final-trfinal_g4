@@ -70,11 +70,13 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $user = User::where('email', $request->email)->first();
+
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
-                'message' => 'Bad credentials'
+                'message' => 'Dades incorrectes!'
             ],401);
         }
+        
         return response()->json([
             'message' => 'Logged in!',
             'user' => $user->name,

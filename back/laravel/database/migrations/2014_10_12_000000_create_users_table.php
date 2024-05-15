@@ -29,7 +29,7 @@ return new class extends Migration
             'name'=> 'Ruben',
             'username'=> 'rubenlora',
             'email'=> 'a21rublormar@inspedralbes.cat',
-            'password'=> '$2y$10$KBylaXtI7.lS4vdq2DBX7eFuPkafw/4KzVT882d/XmBZqRz7J6nre',
+            'password'=> '$2y$10$3Ltz.qHzgfhvCMT5BtMT4u5t7Q2dx2fVjL13x7aW7Qs/4uMXUNcbS',
             'admin'=> true,
         ]);
 

@@ -43,8 +43,11 @@ Route::post('/reportedMaps', [ReportedMapsController::class, 'store']);
 Route::delete('/reportedMaps/{reportedMap}', [ReportedMapsController::class, 'destroy']);
 Route::get('/reportedMapsByUser/{user}', [ReportedMapsController::class, 'getReportedMapsByUser']);
 
+// Public routes
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'store']);
+
+// Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     //users
     Route::post('/logout', [UserController::class, 'logout']);

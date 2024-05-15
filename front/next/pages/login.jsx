@@ -57,7 +57,7 @@ function Login() {
         router.push('/rooms');
       }
     }).catch(() => {
-        alert('Error logging in');
+        setSessionError('Error al iniciar sessió, si us plau, torna a intentar-ho.');
       });
   };
 
