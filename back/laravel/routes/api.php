@@ -45,6 +45,7 @@ Route::post('/register', [UserController::class, 'store']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [UserController::class, 'logout']);
+    Route::post('/reportedMaps', [ReportedMapsController::class, 'store']);
 });
 
 Route::middleware('auth:api')->group(function () {
@@ -60,7 +61,6 @@ Route::middleware('auth:api')->group(function () {
     Route::middleware('admin')->group(function () {
         Route::get('/reportedMaps', [ReportedMapsController::class, 'index']);
         Route::get('/reportedMaps/{reportedMap} ', [ReportedMapsController::class, 'show']);
-        Route::post('/reportedMaps', [ReportedMapsController::class, 'store']);
         Route::delete('/reportedMaps/{reportedMap}', [ReportedMapsController::class, 'destroyReport']);
         Route::get('/reportedMapsByUser/{user}', [ReportedMapsController::class, 'getReportedMapsByUser']);
         Route::get('/reportedReasons', [ReportedMapsController::class, 'getReportedReason']);
