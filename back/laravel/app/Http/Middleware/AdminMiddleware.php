@@ -19,11 +19,13 @@ class AdminMiddleware
 
     {
         $fullUserInfo = DB::table('users')->where('id', $request->userID)->first();
+
+
         if ($fullUserInfo === null) {
             return response()->json(['error' => 'user not found'], 404);
         }
 
-        if ($fullUserInfo->admin != 1) {
+        if ($fullUserInfo->admin != 1 || $fullUserInfo->id != auth('sanctum')->user()->id) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
