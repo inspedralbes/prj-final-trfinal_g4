@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 
 const Lobby = () => {
     const router = useRouter();
+    var user = useStore.getState().user;
     const [room, setRoom] = useState(useStore.getState().room);
 
     useEffect(() => {
@@ -63,15 +64,12 @@ const Lobby = () => {
     }
 
     const emitStart = () => {
-        // console.log('Emitiendo startGame');
         socket.emit('startGame', room);
         router.push('/game');
     }
 
     useEffect(() => {
-        // console.log('gData:', useStore.getState().room.status);
         if (useStore.getState().room != null && useStore.getState().room.status == 'Playing') {
-            // console.log("entro aqui")
             router.push('/game');
         }
     });
@@ -80,10 +78,10 @@ const Lobby = () => {
         <div>
             <Header />
             <div className='bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4  text-white'>
-                <h1 className='text-4xl font-bold tracking-wider my-5 animate-pulse'>ESPERANT ACOMPANYANT</h1>
-                <div className='min-h-[600px] min-w-[850px] text-center flex flex-inline'>
+                <h1 className='text-4xl font-bold tracking-wider my-5 animate-pulse text-center'>ESPERANT ACOMPANYANT</h1>
+                <div className='min-h-[600px] max-w-[500px] lg:min-w-[850px] text-center lg:flex lg:flex-inline'>
                     {/* Chat section */}
-                    <div className='h-[600px] min-w-[400px] bg-gray-700 rounded-lg flex flex-col m-5 mt-9'>
+                    <div className='h-[600px] max-w-[500px] mx-auto lg:min-w-[400px] bg-gray-700 rounded-lg flex flex-col m-5 mt-9'>
                         <div id='messages' className='flex-grow flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-rhumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
                             {/* Primer Mensaje */}
                             <div className='chat-message'>
@@ -137,32 +135,34 @@ const Lobby = () => {
                         </div>
                     </div>
                     {/* users & info room section */}
-                    <div className='h-[600px] min-w-[400px] flex flex-col m-5 mt-9 bg-gray-700'>
+                    <div className='h-[600px] max-w-[500px] mx-auto lg:min-w-[400px] flex flex-col m-5 mt-9 bg-gray-700 rounded-lg'>
                         {/* Users section */}
-                        <div className='h-[200px] mt-4'>
+                        <div className='h-[200px] mt-4 p-3'>
                             <h1 className='text-3xl font-bold mb-3'>Usuaris a la sala</h1>
                             <div id='adminUser' className='flex items-center mt-2 mb-2'>
                                 <div className='flex items-center'>
                                     <img src="/images/random.jpg" alt="Venti" className='w-10 h-10 ml-2 rounded-full' />
                                     <p className='text-2xl ml-3 mt-1 mr-4'>{adminUser}</p>
                                 </div>
-                                <div id='buttons-check' className='flex items-center ml-auto'>
-                                    <button className='bg-green-500 hover:bg-green-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mx-2 rounded-lg'>
-                                        <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
-                                        </svg>
-                                    </button>
-                                    <button className='bg-red-500 hover:bg-red-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mr-2 rounded-lg' onClick={()=>salirSala()}>
-                                        <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-                                        </svg>
-                                    </button>
-                                </div>
+                                { user == adminUser && (
+                                    <div id='buttons-check' className='flex items-center ml-auto'>
+                                        <button className='bg-green-500 hover:bg-green-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mx-2 rounded-lg'>
+                                            <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                                            </svg>
+                                        </button>
+                                        <button className='bg-red-500 hover:bg-red-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mr-2 rounded-lg' onClick={()=>salirSala()}>
+                                            <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                             {contentOtherUser}
                         </div>
                         {/* info room section */}
-                        <div className='h-[400px] flex flex-col items-center'>
+                        <div className='h-[400px] flex flex-col items-center p-3'>
                             <h1 className='text-3xl font-bold mb-3 mt-5'>Informació de partida</h1>
                             <div className='bg-white rounded-lg w-[350px] text-black'>
                                 <p className='text-2xl font-bold mt-2'>Nom de la sala:</p>
