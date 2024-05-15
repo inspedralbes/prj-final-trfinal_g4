@@ -125,7 +125,7 @@ const Create = () => {
                         Crear Sala
                     </button>
                 </div>
-                <Fases fases={[1, 2, 3]} selectedImages={selectedImages} onImageClick={handleImageClick} />
+                <Fases fases={[1, 2, 3]} selectedImages={selectedImages} />
             </div>
         </div>
     );

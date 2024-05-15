@@ -80,10 +80,10 @@ const Lobby = () => {
         <div>
             <Header />
             <div className='bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4  text-white'>
-                <h1 className='text-4xl font-bold tracking-wider my-5 animate-pulse'>ESPERANT ACOMPANYANT</h1>
-                <div className='min-h-[600px] min-w-[850px] text-center flex flex-inline'>
+                <h1 className='text-4xl font-bold tracking-wider my-5 animate-pulse text-center'>ESPERANT ACOMPANYANT</h1>
+                <div className='min-h-[600px] max-w-[500px] lg:min-w-[850px] text-center lg:flex lg:flex-inline'>
                     {/* Chat section */}
-                    <div className='h-[600px] min-w-[400px] bg-gray-700 rounded-lg flex flex-col m-5 mt-9'>
+                    <div className='h-[600px] max-w-[500px] mx-auto lg:min-w-[400px] bg-gray-700 rounded-lg flex flex-col m-5 mt-9'>
                         <div id='messages' className='flex-grow flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-rhumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
                             {/* Primer Mensaje */}
                             <div className='chat-message'>
@@ -137,9 +137,9 @@ const Lobby = () => {
                         </div>
                     </div>
                     {/* users & info room section */}
-                    <div className='h-[600px] min-w-[400px] flex flex-col m-5 mt-9 bg-gray-700'>
+                    <div className='h-[600px] max-w-[500px] mx-auto lg:min-w-[400px] flex flex-col m-5 mt-9 bg-gray-700 rounded-lg'>
                         {/* Users section */}
-                        <div className='h-[200px] mt-4'>
+                        <div className='h-[200px] mt-4 p-3'>
                             <h1 className='text-3xl font-bold mb-3'>Usuaris a la sala</h1>
                             <div id='adminUser' className='flex items-center mt-2 mb-2'>
                                 <div className='flex items-center'>
@@ -162,7 +162,7 @@ const Lobby = () => {
                             {contentOtherUser}
                         </div>
                         {/* info room section */}
-                        <div className='h-[400px] flex flex-col items-center'>
+                        <div className='h-[400px] flex flex-col items-center p-3'>
                             <h1 className='text-3xl font-bold mb-3 mt-5'>Informació de partida</h1>
                             <div className='bg-white rounded-lg w-[350px] text-black'>
                                 <p className='text-2xl font-bold mt-2'>Nom de la sala:</p>
