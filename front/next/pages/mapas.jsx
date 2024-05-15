@@ -1,42 +1,36 @@
 import React, { useState } from 'react';
 import Header from '../components/header';
+import { createMap } from '../services/communicationManager';
 
 function Mapas() {
-    const [nombre, setNombre] = useState('');
-    const [fase, setFase] = useState('');
-    const [archivo, setArchivo] = useState(null);
-    const [miniatura, setMiniatura] = useState(null);
+    const [name, setName] = useState('');
+    const [difficulty, setDifficulty] = useState('');
+    const [img, setImg] = useState(null);
+    const [map, setmap] = useState(null);
 
-    const handleNombreChange = (event) => {
-        setNombre(event.target.value);
-    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    const handleFaseChange = (event) => {
-        setFase(event.target.value);
-    };
+        const formData = {
+            name: name,
+            difficulty: difficulty,
+            img: img,
+            map: map,
+            token: localStorage.getItem('token'),
+        };
 
-    const handleArchivoChange = (event) => {
-        setArchivo(event.target.files[0]);
-    };
-
-    const handleMiniaturaChange = (event) => {
-        setMiniatura(event.target.files[0]);
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        // Aquí puedes manejar los datos del formulario, como enviarlos al servidor
-        // console.log('Nombre:', nombre);
-        // console.log('Fase:', fase);
-        // console.log('Archivo:', archivo);
-        // console.log('Miniatura:', miniatura);
+        try {
+            const response = await createMap(formData);
+            alert('Mapa creado exitosamente');
+        } catch (error) {
+            alert('Error al crear el mapa: ' + error.message);
+        }
 
         // Limpia el formulario después de enviar
-        setNombre('');
-        setFase('');
-        setArchivo(null);
-        setMiniatura(null);
+        setName('');
+        setDifficulty('');
+        setImg();
+        setmap();
     };
 
     return (
@@ -50,19 +44,21 @@ function Mapas() {
                             <label htmlFor="nombre" className="block text-gray-700 font-semibold mb-2">Nom:</label>
                             <input
                                 id="nombre"
+                                name="name"
                                 type="text"
                                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
-                                value={nombre}
-                                onChange={handleNombreChange}
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
                             />
                         </div>
                         <div>
                             <label htmlFor="fase" className="block text-gray-700 font-semibold mb-2">Fase:</label>
                             <select
                                 id="fase"
+                                name="difficulty"
                                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
-                                value={fase}
-                                onChange={handleFaseChange}
+                                value={difficulty}
+                                onChange={(e) => setDifficulty(e.target.value)}
                             >
                                 <option value="">Seleccionar fase...</option>
                                 <option value="1">Fase 1</option>
@@ -71,21 +67,23 @@ function Mapas() {
                             </select>
                         </div>
                         <div>
-                            <label htmlFor="miniatura" className="block text-gray-700 font-semibold mb-2">Miniatura del mapa:</label>
+                            <label htmlFor="image" className="block text-gray-700 font-semibold mb-2">Miniatura del mapa:</label>
                             <input
-                                id="miniatura"
+                                id="image"
+                                name="img"
                                 type="file"
                                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
-                                onChange={handleMiniaturaChange}
+                                onChange={(e) => setImg(e.target.files[0])}
                             />
                         </div>
                         <div>
-                            <label htmlFor="archivo" className="block text-gray-700 font-semibold mb-2">Archiu del mapa:</label>
+                            <label htmlFor="mapRoute" className="block text-gray-700 font-semibold mb-2">Archiu del mapa:</label>
                             <input
-                                id="archivo"
+                                id="map"
+                                name="map"
                                 type="file"
                                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
-                                onChange={handleArchivoChange}
+                                onChange={(e) => setmap(e.target.files[0])}
                             />
                         </div>
                         <button type="submit" className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none">

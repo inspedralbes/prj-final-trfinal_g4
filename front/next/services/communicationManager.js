@@ -28,7 +28,7 @@ export function login(user) {
 
 export function register(user) {
     return new Promise((resolve, reject) => {
-        // console.log(user);
+        console.log(user);
         fetch(`${url}register`, {
             method: 'POST',
             headers: {
@@ -53,7 +53,7 @@ export function register(user) {
 }
 
 export function logout(token) {
-    // console.log('su puta madre');
+    console.log('su puta madre');
     return new Promise((resolve, reject) => {
         fetch(`${url}logout`, {
             method: 'POST',

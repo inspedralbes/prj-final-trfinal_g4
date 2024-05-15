@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('maps', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('image');
             $table->string('mapRoute');
             $table->enum(('difficulty'), array(1, 2, 3));

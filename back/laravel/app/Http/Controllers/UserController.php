@@ -35,6 +35,7 @@ class UserController extends Controller
             [
                 'message' => 'User created!',
                 'user' => $newUser->name,
+                'id' => $newUser->id,
                 'admin' => $newUser->admin,
                 'token' => $newUser->createToken('AppToken')->plainTextToken
             ], 200

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { login } from '../services/communicationManager';
 import { useRouter } from 'next/router';
 import { signIn, useSession } from 'next-auth/react';
@@ -20,12 +20,9 @@ function Login() {
   // const [sessionSuccess, setSessionSuccess] = useState(null);
 
   const session = useSession();
-  // console.log(session);
   useEffect(() => {
-    // Si hay una sesión activa, redirige al usuario a la página de /rooms
     if (session?.data) {
       if (session.data.user.admin) {
-        // console.log("admin", session.data.user.admin);
         router.push('/admin');
       } else {
         router.push('/rooms');
@@ -47,19 +44,16 @@ function Login() {
     };
 
     login(user).then((data) => {
-      // console.log("data login", data);
-      // console.log("data admin", data.admin);
       localStorage.setItem('user', JSON.stringify({ name: JSON.stringify(data.user) }));
+      localStorage.setItem('user', JSON.stringify({ id: JSON.stringify(data.id) }));
       localStorage.setItem('token', JSON.stringify(data.token));
       useStore.setState({ user: { name: JSON.stringify(data.user) }});
+      useStore.setState({ user: { id: JSON.stringify(data.id)} });
       useStore.setState({ token: JSON.stringify(data.token) });
       if (data.admin == 1) {
         useStore.setState({ admin: true });
-        // console.log("admin", data.admin);
-        // console.log("admin", data.admin);
         router.push('/admin');
       } else {
-        // console.log("admin", data.admin);
         router.push('/rooms');
       }
     }).catch(() => {

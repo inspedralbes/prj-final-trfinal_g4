@@ -18,21 +18,14 @@ const Header = () => {
         if (tokenStore !== null && userStore !== null) {
             setToken(tokenStore);
             setUser(userStore);
-            // console.log('Token and user from store:', tokenStore, userStore);
         } else {
-            // console.log('jjjjjjjjjjjjj')
             try {
                 const storedToken = localStorage.getItem('token');
                 var storedUser = localStorage.getItem('user');
-                // console.log('kkkkkkkkkk')
-                // console.log(storedUser)
                 if (storedUser != null ) {
                     const parsedUser = JSON.parse(storedUser);
                     storedUser = parsedUser.name;
-                    // console.log(storedUser);
-                    // console.log('aaaaaaaaaaaaaaa');
                 }
-                // console.log('Token and user from localStorage:', storedToken, storedUser);
                 storedUser.replace(/['"]+/g, '');
                 setToken(storedToken);
                 setUser(storedUser);
@@ -49,12 +42,9 @@ const Header = () => {
     };
 
     const logoutHandler = () => {
-        // console.log('Cerrando sesión logoutHandler');
         let tokenClean = token.replace(/['"]+/g, '');
         
         if (tokenClean) {
-            // console.log('Cerrando sesión');
-            // console.log('Token:', tokenClean);
             logout(tokenClean).then(() => {
                 localStorage.removeItem('user');
                 localStorage.removeItem('token');
@@ -62,16 +52,13 @@ const Header = () => {
                 useStore.setState({ token: null });
                 setToken(null);
                 setUser(null);
-                // console.log('Sesión cerrada');
             }).catch(() => {
                 alert('Error tancant la sessió.');
             });
         }
         setDropdownOpen(false);
     };
-
-    // console.log('Token:', token);
-
+    
     let content;
     if (token && user) {
         content = (

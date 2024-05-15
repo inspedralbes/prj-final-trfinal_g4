@@ -54,20 +54,53 @@ class MapController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'img' => 'required',
+            'map' => 'required',
+            'difficulty' => 'required',
+            'user_id' => 'required'
+        ]);
+
+        if ($request->difficulty < 1 || $request->difficulty > 3) {
+            return response()->json([
+                'error' => 'Difficulty must be between 1 and 3'
+            ], 400);
+        } 
+
         $newMap = new Map();
         $newMap->name = $request->name;
         $newMap->description = $request->description;
 
-        $img = $request->file('img');
-        $path = $img->storeAs('/images', $img->getClientOriginalName());
-        $newMap->image = $path;
-        $map = $request->file('map');
-        $pathMap = $map->storeAs('/public', $map->getClientOriginalName());
-        $newMap->mapRoute = $pathMap;
+        if (request()->hasFile('img') && request()->hasFile('map')) {
+            $imgPath = $request->file('img')->storeAs('/images', $request->file('img')->getClientOriginalName());
+            $img = $request->file('img');
+            $imgName = $img->getClientOriginalName();
+            $img->move(public_path('images'), $imgName);
+            $newMap->image = $imgPath;
+
+            $mapPath = $request->file('map')->storeAs('/public', $request->file('map')->getClientOriginalName());
+            $map = $request->file('map');
+            $mapName = $map->getClientOriginalName();
+            $map->move(public_path('public'), $mapName);
+        } else {
+            return response()->json([
+                'error' => 'Image or map not found'
+            ], 404);
+        }
+
+        $newMap->mapRoute = $mapPath;
         $newMap->difficulty = $request->difficulty;
+
         $newMap->user_id = $request->user_id;
-        $newMap->save();
-        return response()->json($newMap, 200);
+
+        if ($newMap->save()) {
+            return response()->json($newMap, 200);
+        } else {
+            return response()->json([
+                'error' => 'Error saving the map'
+            ], 500);
+        }
     }
 
 

@@ -20,9 +20,6 @@ use App\Http\Controllers\ReportedMapsController;
 
 Route::get('/maps', [MapController::class, 'index']);
 Route::get('/maps/{map}', [MapController::class, 'show']);
-Route::post('/maps', [MapController::class, 'store']);
-Route::put('/maps/{map}', [MapController::class, 'update']);
-Route::delete('/maps/{map}', [MapController::class, 'destroy']);
 Route::get('/mapsByDifficulty/{difficulty}', [MapController::class, 'mapsByDifficulty']);
 Route::get('download/{id}', [MapController::class, 'download']);
 
@@ -49,5 +46,10 @@ Route::get('/reportedMapsByUser/{user}', [ReportedMapsController::class, 'getRep
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'store']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    //users
     Route::post('/logout', [UserController::class, 'logout']);
+    //maps
+    Route::post('/maps', [MapController::class, 'store']);
+    Route::put('/maps/{map}', [MapController::class, 'update']);
+    Route::delete('/maps/{map}', [MapController::class, 'destroy']);
 });
