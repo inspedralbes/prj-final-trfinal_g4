@@ -44,19 +44,17 @@ function Rooms() {
         if (useStore.getState().user == null){
             let userName = 'user' + Math.floor(Math.random() * 1000);
             useStore.setState({ user: { name: userName } });
-            localStorage.setItem('user', JSON.stringify(useStore.getState().user));
-            console.log('UserName: ', useStore.getState().user.name);
-            // let buildData={"id": room.id, "username": userName};
+            //console.log('UserName: ', useStore.getState().user.name);
             socket.emit('joinRoom', { id: room.id, username: userName });
         } else {
-            let userName = useStore.getState().user.name || localStorage.getItem('user');
-            console.log('localStorage: ' + localStorage.getItem('user'));
-            console.log('UserName: ', userName);
-            const parsedUser = JSON.parse(userName);
-            let userNameForClean = parsedUser.name;
-            let userNameClean = userNameForClean.replace(/['"]+/g, '');
-            console.log('UserNameClean: ', userNameClean);
-            socket.emit('joinRoom', { id: room.id, username: userNameClean });
+            let userStore = useStore.getState().user;
+            let userLocalStorage = JSON.parse(localStorage.getItem('user'));
+
+            if (userStore != null){
+                socket.emit('joinRoom', { id: room.id, username: userStore.name });
+            } else if (userLocalStorage != null) {
+                socket.emit('joinRoom', { id: room.id, username: userLocalStorage.name});
+            }
         }
     };
 
@@ -73,24 +71,17 @@ function Rooms() {
     // Unirse a la sala privada
     const addPrivateRoom = () => {
         let code = roomCode.join('');
-        // console.log(code);
-        // console.log(rooms);
         if (code.length < 6) {
             alert('El codi no està sencer')
         } else {
-            // console.log('Try room join: ', code);
             rooms.forEach(room => {
                 if (room.accessCode == code) {
-                    // Guardar información de la sala
                     useStore.setState({ room: room });
-                    // console.log('Room found: ', room.id);
                     if ( useStore.getState().user == null ){
                         let userName = 'user' + Math.floor(Math.random() * 1000);
                         useStore.setState({ user: { name: userName } });
-                        // console.log('UserName: ', useStore.getState().user.name);
                         socket.emit('joinRoom', {id: room.id, username: userName});
                     } else {
-                        // console.log('UserName: ', useStore.getState().user.name);
                         socket.emit('joinRoom', {id: room.id, username: useStore.getState().user.name});
                     }
                 }

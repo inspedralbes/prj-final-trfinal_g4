@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Fases from '../components/fases';
 import Header from '../components/header';
-import { PiNumberCircleOne, PiNumberCircleTwo, PiNumberCircleThree } from 'react-icons/pi';
-import { TbLetterX } from "react-icons/tb";
 import socket from '../services/sockets';
 import useStore from '../src/store';
 import { useRouter } from 'next/router';
@@ -66,14 +64,14 @@ const Create = () => {
                 // console.log('UserName: ', useStore.getState().user.name);
                 socket.emit('createRoom', { addRoom: roomInfo, userAdmin: userName });
             } else {
-                let userName = useStore.getState().user.name || localStorage.getItem('user');
-                // console.log('localStorage: ' + localStorage.getItem('user'));
-                // console.log('UserName: ', userName);
-                const parsedUser = JSON.parse(userName);
-                let userNameForClean = parsedUser.name;
-                let userNameClean = userNameForClean.replace(/['"]+/g, '');
-                // console.log('UserNameClean: ', userNameClean);
-                socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userNameClean});
+                let userStore = useStore.getState().user;
+                let userLocalStorage = JSON.parse(localStorage.getItem('user'));
+
+                if (userStore != null) {
+                    socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userStore.name});
+                } else if (userLocalStorage != null) {
+                    socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userLocalStorage.name});
+                }
             }
         }
     };
@@ -120,7 +118,7 @@ const Create = () => {
                             <option value="Aleatori">Aleatori</option>
                         </select>
                     </div>
-                    {popupMessage && <ErrorPopup type={popupMessage === 'Faltan datos por rellenar' ? 'incomplete' : 'success'} message={popupMessage} />}
+                    {popupMessage && <ErrorPopup type={popupMessage === 'Faltan datos por rellenar' ? 'incomplete' : 'error'} message={popupMessage} />}
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
                         Crear Sala
                     </button>
