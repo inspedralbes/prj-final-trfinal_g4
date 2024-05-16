@@ -60,7 +60,8 @@ class UserController extends Controller
         } else {
             return response()->json([
                 'message' => 'User created!',
-                'user' => $newUser->name,
+                'user' => $newUser->username,
+                'email' => $newUser->email,
                 'id' => $newUser->id,
                 'admin' => $newUser->admin,
                 'token' => $newUser->createToken('AppToken')->plainTextToken
@@ -80,6 +81,7 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Logged in!',
             'user' => $user->username,
+            'email' => $user->email,
             'id' => $user->id,
             'image' => $user->image,
             'admin' => $user->admin,

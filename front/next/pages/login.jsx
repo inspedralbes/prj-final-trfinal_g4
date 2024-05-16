@@ -45,6 +45,7 @@ function Login() {
       localStorage.setItem('user', 
         JSON.stringify({ 
           name: data.user, 
+          email: data.email,
           id: data.id,
           admin: data.admin,
           image: data.image,
@@ -54,6 +55,7 @@ function Login() {
       useStore.setState({ 
         user: { 
           name: data.user, 
+          email: data.email,
           id: data.id,
           admin: data.admin,
           image: data.image,
