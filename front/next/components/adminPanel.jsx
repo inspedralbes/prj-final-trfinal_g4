@@ -35,8 +35,14 @@ function AdminPanel() {
             .then((data) => setReportedMaps(data))
             .catch((error) => console.error('Error fetching reported maps:', error));
 
-        getUsers()
-            .then((data) => setUsers(data))
+        const userID = localStorage.getItem('userID');
+        const token = localStorage.getItem('token');
+
+        getUsers(token, userID)
+            .then((data) => {
+                setUsers(data);
+                console.log("users", data)
+            })
             .catch((error) => console.error('Error fetching users: ', error))
 
     }, []);

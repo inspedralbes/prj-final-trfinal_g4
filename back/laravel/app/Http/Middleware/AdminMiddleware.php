@@ -18,9 +18,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next)
 
     {
-        $fullUserInfo = DB::table('users')->where('id', $request->userID)->first();
-
-
+        $fullUserInfo = DB::table('users')->where('id', $request->route('userID'))->first();
         if ($fullUserInfo === null) {
             return response()->json(['error' => 'user not found'], 404);
         }

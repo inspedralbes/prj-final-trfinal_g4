@@ -100,16 +100,27 @@ export function updateUser(user) {
     });
 }
 
-export function getUsers(user) {
+export function getUsers(token, userID) {
+    console.log("token", token);
+    console.log("userID", userID);
+    if (!userID) {
+        console.error('userID is undefined');
+    }
+
     return new Promise((resolve, reject) => {
-        fetch(`${url}allUsers/`, {
+        fetch(`${url}users/${userID}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(user)
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 resolve(data);
             })
@@ -224,7 +235,7 @@ export function updateMap(mapData, user) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${mapData.token}`
             },
-            body: JSON.stringify({ mapData: mapData, user: user})
+            body: JSON.stringify({ mapData: mapData, user: user })
         })
             .then(response => response.json())
             .then(data => {

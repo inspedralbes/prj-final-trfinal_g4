@@ -12,6 +12,7 @@ function Login() {
   const [setSession] = useState(null);
   const username = localStorage.getItem('user');
   const token = localStorage.getItem('token');
+  const userID = localStorage.getItem('userID');
 
   // GOOGLE LOGIN
   const session = useSession();
@@ -41,6 +42,7 @@ function Login() {
       console.log("data admin", data.admin);
       localStorage.setItem('user', JSON.stringify(data.user));
       localStorage.setItem('token', JSON.stringify(data.token));
+      localStorage.setItem('userID', JSON.stringify(data.id));
       useStore.setState({ user: JSON.stringify(data.user) });
       useStore.setState({ token: JSON.stringify(data.token) });
       if (data.admin === 1) {

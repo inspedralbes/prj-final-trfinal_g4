@@ -61,6 +61,7 @@ class UserController extends Controller
         }
         return response()->json([
             'message' => 'Logged in!',
+            'id' => $user->id,
             'user' => $user->name,
             'admin' => $user->admin,
             'token' => $user->createToken('AppToken')->plainTextToken
@@ -85,11 +86,6 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function showAllUsers()
-    {
-        return response()->json(User::all());
-    }
-    
 
     /**
      * Update the specified resource in storage.

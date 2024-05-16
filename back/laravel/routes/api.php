@@ -31,11 +31,8 @@ Route::get('/saves/{save}', [SaveController::class, 'show']);
 Route::post('/saves', [SaveController::class, 'store']);
 Route::put('/saves/{save}', [SaveController::class, 'update']);
 Route::delete('/saves/{save}', [SaveController::class, 'destroy']);
-Route::get('/savesByUser/{user}', [SaveController::class, 'getSavesByUser']);
 
-Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{user}', [UserController::class, 'show']);
-
 Route::post('/users', [UserController::class, 'store']);
 Route::put('/users/{user}', [UserController::class, 'update']);
 Route::delete('/users/{user}', [UserController::class, 'destroy']);
@@ -49,25 +46,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('/user', function (Request $request) {
-        $fullUserInfo = DB::table('users')->where('id', $request->user()->id)->first();
-        if ($fullUserInfo->admin == 1) {
-
-            return $request->user();
-        }
-        return $request->user();
-    });
-
     Route::middleware('admin')->group(function () {
+        Route::get('/users/{userID}', [UserController::class, 'index']);
         Route::get('/reportedMaps', [ReportedMapsController::class, 'index']);
         Route::get('/reportedMaps/{reportedMap} ', [ReportedMapsController::class, 'show']);
         Route::delete('/reportedMaps/{reportedMap}', [ReportedMapsController::class, 'destroyReport']);
         Route::get('/reportedMapsByUser/{user}', [ReportedMapsController::class, 'getReportedMapsByUser']);
         Route::get('/reportedReasons', [ReportedMapsController::class, 'getReportedReason']);
-
+        Route::get('/savesByUser/{user}', [SaveController::class, 'getSavesByUser']);
         Route::get('download/{id}', [MapController::class, 'download']);
         Route::delete('/maps/{map}', [MapController::class, 'destroy']);
-
-        Route::get('/allUsers', [UserController::class, 'showAllUsers']);
     });
 });
