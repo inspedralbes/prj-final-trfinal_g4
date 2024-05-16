@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
 
 const Perfil = () => {
@@ -8,6 +8,14 @@ const Perfil = () => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [newImage, setNewImage] = useState(null);
+
+    const [userFromLocalStorage, setUserFromLocalStorage] = useState(null); 
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        console.log('User:', user);
+        setUserFromLocalStorage(user);
+    }, []);
 
     const handleNameChange = (event) => {
         setNewName(event.target.value);
@@ -36,15 +44,6 @@ const Perfil = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Aquí puedes manejar los datos del formulario, como enviarlos al servidor
-        // console.log('Nuevo nombre:', newName);
-        // console.log('Nuevo username:', newUsername);
-        // console.log('Nuevo email:', newEmail);
-        // console.log('Nueva contraseña:', newPassword);
-        // console.log('Confirmar nueva contraseña:', confirmNewPassword);
-        // console.log('Nueva imagen:', newImage);
-
-        // Limpia el formulario después de enviar
         setNewName('');
         setNewUsername('');
         setNewEmail('');
@@ -60,19 +59,16 @@ const Perfil = () => {
                 {/* Información del perfil */}
                 <div className="bg-gray-700 text-white flex flex-col justify-center items-center w-1/5 pt-20">
                     <div className="mb-8 flex flex-col items-center text-xl w-full">
-                        <img src="/images/random.jpg" alt="User" className="w-36 h-36 rounded-full" />
-                    </div>
-                    <div className="mb-8 flex items-center text-xl w-full">
-                        <label className="block font-semibold w-1/3 -mr-16 ml-16">Nom: </label>
-                        <p className="inline-block whitespace-nowrap">Nom</p>
+                    <img src={userFromLocalStorage && userFromLocalStorage.image ? 'http://localhost:8000'+userFromLocalStorage.image : '/images/profiles/default.png'} alt="User" className="w-36 h-36 rounded-full" />
+
                     </div>
                     <div className="mb-8 flex items-center text-xl w-full">
                         <label className="block font-semibold w-1/3 -mr-3 ml-16">Nom d'usuari: </label>
-                        <p className="inline-block whitespace-nowrap">Nom d'usuari</p>
+                        <p className="inline-block whitespace-nowrap">{userFromLocalStorage ? userFromLocalStorage.name : "Username"}</p>
                     </div>
                     <div className="mb-8 flex items-center text-xl w-full">
                         <label className="block font-semibold w-1/3 -mr-16 ml-16">Correu: </label>
-                        <p className="inline-block whitespace-nowrap ml-4">correu@example.com</p>
+                        <p className="inline-block whitespace-nowrap ml-4">{userFromLocalStorage ? userFromLocalStorage.email : "Email"}</p>
                     </div>
                 </div>
 
