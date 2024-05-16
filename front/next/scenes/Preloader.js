@@ -19,6 +19,7 @@ export default class Preloader extends Phaser.Scene {
         this.load.tilemapTiledJSON('mapa', 'assets/mapatuto.json');
         this.load.image('logo', 'assets/Logo.png');
         this.load.image('confetti', 'assets/confetti.png');
+        this.load.atlas('button', 'assets/pressButton.png', 'assets/pressButton.json')
         // this.load.image('flag', 'assets/flag.png');
 
     }
