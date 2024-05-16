@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Map;
 use Illuminate\Http\Request;
-use Ramsey\Uuid\Type\Integer;
-use SebastianBergmann\Diff\Diff;
-
 
 class MapController extends Controller
 {

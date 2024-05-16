@@ -10,28 +10,34 @@ function Mapas() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const formData = {
-            name: name,
-            difficulty: difficulty,
-            img: img,
-            map: map,
-            token: localStorage.getItem('token'),
-        };
-
+    
+        let id = JSON.parse(localStorage.getItem('user')).id;
+        let token = JSON.parse(localStorage.getItem('user')).token;
+    
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('difficulty', difficulty);
+        formData.append('img', img);
+        formData.append('map', map);
+        formData.append('user_id', id);
+    
         try {
-            const response = await createMap(formData);
+            console.log('User:', id);
+            console.log('Token:', token);
+            console.log('Form Data:', formData);
+            await createMap(formData, token);
             alert('Mapa creado exitosamente');
         } catch (error) {
             alert('Error al crear el mapa: ' + error.message);
         }
-
+    
         // Limpia el formulario después de enviar
         setName('');
         setDifficulty('');
-        setImg();
-        setmap();
+        setImg(null);
+        setmap(null);
     };
+    
 
     return (
         <div className="h-screen overflow-hidden">
@@ -39,7 +45,7 @@ function Mapas() {
             <div className="flex flex-col items-center justify-center h-full bg-gradient-to-r from-blue-400 to-indigo-500">
                 <div className="w-full sm:w-1/2 bg-white rounded-lg p-8 mx-auto mb-8">
                     <h1 className="text-3xl font-bold mb-4">Enviar mapa</h1>
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-4" enctype="multipart/form-data">
                         <div>
                             <label htmlFor="nombre" className="block text-gray-700 font-semibold mb-2">Nom:</label>
                             <input
@@ -67,11 +73,12 @@ function Mapas() {
                             </select>
                         </div>
                         <div>
-                            <label htmlFor="image" className="block text-gray-700 font-semibold mb-2">Miniatura del mapa:</label>
+                            <label htmlFor="image" className="block text-gray-700 font-semibold mb-2">Miniatura del mapa (.png):</label>
                             <input
                                 id="image"
                                 name="img"
                                 type="file"
+                                accept=".png"
                                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
                                 onChange={(e) => setImg(e.target.files[0])}
                             />

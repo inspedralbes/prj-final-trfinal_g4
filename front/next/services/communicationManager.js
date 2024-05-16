@@ -177,17 +177,21 @@ export function createUser(user) {
     });
 }
 
-export function createMap(mapData) {
+export function createMap(formData, token) {
     return new Promise((resolve, reject) => {
         fetch(`${url}maps/`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${mapData.token}`
+                'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(mapData)
+            body: formData
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    reject(`Error: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 resolve(data);
             })
