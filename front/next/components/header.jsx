@@ -10,6 +10,7 @@ const Header = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [token, setToken] = useState(null);
     const [user, setUser] = useState(null);
+    const [image, setImage] = useState(null);
 
     useEffect(() => {
         const userStore = useStore.getState().user;
@@ -17,6 +18,7 @@ const Header = () => {
         if ( userStore != null ) {
             setToken(userStore.name);
             setUser(userStore.token);
+            setImage(userStore.image);
         } else {
             try {
                 const userLocalStorage = JSON.parse(localStorage.getItem('user'));
@@ -24,6 +26,7 @@ const Header = () => {
                 if (userLocalStorage != null) {
                     var userName = userLocalStorage.name;
                     var userToken = userLocalStorage.token;
+                    var userImage = userLocalStorage.image;
 
                     console.log('User:', userName);
                     console.log('Token:', userToken);
@@ -34,6 +37,7 @@ const Header = () => {
 
                 setToken(userToken);
                 setUser(userName);
+                setImage(userImage);
             } catch (e) {
                 // console.log('Error retrieving token and user from localStorage:', e);
             }
@@ -64,7 +68,7 @@ const Header = () => {
     if (token && user) {
         content = (
             <div className="profile relative text-white">
-                <FaUserCircle className="mx-4 text-3xl cursor-pointer" onClick={toggleDropdown} />
+                <img src={`http://localhost:8000${image}`} className="w-10 h-10 mx-4 text-3xl cursor-pointer rounded-full" onClick={toggleDropdown} />
                 {dropdownOpen && (
                     <div className="dropdown absolute right-0 mt-2 bg-black bg-opacity-50 rounded-md shadow-lg">
                         <a href="/perfil" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Perfil</a>
