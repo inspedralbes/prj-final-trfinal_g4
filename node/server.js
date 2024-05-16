@@ -77,7 +77,6 @@ io.on('connection', (socket) => {
 
     //Join Room
     socket.on('joinRoom', (data) => {
-        console.log("PENE", data);
         let findRoom = rooms.find(room => room.id == data.id);
         console.log(findRoom);
         if (findRoom == undefined) {
@@ -85,7 +84,6 @@ io.on('connection', (socket) => {
             return;
         } else {
             console.log('Room found');
-            console.log('PENEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE', findRoom.users);
             let newUser = { "id": socket.id, "name": data.username };
             findRoom.users.push(newUser);
             findRoom.accesible = false;
@@ -154,7 +152,17 @@ io.on('connection', (socket) => {
         }
         io.to(room.id).emit('changeColorFront', player);
     });
+
+    socket.on('death', () => {
+        
+        io.to(findRoomByUser(socket.id).id).emit('deathFront')
+    } );
+
+    socket.on('win', () => {
+       console.log("OLEEEEEEEEEEEE");
+    } );
 });
+
 
 server.listen(port, () => {
     console.log(`Server running on port ${port}`)

@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-
+import useStore from '../src/store';
 export default class Preloader extends Phaser.Scene {
 
     constructor() {
