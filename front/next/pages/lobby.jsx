@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 
 const Lobby = () => {
     const router = useRouter();
-    var user = useStore.getState().user;
+    var user = useStore.getState().user.name;
     const [room, setRoom] = useState(useStore.getState().room);
 
     useEffect(() => {
@@ -48,7 +48,8 @@ const Lobby = () => {
                                     <img src="/images/random.jpg" alt="Venti" className='w-10 h-10 ml-2 rounded-full' />
                                     <p className='text-2xl ml-3 mt-1 mr-4'>{otherUser}</p>
                                 </div>
-                                <div id='buttons-check' className='flex items-center ml-auto'>
+                                { user != adminUser && (
+                                    <div id='buttons-check' className='flex items-center ml-auto'>
                                     <button className='bg-green-500 hover:bg-green-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mx-2 rounded-lg'>
                                         <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                             <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
@@ -60,6 +61,7 @@ const Lobby = () => {
                                         </svg>
                                     </button>
                                 </div>
+                                )} 
                             </div>
     }
 
@@ -165,8 +167,12 @@ const Lobby = () => {
                         <div className='h-[400px] flex flex-col items-center p-3'>
                             <h1 className='text-3xl font-bold mb-3 mt-5'>Informació de partida</h1>
                             <div className='bg-white rounded-lg w-[350px] text-black'>
-                                <p className='text-2xl font-bold mt-2'>Codi de la sala:</p>
-                                <p className='text-2xl text-red-500'>{room && room.accessCode}</p>
+                                { room && room.isPublic == false && (
+                                    <div>
+                                        <p className='text-2xl font-bold mt-2'>Codi de la sala:</p>
+                                        <p className='text-2xl text-red-500'>{room.accessCode}</p>
+                                    </div>
+                                )}
                                 <p className='text-2xl font-bold'>Nom de la sala:</p>
                                 <p className='text-2xl'>{room && room.name}</p>
                                 <p className='text-2xl font-bold'>Mode joc:</p>

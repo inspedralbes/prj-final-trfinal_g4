@@ -173,7 +173,7 @@ function Rooms() {
                                 maxLength="1"
                                 ref={inputRefs[index]}
                                 value={roomCode[index].toUpperCase()}
-                                className="bg-white border border-gray-300 rounded-lg px-1 py-1 focus:outline-none h-12 text-gray-800 placeholder-gray-500 text-base text-center caret-transparent"
+                                className="bg-white border border-gray-300 rounded-lg px-1 py-1 focus:outline-none h-12 text-gray-800 placeholder-gray-500 text-base text-center"
                                 onChange={e => handleInputChange(index, e)}
                                 onKeyDown={e => handleKeyDown(index, e)}
                             />
