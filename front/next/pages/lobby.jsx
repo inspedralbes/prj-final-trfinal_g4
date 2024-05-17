@@ -37,7 +37,7 @@ const Lobby = () => {
     let contentOtherUser = null;
 
     const salirSala = () => {
-        socket.emit('exitRoom', room);
+        socket.emit('exitRoom');
         useStore.setState({ room: null });
         router.push('/rooms');
     };
@@ -166,7 +166,7 @@ const Lobby = () => {
                             <h1 className='text-3xl font-bold mb-3 mt-5'>Informació de partida</h1>
                             <div className='bg-white rounded-lg w-[350px] text-black'>
                                 <p className='text-2xl font-bold mt-2'>Codi de la sala:</p>
-                                <p className='text-2xl'>{room && room.accesCode}</p>
+                                <p className='text-2xl text-red-500'>{room && room.accessCode}</p>
                                 <p className='text-2xl font-bold'>Nom de la sala:</p>
                                 <p className='text-2xl'>{room && room.name}</p>
                                 <p className='text-2xl font-bold'>Mode joc:</p>

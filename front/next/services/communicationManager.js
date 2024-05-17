@@ -201,7 +201,6 @@ export function createMap(formData, token) {
     });
 }
 
-
 export function getMaps() {
     return new Promise((resolve, reject) => {
         fetch(`${url}maps/`, {
@@ -298,8 +297,3 @@ export function downloadFile(mapId) {
             });
     });
 }
-
-
-
-
-

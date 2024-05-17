@@ -71,6 +71,7 @@ io.on('connection', (socket) => {
         rooms.push(newRoom);
         socket.join(newRoom.id);
         io.emit('allRooms', rooms);
+        console.log('newRoom', newRoom);
         io.to(newRoom.id).emit('newInfoRoom', newRoom);
     });
 
@@ -91,7 +92,7 @@ io.on('connection', (socket) => {
         console.log('soy gay', findRoom);
     });
 
-    socket.on('exitRoom', (data) => {
+    socket.on('exitRoom', () => {
         let room = findRoomByUser(socket.id);
         console.log(`Socket ${socket.id} is leaving room ${room.id}`);
         console.log("Room AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", room);

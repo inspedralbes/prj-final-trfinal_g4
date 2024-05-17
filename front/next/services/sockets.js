@@ -2,20 +2,20 @@ import io from 'socket.io-client';
 import useStore from '../src/store';
 
 const url = 'http://localhost:3727';
-// const url = 'http://'; // Add production url here
 
 const socket = io(url);
-//const router = useRouter();
+
 //Recibir todas las rooms que hay en socket y actualizar el estate
 socket.on('allRooms', (rooms) => {
     useStore.setState({ rooms });
     console.log(`Rooms: ${rooms}`);
 });
 
+//Recibir la nueva room que se ha creado y actualizar el estate
 socket.on('newInfoRoom', (room) => {
     useStore.setState({ room });
-    // console.log(`New INFO ROOM: ${room}`);
-    // console.log(`Users: ${room.users}`);
+    console.log(`New INFO ROOM: ${room}`);
+    console.log(`Users: ${room.users}`);
 });
 
 socket.on('gameStarted', (data)=>{
@@ -30,6 +30,5 @@ socket.on('gameStarted', (data)=>{
 socket.on('updatePositionFront', (data) => {
     useStore.setState({ playerData: data });
 });
-
 
 export default socket;
