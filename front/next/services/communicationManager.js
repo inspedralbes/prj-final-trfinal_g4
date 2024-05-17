@@ -297,3 +297,21 @@ export function downloadFile(mapId) {
             });
     });
 }
+
+export function getMapByDifficulty(difficulty) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}mapsByDifficulty/${difficulty}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
