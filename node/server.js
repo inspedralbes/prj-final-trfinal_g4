@@ -55,7 +55,7 @@ io.on('connection', (socket) => {
             name: data.addRoom.name,
             isPublic: data.addRoom.public,
             mode: data.addRoom.mode,
-            admin: [socket.id, data.userAdmin],
+            admin: [socket.id, data.userAdmin.name, data.userAdmin.image],
             users: [ {id:socket.id, name:data.userAdmin.name, state: null, image: data.userAdmin.image} ],
             id: id,
             accessCode: data.addRoom.accessCode,

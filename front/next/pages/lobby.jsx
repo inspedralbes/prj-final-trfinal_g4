@@ -155,7 +155,7 @@ const Lobby = () => {
                                     <img src="/images/random.jpg" alt="Venti" className='w-10 h-10 ml-2 rounded-full' />
                                     <p className='text-2xl ml-3 mt-1 mr-4'>{adminUser}</p>
                                 </div>
-                                { user == adminUser && room.users[0].state != 'Ready' (
+                                { user == adminUser && room.users[0].state != 'Ready' && (
                                     <div id='buttons-check' className='flex items-center ml-auto'>
                                         <button className='bg-green-500 hover:bg-green-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mx-2 rounded-lg' onClick={() => userReady()}>
                                             <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
