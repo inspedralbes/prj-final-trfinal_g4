@@ -62,8 +62,8 @@ io.on('connection', (socket) => {
             status: 'Waiting',
             messages: [],
             game: {
-                maps: ["mapatuto", "mapatuto2", "mapatuto3"],
-                currentMap: "mapatuto",
+                maps: data.addRoom.maps,
+                currentMap: data.addRoom.maps[0],
                 players: [],
                 playersData: []
             }
