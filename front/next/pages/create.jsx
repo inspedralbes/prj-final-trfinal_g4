@@ -44,18 +44,15 @@ const Create = () => {
     }
 
     const handleCreateRoom = () => {
-        const roomInfo = [
-            {
+        const roomInfo = {
             name: roomName,
             public: isPublic,
             mode: gameMode,
             maps: selectedImages.filter(image => image.imageUrl !== '/images/random-game.png').map(image => ({ id: image.id, imageUrl: image.imageUrl }))
-            }
-        ];
-
-        // Console log to verify the selected images
+        };
+    
         console.log('Room Info:', roomInfo);
-
+    
         if (roomInfo.name == '' || roomInfo.mode == '') {
             setPopupMessage('Falten dades per omplir.');
             return;
@@ -73,7 +70,7 @@ const Create = () => {
                 let user = {
                     name: userName,
                     image: '/images/random-game.png'
-                }
+                };
                 socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
             } else {
                 let userStore = useStore.getState().user;
@@ -82,18 +79,19 @@ const Create = () => {
                     let user = {
                         name: userStore.name,
                         image: userStore.image
-                    }
+                    };
                     socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
                 } else if (userLocalStorage != null) {
                     let user = {
                         name: userLocalStorage.name,
                         image: userLocalStorage.image
-                    }
+                    };
                     socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
                 }
             }
         }
     };
+    
 
     return (
         <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-8">
