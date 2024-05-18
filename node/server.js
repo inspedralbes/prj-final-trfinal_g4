@@ -23,7 +23,6 @@ function findRoomByUser(userId) {
     let findRoom;
     rooms.forEach(room => {
         room.users.forEach(user => {
-
             if (user.id == userId) {
                 findRoom = room;
             }

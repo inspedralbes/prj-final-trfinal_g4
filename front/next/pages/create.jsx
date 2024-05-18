@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect } from 'react';
 import Fases from '../components/fases';
 import Header from '../components/header';
 import socket from '../services/sockets';
@@ -10,7 +10,11 @@ const Create = () => {
     const [roomName, setRoomName] = useState('');
     const [isPublic, setIsPublic] = useState(false);
     const [gameMode, setGameMode] = useState('');
-    const [selectedImages, setSelectedImages] = useState(['/images/random-game.png', '/images/random-game.png', '/images/random-game.png']);
+    const [selectedImages, setSelectedImages] = useState([
+        { id: null, imageUrl: '/images/random-game.png' },
+        { id: null, imageUrl: '/images/random-game.png' },
+        { id: null, imageUrl: '/images/random-game.png' }
+    ]);
     const [rooms, setRooms] = useState(useStore.getState().rooms);
     const [popupMessage, setPopupMessage] = useState(null);
     const router = useRouter();
@@ -40,12 +44,18 @@ const Create = () => {
     }
 
     const handleCreateRoom = () => {
-        const roomInfo = {
+        const roomInfo = [
+            {
             name: roomName,
             public: isPublic,
             mode: gameMode,
-            maps: selectedImages.filter(image => image !== '/images/random-game.png')
-        };
+            maps: selectedImages.filter(image => image.imageUrl !== '/images/random-game.png').map(image => ({ id: image.id, imageUrl: image.imageUrl }))
+            }
+        ];
+
+        // Console log to verify the selected images
+        console.log('Room Info:', roomInfo);
+
         if (roomInfo.name == '' || roomInfo.mode == '') {
             setPopupMessage('Falten dades per omplir.');
             return;
@@ -55,7 +65,6 @@ const Create = () => {
                 do {
                     accessCode = generateAccessCode();
                 } while (rooms.some((room) => room.accessCode == accessCode));
-                // console.log(accessCode);
                 roomInfo.accessCode = accessCode;
             }
             if (useStore.getState().user == null) {
@@ -74,23 +83,22 @@ const Create = () => {
                         name: userStore.name,
                         image: userStore.image
                     }
-                    socket.emit('createRoom', {addRoom: roomInfo, userAdmin: user});
+                    socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
                 } else if (userLocalStorage != null) {
                     let user = {
                         name: userLocalStorage.name,
                         image: userLocalStorage.image
                     }
-                    socket.emit('createRoom', {addRoom: roomInfo, userAdmin: user});
+                    socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
                 }
             }
         }
     };
 
     return (
-        <div>
+        <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-8">
             <Header />
-            <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-8">
-                <div className="flex flex-col justify-center items-center w-full sm:w-1/3 mb-8">
+            <div className="flex flex-col justify-center items-center w-full sm:w-1/3 mb-8 mt-9 pt-9">
                     <h1 className="text-white text-4xl font-bold mb-4">Crear sala</h1>
                     <div className="w-full bg-white rounded-lg p-4 mb-3">
                         <label htmlFor="roomName" className="block text-gray-700 font-semibold mb-2">Nom de la Sala:</label>
@@ -133,8 +141,7 @@ const Create = () => {
                         Crear Sala
                     </button>
                 </div>
-                <Fases fases={[1, 2, 3]} selectedImages={selectedImages} />
-            </div>
+                <Fases selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
         </div>
     );
 };

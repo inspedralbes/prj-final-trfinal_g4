@@ -4,7 +4,6 @@ import useStore from '../src/store';
 import socket from '../services/sockets';
 import { useRouter } from 'next/router';
 
-
 const Lobby = () => {
     const router = useRouter();
     var user = useStore.getState().user.name;
