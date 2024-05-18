@@ -1,13 +1,14 @@
+const withTM = require('next-transpile-modules')(['zustand', 'zukeeper']);
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    webpackDevMiddleware: config => {
-        config.watchOptions = {
-            poll: 1000,
-            aggregateTimeout: 300,
-        }
-        return config
-    }
-    // output: 'export'
+    // webpackDevMiddleware: config => {
+    //     config.watchOptions = {
+    //         poll: 1000,
+    //         aggregateTimeout: 300,
+    //     }
+    //     return config
+    // }
 };
 
-module.exports = nextConfig;
+module.exports = withTM(nextConfig);

@@ -31,9 +31,10 @@ class SaveController extends Controller
         return response()->json($saves, 200);
     }
 
-    public function show(Save $save)
+    public function show(Request $request)
     {
-        return response()->json($save, 200);
+        $saveToShow = Save::find($request->id);
+        return response()->json($saveToShow, 200);
     }
 
     /**

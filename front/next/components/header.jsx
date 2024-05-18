@@ -1,101 +1,100 @@
-import React, { useState } from 'react';
-import { FaUserCircle } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import useStore from '../src/store';
 import { logout } from '../services/communicationManager';
+import ErrorPopup from '../components/errorPopup';
 
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const tokenStore = useStore(state => state.token);
-    const userStore = useStore(state => state.user);
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [token, setToken] = useState(null);
+    const [user, setUser] = useState(null);
+    const [image, setImage] = useState(null);
+
+    const url = 'http://localhost:8000';
+
+    useEffect(() => {
+        const userStore = useStore.getState().user;
+
+        if ( userStore != null ) {
+            setToken(userStore.name);
+            setUser(userStore.token);
+            setImage(userStore.image);
+        } else {
+            try {
+                const userLocalStorage = JSON.parse(localStorage.getItem('user'));
+
+                if (userLocalStorage != null) {
+                    var userName = userLocalStorage.name;
+                    var userToken = userLocalStorage.token;
+                    var userImage = userLocalStorage.image;
+
+                    console.log('User:', userName);
+                    console.log('Token:', userToken);
+                    console.log('All data User:', userLocalStorage);
+                }
+
+                useStore.setState({ user: userLocalStorage });
+
+                setToken(userToken);
+                setUser(userName);
+                setImage(userImage);
+            } catch (e) {
+                // console.log('Error retrieving token and user from localStorage:', e);
+            }
+        }
+    }, []);
 
     const toggleDropdown = () => {
         setDropdownOpen(!dropdownOpen);
     };
 
-    const tancarSessio = () => {
-    //     window.localStorage.removeItem('user');
-    //     window.localStorage.removeItem('token');
-    //     useStore.setState({ user: null });
-    //     useStore.setState({ token: null });
-        const tokenObject = getTokenAndUser();
-        const token = tokenObject ? tokenObject.token : null;
-        const tokenClean = token ? token.trim() : null;
-        logout(tokenClean)
-            .then(() => {
+    const logoutHandler = () => {
+        let tokenClean = token.replace(/['"]+/g, '');
+        
+        if (tokenClean) {
+            logout(tokenClean).then(() => {
                 localStorage.removeItem('user');
-                localStorage.removeItem('token');
                 useStore.setState({ user: null });
-                useStore.setState({ token: null });
-                console.log('Sessió tancada');
-            })
-            .catch(() => {
-                alert('Error logging out');
+                setToken(null);
+                setUser(null);
+            }).catch(() => {
+                setErrorMessage('Error tancant la sessió.');
             });
-    };
-
-    const getTokenAndUser = () => {
-        let token = null;
-        let user = null;
-
-        if (tokenStore != null && userStore != null) {
-            token = tokenStore;
-            user = userStore;
-        } else {
-            try {
-                token = localStorage.getItem('token');
-                user = localStorage.getItem('user');
-            } catch (e) {
-                token = null;
-                user = null;
-            }
         }
-        return { token, user };
+        setDropdownOpen(false);
     };
-
-    const renderDropdownContent = () => {
-        if (dropdownOpen) {
-            return (
-                <div className="dropdown absolute right-0 mt-2 bg-black bg-opacity-50 rounded-md shadow-lg">
-                    {/* Dropdown content */}
-                    <a href="#" className="block px-4 py-2 hover:bg-gray-800">Perfil</a>
-                    <a href="#" className="block px-4 py-2 hover:bg-gray-800">Mapas</a>
-                    <button onClick={tancarSessio} className="block px-4 py-2 hover:bg-gray-800">Logout</button>
-                </div>
-            );
-        }
-        return null;
-    };
-
-    const renderContent = () => {
-        const { token, user } = getTokenAndUser();
-
-        if (token != null && user != null) {
-            useStore.setState({ token });
-            useStore.setState({ user });
-
-            return (
-                <div className="profile relative text-white">
-                    <FaUserCircle className="mx-4 text-3xl cursor-pointer" onClick={toggleDropdown} />
-                    {renderDropdownContent()}
-                </div>
-            );
-        }
-
-        return (
+    
+    let content;
+    if (token && user) {
+        content = (
+            <div className="profile relative text-white">
+                <img src={`${url}${image}`} className="w-10 h-10 mx-4 text-3xl cursor-pointer rounded-full" onClick={toggleDropdown} />
+                {dropdownOpen && (
+                    <div className="dropdown absolute right-0 mt-2 bg-black bg-opacity-50 rounded-md shadow-lg">
+                        <a href="/perfil" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Perfil</a>
+                        <a href="/mapas" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Mapas</a>
+                        <button onClick={logoutHandler} className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Logout</button>
+                    </div>
+                )}
+            </div>
+        );
+    } else {
+        content = (
             <Link href="/login">
                 <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded mr-4 mt-4 md:mt-0">LOGIN</button>
             </Link>
         );
-    };
+    }
 
     return (
-        <header className="bg-black bg-opacity-70 p-4 flex justify-between items-center">
+        <header className="bg-slate-900 p-4 flex justify-between items-center absolute top-0 w-full">
             <Link href="/">
                 <span className="text-white">Chromatic Bond</span>
             </Link>
             <div className="flex items-center">
-                {renderContent()}
+                {content}
+                {errorMessage && <ErrorPopup message={errorMessage} />} {/* Mostrar el popup de error si hay un mensaje de error */}
             </div>
         </header>
     );

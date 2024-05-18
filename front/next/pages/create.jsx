@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import Fases from '../components/fases';
 import Header from '../components/header';
-import { PiNumberCircleOne, PiNumberCircleTwo, PiNumberCircleThree } from 'react-icons/pi';
-import { TbLetterX } from "react-icons/tb";
 import socket from '../services/sockets';
 import useStore from '../src/store';
 import { useRouter } from 'next/router';
+import ErrorPopup from '../components/errorPopup';
 
 const Create = () => {
     const [roomName, setRoomName] = useState('');
     const [isPublic, setIsPublic] = useState(false);
     const [gameMode, setGameMode] = useState('');
-    const [selectedImages, setSelectedImages] = useState([]);
-    const [infoRoom, setInfoRoom] = useState([]);
-    const router=useRouter();
-    // Rooms para comprovar codigos de acceso 
-    const [rooms , setRooms] = useState(useStore.getState().rooms);
+    const [selectedImages, setSelectedImages] = useState([
+        { id: null, imageUrl: '/images/random-game.png' },
+        { id: null, imageUrl: '/images/random-game.png' },
+        { id: null, imageUrl: '/images/random-game.png' }
+    ]);
+    const [rooms, setRooms] = useState(useStore.getState().rooms);
+    const [popupMessage, setPopupMessage] = useState(null);
+    const router = useRouter();
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -27,15 +28,10 @@ const Create = () => {
     }, []);
 
     useEffect(() => {
-        console.log('Información de la sala guardada:', infoRoom);
-    }, [infoRoom]);
-
-    useEffect(() => {
-        console.log('Salas:', useStore.getState().room);
-        if (useStore.getState().room!=null) {
+        if (useStore.getState().room != null) {
             router.push('/lobby');
         }
-       });
+    }, [useStore.getState().room]);
 
     function generateAccessCode() {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -47,28 +43,21 @@ const Create = () => {
         return accessCode;
     }
 
-    const toggleImageSelection = (imageSrc) => {
-        // Verificar si la imagen ya está seleccionada
-        if (selectedImages.includes(imageSrc)) {
-            // Si la imagen está seleccionada, removerla del estado
-            setSelectedImages(selectedImages.filter(img => img !== imageSrc));
-        } else {
-            // Si la imagen no está seleccionada, añadirla al estado
-            setSelectedImages([...selectedImages, imageSrc]);
-        }
-    };
-
     const handleCreateRoom = () => {
-        
-        // Crear un objeto con la información de la sala
-        const roomInfo = {
+        const roomInfo = [
+            {
             name: roomName,
             public: isPublic,
             mode: gameMode,
-            images: selectedImages
-        };
+            maps: selectedImages.filter(image => image.imageUrl !== '/images/random-game.png').map(image => ({ id: image.id, imageUrl: image.imageUrl }))
+            }
+        ];
+
+        // Console log to verify the selected images
+        console.log('Room Info:', roomInfo);
+
         if (roomInfo.name == '' || roomInfo.mode == '') {
-            alert('Faltan datos por rellenar');
+            setPopupMessage('Falten dades per omplir.');
             return;
         } else {
             let accessCode;
@@ -76,36 +65,43 @@ const Create = () => {
                 do {
                     accessCode = generateAccessCode();
                 } while (rooms.some((room) => room.accessCode == accessCode));
-                console.log(accessCode);
                 roomInfo.accessCode = accessCode;
             }
-            if (useStore.getState().user.length == 0){
+            if (useStore.getState().user == null) {
                 let userName = 'user' + Math.floor(Math.random() * 1000);
                 useStore.setState({ user: { name: userName } });
-                console.log('UserName: ', useStore.getState().user.name);
-                socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userName});
-                setInfoRoom([...infoRoom, roomInfo]);
-                
+                let user = {
+                    name: userName,
+                    image: '/images/random-game.png'
+                }
+                socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
             } else {
-                let userName = useStore.getState().user[0] || localStorage.getItem('user');
-                console.log('UserName: ', useStore.getState().user[0]);
-                socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userName});
-                setInfoRoom([...infoRoom, roomInfo]);
-                
+                let userStore = useStore.getState().user;
+                let userLocalStorage = JSON.parse(localStorage.getItem('user'));
+                if (userStore != null) {
+                    let user = {
+                        name: userStore.name,
+                        image: userStore.image
+                    }
+                    socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
+                } else if (userLocalStorage != null) {
+                    let user = {
+                        name: userLocalStorage.name,
+                        image: userLocalStorage.image
+                    }
+                    socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
+                }
             }
-
         }
     };
 
     return (
-        <div>
+        <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-8">
             <Header />
-            <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-8">
-                {/* Parte izquierda para crear la sala */}
-                <div className="flex flex-col justify-center items-center w-full sm:w-1/3 mb-8">
-                    <h1 className="text-white text-4xl font-bold mb-4">Crear Sala</h1>
+            <div className="flex flex-col justify-center items-center w-full sm:w-1/3 mb-8 mt-9 pt-9">
+                    <h1 className="text-white text-4xl font-bold mb-4">Crear sala</h1>
                     <div className="w-full bg-white rounded-lg p-4 mb-3">
-                        <label htmlFor="roomName" className="block text-gray-700 font-semibold mb-2">Nombre de la Sala:</label>
+                        <label htmlFor="roomName" className="block text-gray-700 font-semibold mb-2">Nom de la Sala:</label>
                         <input
                             id="roomName"
                             type="text"
@@ -127,7 +123,7 @@ const Create = () => {
                                 </span>
                             </label>
                         </div>
-                        <label htmlFor="gameMode" className="block text-gray-700 font-semibold mb-2">Modo de Juego:</label>
+                        <label htmlFor="gameMode" className="block text-gray-700 font-semibold mb-2">Mode de joc:</label>
                         <select
                             id="gameMode"
                             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
@@ -140,54 +136,12 @@ const Create = () => {
                             <option value="Aleatori">Aleatori</option>
                         </select>
                     </div>
-                </div>
-                 
+                    {popupMessage && <ErrorPopup type={popupMessage === 'Faltan datos por rellenar' ? 'incomplete' : 'error'} message={popupMessage} />}
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded px-6 py-2 focus:outline-none" onClick={handleCreateRoom}>
                         Crear Sala
                     </button>
-                {/* Parte derecha con las imágenes */}
-                <div className="w-full sm:w-3/4 flex flex-col sm:flex-row items-center justify-center">
-                    <div className="flex flex-col sm:flex-row items-center justify-center sm:flex-wrap gap-x-4">
-                        <CustomImageWithOverlay
-                            imageSrc="/images/random-game.png"
-                            altText="Imagen 1"
-                            onClick={() => toggleImageSelection("/images/random-game.png")}
-                            isSelected={selectedImages.includes("/images/random-game.png")}
-                        >
-                            <PiNumberCircleOne className="text-black text-4xl absolute top-4 left-1 m-2" />
-                            <TbLetterX className="text-black text-2xl absolute top-4 right-1 m-2" />
-                        </CustomImageWithOverlay>
-                        <CustomImageWithOverlay
-                            imageSrc="/images/random-game.png"
-                            altText="Imagen 2"
-                            onClick={() => toggleImageSelection("/images/random-game2.png")}
-                            isSelected={selectedImages.includes("/images/random-game2.png")}
-                        >
-                            <PiNumberCircleTwo className="text-black text-4xl absolute top-4 left-1 m-2" />
-                            <TbLetterX className="text-black text-2xl absolute top-4 right-1 m-2" />
-                        </CustomImageWithOverlay>
-                        <CustomImageWithOverlay
-                            imageSrc="/images/random-game.png"
-                            altText="Imagen 3"
-                            onClick={() => toggleImageSelection("/images/random-game3.png")}
-                            isSelected={selectedImages.includes("/images/random-game3.png")}
-                        >
-                            <PiNumberCircleThree className="text-black text-4xl absolute top-4 left-1 m-2" />
-                            <TbLetterX className="text-black text-2xl absolute top-4 right-1 m-2" />
-                        </CustomImageWithOverlay>
-                    </div>
                 </div>
-                <Fases fases={[1, 2, 3]} />
-            </div>
-        </div>
-    );
-};
-
-const CustomImageWithOverlay = ({ imageSrc, altText, onClick, isSelected, children }) => {
-    return (
-        <div className="relative flex-shrink-0 mb-4 sm:mb-0 sm:mr-4 sm:mx-3">
-            <img src={imageSrc} alt={altText} className={`h-60 sm:h-72 w-80 sm:w-96 my-4 bg-zinc-400 ${isSelected ? 'border-4 border-blue-500' : ''}`} />
-            {children}
+                <Fases selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
         </div>
     );
 };

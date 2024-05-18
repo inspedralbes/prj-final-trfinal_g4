@@ -1,4 +1,4 @@
-const url = 'http://localhost:8000/api/'; 
+const url = 'http://localhost:8000/api/';
 
 export function login(user) {
     return new Promise((resolve, reject) => {
@@ -9,15 +9,23 @@ export function login(user) {
             },
             body: JSON.stringify(user)
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => {
+                if (response.status == 200) {
+                    return response.json();
+                } else if (response.status == 401) {
+                    reject('Error al iniciar sessió: Usuari o contrasenya incorrectes');
+                } else {
+                    reject('Error al iniciar sessió: ' + response.status)
+                }
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
-  
+
 }
 
 export function register(user) {
@@ -30,13 +38,19 @@ export function register(user) {
             },
             body: JSON.stringify(user)
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    reject('Error al registrar usuario: ' + response.status)
+                }
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
@@ -50,18 +64,18 @@ export function logout(token) {
                 'Authorization': `Bearer ${token}`
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
 // fetch eliminar usuario
-export function destroyUser(user){
+export function destroyUser(user) {
     return new Promise((resolve, reject) => {
         fetch(`${url}users/${user}`, {
             method: 'DELETE',
@@ -71,17 +85,17 @@ export function destroyUser(user){
             },
             body: JSON.stringify(user)
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
-export function updateUser(user){
+export function updateUser(user) {
     return new Promise((resolve, reject) => {
         fetch(`${url}users/`, {
             method: 'PUT',
@@ -91,32 +105,36 @@ export function updateUser(user){
             },
             body: JSON.stringify(user)
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
 export function getUsers() {
     return new Promise((resolve, reject) => {
-        fetch(`${url}users/`, {
+        fetch(`${url}allUsers/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+        }).then(response => {
+                if (response.status == 200) {
+                    return response.json();
+                } else {
+                    reject('Error al obtener usuarios: ' + response.status)
+                }
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
@@ -129,13 +147,13 @@ export function getUser(user) {
                 'Authorization': `Bearer ${user.token}`
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
@@ -149,36 +167,39 @@ export function createUser(user) {
             },
             body: JSON.stringify(user)
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
-export function createMap(mapData) {
+export function createMap(formData, token) {
     return new Promise((resolve, reject) => {
         fetch(`${url}maps/`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${mapData.token}`
+                'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(mapData)
+            body: formData
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => {
+                if (!response.ok) {
+                    reject(`Error: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
-
 
 export function getMaps() {
     return new Promise((resolve, reject) => {
@@ -186,16 +207,33 @@ export function getMaps() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+export function getReportedMaps() {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}reportedMaps/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
         })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
@@ -209,37 +247,71 @@ export function updateMap(mapData) {
             },
             body: JSON.stringify(mapData)
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
 export function destroyMap(mapData) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}maps/${mapData.id}`, {
+        fetch(`${url}maps/${mapData}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${mapData.token}`
             },
             body: JSON.stringify(mapData)
         })
-        .then(response => response.json())
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
+export function downloadFile(mapId) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}download/${mapId}`, {
+            method: 'GET',
+        })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${mapId}.json`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                resolve(blob);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
 
-
-
-
+export function getMapByDifficulty(difficulty) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}mapsByDifficulty/${difficulty}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}

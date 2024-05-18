@@ -1,10 +1,9 @@
-import { create } from 'zustand';
+import { createStore } from 'zustand';
+import { devtools } from 'zustand/middleware'
 
-const useStore = create((set) => ({
-    user: [],
+const useStore = createStore(devtools((set) => ({
+    user: null,
     setUser: (user) => set({ user }),
-    token: [],
-    setToken: (token) => set({ token }),
     rooms: [],
     setRooms: (rooms) => set({ rooms }),
     room: null,
@@ -15,6 +14,8 @@ const useStore = create((set) => ({
     setGameData: (gameData) => set({ gameData }),
     localUserSocketId: [],
     setLocalUserSocketId: (localUserSocketId) => set({ localUserSocketId }),
-}));
+    admin: Boolean,
+    setAdmin: (admin) => set({ admin }),
+})));
 
 export default useStore;

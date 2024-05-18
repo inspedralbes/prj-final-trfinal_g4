@@ -8,7 +8,7 @@ import socket from '../services/sockets';
 import { useRouter } from 'next/router';
 
 function Rooms() {
-    const router=useRouter();
+    const router = useRouter();
     const session = useSession();
     const [showRooms, setShowRooms] = useState([]); // Mostrar salas públicas
     const [roomCode, setRoomCode] = useState(Array.from({ length: 6 }, () => '')); // Código de la sala
@@ -30,65 +30,76 @@ function Rooms() {
         return () => clearInterval(intervalId);
     }, []);
 
+    useEffect(() => {
+        if (useStore.getState().room != null) {
+            router.push('/lobby');
+        }
+    }, [useStore.getState().room]);
+
     // Unirse a la sala pública
     const addPublicRoom = (room) => {
         // Guardar información de la sala
         useStore.setState({ room: room });
-        console.log('Try room join: ', room.id);
-        if (useStore.getState().user.length == 0){
+        if (useStore.getState().user == null) {
             let userName = 'user' + Math.floor(Math.random() * 1000);
             useStore.setState({ user: { name: userName } });
-            console.log('UserName: ', useStore.getState().user.name);
-            let buildData={"id": room.id, "username": userName};
-            socket.emit('joinRoom',buildData) ;
-
-            
+            let user = {
+                name: userName,
+                image: '/images/random-game.png'
+            }
+            socket.emit('joinRoom', { id: room.id, user: user });
         } else {
-            let userName = useStore.getState().user[0] || localStorage.getItem('user');
-            console.log('UserName: ', useStore.getState().user[0]);
-            let buildData={"id": room.id, "username": userName}
-            socket.emit('joinRoom', buildData);
-
-            
+            let userStore = useStore.getState().user;
+            let userLocalStorage = JSON.parse(localStorage.getItem('user'));
+            if (userStore != null) {
+                let user = {
+                    name: userStore.name,
+                    image: userStore.image
+                }
+                socket.emit('joinRoom', { id: room.id, user: user });
+            } else if (userLocalStorage != null) {
+                let user = {
+                    name: userLocalStorage.name,
+                    image: userLocalStorage.image
+                }
+                socket.emit('joinRoom', { id: room.id, user: user });
+            }
         }
-        // socket.emit('joinRoom', room.id);
     };
 
     // Codigo de la sala
     const inputRefs = Array.from({ length: 6 }, () => useRef(null));
 
-    // Estado del código de la sala
     const handleInputChange = (index, event) => {
         const { value } = event.target;
         const newRoomCode = [...roomCode];
-        newRoomCode[index] = value.toUpperCase(); // Convierte a mayúsculas
+        newRoomCode[index] = value.toUpperCase();
         setRoomCode(newRoomCode);
     };
 
     // Unirse a la sala privada
     const addPrivateRoom = () => {
         let code = roomCode.join('');
-        console.log(code);
-        console.log(rooms);
         if (code.length < 6) {
             alert('El codi no està sencer')
         } else {
-            console.log('Try room join: ', code);
             rooms.forEach(room => {
-                if (room.accesCode == code) {
-                    // Guardar información de la sala
+                if (room.accessCode == code) {
                     useStore.setState({ room: room });
-                    console.log('Room found: ', room.id);
-                    if ( useStore.getState().user == null ){
+                    if (useStore.getState().user == null) {
                         let userName = 'user' + Math.floor(Math.random() * 1000);
                         useStore.setState({ user: { name: userName } });
-                        console.log('UserName: ', useStore.getState().user.name);
-                        // socket.emit('joinRoom', room.id, userName);
-                        // window.location.href = '/lobby';
+                        let user = {
+                            name: userName,
+                            image: '/images/random-game.png'
+                        }
+                        socket.emit('joinRoom', { id: room.id, user: user });
                     } else {
-                        console.log('UserName: ', useStore.getState().user.name);
-                        // socket.emit('joinRoom', room.id, useStore.getState().user.name);
-                        // window.location.href = '/lobby';
+                        let user = {
+                            name: useStore.getState().user.name,
+                            image: useStore.getState().user.image
+                        }
+                        socket.emit('joinRoom', { id: room.id, user: user });
                     }
                 }
             });
@@ -108,24 +119,58 @@ function Rooms() {
             if (index > 0 && inputRefs[index].current.value == '') {
                 inputRefs[index - 1].current.focus();
             } else if (index == 0 && inputRefs[index].current.value == '') {
-                // Si estamos en el primer input y está vacío, enfocamos el input anterior si existe
                 if (inputRefs[index - 1]) {
                     inputRefs[index - 1].current.focus();
                 }
             } else {
-                inputRefs[index].current.value = ''; // Eliminar el carácter
+                inputRefs[index].current.value = '';
             }
         } else if (key == 'Delete') {
             if (inputRefs[index].current.value == '' && index < inputRefs.length - 1) {
                 inputRefs[index + 1].current.focus();
             } else {
-                // Mover los caracteres hacia atrás y limpiar el último campo
                 for (let i = index; i < inputRefs.length - 1; i++) {
                     inputRefs[i].current.value = inputRefs[i + 1].current.value;
                 }
                 inputRefs[inputRefs.length - 1].current.value = '';
             }
         }
+    };
+
+    // Partida rápida
+    const handleCreateRoom = () => {
+        console.log('Partida rápida');
+        // let roomInfo = {
+        //     name: 'Partida ràpida',
+        //     public: true,
+        //     mode: 'original',
+        //     maps: ['/images/original-map1.png', '/images/original-map2.png', '/images/original-map3.png', '/images/original-map4.png', '/images/original-map5.png', '/images/original-map6.png']
+        // };
+        // if (useStore.getState().user == null) {
+        //     let userName = 'user' + Math.floor(Math.random() * 1000);
+        //     useStore.setState({ user: { name: userName } });
+        //     let user = {
+        //         name: userName,
+        //         image: '/images/random-game.png'
+        //     }
+        //     socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
+        // } else {
+        //     let userStore = useStore.getState().user;
+        //     let userLocalStorage = JSON.parse(localStorage.getItem('user'));
+        //     if (userStore != null) {
+        //         let user = {
+        //             name: userStore.name,
+        //             image: userStore.image
+        //         }
+        //         socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
+        //     } else if (userLocalStorage != null) {
+        //         let user = {
+        //             name: userLocalStorage.name,
+        //             image: userLocalStorage.image
+        //         }
+        //         socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
+        //     }
+        // }
     };
 
     // Google Session
@@ -139,46 +184,37 @@ function Rooms() {
     function cerrarSesion() {
         signOut();
         if (!session.data) {
-            // window.location.href = '/';
+            // router.push('/');
         }
-        console.log(session.data);
+        // console.log(session.data);
     }
 
-    useEffect(() => {
-       if(useStore.getState().room != null){
-           router.push('/lobby');
-       }
-    });
-
     return (
-        <div> 
+        <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-r from-blue-400 to-indigo-500">
             <Header />
-            <div className="flex flex-col md:flex-row justify-center items-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
-                <div className="flex flex-col w-full md:w-4/12 justify-center md:justify-start">
-                    <div className="bg-white shadow-md rounded-lg p-4 flex-grow">
-                        <div className="bg-gray-100 rounded-lg p-4">
-                            <h2 className="text-lg font-semibold mb-4">Salas Disponibles</h2>
+            <div className='lg:grid lg:grid-cols-2 mb-9 lg:gap-9'>
+                <div className="bg-white shadow-md rounded-lg p-4 flex-grow m-5 lg:max-w-[600px]">
+                    <h2 className="text-lg font-semibold mb-4">Sales disponibles</h2>
+                    <div className="bg-gray-100 rounded-lg p-4">
+                        {showRooms.length > 0 && (
                             <div className="max-h-52 overflow-y-auto">
                                 <ul>
                                     {showRooms.map(room => (
-                                        <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" onClick={() => addPublicRoom(room)}>{room.name}</li>
+                                        <li className="mb-2 text-gray-800 hover:bg-gray-300 rounded-lg m-3 p-3" key={room.id} onClick={() => addPublicRoom(room)}>{room.name}</li>
                                     ))}
                                 </ul>
                             </div>
-                        </div>
+                        )}
+                        {showRooms.length == 0 && (
+                            <p>No hi ha sales públiques disponibles</p>
+                        )}
                     </div>
                 </div>
-
-                <div className="w-0 md:w-32"></div>
-
-                <div className="rounded-lg p-4 flex flex-col w-full md:w-3/12 justify-center items-center md:items-start mt-4 md:mt-0">
-                    <div className='flex justify-center items-center md:justify-start'>
-                        <Link href="/create">
-                            <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded my-14 h-12 w-32 mx-40 focus:outline-none">CREAR SALA</button>
-                        </Link>
-                    </div>
-                    {/* Codigo de la sala */}
-                    <div className="grid grid-cols-7 gap-2">
+                <div className='flex flex-col justify-center items-center mt-9  lg:max-w-[600px]'>
+                    <Link href="/create">
+                        <button className="text-white text-2xl p-5 font-bold rounded bg-green-500 hover:bg-green-700">CREAR SALA</button>
+                    </Link>
+                    <div className="grid grid-cols-7 gap-2 m-9">
                         {Array.from({ length: 6 }).map((_, index) => (
                             <input
                                 key={index}
@@ -186,16 +222,22 @@ function Rooms() {
                                 maxLength="1"
                                 ref={inputRefs[index]}
                                 value={roomCode[index].toUpperCase()}
-                                className="bg-white border border-gray-300 rounded-lg px-1 py-1 focus:outline-none h-12 text-gray-800 placeholder-gray-500 text-base text-center caret-transparent"
+                                className="bg-white border border-gray-300 rounded-lg px-1 py-1 focus:outline-none h-12 text-gray-800 placeholder-gray-500 text-base text-center"
                                 onChange={e => handleInputChange(index, e)}
                                 onKeyDown={e => handleKeyDown(index, e)}
                             />
                         ))}
                         <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded mb-14 h-12 focus:outline-none flex items-center justify-center" onClick={() => addPrivateRoom()}>
-                            <FaCheck className="text-2xl" />
+                            Accedir
                         </button>
                     </div>
                 </div>
+            </div>
+            <div className='absolute bottom-9'>
+                <button className='text-white text-2xl p-5 font-bold rounded-lg bg-red-500 hover:bg-red-700' onClick={handleCreateRoom}>
+                    Partida rápida
+                    <p className='text-sm'>Mapes originals</p>
+                </button>
             </div>
         </div>
     );
