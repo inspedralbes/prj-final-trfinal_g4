@@ -137,6 +137,42 @@ function Rooms() {
         }
     };
 
+    // Partida rápida
+    const handleCreateRoom = () => {
+        console.log('Partida rápida');
+        // let roomInfo = {
+        //     name: 'Partida ràpida',
+        //     public: true,
+        //     mode: 'original',
+        //     maps: ['/images/original-map1.png', '/images/original-map2.png', '/images/original-map3.png', '/images/original-map4.png', '/images/original-map5.png', '/images/original-map6.png']
+        // };
+        // if (useStore.getState().user == null) {
+        //     let userName = 'user' + Math.floor(Math.random() * 1000);
+        //     useStore.setState({ user: { name: userName } });
+        //     let user = {
+        //         name: userName,
+        //         image: '/images/random-game.png'
+        //     }
+        //     socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
+        // } else {
+        //     let userStore = useStore.getState().user;
+        //     let userLocalStorage = JSON.parse(localStorage.getItem('user'));
+        //     if (userStore != null) {
+        //         let user = {
+        //             name: userStore.name,
+        //             image: userStore.image
+        //         }
+        //         socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
+        //     } else if (userLocalStorage != null) {
+        //         let user = {
+        //             name: userLocalStorage.name,
+        //             image: userLocalStorage.image
+        //         }
+        //         socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
+        //     }
+        // }
+    };
+
     // Google Session
     useEffect(() => {
         if (!session.data) {
@@ -154,10 +190,10 @@ function Rooms() {
     }
 
     return (
-        <div className="min-h-screen flex flex-col md:flex-row justify-center items-center bg-gradient-to-r from-blue-400 to-indigo-500">
+        <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-r from-blue-400 to-indigo-500">
             <Header />
-            <div>
-                <div className="bg-white shadow-md rounded-lg p-4 flex-grow m-5">
+            <div className='lg:grid lg:grid-cols-2 mb-9 lg:gap-9'>
+                <div className="bg-white shadow-md rounded-lg p-4 flex-grow m-5 lg:max-w-[600px]">
                     <h2 className="text-lg font-semibold mb-4">Sales disponibles</h2>
                     <div className="bg-gray-100 rounded-lg p-4">
                         {showRooms.length > 0 && (
@@ -170,11 +206,11 @@ function Rooms() {
                             </div>
                         )}
                         {showRooms.length == 0 && (
-                            <p>No hay salas públicas disponibles</p>
+                            <p>No hi ha sales públiques disponibles</p>
                         )}
                     </div>
                 </div>
-                <div className='flex flex-col justify-center items-center mt-9'>
+                <div className='flex flex-col justify-center items-center mt-9  lg:max-w-[600px]'>
                     <Link href="/create">
                         <button className="text-white text-2xl p-5 font-bold rounded bg-green-500 hover:bg-green-700">CREAR SALA</button>
                     </Link>
@@ -192,10 +228,16 @@ function Rooms() {
                             />
                         ))}
                         <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded mb-14 h-12 focus:outline-none flex items-center justify-center" onClick={() => addPrivateRoom()}>
-                            <FaCheck className="text-2xl" />
+                            Accedir
                         </button>
                     </div>
                 </div>
+            </div>
+            <div className='absolute bottom-9'>
+                <button className='text-white text-2xl p-5 font-bold rounded-lg bg-red-500 hover:bg-red-700' onClick={handleCreateRoom}>
+                    Partida rápida
+                    <p className='text-sm'>Mapes originals</p>
+                </button>
             </div>
         </div>
     );
