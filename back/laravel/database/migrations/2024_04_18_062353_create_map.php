@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -25,6 +26,69 @@ return new class extends Migration
             $table->string('state')->default('pending');
             $table->timestamps();
         });
+
+        DB::table('maps')->insert([
+            'name' => 'Mapa 1',
+            'description' => 'Mapa original do jogo',
+            'image' => '/images/maps/mapa1.png',
+            'mapRoute' => '/maps/mapatuto.json',
+            'difficulty' => 1,
+            'isOriginal' => true,
+            'user_id' => 1,
+            'state' => 'approved'
+        ]);
+
+        DB::table('maps')->insert([
+            'name' => 'Mapa 2',
+            'description' => 'Mapa original do jogo',
+            'image' => '/images/maps/mapa2.png',
+            'mapRoute' => '/maps/mapatuto.json',
+            'difficulty' => 2,
+            'isOriginal' => true,
+            'user_id' => 1,
+            'state' => 'approved'
+        ]);
+
+        DB::table('maps')->insert([
+            'name' => 'Mapa 3',
+            'description' => 'Mapa original do jogo',
+            'image' => '/images/maps/mapa3.png',
+            'mapRoute' => '/maps/mapatuto.json',
+            'difficulty' => 3,
+            'isOriginal' => true,
+            'user_id' => 1,
+            'state' => 'approved'
+        ]);
+
+        DB::table('maps')->insert([
+            'name' => 'Mapa 4',
+            'description' => 'Mapa original do jogo',
+            'image' => '/images/maps/Captura.png',
+            'mapRoute' => '/maps/mapatuto.json',
+            'difficulty' => 1,
+            'user_id' => 1,
+            'state' => 'approved'
+        ]);
+
+        DB::table('maps')->insert([
+            'name' => 'Mapa 5',
+            'description' => 'Mapa original do jogo',
+            'image' => '/images/maps/Logo.png',
+            'mapRoute' => '/maps/mapatuto.json',
+            'difficulty' => 2,
+            'user_id' => 1,
+            'state' => 'approved'
+        ]);
+
+        DB::table('maps')->insert([
+            'name' => 'Mapa 6',
+            'description' => 'Mapa original do jogo',
+            'image' => '/images/maps/messieur.png',
+            'mapRoute' => '/maps/mapatuto.json',
+            'difficulty' => 3,
+            'user_id' => 1,
+            'state' => 'approved'
+        ]);
     }
 
     /**
