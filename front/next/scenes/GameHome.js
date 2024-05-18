@@ -49,6 +49,8 @@ export default class GameHome extends Phaser.Scene {
     flags=[];
     player1OnFlag=false;
     player2OnFlag=false;
+    priorX;
+    priorY;
 
     init() {
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -256,6 +258,11 @@ export default class GameHome extends Phaser.Scene {
 
                         const spawn1X = x;
                         const spawn1Y = y;
+                        if(this.player==2){
+                            this.priorX = x;
+                            this.priorY = y;
+                        }
+                       
                         console.log(useStore.getState().gameData);
                         this.character1.body.tint = this.colors.find(color => color.color == useStore.getState().gameData.playersData[0].color).hex;
                         this.physics.add.existing(this.character1);
@@ -353,6 +360,10 @@ export default class GameHome extends Phaser.Scene {
                         this.physics.add.existing(this.character2);
                         const spawn2X = x;
                         const spawn2Y = y;
+                        if(this.player==1){
+                            this.priorX = x;
+                            this.priorY = y;
+                        }
                         this.character2.body.setSize(w * 0.50, h * 0.90);
 
                         this.character2.setPosition(x, y);
@@ -1199,12 +1210,34 @@ export default class GameHome extends Phaser.Scene {
             if (this.player == 1) {
                 this.character2.x = data[1].x;
                 this.character2.y = data[1].y;
-                this.character2.flipX = data[1].direction;
+                if(data[1].direction=="left"){
+                    this.character2.flipX = true;
+                } else{
+                    this.character2.flipX = false;
+                }
+                if(this.priorX!=data[1].x || this.priorY!=data[1].y){
+                    this.character2.anims.play('walk', true);
+                } else{
+                    this.character2.anims.play('idle', true);
+                }
+                this.priorX = data[1].x;
+                this.priorY = data[1].y;
             }
             else {
                 this.character1.x = data[0].x;
                 this.character1.y = data[0].y;
-                this.character1.flipX = data[0].direction;
+                if(data[0].direction=="left"){
+                    this.character1.flipX = true;
+                } else{
+                    this.character1.flipX = false;
+                }
+                if(this.priorX!=data[0].x || this.priorY!=data[0].y){
+                    this.character1.anims.play('walk', true);
+                } else{
+                    this.character1.anims.play('idle', true);
+                }
+                this.priorX = data[0].x;
+                this.priorY = data[0].y;
             }
         });
 
