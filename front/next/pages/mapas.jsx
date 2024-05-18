@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import Header from '../components/header';
 import { createMap } from '../services/communicationManager';
+import { useRouter } from 'next/router';
 
 function Mapas() {
     const [name, setName] = useState('');
     const [difficulty, setDifficulty] = useState('');
     const [img, setImg] = useState(null);
     const [map, setmap] = useState(null);
+    const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,6 +29,7 @@ function Mapas() {
             console.log('Form Data:', formData);
             await createMap(formData, token);
             alert('Mapa creado exitosamente');
+            router.push('/');
         } catch (error) {
             alert('Error al crear el mapa: ' + error.message);
         }

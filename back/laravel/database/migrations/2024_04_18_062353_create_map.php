@@ -18,8 +18,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('image');
-            $table->string('mapRoute');
+            $table->binary('image');
+            $table->binary('mapRoute');
             $table->enum('difficulty', array(1, 2, 3));
             $table->boolean('isOriginal')->default(false);
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();

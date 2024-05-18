@@ -96,10 +96,9 @@ const Create = () => {
     };
 
     return (
-        <div>
+        <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-8">
             <Header />
-            <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-8">
-                <div className="flex flex-col justify-center items-center w-full sm:w-1/3 mb-8">
+            <div className="flex flex-col justify-center items-center w-full sm:w-1/3 mb-8 mt-9 pt-9">
                     <h1 className="text-white text-4xl font-bold mb-4">Crear sala</h1>
                     <div className="w-full bg-white rounded-lg p-4 mb-3">
                         <label htmlFor="roomName" className="block text-gray-700 font-semibold mb-2">Nom de la Sala:</label>
@@ -143,7 +142,6 @@ const Create = () => {
                     </button>
                 </div>
                 <Fases selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
-            </div>
         </div>
     );
 };
