@@ -34,20 +34,20 @@ function Rooms() {
         if (useStore.getState().room != null) {
             router.push('/lobby');
         }
-    }, [useStore.getState().room]);    
+    }, [useStore.getState().room]);
 
     // Unirse a la sala pública
     const addPublicRoom = (room) => {
         // Guardar información de la sala
         useStore.setState({ room: room });
-        if (useStore.getState().user == null){
+        if (useStore.getState().user == null) {
             let userName = 'user' + Math.floor(Math.random() * 1000);
             useStore.setState({ user: { name: userName } });
             let user = {
                 name: userName,
                 image: '/images/random-game.png'
             }
-            socket.emit('joinRoom', { id: room.id, user: user});
+            socket.emit('joinRoom', { id: room.id, user: user });
         } else {
             let userStore = useStore.getState().user;
             let userLocalStorage = JSON.parse(localStorage.getItem('user'));
@@ -56,13 +56,13 @@ function Rooms() {
                     name: userStore.name,
                     image: userStore.image
                 }
-                socket.emit('joinRoom', { id: room.id, user: user});
+                socket.emit('joinRoom', { id: room.id, user: user });
             } else if (userLocalStorage != null) {
                 let user = {
                     name: userLocalStorage.name,
                     image: userLocalStorage.image
                 }
-                socket.emit('joinRoom', { id: room.id, user: user});
+                socket.emit('joinRoom', { id: room.id, user: user });
             }
         }
     };
@@ -86,20 +86,20 @@ function Rooms() {
             rooms.forEach(room => {
                 if (room.accessCode == code) {
                     useStore.setState({ room: room });
-                    if ( useStore.getState().user == null ){
+                    if (useStore.getState().user == null) {
                         let userName = 'user' + Math.floor(Math.random() * 1000);
                         useStore.setState({ user: { name: userName } });
                         let user = {
                             name: userName,
                             image: '/images/random-game.png'
                         }
-                        socket.emit('joinRoom', {id: room.id, user: user});
+                        socket.emit('joinRoom', { id: room.id, user: user });
                     } else {
                         let user = {
                             name: useStore.getState().user.name,
                             image: useStore.getState().user.image
                         }
-                        socket.emit('joinRoom', {id: room.id, user: user});
+                        socket.emit('joinRoom', { id: room.id, user: user });
                     }
                 }
             });
@@ -154,14 +154,13 @@ function Rooms() {
     }
 
     return (
-        <div className="h-screen overflow-hidden">
+        <div className="min-h-screen flex flex-col md:flex-row justify-center items-center bg-gradient-to-r from-blue-400 to-indigo-500">
             <Header />
-            <div className="flex flex-col md:flex-row justify-center items-center h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
-                <div className="flex flex-col w-full md:w-4/12 justify-center md:justify-start">
-                    
-                    <div className="bg-white shadow-md rounded-lg p-4 flex-grow">
-                        <div className="bg-gray-100 rounded-lg p-4">
-                            <h2 className="text-lg font-semibold mb-4">Sales disponibles</h2>
+            <div>
+                <div className="bg-white shadow-md rounded-lg p-4 flex-grow m-5">
+                    <h2 className="text-lg font-semibold mb-4">Sales disponibles</h2>
+                    <div className="bg-gray-100 rounded-lg p-4">
+                        {showRooms.length > 0 && (
                             <div className="max-h-52 overflow-y-auto">
                                 <ul>
                                     {showRooms.map(room => (
@@ -169,20 +168,17 @@ function Rooms() {
                                     ))}
                                 </ul>
                             </div>
-                        </div>
+                        )}
+                        {showRooms.length == 0 && (
+                            <p>No hay salas públicas disponibles</p>
+                        )}
                     </div>
                 </div>
-
-                <div className="w-0 md:w-32"></div>
-
-                <div className="rounded-lg p-4 flex flex-col w-full md:w-3/12 justify-center items-center md:items-start mt-4 md:mt-0">
-                    <div className='flex justify-center items-center md:justify-start'>
-                        <Link href="/create">
-                            <button className="bg-green-500 hover:bg-green-700 text-white font-bold rounded my-14 h-12 w-32 mx-40 focus:outline-none">CREAR SALA</button>
-                        </Link>
-                    </div>
-                    {/* Codigo de la sala */}
-                    <div className="grid grid-cols-7 gap-2">
+                <div className='flex flex-col justify-center items-center mt-9'>
+                    <Link href="/create">
+                        <button className="text-white text-2xl p-5 font-bold rounded bg-green-500 hover:bg-green-700">CREAR SALA</button>
+                    </Link>
+                    <div className="grid grid-cols-7 gap-2 m-9">
                         {Array.from({ length: 6 }).map((_, index) => (
                             <input
                                 key={index}
