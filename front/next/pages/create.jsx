@@ -56,7 +56,7 @@ const Create = () => {
         // Console log to verify the selected images
         console.log('Room Info:', roomInfo);
 
-        if (roomInfo.name === '' || roomInfo.mode === '') {
+        if (roomInfo.name == '' || roomInfo.mode == '') {
             setPopupMessage('Falten dades per omplir.');
             return;
         } else {
@@ -64,7 +64,7 @@ const Create = () => {
             if (!isPublic) {
                 do {
                     accessCode = generateAccessCode();
-                } while (rooms.some((room) => room.accessCode === accessCode));
+                } while (rooms.some((room) => room.accessCode == accessCode));
                 roomInfo.accessCode = accessCode;
             }
             if (useStore.getState().user == null) {
