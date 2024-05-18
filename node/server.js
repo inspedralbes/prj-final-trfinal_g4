@@ -139,7 +139,7 @@ io.on('connection', (socket) => {
                     y: 0,
                     direction: 'right',
                     colorsAvailable: ['white', 'red', 'green'],
-                    colorsUnlocked: ['white', 'red'],
+                    colorsUnlocked: ['white', 'red', 'green'],
                     color: 'white'
                 },
                 {
@@ -149,21 +149,24 @@ io.on('connection', (socket) => {
                     y: 0,
                     direction: 'right',
                     colorsAvailable: ['black', 'blue', 'orange'],
-                    colorsUnlocked: ['black'],
+                    colorsUnlocked: ['black', 'blue', 'orange'],
                     color: 'black'
                 }
             ];
-        socket.emit('gameStarted', room);
+
+        io.to(room.id).emit('gameStarted', room);
     })
 
     socket.on('updatePosition', (data) => {
         let room = findRoomByUser(socket.id);
-        let player = room.game.playersData.find(player => player.id == socket.id);
-        player.x = data.x;
-        player.y = data.y;
-        player.direction = data.direction;
-        // console.log('updatePosition', player);
-        io.to(room.id).emit('updatePositionFront', room.game.playersData);
+        if(room){
+            let player = room.game.playersData.find(player => player.id == socket.id);
+            player.x = data.x;
+            player.y = data.y;
+            player.direction = data.direction;
+            // console.log('updatePosition', player);
+            io.to(room.id).emit('updatePositionFront', room.game.playersData);
+        }
     });
 
     socket.on('changeColor', () => {
