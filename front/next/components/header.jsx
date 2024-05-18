@@ -11,6 +11,8 @@ const Header = () => {
     const [user, setUser] = useState(null);
     const [image, setImage] = useState(null);
 
+    const url = 'http://localhost:8000';
+
     useEffect(() => {
         const userStore = useStore.getState().user;
 
@@ -67,7 +69,7 @@ const Header = () => {
     if (token && user) {
         content = (
             <div className="profile relative text-white">
-                <img src={`http://localhost:8000${image}`} className="w-10 h-10 mx-4 text-3xl cursor-pointer rounded-full" onClick={toggleDropdown} />
+                <img src={`${url}${image}`} className="w-10 h-10 mx-4 text-3xl cursor-pointer rounded-full" onClick={toggleDropdown} />
                 {dropdownOpen && (
                     <div className="dropdown absolute right-0 mt-2 bg-black bg-opacity-50 rounded-md shadow-lg">
                         <a href="/perfil" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Perfil</a>
@@ -86,7 +88,7 @@ const Header = () => {
     }
 
     return (
-        <header className="bg-black bg-opacity-70 p-4 flex justify-between items-center">
+        <header className="bg-slate-900 p-4 flex justify-between items-center absolute top-0 w-full">
             <Link href="/">
                 <span className="text-white">Chromatic Bond</span>
             </Link>
