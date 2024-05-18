@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import Fases from '../components/fases';
 import Header from '../components/header';
 import socket from '../services/sockets';
@@ -44,7 +44,7 @@ const Create = () => {
             name: roomName,
             public: isPublic,
             mode: gameMode,
-            images: selectedImages.filter(image => image !== '/images/random-game.png')
+            maps: selectedImages.filter(image => image !== '/images/random-game.png')
         };
         if (roomInfo.name == '' || roomInfo.mode == '') {
             setPopupMessage('Falten dades per omplir.');
@@ -61,16 +61,26 @@ const Create = () => {
             if (useStore.getState().user == null) {
                 let userName = 'user' + Math.floor(Math.random() * 1000);
                 useStore.setState({ user: { name: userName } });
-                // console.log('UserName: ', useStore.getState().user.name);
-                socket.emit('createRoom', { addRoom: roomInfo, userAdmin: userName });
+                let user = {
+                    name: userName,
+                    image: '/images/random-game.png'
+                }
+                socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
             } else {
                 let userStore = useStore.getState().user;
                 let userLocalStorage = JSON.parse(localStorage.getItem('user'));
-
                 if (userStore != null) {
-                    socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userStore.name});
+                    let user = {
+                        name: userStore.name,
+                        image: userStore.image
+                    }
+                    socket.emit('createRoom', {addRoom: roomInfo, userAdmin: user});
                 } else if (userLocalStorage != null) {
-                    socket.emit('createRoom', {addRoom: roomInfo, userAdmin: userLocalStorage.name});
+                    let user = {
+                        name: userLocalStorage.name,
+                        image: userLocalStorage.image
+                    }
+                    socket.emit('createRoom', {addRoom: roomInfo, userAdmin: user});
                 }
             }
         }

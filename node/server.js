@@ -56,11 +56,12 @@ io.on('connection', (socket) => {
             isPublic: data.addRoom.public,
             mode: data.addRoom.mode,
             admin: [socket.id, data.userAdmin],
-            users: [ {id:socket.id, name:data.userAdmin} ],
+            users: [ {id:socket.id, name:data.userAdmin.name, state: null, image: data.userAdmin.image} ],
             id: id,
             accessCode: data.addRoom.accessCode,
             accesible: true,
             status: 'Waiting',
+            messages: [],
             game: {
                 maps: ["mapatuto", "mapatuto2", "mapatuto3"],
                 currentMap: "mapatuto",
@@ -81,7 +82,7 @@ io.on('connection', (socket) => {
         if (findRoom == undefined) {
             return;
         } else {
-            let newUser = { id: socket.id, name: data.username };
+            let newUser = { id: socket.id, name: data.user.name, state: null, image: data.user.image};
             findRoom.users.push(newUser);
             findRoom.accesible = false;
             findRoom.status = 'inLobby';
@@ -92,6 +93,15 @@ io.on('connection', (socket) => {
         console.log('soy gay', findRoom);
     });
 
+    //Change State User
+    socket.on('changeState', (data) => {
+        let room = findRoomByUser(socket.id);
+        let user = room.users.find(user => user.id == socket.id);
+        user.state = data.state;
+        io.to(room.id).emit('newInfoRoom', room);
+    });
+
+    //Exit Room
     socket.on('exitRoom', () => {
         let room = findRoomByUser(socket.id);
         console.log(`Socket ${socket.id} is leaving room ${room.id}`);

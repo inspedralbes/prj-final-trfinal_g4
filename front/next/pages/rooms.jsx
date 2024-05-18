@@ -40,20 +40,29 @@ function Rooms() {
     const addPublicRoom = (room) => {
         // Guardar información de la sala
         useStore.setState({ room: room });
-        // console.log('Try room join: ', room.id);
         if (useStore.getState().user == null){
             let userName = 'user' + Math.floor(Math.random() * 1000);
             useStore.setState({ user: { name: userName } });
-            //console.log('UserName: ', useStore.getState().user.name);
-            socket.emit('joinRoom', { id: room.id, username: userName });
+            let user = {
+                name: userName,
+                image: '/images/random-game.png'
+            }
+            socket.emit('joinRoom', { id: room.id, user: user});
         } else {
             let userStore = useStore.getState().user;
             let userLocalStorage = JSON.parse(localStorage.getItem('user'));
-
-            if (userStore != null){
-                socket.emit('joinRoom', { id: room.id, username: userStore.name });
+            if (userStore != null) {
+                let user = {
+                    name: userStore.name,
+                    image: userStore.image
+                }
+                socket.emit('joinRoom', { id: room.id, user: user});
             } else if (userLocalStorage != null) {
-                socket.emit('joinRoom', { id: room.id, username: userLocalStorage.name});
+                let user = {
+                    name: userLocalStorage.name,
+                    image: userLocalStorage.image
+                }
+                socket.emit('joinRoom', { id: room.id, user: user});
             }
         }
     };
@@ -80,9 +89,17 @@ function Rooms() {
                     if ( useStore.getState().user == null ){
                         let userName = 'user' + Math.floor(Math.random() * 1000);
                         useStore.setState({ user: { name: userName } });
-                        socket.emit('joinRoom', {id: room.id, username: userName});
+                        let user = {
+                            name: userName,
+                            image: '/images/random-game.png'
+                        }
+                        socket.emit('joinRoom', {id: room.id, user: user});
                     } else {
-                        socket.emit('joinRoom', {id: room.id, username: useStore.getState().user.name});
+                        let user = {
+                            name: useStore.getState().user.name,
+                            image: useStore.getState().user.image
+                        }
+                        socket.emit('joinRoom', {id: room.id, user: user});
                     }
                 }
             });
