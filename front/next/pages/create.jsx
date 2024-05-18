@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect } from 'react';
 import Fases from '../components/fases';
 import Header from '../components/header';
 import socket from '../services/sockets';
@@ -10,7 +10,11 @@ const Create = () => {
     const [roomName, setRoomName] = useState('');
     const [isPublic, setIsPublic] = useState(false);
     const [gameMode, setGameMode] = useState('');
-    const [selectedImages, setSelectedImages] = useState(['/images/random-game.png', '/images/random-game.png', '/images/random-game.png']);
+    const [selectedImages, setSelectedImages] = useState([
+        { id: null, imageUrl: '/images/random-game.png' },
+        { id: null, imageUrl: '/images/random-game.png' },
+        { id: null, imageUrl: '/images/random-game.png' }
+    ]);
     const [rooms, setRooms] = useState(useStore.getState().rooms);
     const [popupMessage, setPopupMessage] = useState(null);
     const router = useRouter();
@@ -40,13 +44,19 @@ const Create = () => {
     }
 
     const handleCreateRoom = () => {
-        const roomInfo = {
+        const roomInfo = [
+            {
             name: roomName,
             public: isPublic,
             mode: gameMode,
-            maps: selectedImages.filter(image => image !== '/images/random-game.png')
-        };
-        if (roomInfo.name == '' || roomInfo.mode == '') {
+            maps: selectedImages.filter(image => image.imageUrl !== '/images/random-game.png').map(image => ({ id: image.id, imageUrl: image.imageUrl }))
+            }
+        ];
+
+        // Console log to verify the selected images
+        console.log('Room Info:', roomInfo);
+
+        if (roomInfo.name === '' || roomInfo.mode === '') {
             setPopupMessage('Falten dades per omplir.');
             return;
         } else {
@@ -54,8 +64,7 @@ const Create = () => {
             if (!isPublic) {
                 do {
                     accessCode = generateAccessCode();
-                } while (rooms.some((room) => room.accessCode == accessCode));
-                // console.log(accessCode);
+                } while (rooms.some((room) => room.accessCode === accessCode));
                 roomInfo.accessCode = accessCode;
             }
             if (useStore.getState().user == null) {
@@ -74,13 +83,13 @@ const Create = () => {
                         name: userStore.name,
                         image: userStore.image
                     }
-                    socket.emit('createRoom', {addRoom: roomInfo, userAdmin: user});
+                    socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
                 } else if (userLocalStorage != null) {
                     let user = {
                         name: userLocalStorage.name,
                         image: userLocalStorage.image
                     }
-                    socket.emit('createRoom', {addRoom: roomInfo, userAdmin: user});
+                    socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
                 }
             }
         }
@@ -133,7 +142,7 @@ const Create = () => {
                         Crear Sala
                     </button>
                 </div>
-                <Fases fases={[1, 2, 3]} selectedImages={selectedImages} />
+                <Fases selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
             </div>
         </div>
     );
