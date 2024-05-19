@@ -97,7 +97,7 @@ export function destroyUser(user) {
 
 export function updateUser(user) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}users/`, {
+        fetch(`${url}users/${user.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -105,13 +105,18 @@ export function updateUser(user) {
             },
             body: JSON.stringify(user)
         })
-            .then(response => response.json())
-            .then(data => {
-                resolve(data);
-            })
-            .catch(error => {
-                reject(error);
-            });
+        .then(response => {
+            if (!response.ok) {
+                reject(`Error: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            resolve(data);
+        })
+        .catch(error => {
+            reject(error);
+        });
     });
 }
 

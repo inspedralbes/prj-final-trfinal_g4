@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
+import { updateUser } from '../services/communicationManager';
 
 const Perfil = () => {
     const [newName, setNewName] = useState('');
@@ -11,38 +12,33 @@ const Perfil = () => {
 
     const [userFromLocalStorage, setUserFromLocalStorage] = useState(null); 
 
+    
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'));
         console.log('User:', user);
         setUserFromLocalStorage(user);
     }, []);
 
-    const handleNameChange = (event) => {
-        setNewName(event.target.value);
-    };
 
-    const handleUsernameChange = (event) => {
-        setNewUsername(event.target.value);
-    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    const handleEmailChange = (event) => {
-        setNewEmail(event.target.value);
-    };
+        const formData = new FormData();
+        formData.append('name', newName);
+        formData.append('username', newUsername);
+        formData.append('email', newEmail);
+        formData.append('password', newPassword);
+        formData.append('image', newImage);
 
-    const handleNewPasswordChange = (event) => {
-        setNewPassword(event.target.value);
-    };
 
-    const handleConfirmNewPasswordChange = (event) => {
-        setConfirmNewPassword(event.target.value);
-    };
-
-    const handleImageChange = (event) => {
-        setNewImage(event.target.files[0]);
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
+        try{
+            console.log('Form Data:', formData);
+            await updateUser(formData).then(data => {
+                console.log('Usuario actualizado:', data);
+            });
+        }catch(error){
+            console.log('Error al actualizar el usuario:', error);
+        }
 
         setNewName('');
         setNewUsername('');
@@ -50,6 +46,7 @@ const Perfil = () => {
         setNewPassword('');
         setConfirmNewPassword('');
         setNewImage(null);
+
     };
 
     return (
@@ -80,60 +77,64 @@ const Perfil = () => {
                             <div className="mb-6">
                                 <label htmlFor="newName" className="block text-gray-700 font-semibold mb-2">Nou nom:</label>
                                 <input
-                                    id="newName"
+                                    id="Name"
+                                    name="name"
                                     type="text"
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
                                     value={newName}
-                                    onChange={handleNameChange}
+                                    onChange={(e) => setNewName(e.target.value)}
                                 />
                             </div>
                             <div className="mb-6">
                                 <label htmlFor="newUsername" className="block text-gray-700 font-semibold mb-2">Nou nom d'usuari:</label>
                                 <input
-                                    id="newUsername"
+                                    id="username"
+                                    name="username"
                                     type="text"
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
                                     value={newUsername}
-                                    onChange={handleUsernameChange}
+                                    onChange={(e) => setNewUsername(e.target.value)}
                                 />
                             </div>
                             <div className="mb-6">
                                 <label htmlFor="newEmail" className="block text-gray-700 font-semibold mb-2">Nou correu:</label>
                                 <input
-                                    id="newEmail"
+                                    id="email"
                                     type="email"
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
                                     value={newEmail}
-                                    onChange={handleEmailChange}
+                                    onChange={(e) => setNewEmail(e.target.value)}
                                 />
                             </div>
                             <div className="mb-6">
                                 <label htmlFor="newPassword" className="block text-gray-700 font-semibold mb-2">Nova contrasenya:</label>
                                 <input
-                                    id="newPassword"
+                                    id="password"
+                                    name="password"
                                     type="password"
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
                                     value={newPassword}
-                                    onChange={handleNewPasswordChange}
+                                    onChange={(e) => setNewPassword(e.target.value)}
                                 />
                             </div>
                             <div className="mb-6">
                                 <label htmlFor="confirmNewPassword" className="block text-gray-700 font-semibold mb-2">Confirmar nova contrasenya:</label>
                                 <input
                                     id="confirmNewPassword"
-                                    type="password"
+                                    type="password_confirmation"
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
                                     value={confirmNewPassword}
-                                    onChange={handleConfirmNewPasswordChange}
+                                    onChange={(e) => setConfirmNewPassword(e.target.value)}
                                 />
                             </div>
                             <div className="mb-6">
                                 <label htmlFor="newImage" className="block text-gray-700 font-semibold mb-2">Nova imatge:</label>
                                 <input
-                                    id="newImage"
+                                    id="image"
+                                    name="img"
                                     type="file"
-                                    accept="image/*"
-                                    onChange={handleImageChange}
+                                    accept=".png, .jpg, .jpeg"
+                                    onChange={(e) => setNewImage(e.target.files[0])}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
                                 />
                             </div>

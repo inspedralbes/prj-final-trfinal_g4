@@ -67,7 +67,7 @@ io.on('connection', (socket) => {
                 players: [],
                 playersData: []
             }
-        }
+        };
         rooms.push(newRoom);
         socket.join(newRoom.id);
         io.emit('allRooms', rooms);
