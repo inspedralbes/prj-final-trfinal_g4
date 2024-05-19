@@ -92,12 +92,22 @@ io.on('connection', (socket) => {
         console.log('soy gay', findRoom);
     });
 
+    //Chat Room
+    socket.on('chatMessage', (data) => {
+        let room = findRoomByUser(socket.id);
+        room.messages.push(data);
+        io.to(room.id).emit('newMessage', room.messages);
+        console.log('chatMessage', room.messages);
+        console.log('chatMessage', data);
+    });
+
     //Change State User
     socket.on('changeState', (data) => {
         let room = findRoomByUser(socket.id);
         let user = room.users.find(user => user.id == socket.id);
         user.state = data.state;
         io.to(room.id).emit('newInfoRoom', room);
+        console.log('changeState', room);
     });
 
     //Exit Room

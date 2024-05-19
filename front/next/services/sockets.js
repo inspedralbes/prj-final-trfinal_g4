@@ -18,6 +18,12 @@ socket.on('newInfoRoom', (room) => {
     console.log(`Users: ${room.users}`);
 });
 
+//Recibir los mensajes de chat y actualizar el estate
+socket.on('chatMessage', (message) => {
+    useStore.setState({ messages: [...useStore.state.messages, message] });
+    console.log(`Chat Message: ${message}`);
+});
+
 socket.on('gameStarted', (data)=>{
     useStore.setState({ localUserSocketId: socket.id });
     // console.log(data);

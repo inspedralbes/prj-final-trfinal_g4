@@ -8,6 +8,7 @@ const Lobby = () => {
     const router = useRouter();
     var user = useStore.getState().user.name;
     const [room, setRoom] = useState(useStore.getState().room);
+    const [message, setMessage] = useState('');
 
     useEffect(() => {
         const handleRoomChange = () => {
@@ -56,7 +57,7 @@ const Lobby = () => {
                                 </div>
                                 )} 
                                 { room && room.users[1].state == 'Ready' && (
-                                    <div id='buttons-check' className='flex items-center ml-auto'>
+                                    <div className='flex items-center ml-auto text-green-500 bg-gray-600 p-2 rounded-lg'>
                                         <p>Llest per jugar!!</p>
                                     </div>
                                 )}
@@ -70,6 +71,18 @@ const Lobby = () => {
 
     const userReady = () => {
         socket.emit('changeState', { state: 'Ready' });
+    };
+
+    const sendMessage = () => {
+        if (message != '') {
+            let messageSocket = {
+                user: user,
+                message: message,
+            };
+            console.log(messageSocket);
+            socket.emit('chatMessage', messageSocket);
+            setMessage('');
+        }
     };
 
     const salirSala = () => {
@@ -119,6 +132,7 @@ const Lobby = () => {
                                     <img src="/images/random.jpg" alt="Venti" className='w-6 h-6 rounded-full order-2' />
                                 </div>
                             </div>
+                            {/* Mensaje servidor */}
                             <div className='chat-message'>
                                 <div className='flex items-center justify-center'>
                                     <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 items-center'>
@@ -133,9 +147,14 @@ const Lobby = () => {
                         </div>
                         <div className='border-t-2 border-gray-200 px-4 pt-4 mb-2 mb-16 mx-2'>
                             <div className='relative flex'>
-                                <input placeholder='Escriu un missatge...' type="text" className='focus:ring-red-500 focus:border-red-500 w-full focus:placeholder-gray-400 text-gray-600 placeholder-gray-300 pl-12 bg-gray-100 rounded-full py-3 border-gray-200' />
+                                <input 
+                                placeholder='Escriu un missatge...' 
+                                type="text" 
+                                value={message} 
+                                onChange={(e) => setMessage(e.target.value)} 
+                                className='focus:ring-red-500 focus:border-red-500 w-full focus:placeholder-gray-400 text-gray-600 placeholder-gray-300 pl-12 bg-gray-100 rounded-full py-3 border-gray-200' />
                                 <span className='absolute inset-y-0 flex items-center'>
-                                    <button className='inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300'>
+                                    <button className='inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300' onClick={sendMessage}>
                                         <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 45 45' stroke='currentColor' className='h-6 w-6 text-gray-600 fill-gray-800 hover:animate-pulse'>
                                             <g id="Layer_2"><path d="m44.4 23.1-40-16c-.4-.2-.9-.1-1.1.2-.3.3-.4.8-.2 1.1l7.8 15.6-7.8 15.6c-.2.4-.1.8.2 1.1.2.2.4.3.7.3.1 0 .3 0 .4-.1l40-16c.4-.2.6-.5.6-.9s-.2-.8-.6-.9zm-38.3-13.2 32.7 13.1h-26.2zm6.5 15.1h26.2l-32.7 13.1z" /></g>
                                         </svg>
@@ -169,7 +188,7 @@ const Lobby = () => {
                                     </div>
                                 )}
                                 { room && room.users[0].state == 'Ready' && (
-                                    <div id='buttons-check' className='flex items-center ml-auto'>
+                                    <div className='flex items-center ml-auto text-green-500 bg-gray-600 p-2 rounded-lg'>
                                         <p>Llest per jugar!!</p>
                                     </div>
                                 
