@@ -226,9 +226,11 @@ const Lobby = () => {
                         </div>
                     </div>
                 </div>
-                <button className="text-white text-2xl font-bold py-2 px-4 w-40 rounded mt-5 bg-red-500 hover:bg-red-700" onClick={emitStart}>
-                    Iniciar Joc
-                </button>
+                {  user == adminUser && room && room.users[0].state == 'Ready' &&  room.users[1].state == 'Ready' && (
+                    <button className="text-white text-2xl font-bold py-2 px-4 w-40 rounded mt-5 bg-red-500 hover:bg-red-700" onClick={emitStart}>
+                        Iniciar Joc
+                    </button>
+                )}
             </div>
         </div>
     );
