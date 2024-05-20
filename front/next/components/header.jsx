@@ -91,12 +91,12 @@ const Header = () => {
     } else {
         content = (
             <div className="flex items-center">
-                <a href="/CrearMapes" className="mr-4 text-white mr-6 hover:text-yellow-500">
+                <Link href="/CrearMapes" className="mr-4 text-white mr-6 hover:text-yellow-500">
                     Pujar Mapes
-                </a>
-                <a href="/howToPlay" className="mr-4 text-white mr-6 hover:text-yellow-500">
+                </Link>
+                <Link href="/howToPlay" className="mr-4 text-white mr-6 hover:text-yellow-500">
                     Tutorial
-                </a>
+                </Link>
                 <Link href="/login">
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded mr-4 mt-4 md:mt-0">LOGIN</button>
                 </Link>
