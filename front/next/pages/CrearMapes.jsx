@@ -20,20 +20,14 @@ const steps = [
     },
     {
         icon: FaLayerGroup,
-        title: "Utilitza aquesta imatge com Tileset",
+        title: "Utilitza aquesta imatge com Tileset i crea totes les capes",
         description: (
             <>
-                Utilitza aquesta imatge com 
-                <a href="/assets/White-terrain.png" download className="underline ml-1">Tileset</a>.
-            </>
-        ),
-    },
-    {
-        icon: FaLayerGroup,
-        title: "Crea totes les capes",
-        description: (
-            <>
-                Crea totes les capes que vulguis que tingui el teu mapa, tenint en compte el següent:
+                <p>
+                    Utilitza aquesta imatge com 
+                    <a href="/assets/White-terrain.png" download className="underline ml-1">Tileset</a>.
+                </p>
+                <p className="mt-4">Crea totes les capes que vulguis que tingui el teu mapa, tenint en compte el següent:</p>
                 <ul className="list-disc list-inside ml-4">
                     <li>Si el mapa és de dificultat 1, les capes obligatòries són: Red, Blue i Purple.</li>
                     <li>Si el mapa és de dificultat 2, les capes obligatòries són: Red, Blue, Purple, Orange, Green i Yellow.</li>
@@ -44,9 +38,10 @@ const steps = [
     },
     {
         icon: FaLayerGroup,
-        title: "Noms i tipus d'objectes",
+        title: "Noms i tipus d'objectes i variables dels objectes",
         description: (
             <>
+                <p>Noms i tipus d'objectes:</p>
                 <ul className="list-disc list-inside ml-4">
                     <li>Tots han d'estar a la capa d'objectes, que es diu "objects".</li>
                     <li>Si vols crear una plataforma, el seu nom ha de ser "platform".</li>
@@ -55,14 +50,7 @@ const steps = [
                     <li>Les banderes de final de partida es diuen "endGame".</li>
                     <li>Les zones de mort s'han de dir "death".</li>
                 </ul>
-            </>
-        ),
-    },
-    {
-        icon: FaLayerGroup,
-        title: "Variables dels objectes",
-        description: (
-            <>
+                <p className="mt-4">Variables dels objectes:</p>
                 <ul className="list-disc list-inside ml-4">
                     <li><strong>button:</strong> affected (a quina plataforma afecta), color (Red, Bla, Pur, Gre, Gra, Yel, Blu, Ora, Whi).</li>
                     <li><strong>platform:</strong> affected, color, direction (up, down, left, right), movement (quant es mou), velocity (Fast, Normal).</li>
@@ -79,7 +67,11 @@ const steps = [
     {
         icon: FaUpload,
         title: "Puja el mapa",
-        description: "Puja el mapa a la web i a jugar!",
+        description: (
+            <>
+                Puja el mapa <a href="/mapas" className="underline">aquí</a> i a jugar!
+            </>
+        ),
     },
 ];
 
