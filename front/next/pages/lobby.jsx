@@ -153,44 +153,6 @@ const Lobby = () => {
                     <div className='h-[600px] max-w-[500px] mx-auto lg:min-w-[400px] bg-gray-700 rounded-lg flex flex-col m-5 mt-9'>
                         <div id='messages' className='flex-grow flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-rhumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
                             { chatMessages }
-                            {/* Primer Mensaje */}
-                            {/* <div className='chat-message'>
-                                <div className='flex items-end'>
-                                    <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start'>
-                                        <div>
-                                            <span className='px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600'>
-                                                Hola! Com estas? (altre usuari)
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <img src="/images/random.jpg" alt="Venti" className='w-6 h-6 rounded-full order-1' />
-                                </div>
-                            </div> */}
-                            {/* Segundo Mensaje */}
-                            {/* <div className='chat-message'>
-                                <div className='flex items-end justify-end'>
-                                    <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end'>
-                                        <div>
-                                            <span className='px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white'>
-                                                Hola! Bé i tu? (tu)
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <img src="/images/random.jpg" alt="Venti" className='w-6 h-6 rounded-full order-2' />
-                                </div>
-                            </div> */}
-                            {/* Mensaje servidor */}
-                            {/* <div className='chat-message'>
-                                <div className='flex items-center justify-center'>
-                                    <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 items-center'>
-                                        <div>
-                                            <span className='px-4 py-2 rounded-lg inline-block bg-red-600 text-white'>
-                                                Missatges Servidor
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
                         </div>
                         <div className='border-t-2 border-gray-200 px-4 pt-4 mb-2 mb-16 mx-2'>
                             <div className='relative flex'>
