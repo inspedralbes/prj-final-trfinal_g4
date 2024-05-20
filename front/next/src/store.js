@@ -8,7 +8,7 @@ const useStore = createStore(devtools((set) => ({
     setRooms: (rooms) => set({ rooms }),
     room: null,
     setRoom: (room) => set({ room }),
-    messages: null,
+    messages: [],
     setMessages: (messages) => set({ messages }),
     playerData: [],
     setPlayerData: (playerData) => set({ playerData }),
