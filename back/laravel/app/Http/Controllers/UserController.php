@@ -133,8 +133,20 @@ class UserController extends Controller
             ], 404);
         }
 
-        $user->name = $request->name;
-        $user->username = $request->username;
+        
+        if ($request->name) {
+            $request->validate([
+                'name' => 'required'
+            ]);
+            $user->name = $request->name;
+        }
+
+        if ($request->username) {
+            $request->validate([
+                'username' => 'required'
+            ]);
+            $user->username = $request->username;
+        }
 
         if ($request->email) {
             $request->validate([
@@ -143,17 +155,11 @@ class UserController extends Controller
             $user->email = $request->email;
         }
 
-        if ( $request->password && $request->oldPassword) {
+        if ( $request->password) {
             $request->validate([
                 'password' => 'required|confirmed'
             ]);
-            if (!Hash::check($request->oldPassword, $user->password)) {
-                return response()->json([
-                    'message' => 'Old password is incorrect'
-                ], 400);
-            } else {
-                $user->password = Hash::make($request->password);
-            }
+            $user->password = Hash::make($request->password);
         }
 
         if ($request->hasFile('image')) {
@@ -165,8 +171,19 @@ class UserController extends Controller
         }
 
         //booleans
-        $user->admin = $request->admin;
-        $user->googleLogin = $request->googleLogin;
+        if ($request->admin) {
+            $request->validate([
+                'admin' => 'required'
+            ]);
+            $user->admin = $request->admin;
+        }
+        
+        if ($request->googleLogin) {
+            $request->validate([
+                'googleLogin' => 'required'
+            ]);
+            $user->googleLogin = $request->googleLogin;
+        }
 
         if ($user->save() == false) {
             return response()->json([
@@ -175,9 +192,11 @@ class UserController extends Controller
         } else {
             return response()->json([
                 'message' => 'User updated!',
-                'user' => $user->name,
+                'user' => $user->username,
                 'id' => $user->id,
-                'admin' => $user->admin
+                'admin' => $user->admin,
+                'email' => $user->email,
+                'image' => $user->image
             ], 200);
         }
     }

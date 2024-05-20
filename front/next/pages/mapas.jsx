@@ -22,10 +22,9 @@ function Mapas() {
         formData.append('img', img);
         formData.append('map', map);
         formData.append('user_id', id);
-    
+        
         try {
-            console.log('User:', id);
-            console.log('Token:', token);
+
             console.log('Form Data:', formData);
             await createMap(formData, token);
             alert('Mapa creado exitosamente');

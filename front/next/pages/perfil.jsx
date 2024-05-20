@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import Header from '../components/header';
+import { updateUser } from '../services/communicationManager';
+import { useRouter } from 'next/router';
 
 const Perfil = () => {
-    const [newName, setNewName] = useState('');
-    const [newUsername, setNewUsername] = useState('');
-    const [newEmail, setNewEmail] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmNewPassword, setConfirmNewPassword] = useState('');
-    const [newImage, setNewImage] = useState(null);
+    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [password_confirmation, setConfirmPassword] = useState('');
+    const [image, setImage] = useState(null);
+    const router = useRouter();
 
-    const [userFromLocalStorage, setUserFromLocalStorage] = useState(null); 
+    const [userFromLocalStorage, setUserFromLocalStorage] = useState(null);
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'));
@@ -17,123 +20,152 @@ const Perfil = () => {
         setUserFromLocalStorage(user);
     }, []);
 
-    const handleNameChange = (event) => {
-        setNewName(event.target.value);
-    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    const handleUsernameChange = (event) => {
-        setNewUsername(event.target.value);
-    };
+        const user = JSON.parse(localStorage.getItem('user'));
+        const token = user.token;
+        const userId = user.id;
 
-    const handleEmailChange = (event) => {
-        setNewEmail(event.target.value);
-    };
+        const formData = new FormData();
+        formData.append('user_id', userId);  // Add user ID to formData
+        if (name != '') formData.append('name', name);
+        if (username != '') formData.append('username', username);
+        if (email != '') formData.append('email', email);
+        if (password != '') formData.append('password', password);
+        if (password_confirmation != '') formData.append('password_confirmation', password_confirmation);
+        if (image != null) formData.append('image', image);
 
-    const handleNewPasswordChange = (event) => {
-        setNewPassword(event.target.value);
-    };
+        try {
+            console.log('Form Data:', formData);
+            console.log('Token:', token);
+            console.log('User ID:', userId);
+            await updateUser(formData, token).then(data => {
+                console.log('Usuario actualizado:', data);
+                localStorage.setItem('user', 
+                    JSON.stringify({
+                        name: data.user,
+                        email: data.email,
+                        id: data.id,
+                        admin: data.admin,
+                        image: data.image,
+                        token: token
+                    })
+                );
+                useStore.setState({
+                    user: {
+                        name: data.user,
+                        email: data.email,
+                        id: data.id,
+                        admin: data.admin,
+                        image: data.image,
+                        token: token
+                    }
+                });
+            });
+        } catch (error) {
+            console.log('Error al actualizar el usuario:', error);
+        }
 
-    const handleConfirmNewPasswordChange = (event) => {
-        setConfirmNewPassword(event.target.value);
-    };
-
-    const handleImageChange = (event) => {
-        setNewImage(event.target.files[0]);
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        setNewName('');
-        setNewUsername('');
-        setNewEmail('');
-        setNewPassword('');
-        setConfirmNewPassword('');
-        setNewImage(null);
+        setName('');
+        setUsername('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setImage(null);
+        router.reload();
     };
 
     return (
-        <div className="h-screen overflow-hidden">
+        <div className="min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
             <Header />
-            <div className="flex h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
-                {/* Información del perfil */}
-                <div className="bg-gray-700 text-white flex flex-col justify-center items-center w-1/5 pt-20">
-                    <div className="mb-8 flex flex-col items-center text-xl w-full">
-                    <img src={userFromLocalStorage && userFromLocalStorage.image ? 'http://localhost:8000'+userFromLocalStorage.image : '/images/profiles/default.png'} alt="User" className="w-36 h-36 rounded-full" />
-
-                    </div>
-                    <div className="mb-8 flex items-center text-xl w-full">
-                        <label className="block font-semibold w-1/3 -mr-3 ml-16">Nom d'usuari: </label>
-                        <p className="inline-block whitespace-nowrap">{userFromLocalStorage ? userFromLocalStorage.name : "Username"}</p>
-                    </div>
-                    <div className="mb-8 flex items-center text-xl w-full">
-                        <label className="block font-semibold w-1/3 -mr-16 ml-16">Correu: </label>
-                        <p className="inline-block whitespace-nowrap ml-4">{userFromLocalStorage ? userFromLocalStorage.email : "Email"}</p>
+            <div className='grid grid-cols-4'>
+                <div className="bg-gray-700 text-white min-h-screen">
+                    <div className="flex flex-col justify-center items-center text-center min-h-screen p-4">
+                        <div className="text-xl mx-auto mb-3">
+                            <img
+                                src={userFromLocalStorage && userFromLocalStorage.image ? 'http://localhost:8000' + userFromLocalStorage.image : '/images/profiles/default.png'}
+                                alt="User"
+                                className="w-24 h-24 md:w-36 md:h-36 rounded-full"
+                            />
+                        </div>
+                        <div className="mx-auto text-lg md:text-xl mb-3 text-center w-full max-w-xs md:max-w-md">
+                            <label className="font-semibold block truncate">Nom d'usuari:</label>
+                            <p className="truncate">{userFromLocalStorage ? userFromLocalStorage.name : "Username"}</p>
+                        </div>
+                        <div className="mx-auto text-lg md:text-xl text-center w-full max-w-xs md:max-w-md">
+                            <label className="font-semibold block truncate">Correu:</label>
+                            <p className="truncate">{userFromLocalStorage ? userFromLocalStorage.email : "Email"}</p>
+                        </div>
                     </div>
                 </div>
-
-                {/* Formulario de editar perfil */}
-                <div className="flex-1 flex items-center justify-center mb-16"> {/* Ajuste de clases para centrar */}
-                    <div className="w-4/6 max-w-xl bg-gray-100 rounded-lg shadow-lg p-8 mr-10"> {/* Ajuste de clases para hacerlo más ancho y agregar margen */}
-                        <h2 className="text-3xl font-bold mb-8 text-gray-800">Editar perfil</h2>
+                <div className="col-span-3 flex flex-col items-center justify-center mt-9 pt-9">
+                    <div className="w-4/6 max-w-xl bg-gray-100 rounded-lg shadow-lg p-8 mr-10">
+                        <h2 className="text-3xl font-bold mb-8 text-gray-800 truncate">Editar perfil</h2>
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="mb-6">
-                                <label htmlFor="newName" className="block text-gray-700 font-semibold mb-2">Nou nom:</label>
+                                <label htmlFor="newName" className="block text-gray-700 font-semibold mb-2 truncate">Nou nom:</label>
                                 <input
-                                    id="newName"
+                                    id="Name"
+                                    name="name"
                                     type="text"
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
-                                    value={newName}
-                                    onChange={handleNameChange}
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
                                 />
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="newUsername" className="block text-gray-700 font-semibold mb-2">Nou nom d'usuari:</label>
+                                <label htmlFor="newUsername" className="block text-gray-700 font-semibold mb-2 truncate">Nou nom d'usuari:</label>
                                 <input
-                                    id="newUsername"
+                                    id="username"
+                                    name="username"
                                     type="text"
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
-                                    value={newUsername}
-                                    onChange={handleUsernameChange}
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
                                 />
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="newEmail" className="block text-gray-700 font-semibold mb-2">Nou correu:</label>
+                                <label htmlFor="newEmail" className="block text-gray-700 font-semibold mb-2 truncate">Nou correu:</label>
                                 <input
-                                    id="newEmail"
+                                    id="email"
                                     type="email"
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
-                                    value={newEmail}
-                                    onChange={handleEmailChange}
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="newPassword" className="block text-gray-700 font-semibold mb-2">Nova contrasenya:</label>
+                                <label htmlFor="newPassword" className="block text-gray-700 font-semibold mb-2 truncate">Nova contrasenya:</label>
                                 <input
-                                    id="newPassword"
+                                    id="password"
+                                    name="password"
                                     type="password"
+                                    min={8}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
-                                    value={newPassword}
-                                    onChange={handleNewPasswordChange}
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="confirmNewPassword" className="block text-gray-700 font-semibold mb-2">Confirmar nova contrasenya:</label>
+                                <label htmlFor="confirmNewPassword" className="block text-gray-700 font-semibold mb-2 truncate">Confirmar nova contrasenya:</label>
                                 <input
                                     id="confirmNewPassword"
                                     type="password"
+                                    min={8}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
-                                    value={confirmNewPassword}
-                                    onChange={handleConfirmNewPasswordChange}
+                                    value={password_confirmation}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
                                 />
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="newImage" className="block text-gray-700 font-semibold mb-2">Nova imatge:</label>
+                                <label htmlFor="newImage" className="block text-gray-700 font-semibold mb-2 truncate">Nova imatge:</label>
                                 <input
-                                    id="newImage"
+                                    id="image"
+                                    name="img"
                                     type="file"
-                                    accept="image/*"
-                                    onChange={handleImageChange}
+                                    accept=".png, .jpg, .jpeg"
+                                    onChange={(e) => setImage(e.target.files[0])}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
                                 />
                             </div>

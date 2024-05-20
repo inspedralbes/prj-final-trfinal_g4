@@ -14,8 +14,6 @@ socket.on('allRooms', (rooms) => {
 //Recibir la nueva room que se ha creado y actualizar el estate
 socket.on('newInfoRoom', (room) => {
     useStore.setState({ room });
-    console.log(`New INFO ROOM: ${room}`);
-    console.log(`Users: ${room.users}`);
 });
 
 //Recibir los mensajes de chat y actualizar el estate

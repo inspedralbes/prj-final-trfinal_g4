@@ -95,23 +95,27 @@ export function destroyUser(user) {
     });
 }
 
-export function updateUser(user) {
+export function updateUser(userData, token) {
     return new Promise((resolve, reject) => {
         fetch(`${url}users/`, {
-            method: 'PUT',
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
+                'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(user)
+            body: userData
         })
-            .then(response => response.json())
-            .then(data => {
-                resolve(data);
-            })
-            .catch(error => {
-                reject(error);
-            });
+        .then(response => {
+            if (!response.ok) {
+                reject(`Error: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            resolve(data);
+        })
+        .catch(error => {
+            reject(error);
+        });
     });
 }
 

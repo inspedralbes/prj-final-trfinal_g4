@@ -34,7 +34,6 @@ Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{user}', [UserController::class, 'show']);
 Route::get('/allUsers', [UserController::class, 'showAllUsers']);
 Route::post('/users', [UserController::class, 'store']);
-Route::put('/users/{user}', [UserController::class, 'update']);
 Route::delete('/users/{user}', [UserController::class, 'destroy']);
 
 Route::get('/reportedMaps', [ReportedMapsController::class, 'index']);
@@ -50,6 +49,7 @@ Route::post('/register', [UserController::class, 'store']);
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     //users
+    Route::post('/users', [UserController::class, 'update']);
     Route::post('/logout', [UserController::class, 'logout']);
     //maps
     Route::post('/maps', [MapController::class, 'store']);
