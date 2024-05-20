@@ -49,7 +49,7 @@ Route::post('/register', [UserController::class, 'store']);
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     //users
-    Route::put('/users', [UserController::class, 'update']);
+    Route::post('/users', [UserController::class, 'update']);
     Route::post('/logout', [UserController::class, 'logout']);
     //maps
     Route::post('/maps', [MapController::class, 'store']);

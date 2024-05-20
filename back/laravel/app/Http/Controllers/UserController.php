@@ -155,17 +155,11 @@ class UserController extends Controller
             $user->email = $request->email;
         }
 
-        if ( $request->password && $request->oldPassword) {
+        if ( $request->password) {
             $request->validate([
                 'password' => 'required|confirmed'
             ]);
-            if (!Hash::check($request->oldPassword, $user->password)) {
-                return response()->json([
-                    'message' => 'Old password is incorrect'
-                ], 400);
-            } else {
-                $user->password = Hash::make($request->password);
-            }
+            $user->password = Hash::make($request->password);
         }
 
         if ($request->hasFile('image')) {
@@ -198,9 +192,11 @@ class UserController extends Controller
         } else {
             return response()->json([
                 'message' => 'User updated!',
-                'user' => $user->name,
+                'user' => $user->username,
                 'id' => $user->id,
-                'admin' => $user->admin
+                'admin' => $user->admin,
+                'email' => $user->email,
+                'image' => $user->image
             ], 200);
         }
     }

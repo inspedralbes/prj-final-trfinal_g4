@@ -3,6 +3,7 @@ import Link from 'next/link';
 import useStore from '../src/store';
 import { logout } from '../services/communicationManager';
 import ErrorPopup from '../components/errorPopup';
+import { useRouter } from 'next/router';
 
 const Header = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -10,6 +11,7 @@ const Header = () => {
     const [token, setToken] = useState(null);
     const [user, setUser] = useState(null);
     const [image, setImage] = useState(null);
+    const router = useRouter();
 
     const url = 'http://localhost:8000';
 
@@ -17,8 +19,8 @@ const Header = () => {
         const userStore = useStore.getState().user;
 
         if ( userStore != null ) {
-            setToken(userStore.name);
-            setUser(userStore.token);
+            setToken(userStore.token);
+            setUser(userStore.name);
             setImage(userStore.image);
         } else {
             try {
@@ -51,13 +53,14 @@ const Header = () => {
 
     const logoutHandler = () => {
         let tokenClean = token.replace(/['"]+/g, '');
-        
+        console.log('Token:', tokenClean);
         if (tokenClean) {
             logout(tokenClean).then(() => {
                 localStorage.removeItem('user');
                 useStore.setState({ user: null });
                 setToken(null);
                 setUser(null);
+                router.push('/');
             }).catch(() => {
                 setErrorMessage('Error tancant la sessió.');
             });

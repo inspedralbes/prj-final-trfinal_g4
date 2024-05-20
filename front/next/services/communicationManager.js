@@ -95,15 +95,14 @@ export function destroyUser(user) {
     });
 }
 
-export function updateUser(user) {
+export function updateUser(userData, token) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}users/${user.id}`, {
-            method: 'PUT',
+        fetch(`${url}users/`, {
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
+                'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(user)
+            body: userData
         })
         .then(response => {
             if (!response.ok) {

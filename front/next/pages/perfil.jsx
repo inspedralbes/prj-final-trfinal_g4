@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import Header from '../components/header';
 import { updateUser } from '../services/communicationManager';
+import { useRouter } from 'next/router';
 
 const Perfil = () => {
     const [name, setName] = useState('');
@@ -9,8 +10,9 @@ const Perfil = () => {
     const [password, setPassword] = useState('');
     const [password_confirmation, setConfirmPassword] = useState('');
     const [image, setImage] = useState(null);
+    const router = useRouter();
 
-    const [userFromLocalStorage, setUserFromLocalStorage] = useState(null); 
+    const [userFromLocalStorage, setUserFromLocalStorage] = useState(null);
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'));
@@ -22,22 +24,44 @@ const Perfil = () => {
         e.preventDefault();
 
         const user = JSON.parse(localStorage.getItem('user'));
-        const token = user.token;  // Assuming the token is stored in the user object
+        const token = user.token;
         const userId = user.id;
 
         const formData = new FormData();
-        formData.append('id', userId);  // Add user ID to formData
-        formData.append('name', name);
-        formData.append('username', username);
-        formData.append('email', email);
-        formData.append('password', password);
-        formData.append('password_confirmation', password_confirmation);
-        formData.append('image', image);
+        formData.append('user_id', userId);  // Add user ID to formData
+        if (name != '') formData.append('name', name);
+        if (username != '') formData.append('username', username);
+        if (email != '') formData.append('email', email);
+        if (password != '') formData.append('password', password);
+        if (password_confirmation != '') formData.append('password_confirmation', password_confirmation);
+        if (image != null) formData.append('image', image);
 
         try {
             console.log('Form Data:', formData);
+            console.log('Token:', token);
+            console.log('User ID:', userId);
             await updateUser(formData, token).then(data => {
                 console.log('Usuario actualizado:', data);
+                localStorage.setItem('user', 
+                    JSON.stringify({
+                        name: data.user,
+                        email: data.email,
+                        id: data.id,
+                        admin: data.admin,
+                        image: data.image,
+                        token: token
+                    })
+                );
+                useStore.setState({
+                    user: {
+                        name: data.user,
+                        email: data.email,
+                        id: data.id,
+                        admin: data.admin,
+                        image: data.image,
+                        token: token
+                    }
+                });
             });
         } catch (error) {
             console.log('Error al actualizar el usuario:', error);
@@ -49,31 +73,38 @@ const Perfil = () => {
         setPassword('');
         setConfirmPassword('');
         setImage(null);
+        router.reload();
     };
 
     return (
-        <div className="h-screen overflow-hidden">
+        <div className="min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
             <Header />
-            <div className="flex h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
-                <div className="bg-gray-700 text-white flex flex-col justify-center items-center w-1/5 pt-20">
-                    <div className="mb-8 flex flex-col items-center text-xl w-full">
-                    <img src={userFromLocalStorage && userFromLocalStorage.image ? 'http://localhost:8000'+userFromLocalStorage.image : '/images/profiles/default.png'} alt="User" className="w-36 h-36 rounded-full" />
-                    </div>
-                    <div className="mb-8 flex items-center text-xl w-full">
-                        <label className="block font-semibold w-1/3 -mr-3 ml-16">Nom d'usuari: </label>
-                        <p className="inline-block whitespace-nowrap">{userFromLocalStorage ? userFromLocalStorage.name : "Username"}</p>
-                    </div>
-                    <div className="mb-8 flex items-center text-xl w-full">
-                        <label className="block font-semibold w-1/3 -mr-16 ml-16">Correu: </label>
-                        <p className="inline-block whitespace-nowrap ml-4">{userFromLocalStorage ? userFromLocalStorage.email : "Email"}</p>
+            <div className='grid grid-cols-4'>
+                <div className="bg-gray-700 text-white min-h-screen">
+                    <div className="flex flex-col justify-center items-center text-center min-h-screen p-4">
+                        <div className="text-xl mx-auto mb-3">
+                            <img
+                                src={userFromLocalStorage && userFromLocalStorage.image ? 'http://localhost:8000' + userFromLocalStorage.image : '/images/profiles/default.png'}
+                                alt="User"
+                                className="w-24 h-24 md:w-36 md:h-36 rounded-full"
+                            />
+                        </div>
+                        <div className="mx-auto text-lg md:text-xl mb-3 text-center w-full max-w-xs md:max-w-md">
+                            <label className="font-semibold block truncate">Nom d'usuari:</label>
+                            <p className="truncate">{userFromLocalStorage ? userFromLocalStorage.name : "Username"}</p>
+                        </div>
+                        <div className="mx-auto text-lg md:text-xl text-center w-full max-w-xs md:max-w-md">
+                            <label className="font-semibold block truncate">Correu:</label>
+                            <p className="truncate">{userFromLocalStorage ? userFromLocalStorage.email : "Email"}</p>
+                        </div>
                     </div>
                 </div>
-                <div className="flex-1 flex items-center justify-center mb-16">
+                <div className="col-span-3 flex flex-col items-center justify-center mt-9 pt-9">
                     <div className="w-4/6 max-w-xl bg-gray-100 rounded-lg shadow-lg p-8 mr-10">
-                        <h2 className="text-3xl font-bold mb-8 text-gray-800">Editar perfil</h2>
+                        <h2 className="text-3xl font-bold mb-8 text-gray-800 truncate">Editar perfil</h2>
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="mb-6">
-                                <label htmlFor="newName" className="block text-gray-700 font-semibold mb-2">Nou nom:</label>
+                                <label htmlFor="newName" className="block text-gray-700 font-semibold mb-2 truncate">Nou nom:</label>
                                 <input
                                     id="Name"
                                     name="name"
@@ -84,7 +115,7 @@ const Perfil = () => {
                                 />
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="newUsername" className="block text-gray-700 font-semibold mb-2">Nou nom d'usuari:</label>
+                                <label htmlFor="newUsername" className="block text-gray-700 font-semibold mb-2 truncate">Nou nom d'usuari:</label>
                                 <input
                                     id="username"
                                     name="username"
@@ -95,7 +126,7 @@ const Perfil = () => {
                                 />
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="newEmail" className="block text-gray-700 font-semibold mb-2">Nou correu:</label>
+                                <label htmlFor="newEmail" className="block text-gray-700 font-semibold mb-2 truncate">Nou correu:</label>
                                 <input
                                     id="email"
                                     type="email"
@@ -105,28 +136,30 @@ const Perfil = () => {
                                 />
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="newPassword" className="block text-gray-700 font-semibold mb-2">Nova contrasenya:</label>
+                                <label htmlFor="newPassword" className="block text-gray-700 font-semibold mb-2 truncate">Nova contrasenya:</label>
                                 <input
                                     id="password"
                                     name="password"
                                     type="password"
+                                    min={8}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="confirmNewPassword" className="block text-gray-700 font-semibold mb-2">Confirmar nova contrasenya:</label>
+                                <label htmlFor="confirmNewPassword" className="block text-gray-700 font-semibold mb-2 truncate">Confirmar nova contrasenya:</label>
                                 <input
                                     id="confirmNewPassword"
                                     type="password"
+                                    min={8}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
                                     value={password_confirmation}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                 />
                             </div>
                             <div className="mb-6">
-                                <label htmlFor="newImage" className="block text-gray-700 font-semibold mb-2">Nova imatge:</label>
+                                <label htmlFor="newImage" className="block text-gray-700 font-semibold mb-2 truncate">Nova imatge:</label>
                                 <input
                                     id="image"
                                     name="img"
