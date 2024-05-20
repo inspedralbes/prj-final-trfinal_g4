@@ -16,7 +16,7 @@ const Header = () => {
     useEffect(() => {
         const userStore = useStore.getState().user;
 
-        if ( userStore != null ) {
+        if (userStore != null) {
             setToken(userStore.name);
             setUser(userStore.token);
             setImage(userStore.image);
@@ -51,7 +51,7 @@ const Header = () => {
 
     const logoutHandler = () => {
         let tokenClean = token.replace(/['"]+/g, '');
-        
+
         if (tokenClean) {
             logout(tokenClean).then(() => {
                 localStorage.removeItem('user');
@@ -64,11 +64,17 @@ const Header = () => {
         }
         setDropdownOpen(false);
     };
-    
+
     let content;
     if (token && user) {
         content = (
             <div className="profile relative text-white">
+                <a href="/CrearMapes" className="mr-4 text-white mr-6 hover:text-yellow-500">
+                    Pujar Mapes
+                </a>
+                <a href="/howToPlay" className="mr-4">
+                    Tutorial
+                </a>
                 <img src={`${url}${image}`} className="w-10 h-10 mx-4 text-3xl cursor-pointer rounded-full" onClick={toggleDropdown} />
                 {dropdownOpen && (
                     <div className="dropdown absolute right-0 mt-2 bg-black bg-opacity-50 rounded-md shadow-lg">
@@ -81,9 +87,17 @@ const Header = () => {
         );
     } else {
         content = (
-            <Link href="/login">
-                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded mr-4 mt-4 md:mt-0">LOGIN</button>
-            </Link>
+            <div className="flex items-center">
+                <a href="/CrearMapes" className="mr-4 text-white mr-6 hover:text-yellow-500">
+                    Pujar Mapes
+                </a>
+                <a href="/howToPlay" className="mr-4 text-white mr-6 hover:text-yellow-500">
+                    Tutorial
+                </a>
+                <Link href="/login">
+                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded mr-4 mt-4 md:mt-0">LOGIN</button>
+                </Link>
+            </div>
         );
     }
 
@@ -94,7 +108,7 @@ const Header = () => {
             </Link>
             <div className="flex items-center">
                 {content}
-                {errorMessage && <ErrorPopup message={errorMessage} />} {/* Mostrar el popup de error si hay un mensaje de error */}
+                {errorMessage && <ErrorPopup message={errorMessage} />}
             </div>
         </header>
     );
