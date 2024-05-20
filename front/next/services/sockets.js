@@ -20,7 +20,8 @@ socket.on('newInfoRoom', (room) => {
 
 //Recibir los mensajes de chat y actualizar el estate
 socket.on('newMessage', (message) => {
-    useStore.setState({ messages: [...useStore.state.messages, message] });
+    const currentMessages = useStore.getState().messages;
+    useStore.setState({ messages: [...currentMessages, message] });
     console.log(`Chat Message: ${message}`);
 });
 

@@ -27,7 +27,7 @@ const Lobby = () => {
         };
     }, [router.pathname]);
 
-    let chatMessages = null;
+    let chatMessages = '';
     if ( room && room.messages ) {
         room.messages.map((message) => {
             console.log(message);
@@ -144,10 +144,10 @@ const Lobby = () => {
     });
 
     return (
-        <div>
+        <div className='bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen'>
             <Header />
-            <div className='bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4  text-white'>
-                <h1 className='text-4xl font-bold tracking-wider my-5 animate-pulse text-center'>ESPERANT ACOMPANYANT</h1>
+            <div className='flex flex-col justify-center items-center p-4 text-white mt-9'>
+                <h1 className='text-4xl font-bold tracking-wider my-5 animate-pulse text-center mt-9 pt-9'>ESPERANT ACOMPANYANT</h1>
                 <div className='min-h-[600px] max-w-[500px] lg:min-w-[850px] text-center lg:flex lg:flex-inline'>
                     {/* Chat section */}
                     <div className='h-[600px] max-w-[500px] mx-auto lg:min-w-[400px] bg-gray-700 rounded-lg flex flex-col m-5 mt-9'>
@@ -275,7 +275,7 @@ const Lobby = () => {
                         </div>
                     </div>
                 </div>
-                {  user == adminUser && room && room.users[0].state == 'Ready' &&  room.users[1].state == 'Ready' && (
+                {  user == adminUser && room && room.users.length > 1 && room.users[0].state == 'Ready' &&  room.users[1].state == 'Ready' && (
                     <button className="text-white text-2xl font-bold py-2 px-4 w-40 rounded mt-5 bg-red-500 hover:bg-red-700" onClick={emitStart}>
                         Iniciar Joc
                     </button>
