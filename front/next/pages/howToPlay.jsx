@@ -14,7 +14,7 @@ const HowToPlay = () => {
                 <div className="min-h-1/2 w-full mt-6 mb-4">
                     <div className="flex flex-col items-center justify-center m-4">
                         <p className="text-lg tracking-widest mb-4 text-center bg-blue-950 bg-opacity-30 p-5 rounded-lg">
-                            Es juga utilitzant el teclat. Amb la tecla "A" per moure's a l'esquerra, la tecla "D" per moure's a la dreta, <br /> i si prems "Shift" pots canviar l'acció del personatge de caminar a córrer. <br /> La barra espaiadora serveix per saltar, amb la tecla "E" interactuem amb els objectes del videojoc, <br /> mentre que amb la tecla "Q" invoquem la germana i ens agachem amb el control, <br /> també volem implementar un controlador d'Xbox.
+                            Amb la flecha esquerra et mous cap a l'esquerra, amb la flecha dreta et mous cap a la dreta, amb la flecha amunt saltes i amb l'espai cambies de color'.
                         </p>
                     </div>
                     <div className="lg:flex lg:items-center lg:justify-center mt-9">
