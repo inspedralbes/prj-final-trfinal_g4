@@ -133,8 +133,20 @@ class UserController extends Controller
             ], 404);
         }
 
-        $user->name = $request->name;
-        $user->username = $request->username;
+        
+        if ($request->name) {
+            $request->validate([
+                'name' => 'required'
+            ]);
+            $user->name = $request->name;
+        }
+
+        if ($request->username) {
+            $request->validate([
+                'username' => 'required'
+            ]);
+            $user->username = $request->username;
+        }
 
         if ($request->email) {
             $request->validate([
@@ -165,8 +177,19 @@ class UserController extends Controller
         }
 
         //booleans
-        $user->admin = $request->admin;
-        $user->googleLogin = $request->googleLogin;
+        if ($request->admin) {
+            $request->validate([
+                'admin' => 'required'
+            ]);
+            $user->admin = $request->admin;
+        }
+        
+        if ($request->googleLogin) {
+            $request->validate([
+                'googleLogin' => 'required'
+            ]);
+            $user->googleLogin = $request->googleLogin;
+        }
 
         if ($user->save() == false) {
             return response()->json([
