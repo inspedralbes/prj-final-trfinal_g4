@@ -43,6 +43,31 @@ function nextColor(player) {
     }
     return colorToReturn;
 }
+async function getRandomMaps() {
+    let maps = [];
+    let tuto = await fetch("http://localhost:8000/api/getRandomMaps", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+    maps= await tuto.json();
+
+    return maps;
+}
+
+async function getOriginalMaps() {
+    let maps = [];
+    let tuto = await fetch("http://localhost:8000/api/defaultMaps", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+    maps= await tuto.json();
+    return maps;
+}
+
 
 async function getMapData(data) {
     let maps = [];
@@ -56,7 +81,7 @@ async function getMapData(data) {
     maps.push(tutoJson);
     switch (data.mode) {
         case 'Aleatoris':
-            let randomMaps = getRandomMaps();
+            let randomMaps = await getRandomMaps();
             randomMaps.forEach(map => {
                 maps.push(map);
             });
