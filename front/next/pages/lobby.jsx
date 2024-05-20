@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import Header from '../components/header';
 import useStore from '../src/store';
 import socket from '../services/sockets';
@@ -26,6 +26,52 @@ const Lobby = () => {
             unsubscribe();
         };
     }, [router.pathname]);
+
+    if ( room && room.messages ) {
+        let chatMessages;
+        room.messages.map((message) => {
+            console.log(message);
+            if (message.user == user) {
+                chatMessages += <div className='chat-message'>
+                                    <div className='flex items-end justify-end'>
+                                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end'>
+                                            <div>
+                                                <span className='px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white'>
+                                                    {message.message}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <img src="/images/random.jpg" alt="Venti" className='w-6 h-6 rounded-full order-2' />
+                                    </div>
+                                </div>
+            } else if (message.user == 'Server') {
+                chatMessages += <div className='chat-message'>
+                                    <div className='flex items-center justify-center'>
+                                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 items-center'>
+                                            <div>
+                                                <span className='px-4 py-2 rounded-lg inline-block bg-red-600 text-white'>
+                                                    {message.message}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+            } else {
+                chatMessages += <div className='chat-message'>
+                                    <div className='flex items-end'>
+                                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start'>
+                                            <div>
+                                                <span className='px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600'>
+                                                    {message.message}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <img src="/images/random.jpg" alt="Venti" className='w-6 h-6 rounded-full order-1' />
+                                    </div>
+                                </div>
+            }
+        });
+    }
 
     const adminUser = room && room.admin ? room.admin[1] : '';
     let otherUser = '';
@@ -106,8 +152,9 @@ const Lobby = () => {
                     {/* Chat section */}
                     <div className='h-[600px] max-w-[500px] mx-auto lg:min-w-[400px] bg-gray-700 rounded-lg flex flex-col m-5 mt-9'>
                         <div id='messages' className='flex-grow flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-rhumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
+                            { chatMessages }
                             {/* Primer Mensaje */}
-                            <div className='chat-message'>
+                            {/* <div className='chat-message'>
                                 <div className='flex items-end'>
                                     <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start'>
                                         <div>
@@ -118,9 +165,9 @@ const Lobby = () => {
                                     </div>
                                     <img src="/images/random.jpg" alt="Venti" className='w-6 h-6 rounded-full order-1' />
                                 </div>
-                            </div>
+                            </div> */}
                             {/* Segundo Mensaje */}
-                            <div className='chat-message'>
+                            {/* <div className='chat-message'>
                                 <div className='flex items-end justify-end'>
                                     <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end'>
                                         <div>
@@ -131,9 +178,9 @@ const Lobby = () => {
                                     </div>
                                     <img src="/images/random.jpg" alt="Venti" className='w-6 h-6 rounded-full order-2' />
                                 </div>
-                            </div>
+                            </div> */}
                             {/* Mensaje servidor */}
-                            <div className='chat-message'>
+                            {/* <div className='chat-message'>
                                 <div className='flex items-center justify-center'>
                                     <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 items-center'>
                                         <div>
@@ -143,7 +190,7 @@ const Lobby = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className='border-t-2 border-gray-200 px-4 pt-4 mb-2 mb-16 mx-2'>
                             <div className='relative flex'>
@@ -211,17 +258,19 @@ const Lobby = () => {
                                 <p className='text-2xl font-bold'>Mode joc:</p>
                                 <p className='text-2xl'>{room && room.mode}</p>
                                 <p className='text-2xl font-bold'>Mapes seleccionats:</p>
-                                <ul className='text-2xl font-bold flex items-center justify-center text-center mb-4 mt-2'>
-                                    <li>
-                                        <img src="/images/random.jpg" alt="mapa" className="w-24 h-12" />
-                                    </li>
-                                    <li>
-                                        <img src="/images/random.jpg" alt="mapa" className="w-24 h-12 mx-2" />
-                                    </li>
-                                    <li>
-                                        <img src="/images/random.jpg" alt="mapa" className="w-24 h-12" />
-                                    </li>
-                                </ul>
+                                { room && room.game.maps && (
+                                    <ul className='text-2xl font-bold flex items-center justify-center text-center mb-4 mt-2'>
+                                        <li>
+                                            <img src={`${room.game.maps[0].imageUrl}`} alt="mapa" className="w-24 h-12" />
+                                        </li>
+                                        <li>
+                                            <img src={`${room.game.maps[1].imageUrl}`} alt="mapa" className="w-24 h-12 mx-2" />
+                                        </li>
+                                        <li>
+                                            <img src={`${room.game.maps[2].imageUrl}`} alt="mapa" className="w-24 h-12" />
+                                        </li>
+                                    </ul>
+                                )}
                             </div>
                         </div>
                     </div>
