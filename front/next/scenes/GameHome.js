@@ -58,8 +58,9 @@ export default class GameHome extends Phaser.Scene {
     }
 
     create() {
-
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMA",{key:'mapa'});
         const map = this.make.tilemap({ key: 'mapa' });
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA", map);
         const tileset = map.addTilesetImage('tilesetWhite', 'tileset');
         let gray = null;
         let white = null;
@@ -1578,6 +1579,12 @@ export default class GameHome extends Phaser.Scene {
                     this.character1.setTint(this.colors.find(color => color.color == data.color).hex);
                 }
             }
+        });
+        socket.on('winFront', () => {
+            this.scene.start('Preloader');
+        });
+        socket.on('finishGame', () => { 
+            this.scene.start('finishGame');
         });
         if (this.player == 1) {
             switch (useStore.getState().gameData.playersData[0].color) {

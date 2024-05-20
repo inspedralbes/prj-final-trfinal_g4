@@ -19,7 +19,7 @@ use App\Http\Controllers\ReportedMapsController;
 */
 
 Route::get('/maps', [MapController::class, 'index']);
-Route::get('/maps/{map}', [MapController::class, 'show']);
+Route::get('/maps/{map}', [MapController::class, 'getMap']);
 Route::get('/mapsByDifficulty/{difficulty}', [MapController::class, 'mapsByDifficulty']);
 Route::get('download/{id}', [MapController::class, 'download']);
 

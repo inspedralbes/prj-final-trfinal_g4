@@ -1,7 +1,9 @@
 const e = require('express');
 const express = require('express');
-const { createServer } = require('http');
+const { cp } = require('fs');
+const { createServer, get } = require('http');
 const { Server } = require('socket.io');
+// const fetch = require('node-fetch'); // Add this line to import the fetch function
 
 const app = express();
 const port = 3727;
@@ -34,12 +36,66 @@ function findRoomByUser(userId) {
 function nextColor(player) {
     let colorIndex = player.colorsUnlocked.indexOf(player.color);
     let colorToReturn;
-    if(colorIndex == player.colorsUnlocked.length - 1){
-        colorToReturn=player.colorsUnlocked[0]
+    if (colorIndex == player.colorsUnlocked.length - 1) {
+        colorToReturn = player.colorsUnlocked[0]
     } else {
-        colorToReturn=player.colorsUnlocked[colorIndex + 1]
+        colorToReturn = player.colorsUnlocked[colorIndex + 1]
     }
     return colorToReturn;
+}
+
+async function getMapData(data) {
+    let maps = [];
+    let tuto = await fetch("http://localhost:8000/api/maps/7", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+    let tutoJson = await tuto.json();
+    maps.push(tutoJson);
+    switch (data.mode) {
+        case 'Aleatoris':
+            let randomMaps = getRandomMaps();
+            randomMaps.forEach(map => {
+                maps.push(map);
+            });
+            break;
+        case 'Mapes originals':
+            let originalMaps = getOriginalMaps();
+            originalMaps.forEach(map => {
+                maps.push(map);
+            });
+            break;
+        case 'Mapes de la comunitat':
+            let communityMaps = await getCommunityMaps(data.maps);
+            console.log("Garcilaso de la Vega", communityMaps);
+            communityMaps.forEach(map => {
+                console.log("Garcilaso de la Verga", map);
+                maps.push(map);
+            });
+            break;
+    }
+    return maps;
+}
+function getCommunityMaps(maps) {
+    let mapsArray = [];
+    console.log("Sonic dice", maps);
+    maps.forEach(async map => {
+
+        let mapData = await fetch("http://localhost:8000/api/maps/" + map.id, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+        let mapDataJson = await mapData.json();
+
+        mapsArray.push(mapDataJson);
+        console.log("mario repsonde", mapsArray)
+    });
+    console.log("Don't speak", mapsArray);
+    return mapsArray;
 }
 
 //connection
@@ -48,31 +104,34 @@ io.on('connection', (socket) => {
     socket.emit('allRooms', rooms);
 
     //Create Room
-    socket.on('createRoom', (data) => {
+    socket.on('createRoom', async (data) => {
         let id = lastRoom++;
-        let newRoom = {
-            name: data.addRoom.name,
-            isPublic: data.addRoom.public,
-            mode: data.addRoom.mode,
-            admin: [socket.id, data.userAdmin.name, data.userAdmin.image],
-            users: [ {id:socket.id, name:data.userAdmin.name, state: null, image: data.userAdmin.image} ],
-            id: id,
-            accessCode: data.addRoom.accessCode,
-            accesible: true,
-            status: 'Waiting',
-            messages: [],
-            game: {
-                maps: data.addRoom.maps,
-                currentMap: data.addRoom.maps[0],
-                players: [],
-                playersData: []
+        // let mapData = null;
+        getMapData(data.addRoom).then((mapsFull) => {
+            let newRoom = {
+                name: data.addRoom.name,
+                isPublic: data.addRoom.public,
+                mode: data.addRoom.mode,
+                admin: [socket.id, data.userAdmin.name, data.userAdmin.image],
+                users: [{ id: socket.id, name: data.userAdmin.name, state: null, image: data.userAdmin.image }],
+                id: id,
+                accessCode: data.addRoom.accessCode,
+                accesible: true,
+                status: 'Waiting',
+                messages: [],
+                game: {
+                    maps: mapsFull,
+                    currentMap: 0,
+                    players: [],
+                    playersData: []
+                }
             }
-        }
-        rooms.push(newRoom);
-        socket.join(newRoom.id);
-        io.emit('allRooms', rooms);
-        console.log('newRoom', newRoom);
-        io.to(newRoom.id).emit('newInfoRoom', newRoom);
+            rooms.push(newRoom);
+            socket.join(newRoom.id);
+            io.emit('allRooms', rooms);
+            console.log('newRoom', newRoom.game.maps);
+            io.to(newRoom.id).emit('newInfoRoom', newRoom);
+        });
     });
 
     //Join Room
@@ -81,7 +140,7 @@ io.on('connection', (socket) => {
         if (findRoom == undefined) {
             return;
         } else {
-            let newUser = { id: socket.id, name: data.user.name, state: null, image: data.user.image};
+            let newUser = { id: socket.id, name: data.user.name, state: null, image: data.user.image };
             findRoom.users.push(newUser);
             findRoom.accesible = false;
             findRoom.status = 'inLobby';
@@ -104,18 +163,15 @@ io.on('connection', (socket) => {
     socket.on('exitRoom', () => {
         let room = findRoomByUser(socket.id);
         console.log(`Socket ${socket.id} is leaving room ${room.id}`);
-        console.log("Room AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", room);
-        console.log("users length ", room.users.length);
-        if (socket.id == room.admin[0]) {   
-            console.log(`soy admin ${socket.id}`);  
-            console.log(`room admin ${room.admin[0]}`); 
-            console.log(`room users ${room.users}`);      
+        if (socket.id == room.admin[0]) {
+            console.log(`soy admin ${socket.id}`);
+            console.log(`room admin ${room.admin[0]}`);
+            console.log(`room users ${room.users}`);
             if (room.users.length > 1) {
                 room.admin[0] = room.users[1].id;
                 room.admin[1] = room.users[1].name;
                 room.users.splice(0, 1);
                 room.accesible = true;
-                console.log("Room BBBBBBBBBBBBBBBBBBBBBBB", room);
                 socket.leave(room.id);
                 socket.emit('newInfoRoom', null);
                 io.to(room.id).emit('newInfoRoom', room);
@@ -133,14 +189,22 @@ io.on('connection', (socket) => {
         io.emit('allRooms', rooms);
     });
 
-    socket.on('startGame', ()=>{
+    socket.on('startGame', () => {
         let room = findRoomByUser(socket.id);
         // console.log("choto", room);
         room.status = 'Playing';
         io.emit('allRooms', rooms);
+        room.game.players = room.users;
+        room.game.playersData =
+            [
+                {
+                    id: room.users[0].id,
+                    name: room.users[0].name,
+                    x: 0,
+                    y: 0,
                     direction: 'right',
                     colorsAvailable: ['white', 'red', 'green'],
-                    colorsUnlocked: ['white', 'red', 'green'],
+                    colorsUnlocked: ['white'],
                     color: 'white'
                 },
                 {
@@ -150,17 +214,17 @@ io.on('connection', (socket) => {
                     y: 0,
                     direction: 'right',
                     colorsAvailable: ['black', 'blue', 'orange'],
-                    colorsUnlocked: ['black', 'blue', 'orange'],
+                    colorsUnlocked: ['black'],
                     color: 'black'
                 }
             ];
-
+            console.log("Room CCCCCCCCCCCCCCCCCCCCCCCCCCCCC", room.game.maps);
         io.to(room.id).emit('gameStarted', room);
     })
 
     socket.on('updatePosition', (data) => {
         let room = findRoomByUser(socket.id);
-        if(room){
+        if (room) {
             let player = room.game.playersData.find(player => player.id == socket.id);
             player.x = data.x;
             player.y = data.y;
@@ -174,20 +238,44 @@ io.on('connection', (socket) => {
         let room = findRoomByUser(socket.id);
         let player = room.game.playersData.find(player => player.id == socket.id);
         let newColor = nextColor(player);
-        if(newColor){
+        if (newColor) {
             player.color = newColor;
         }
         io.to(room.id).emit('changeColorFront', player);
     });
 
     socket.on('death', () => {
-        
+
         io.to(findRoomByUser(socket.id).id).emit('deathFront')
-    } );
+    });
 
     socket.on('win', () => {
-       console.log("OLEEEEEEEEEEEE");
-    } );
+        let room = findRoomByUser(socket.id);
+        room.game.currentMap++;
+        if (room.game.currentMap == room.game.maps.length) {
+            io.to(findRoomByUser(socket.id).id).emit('finishGame')
+
+        } else {
+            if (room.game.currentMap == 1) {
+                room.game.playersData[0].colorsUnlocked = ['red'];
+                room.game.playersData[0].color = 'red';
+                room.game.playersData[1].colorsUnlocked = ['blue'];
+                room.game.playersData[1].color = 'blue';
+            } else {
+                if (room.game.currentMap == 2) {
+                    room.game.playersData[0].colorsUnlocked.push('green');
+                    room.game.playersData[1].colorsUnlocked.push('orange');
+                } else {
+                    room.game.playersData[0].colorsUnlocked.push('white');
+                    room.game.playersData[1].colorsUnlocked.push('black');
+                }
+
+            }
+            room.game.currentMap = room.game.maps[room.game.maps.indexOf(room.game.currentMap) + 1];
+            io.to(findRoomByUser(socket.id).id).emit('winFront', room.game)
+        }
+        io.to(findRoomByUser(socket.id).id).emit('winFront')
+    });
 
     //Disconnect
     socket.on('disconnect', () => {

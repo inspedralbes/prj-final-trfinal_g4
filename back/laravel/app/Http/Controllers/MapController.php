@@ -23,9 +23,9 @@ class MapController extends Controller
         return response()->json(Map::where('difficulty', $difficulty)->get(), 200);
     }
 
-    public function getMap($request)
+    public function getMap(int $map)
     {
-        $map = Map::find($request->id);
+        $map = Map::find($map);
         if (!$map) {
             return response()->json([
                 'error' => 'Map not found'
