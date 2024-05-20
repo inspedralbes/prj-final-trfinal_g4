@@ -27,8 +27,8 @@ const Lobby = () => {
         };
     }, [router.pathname]);
 
+    let chatMessages = null;
     if ( room && room.messages ) {
-        let chatMessages;
         room.messages.map((message) => {
             console.log(message);
             if (message.user == user) {

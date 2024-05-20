@@ -73,6 +73,8 @@ io.on('connection', (socket) => {
         io.emit('allRooms', rooms);
         console.log('newRoom', newRoom);
         io.to(newRoom.id).emit('newInfoRoom', newRoom);
+        let message = { user: 'Server', message: `${data.userAdmin.name} ha creat la sala` };
+        io.to(newRoom.id).emit('chatMessage', message);
     });
 
     //Join Room
@@ -90,6 +92,8 @@ io.on('connection', (socket) => {
         io.emit('allRooms', rooms);
         io.to(findRoom.id).emit('newInfoRoom', findRoom);
         console.log('soy gay', findRoom);
+        let message = { user: 'Server', message: `${data.user.name} s'ha unit a la sala` };
+        io.to(newRoom.id).emit('chatMessage', message);
     });
 
     //Chat Room
@@ -113,19 +117,23 @@ io.on('connection', (socket) => {
     //Exit Room
     socket.on('exitRoom', () => {
         let room = findRoomByUser(socket.id);
-        console.log(`Socket ${socket.id} is leaving room ${room.id}`);
-        console.log("Room AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", room);
-        console.log("users length ", room.users.length);
+        // console.log(`Socket ${socket.id} is leaving room ${room.id}`);
+        // console.log("Room AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", room);
+        // console.log("users length ", room.users.length);
         if (socket.id == room.admin[0]) {   
-            console.log(`soy admin ${socket.id}`);  
-            console.log(`room admin ${room.admin[0]}`); 
-            console.log(`room users ${room.users}`);      
+            // console.log(`soy admin ${socket.id}`);  
+            // console.log(`room admin ${room.admin[0]}`); 
+            // console.log(`room users ${room.users}`);      
             if (room.users.length > 1) {
+                let name = room.admin[1];
                 room.admin[0] = room.users[1].id;
                 room.admin[1] = room.users[1].name;
                 room.users.splice(0, 1);
                 room.accesible = true;
-                console.log("Room BBBBBBBBBBBBBBBBBBBBBBB", room);
+                // console.log("Room BBBBBBBBBBBBBBBBBBBBBBB", room);
+
+                let message = { user: 'Server', message: `${name} a sortit de la sala` };
+                io.to(newRoom.id).emit('chatMessage', message);
                 socket.leave(room.id);
                 socket.emit('newInfoRoom', null);
                 io.to(room.id).emit('newInfoRoom', room);
@@ -133,6 +141,8 @@ io.on('connection', (socket) => {
                 rooms.splice(rooms.indexOf(room), 1);
             }
         } else {
+            let message = { user: 'Server', message: `${room.users.find(user => user.id == socket.id).name} a sortit de la sala` };
+            io.to(newRoom.id).emit('chatMessage', message);
             room.users.splice(1, 1);
             room.accesible = true;
             console.log("Room CCCCCCCCCCCCCCCCCCCCCCCCCCCCC", room);
