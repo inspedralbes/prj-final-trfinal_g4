@@ -46,6 +46,11 @@ export default class GameHome extends Phaser.Scene {
     }
     platforms = [];
     doors = [];
+    flags=[];
+    player1OnFlag=false;
+    player2OnFlag=false;
+    priorX;
+    priorY;
 
     init() {
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -53,8 +58,9 @@ export default class GameHome extends Phaser.Scene {
     }
 
     create() {
-
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMA",{key:'mapa'});
         const map = this.make.tilemap({ key: 'mapa' });
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA", map);
         const tileset = map.addTilesetImage('tilesetWhite', 'tileset');
         let gray = null;
         let white = null;
@@ -237,7 +243,9 @@ export default class GameHome extends Phaser.Scene {
             } else if (name.startsWith('box')) {
                 ogName = name;
                 name = 'box';
-            } else if (name.startsWith('spawn')) {
+            } else if (name.startsWith('endGame')) {
+                ogName = name;
+                name = 'endGame';
 
             }
 
@@ -251,6 +259,11 @@ export default class GameHome extends Phaser.Scene {
 
                         const spawn1X = x;
                         const spawn1Y = y;
+                        if(this.player==2){
+                            this.priorX = x;
+                            this.priorY = y;
+                        }
+                       
                         console.log(useStore.getState().gameData);
                         this.character1.body.tint = this.colors.find(color => color.color == useStore.getState().gameData.playersData[0].color).hex;
                         this.physics.add.existing(this.character1);
@@ -348,6 +361,10 @@ export default class GameHome extends Phaser.Scene {
                         this.physics.add.existing(this.character2);
                         const spawn2X = x;
                         const spawn2Y = y;
+                        if(this.player==1){
+                            this.priorX = x;
+                            this.priorY = y;
+                        }
                         this.character2.body.setSize(w * 0.50, h * 0.90);
 
                         this.character2.setPosition(x, y);
@@ -400,15 +417,15 @@ export default class GameHome extends Phaser.Scene {
                 case 'endGame':
                     {
 
-                        this.flag_endGame = this.physics.add.sprite(x, y, 'flag-movement');
-                        const w = this.flag_endGame.width;
-                        const h = this.flag_endGame.height;
+                        let flag_endGame = this.physics.add.sprite(x, y, 'flag-movement');
+                        const w = flag_endGame.width;
+                        const h = flag_endGame.height;
 
-                        this.physics.add.existing(this.flag_endGame);
+                        this.physics.add.existing(flag_endGame);
 
-                        this.flag_endGame.body.setSize(w * 0.45, h - 3);
+                        flag_endGame.body.setSize(w * 0.45, h - 3);
 
-                        this.flag_endGame.setPosition(x, y);
+                        flag_endGame.setPosition(x, y);
 
                         this.anims.create({
                             key: 'flagMove',
@@ -416,24 +433,21 @@ export default class GameHome extends Phaser.Scene {
                             frameRate: 10,
                             repeat: 5
                         })
-
-                        this.physics.add.overlap(this.flag_endGame, this.character1, (flag, character1) => {
-                            if (!flag.anims.isPlaying) {
-                                flag.anims.play('flagMove', true).on('animationcomplete', () => {
-                                    flag.anims.stop('flagMove');
-
-                                    const message = this.add.text(300, 100, '¡Tutorial Completat!', { fontSize: '32px', fill: '#fff' }).setOrigin(0);
-                                    const background = this.add.rectangle(0, 0, this.sys.game.config.width, this.sys.game.config.height, 0x000000, 0.5).setOrigin(0);
-
-                                    message.setDepth(1);
-                                    background.setDepth(0);
-
-                                });
-
-                            }
-                        })
-
-                        this.physics.add.collider(this.flag_endGame, gray);
+                        if (getPlayerProperty(objData.properties)==1){
+                            flag_endGame.player=1;
+                        } else{
+                            flag_endGame.player=2;
+                        }
+                        this.physics.add.collider(flag_endGame, gray);
+                        this.physics.add.collider(flag_endGame, white);
+                        this.physics.add.collider(flag_endGame, black);
+                        this.physics.add.collider(flag_endGame, red);
+                        this.physics.add.collider(flag_endGame, blue);
+                        this.physics.add.collider(flag_endGame, purple);
+                        this.physics.add.collider(flag_endGame, green);
+                        this.physics.add.collider(flag_endGame, orange);
+                        this.physics.add.collider(flag_endGame, yellow);
+                        this.flags.push(flag_endGame);
 
                         break;
                     }
@@ -758,6 +772,16 @@ export default class GameHome extends Phaser.Scene {
             return returndata;
         }
 
+        function getPlayerProperty(data) {
+            let returndata;
+            data.forEach(element => {
+                if (element.name == 'player') {
+                    returndata = element.value;
+                }
+            });
+            return returndata;
+        }
+
         function findColorParam(data) {
             let returndata;
             data.forEach(element => {
@@ -825,6 +849,7 @@ export default class GameHome extends Phaser.Scene {
                 this.animationPlaying = true;
                 this.character1.anims.play('death', true);
                 this.character2.anims.play('death', true);
+                socket.emit('death', { player: this.player });
                 setTimeout(() => {
                     this.character1.setPosition(this.spawns[0].spawn1X, this.spawns[0].spawn1Y);
                     this.character2.setPosition(this.spawns[1].spawn2X, this.spawns[1].spawn2Y);
@@ -835,6 +860,7 @@ export default class GameHome extends Phaser.Scene {
                 this.animationPlaying = true;
                 this.character1.anims.play('death', true);
                 this.character2.anims.play('death', true);
+                socket.emit('death', { player: this.player });
                 setTimeout(() => {
                     this.character1.setPosition(this.spawns[0].spawn1X, this.spawns[0].spawn1Y);
                     this.character2.setPosition(this.spawns[1].spawn2X, this.spawns[1].spawn2Y);
@@ -1185,13 +1211,47 @@ export default class GameHome extends Phaser.Scene {
             if (this.player == 1) {
                 this.character2.x = data[1].x;
                 this.character2.y = data[1].y;
-                this.character2.flipX = data[1].direction;
+                if(data[1].direction=="left"){
+                    this.character2.flipX = true;
+                } else{
+                    this.character2.flipX = false;
+                }
+                if(this.priorX!=data[1].x || this.priorY!=data[1].y){
+                    this.character2.anims.play('walk', true);
+                } else{
+                    this.character2.anims.play('idle', true);
+                }
+                this.priorX = data[1].x;
+                this.priorY = data[1].y;
             }
             else {
                 this.character1.x = data[0].x;
                 this.character1.y = data[0].y;
-                this.character1.flipX = data[0].direction;
+                if(data[0].direction=="left"){
+                    this.character1.flipX = true;
+                } else{
+                    this.character1.flipX = false;
+                }
+                if(this.priorX!=data[0].x || this.priorY!=data[0].y){
+                    this.character1.anims.play('walk', true);
+                } else{
+                    this.character1.anims.play('idle', true);
+                }
+                this.priorX = data[0].x;
+                this.priorY = data[0].y;
             }
+        });
+
+        socket.on('deathFront', () => {
+            console.log("SI")
+            this.animationPlaying = true;
+            this.character1.anims.play('death', true);
+            this.character2.anims.play('death', true);
+            
+                this.character1.setPosition(this.spawns[0].spawn1X, this.spawns[0].spawn1Y);
+                this.character2.setPosition(this.spawns[1].spawn2X, this.spawns[1].spawn2Y);
+                this.animationPlaying = false;
+            
         });
         socket.on('changeColorFront', (data) => {
             console.log("Si");
@@ -1520,6 +1580,12 @@ export default class GameHome extends Phaser.Scene {
                 }
             }
         });
+        socket.on('winFront', () => {
+            this.scene.start('Preloader');
+        });
+        socket.on('finishGame', () => { 
+            this.scene.start('finishGame');
+        });
         if (this.player == 1) {
             switch (useStore.getState().gameData.playersData[0].color) {
                 case 'white':
@@ -1682,7 +1748,31 @@ export default class GameHome extends Phaser.Scene {
             }
         });
 
-
+        this.flags.forEach(flag => {
+            if(flag.player == 1){
+                // flag.setTint()
+                console.log(this.character1.tintTopLeft);
+                if(this.physics.overlap(flag, this.character1)){
+                    this.player1OnFlag = true;
+                    flag.anims.play('flag', true);
+                } else{
+                    this.player1OnFlag = false;
+                    flag.anims.play('flag', true);
+                }
+            } else{
+                flag.setTint(this.character2.tintTopLeft)
+                if(this.physics.overlap(flag, this.character2)){
+                    this.player2OnFlag = true;
+                }
+                else{
+                    this.player2OnFlag = false;
+                }
+            }
+        }
+        );
+        if(this.player1OnFlag && this.player2OnFlag){
+            socket.emit('win');
+        };
         if (this.player == 1) {
 
             this.cameras.main.startFollow(this.character1);

@@ -30,6 +30,7 @@ socket.on('gameStarted', (data)=>{
     useStore.setState({playerData: playerData})
     useStore.setState({gameData: data.game})
     useStore.setState({room: data})
+    console.log("ESCORTO",useStore.getState().room)
 });
 
 socket.on('updatePositionFront', (data) => {
@@ -38,5 +39,9 @@ socket.on('updatePositionFront', (data) => {
 
 socket.on('changeColorFront', (data) =>{
     useStore.setState({playerData: data})
+});
+
+socket.on('winFront', (data) =>{
+    useStore.setState({gameData: data})
 });
 export default socket;
