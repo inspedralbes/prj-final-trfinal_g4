@@ -66,7 +66,7 @@ const Create = () => {
             }
             if (useStore.getState().user == null) {
                 let userName = 'user' + Math.floor(Math.random() * 1000);
-                useStore.setState({ user: { name: userName } });
+                useStore.setState({ user: { name: userName, image: '/images/profiles/default-NoLogin.png' } });
                 let user = {
                     name: userName,
                     image: '/images/profiles/default-NoLogin.png'

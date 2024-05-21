@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
 import useStore from '../src/store';
 import socket from '../services/sockets';
@@ -6,11 +6,12 @@ import { useRouter } from 'next/router';
 
 const Lobby = () => {
     const router = useRouter();
-    var user = useStore.getState().user.name;
+    const user = useStore.getState().user.name;
+    const image = useStore.getState().user.image;
     const [room, setRoom] = useState(useStore.getState().room);
     const [message, setMessage] = useState('');
+    var messages = [];
     const URL = 'http://localhost:8000';
-    const userFromLocalStorage = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
         const handleRoomChange = () => {
@@ -29,111 +30,22 @@ const Lobby = () => {
         };
     }, [router.pathname]);
 
-    let chatMessages = [];
-    if (room && room.messages) {
-        chatMessages = room.messages.map((message, index) => {
-            if (message.user === user) {
-                return (
-                    <div key={index} className='chat-message'>
-                        <div className='flex items-end justify-end'>
-                            <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end'>
-                                <div>
-                                    <span className='px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white'>
-                                        {message.message}
-                                    </span>
-                                </div>
-                            </div>
-                            <img src="/images/random.jpg" alt="Venti" className='w-6 h-6 rounded-full order-2' />
-                        </div>
-                    </div>
-                );
-            } else if (message.user === 'Server') {
-                return (
-                    <div key={index} className='chat-message'>
-                        <div className='flex items-center justify-center'>
-                            <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 items-center'>
-                                <div>
-                                    <span className='px-4 py-2 rounded-lg inline-block bg-red-600 text-white'>
-                                        {message.message}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                );
-            } else {
-                return (
-                    <div key={index} className='chat-message'>
-                        <div className='flex items-end'>
-                            <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start'>
-                                <div>
-                                    <span className='px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600'>
-                                        {message.message}
-                                    </span>
-                                </div>
-                            </div>
-                            <img src="/images/random.jpg" alt="Venti" className='w-6 h-6 rounded-full order-1' />
-                        </div>
-                    </div>
-                );
-            }
-        });
-    }
-    console.log(chatMessages);
-
-    const adminUser = room && room.admin ? room.admin[1] : '';
-    let otherUser = '';
-
-    if (room && room.users && room.users.length > 1) {
-        otherUser = room.users[1].name.replace(/['"]+/g, '');
-    }
-
-    let contentOtherUser = null;
-
-    if (otherUser != '') {
-        contentOtherUser = <div id='userRandom' className='flex items-center mt-2 mb-2'>
-                                <div className='flex items-center'>
-                                <img src={'http://localhost:8000'+ room.users[1].image } alt="User" className='w-10 h-10 ml-2 rounded-full' />
-                                    <p className='text-2xl ml-3 mt-1 mr-4 truncate'>{otherUser}</p>
-                                </div>
-                                { user != adminUser && room.users[1].state != 'Ready' && (
-                                    <div id='buttons-check' className='flex items-center ml-auto'>
-                                    <button className='bg-green-500 hover:bg-green-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mx-2 rounded-lg' onClick={() => userReady()}>
-                                        <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
-                                        </svg>
-                                    </button>
-                                    <button className='bg-red-500 hover:bg-red-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mr-2 rounded-lg' onClick={()=>salirSala()}>
-                                        <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                )} 
-                                { room && room.users[1].state == 'Ready' && (
-                                    <div className='flex items-center ml-auto text-green-500 bg-gray-600 p-2 rounded-lg'>
-                                        <p>Llest per jugar!!</p>
-                                    </div>
-                                )}
-                            </div>
-    }
-
-    const emitStart = () => {
-        socket.emit('startGame', room);
-        router.push('/game');
-    }
-
-    const userReady = () => {
-        socket.emit('changeState', { state: 'Ready' });
-    };
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            const roomMessages = useStore.getState().room.messages;
+            console.log(roomMessages);
+            messages = roomMessages;
+            console.log(messages);
+        }, 1000);
+        return () => clearInterval(intervalId);
+    }, []);
 
     const sendMessage = () => {
         if (message != '') {
-            let messageSocket = {
+            const messageSocket = {
                 user: user,
                 message: message,
             };
-            console.log(messageSocket);
             socket.emit('chatMessage', messageSocket);
             setMessage('');
         }
@@ -146,10 +58,112 @@ const Lobby = () => {
     };
 
     useEffect(() => {
-        if (useStore.getState().room != null && useStore.getState().room.status == 'Playing') {
+        if (useStore.getState().room != null && useStore.getState().room.status === 'Playing') {
             router.push('/game');
         }
+    }, [router]);
+
+    const chatMessages = room.messages.map((msg, index) => {
+        if (msg.user == user) {
+            return (
+                <div key={index} className='chat-message'>
+                    <div className='flex items-end justify-end'>
+                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end'>
+                            <div>
+                                <span className='px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white'>
+                                    {msg.message}
+                                </span>
+                            </div>
+                        </div>
+                        <img src={URL + image} alt="User" className='w-6 h-6 rounded-full order-2' />
+                    </div>
+                </div>
+            );
+        } else if (msg.user == 'Server') {
+            return (
+                <div key={index} className='chat-message'>
+                    <div className='flex items-center justify-center'>
+                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 items-center'>
+                            <div>
+                                <span className='px-4 py-2 rounded-lg inline-block bg-red-600 text-white'>
+                                    {msg.message}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        } else {
+            return (
+                <div key={index} className='chat-message'>
+                    <div className='flex items-end'>
+                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start'>
+                            <div>
+                                <span className='px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600'>
+                                    {msg.message}
+                                </span>
+                            </div>
+                        </div>
+                        {
+                            room && room.users[0].image == image ? (
+                                <img src={URL + room.users[1].image} alt="User" className='w-6 h-6 rounded-full order-1' />
+                            ) : (
+                                <img src={URL + room.users[0].image} alt="User" className='w-6 h-6 rounded-full order-1' />
+                            )
+                        }
+                    </div>
+                </div>
+            );
+        }
     });
+
+    const adminUser = room && room.admin ? room.admin[1] : '';
+    let otherUser = '';
+
+    if (room && room.users && room.users.length > 1) {
+        otherUser = room.users[1].name.replace(/['"]+/g, '');
+    }
+
+    let contentOtherUser = null;
+
+    if (otherUser !== '') {
+        contentOtherUser = (
+            <div id='userRandom' className='flex items-center mt-2 mb-2'>
+                <div className='flex items-center'>
+                    <img src={URL + room.users[1].image } alt="User" className='w-10 h-10 ml-2 rounded-full' />
+                    <p className='text-2xl ml-3 mt-1 mr-4 truncate'>{otherUser}</p>
+                </div>
+                { user !== adminUser && room.users[1].state !== 'Ready' && (
+                    <div id='buttons-check' className='flex items-center ml-auto'>
+                        <button className='bg-green-500 hover:bg-green-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mx-2 rounded-lg' onClick={() => userReady()}>
+                            <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+                            </svg>
+                        </button>
+                        <button className='bg-red-500 hover:bg-red-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mr-2 rounded-lg' onClick={salirSala}>
+                            <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+                            </svg>
+                        </button>
+                    </div>
+                )}
+                { room && room.users[1].state === 'Ready' && (
+                    <div className='flex items-center ml-auto text-green-500 bg-gray-600 p-2 rounded-lg'>
+                        <p>Llest per jugar!!</p>
+                    </div>
+                )}
+            </div>
+        );
+    }
+
+    const emitStart = () => {
+        socket.emit('startGame', room);
+        router.push('/game');
+    };
+
+    const userReady = () => {
+        socket.emit('changeState', { state: 'Ready' });
+    };
 
     return (
         <div className='bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen'>
@@ -187,24 +201,24 @@ const Lobby = () => {
                             <h1 className='text-3xl font-bold mb-3'>Usuaris a la sala</h1>
                             <div id='adminUser' className='flex items-center mt-2 mb-2'>
                                 <div className='flex items-center'>
-                                <img src={'http://localhost:8000'+ room.users[0].image } alt="User" className='w-10 h-10 ml-2 rounded-full' />
+                                    <img src={ URL + room.users[0].image } alt="User" className='w-10 h-10 ml-2 rounded-full' />
                                     <p className='text-2xl ml-3 mt-1 mr-4 truncate'>{adminUser}</p>
                                 </div>
-                                { user == adminUser && room.users[0].state != 'Ready' && (
+                                { user === adminUser && room.users[0].state !== 'Ready' && (
                                     <div id='buttons-check' className='flex items-center ml-auto'>
                                         <button className='bg-green-500 hover:bg-green-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mx-2 rounded-lg' onClick={() => userReady()}>
                                             <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                                 <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
                                             </svg>
                                         </button>
-                                        <button className='bg-red-500 hover:bg-red-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mr-2 rounded-lg' onClick={()=>salirSala()}>
+                                        <button className='bg-red-500 hover:bg-red-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mr-2 rounded-lg' onClick={salirSala}>
                                             <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                                 <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
                                             </svg>
                                         </button>
                                     </div>
                                 )}
-                                { room && room.users[0].state == 'Ready' && (
+                                { room && room.users[0].state === 'Ready' && (
                                     <div className='flex items-center ml-auto text-green-500 bg-gray-600 p-2 rounded-lg'>
                                         <p>Llest per jugar!!</p>
                                     </div>
@@ -216,7 +230,7 @@ const Lobby = () => {
                         <div className='h-[400px] flex flex-col items-center p-3'>
                             <h1 className='text-3xl font-bold mb-3 mt-5'>Informació de partida</h1>
                             <div className='bg-white rounded-lg w-[350px] text-black'>
-                                { room && room.isPublic == false && (
+                                { room && room.isPublic === false && (
                                     <div>
                                         <p className='text-2xl font-bold mt-2'>Codi de la sala:</p>
                                         <p className='text-2xl text-red-500'>{room.accessCode}</p>
@@ -244,7 +258,7 @@ const Lobby = () => {
                         </div>
                     </div>
                 </div>
-                {  user == adminUser && room && room.users.length > 1 && room.users[0].state == 'Ready' &&  room.users[1].state == 'Ready' && (
+                { user === adminUser && room && room.users.length > 1 && room.users[0].state === 'Ready' &&  room.users[1].state === 'Ready' && (
                     <button className="text-white text-2xl font-bold py-2 px-4 w-40 rounded mt-5 bg-red-500 hover:bg-red-700" onClick={emitStart}>
                         Iniciar Joc
                     </button>
