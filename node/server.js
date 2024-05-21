@@ -2,6 +2,7 @@ const e = require('express');
 const express = require('express');
 const { cp } = require('fs');
 const { createServer, get } = require('http');
+const { config } = require('process');
 const { Server } = require('socket.io');
 // const fetch = require('node-fetch'); // Add this line to import the fetch function
 
@@ -157,7 +158,55 @@ io.on('connection', (socket) => {
             io.to(newRoom.id).emit('newInfoRoom', newRoom);
         });
     });
-
+    socket.on('quickGame', async (data) => {
+        let roomToJoin=null;
+        rooms.forEach(room => {
+            if (room.isPublic && room.status!='Playing' && room.users.length<2) {
+                roomToJoin = room;
+            }
+        });
+        if(roomToJoin!=null){
+            let newUser = { id: socket.id, name: data.user.name, state: null, image: data.user.image };
+            roomToJoin.users.push(newUser);
+            roomToJoin.accesible = false;
+            roomToJoin.status = 'inLobby';
+            socket.join(roomToJoin.id);
+            io.emit('allRooms', rooms);
+            io.to(roomToJoin.id).emit('newInfoRoom', roomToJoin);
+        } else{
+            let id = lastRoom++;
+            let config = {
+                mode: 'Aleatori',
+                maps: []
+            }
+            getMapData(config).then((mapsFull) => {
+                let newRoom = {
+                    name: 'Quick Game'+Math.floor(Math.random() * 1000),
+                    isPublic: true,
+                    mode: 'Aleatori',
+                    admin: [socket.id, data.user.name, data.user.image],
+                    users: [{ id: socket.id, name: data.user.name, state: null, image: data.user.image }],
+                    id: id,
+                    accessCode: null,
+                    accesible: true,
+                    status: 'Waiting',
+                    messages: [],
+                    game: {
+                        maps: mapsFull,
+                        currentMap: 0,
+                        players: [],
+                        playersData: []
+                    }
+                }
+                rooms.push(newRoom);
+                socket.join(newRoom.id);
+                io.emit('allRooms', rooms);
+                io.to(newRoom.id).emit('newInfoRoom', newRoom);
+                roomToJoin = newRoom;
+            });
+        }
+        socket.emit('newRoomInfo', roomToJoin);
+    });
     //Join Room
     socket.on('joinRoom', (data) => {
         let findRoom = rooms.find(room => room.id == data.id);

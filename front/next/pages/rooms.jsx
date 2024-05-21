@@ -139,7 +139,28 @@ function Rooms() {
 
     // Partida rápida
     const handleCreateRoom = () => {
-        console.log('Partida rápida');
+        let user;
+        if (useStore.getState().user == null) {
+            let userName = 'user' + Math.floor(Math.random() * 1000);
+            useStore.setState({ user: { name: userName } });
+            user = {
+                name: userName,
+                image: '/images/random-game.png'
+            }
+
+        } else {
+            let userStore = useStore.getState().user;
+            let userLocalStorage = JSON.parse(localStorage.getItem('user'));
+            if (userStore != null) {
+                user = {
+                    name: userStore.name,
+                    image: userStore.image
+                }
+            }
+            
+        }
+        let data = {user: user};
+        socket.emit('quickGame', data);
         // let roomInfo = {
         //     name: 'Partida ràpida',
         //     public: true,

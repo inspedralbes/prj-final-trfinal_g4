@@ -28,6 +28,7 @@ socket.on('gameStarted', (data)=>{
     console.log("ESCORTO",useStore.getState().room)
 });
 
+
 socket.on('updatePositionFront', (data) => {
     useStore.setState({ playerData: data });
 });
