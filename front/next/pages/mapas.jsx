@@ -46,7 +46,6 @@ function Mapas() {
             alert('Error al crear el mapa: ' + error.message);
         }
     
-        // Limpia el formulario después de enviar
         setName('');
         setDifficulty('');
         setImg(null);
@@ -54,7 +53,7 @@ function Mapas() {
     };
 
     if (loading) {
-        return null; // No mostrar nada mientras se está cargando
+        return null;
     }
 
     return (
