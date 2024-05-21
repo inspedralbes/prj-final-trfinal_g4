@@ -29,52 +29,57 @@ const Lobby = () => {
         };
     }, [router.pathname]);
 
-    let chatMessages = '';
-    if ( room && room.messages ) {
-        room.messages.map((message) => {
-            console.log(message);
-            console.log(message.message);
-            if (message.user == user) {
-                chatMessages += <div className='chat-message'>
-                                    <div className='flex items-end justify-end'>
-                                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end'>
-                                            <div>
-                                                <span className='px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white'>
-                                                    {message.message}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <img src="/images/random.jpg" alt="Venti" className='w-6 h-6 rounded-full order-2' />
-                                    </div>
+    let chatMessages = [];
+    if (room && room.messages) {
+        chatMessages = room.messages.map((message, index) => {
+            if (message.user === user) {
+                return (
+                    <div key={index} className='chat-message'>
+                        <div className='flex items-end justify-end'>
+                            <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end'>
+                                <div>
+                                    <span className='px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white'>
+                                        {message.message}
+                                    </span>
                                 </div>
-            } else if (message.user == 'Server') {
-                chatMessages += <div className='chat-message'>
-                                    <div className='flex items-center justify-center'>
-                                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 items-center'>
-                                            <div>
-                                                <span className='px-4 py-2 rounded-lg inline-block bg-red-600 text-white'>
-                                                    {message.message}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
+                            </div>
+                            <img src="/images/random.jpg" alt="Venti" className='w-6 h-6 rounded-full order-2' />
+                        </div>
+                    </div>
+                );
+            } else if (message.user === 'Server') {
+                return (
+                    <div key={index} className='chat-message'>
+                        <div className='flex items-center justify-center'>
+                            <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 items-center'>
+                                <div>
+                                    <span className='px-4 py-2 rounded-lg inline-block bg-red-600 text-white'>
+                                        {message.message}
+                                    </span>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                );
             } else {
-                chatMessages += <div className='chat-message'>
-                                    <div className='flex items-end'>
-                                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start'>
-                                            <div>
-                                                <span className='px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600'>
-                                                    {message.message}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <img src="/images/random.jpg" alt="Venti" className='w-6 h-6 rounded-full order-1' />
-                                    </div>
+                return (
+                    <div key={index} className='chat-message'>
+                        <div className='flex items-end'>
+                            <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start'>
+                                <div>
+                                    <span className='px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600'>
+                                        {message.message}
+                                    </span>
                                 </div>
+                            </div>
+                            <img src="/images/random.jpg" alt="Venti" className='w-6 h-6 rounded-full order-1' />
+                        </div>
+                    </div>
+                );
             }
         });
     }
+    console.log(chatMessages);
 
     const adminUser = room && room.admin ? room.admin[1] : '';
     let otherUser = '';
