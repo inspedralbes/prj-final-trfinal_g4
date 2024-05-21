@@ -15,11 +15,11 @@ const Fases = ({ selectedImages, setSelectedImages }) => {
         const fetchMaps = async () => {
             try {
                 const maps1 = await getMapByDifficulty(1);
-                setMapsDifficulty1(maps1.map(map => ({ id: map.id, imageUrl: `http://localhost:8000${map.image}` })));
+                setMapsDifficulty1(maps1.filter(map => map.isOriginal === 0).map(map => ({ id: map.id, imageUrl: `http://localhost:8000${map.image}` })));
                 const maps2 = await getMapByDifficulty(2);
-                setMapsDifficulty2(maps2.map(map => ({ id: map.id, imageUrl: `http://localhost:8000${map.image}` })));
+                setMapsDifficulty2(maps2.filter(map => map.isOriginal === 0).map(map => ({ id: map.id, imageUrl: `http://localhost:8000${map.image}` })));
                 const maps3 = await getMapByDifficulty(3);
-                setMapsDifficulty3(maps3.map(map => ({ id: map.id, imageUrl: `http://localhost:8000${map.image}` })));
+                setMapsDifficulty3(maps3.filter(map => map.isOriginal === 0).map(map => ({ id: map.id, imageUrl: `http://localhost:8000${map.image}` })));
             } catch (error) {
                 console.error(error);
             }
@@ -35,7 +35,9 @@ const Fases = ({ selectedImages, setSelectedImages }) => {
     const handleNext = (setCurrentPhaseIndex, maps) => {
         setCurrentPhaseIndex(prevIndex => (prevIndex + 1) % maps.length);
     };
-
+    const showInfo = () =>{
+        console.log(document.getElementById("gameMode"));
+    }
     const handleImageClick = (map, phaseIndex) => {
         setSelectedImages(prevImages => {
             const updatedImages = [...prevImages];
@@ -68,6 +70,7 @@ const Fases = ({ selectedImages, setSelectedImages }) => {
                     </CustomImageWithOverlay>
                 ))}
             </div>
+            <button onClick={showInfo()}>c</button>
             <div className="w-full sm:w-4/4 flex flex-col sm:flex-row items-center justify-center">
                 <div className="flex flex-col sm:flex-row items-center justify-center sm:flex-wrap gap-x-4">
                     {mapsDifficulty1.map((map, index) => (

@@ -34,6 +34,29 @@ class MapController extends Controller
         return $map;
     }
 
+    public function getDefaultMaps(){
+        $maps = response()->json(Map::where('isOriginal', 1)->get(), 200);
+        if ($maps->isEmpty()) {
+            return response()->json([
+                'error' => 'No maps found'
+            ], 404);
+        }
+        return $maps;
+    }
+
+    public function getRandomMaps(){
+        $maps1 = Map::where('difficulty', 1)->get();
+        $maps1= $maps1->random(1);
+        $maps2 = Map::where('difficulty', 2)->get();
+        $maps2= $maps2->random(1);
+        $maps3 = Map::where('difficulty', 3)->get();
+        $maps3= $maps3->random(1);
+        
+        $maps = [$maps1[0], $maps2[0], $maps3[0]];
+
+        return $maps;
+    }
+
     public function getMapsByUser($request)
     {
         $maps = response()->json(Map::where('user_id', $request->user_id)->get(), 200);

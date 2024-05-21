@@ -139,7 +139,10 @@ const Create = () => {
                         Crear Sala
                     </button>
                 </div>
-                <Fases selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
+                
+                {gameMode === 'Mapes de la comunitat' && (
+                    <Fases selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
+                )}
         </div>
     );
 };

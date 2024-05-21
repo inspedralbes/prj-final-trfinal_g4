@@ -2,6 +2,7 @@ const e = require('express');
 const express = require('express');
 const { cp } = require('fs');
 const { createServer, get } = require('http');
+const { config } = require('process');
 const { Server } = require('socket.io');
 // const fetch = require('node-fetch'); // Add this line to import the fetch function
 
@@ -43,6 +44,30 @@ function nextColor(player) {
     }
     return colorToReturn;
 }
+async function getRandomMaps() {
+    let maps = [];
+    let tuto = await fetch("http://localhost:8000/api/randomMaps", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+    maps= await tuto.json();
+
+    return maps;
+}
+
+async function getOriginalMaps() {
+    let maps = [];
+    let tuto = await fetch("http://localhost:8000/api/defaultMaps", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    });
+    maps= await tuto.json();
+    return maps;
+}
 
 async function getMapData(data) {
     let maps = [];
@@ -55,14 +80,15 @@ async function getMapData(data) {
     let tutoJson = await tuto.json();
     maps.push(tutoJson);
     switch (data.mode) {
-        case 'Aleatoris':
-            let randomMaps = getRandomMaps();
+        case 'Aleatori':
+            console.log("Aleatoris");
+            let randomMaps = await getRandomMaps();
             randomMaps.forEach(map => {
                 maps.push(map);
             });
             break;
         case 'Mapes originals':
-            let originalMaps = getOriginalMaps();
+            let originalMaps = await getOriginalMaps();
             originalMaps.forEach(map => {
                 maps.push(map);
             });
@@ -80,7 +106,7 @@ async function getMapData(data) {
 }
 function getCommunityMaps(maps) {
     let mapsArray = [];
-    console.log("Sonic dice", maps);
+   
     maps.forEach(async map => {
 
         let mapData = await fetch("http://localhost:8000/api/maps/" + map.id, {
@@ -92,9 +118,8 @@ function getCommunityMaps(maps) {
         let mapDataJson = await mapData.json();
 
         mapsArray.push(mapDataJson);
-        console.log("mario repsonde", mapsArray)
+        
     });
-    console.log("Don't speak", mapsArray);
     return mapsArray;
 }
 
@@ -135,7 +160,55 @@ io.on('connection', (socket) => {
             socket.emit('chatMessage', message);
         });
     });
-
+    socket.on('quickGame', async (data) => {
+        let roomToJoin=null;
+        rooms.forEach(room => {
+            if (room.isPublic && room.status!='Playing' && room.users.length<2) {
+                roomToJoin = room;
+            }
+        });
+        if(roomToJoin!=null){
+            let newUser = { id: socket.id, name: data.user.name, state: null, image: data.user.image };
+            roomToJoin.users.push(newUser);
+            roomToJoin.accesible = false;
+            roomToJoin.status = 'inLobby';
+            socket.join(roomToJoin.id);
+            io.emit('allRooms', rooms);
+            io.to(roomToJoin.id).emit('newInfoRoom', roomToJoin);
+        } else{
+            let id = lastRoom++;
+            let config = {
+                mode: 'Aleatori',
+                maps: []
+            }
+            getMapData(config).then((mapsFull) => {
+                let newRoom = {
+                    name: 'Quick Game'+Math.floor(Math.random() * 1000),
+                    isPublic: true,
+                    mode: 'Aleatori',
+                    admin: [socket.id, data.user.name, data.user.image],
+                    users: [{ id: socket.id, name: data.user.name, state: null, image: data.user.image }],
+                    id: id,
+                    accessCode: null,
+                    accesible: true,
+                    status: 'Waiting',
+                    messages: [],
+                    game: {
+                        maps: mapsFull,
+                        currentMap: 0,
+                        players: [],
+                        playersData: []
+                    }
+                }
+                rooms.push(newRoom);
+                socket.join(newRoom.id);
+                io.emit('allRooms', rooms);
+                io.to(newRoom.id).emit('newInfoRoom', newRoom);
+                roomToJoin = newRoom;
+            });
+        }
+        socket.emit('newRoomInfo', roomToJoin);
+    });
     //Join Room
     socket.on('joinRoom', (data) => {
         let findRoom = rooms.find(room => room.id == data.id);
@@ -281,6 +354,21 @@ io.on('connection', (socket) => {
                 room.game.playersData[0].color = 'red';
                 room.game.playersData[1].colorsUnlocked = ['blue'];
                 room.game.playersData[1].color = 'blue';
+
+                fetch("localhost:8000/api/saves", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        user_id: room.users[0].id,
+                        FirstMap: room.game.maps[1].id,
+                        SecondMap: room.game.maps[2].id,
+                        ThirdMap: room.game.maps[3].id,
+                        state: room.game.currentMap
+
+                    })
+                })
             } else {
                 if (room.game.currentMap == 2) {
                     room.game.playersData[0].colorsUnlocked.push('green');
