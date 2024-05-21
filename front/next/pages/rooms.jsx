@@ -42,7 +42,7 @@ function Rooms() {
         useStore.setState({ room: room });
         if (useStore.getState().user == null) {
             let userName = 'user' + Math.floor(Math.random() * 1000);
-            useStore.setState({ user: { name: userName } });
+            useStore.setState({ user: { name: userName, image: '/images/profiles/default-NoLogin.png' } });
             let user = {
                 name: userName,
                 image: '/images/profiles/default-NoLogin.png'
@@ -88,10 +88,10 @@ function Rooms() {
                     useStore.setState({ room: room });
                     if (useStore.getState().user == null) {
                         let userName = 'user' + Math.floor(Math.random() * 1000);
-                        useStore.setState({ user: { name: userName } });
+                        useStore.setState({ user: { name: userName, image: '/images/profiles/default-NoLogin.png' } });
                         let user = {
                             name: userName,
-                            image: '/images/random-game.png'
+                            image: '/images/profiles/default-NoLogin.png'
                         }
                         socket.emit('joinRoom', { id: room.id, user: user });
                     } else {
@@ -142,10 +142,10 @@ function Rooms() {
         let user;
         if (useStore.getState().user == null) {
             let userName = 'user' + Math.floor(Math.random() * 1000);
-            useStore.setState({ user: { name: userName } });
+            useStore.setState({ user: { name: userName, image: '/images/profiles/default-NoLogin.png' } });
             user = {
                 name: userName,
-                image: '/images/random-game.png'
+                image: '/images/profiles/default-NoLogin.png'
             }
 
         } else {
@@ -161,37 +161,6 @@ function Rooms() {
         }
         let data = {user: user};
         socket.emit('quickGame', data);
-        // let roomInfo = {
-        //     name: 'Partida ràpida',
-        //     public: true,
-        //     mode: 'original',
-        //     maps: ['/images/original-map1.png', '/images/original-map2.png', '/images/original-map3.png', '/images/original-map4.png', '/images/original-map5.png', '/images/original-map6.png']
-        // };
-        // if (useStore.getState().user == null) {
-        //     let userName = 'user' + Math.floor(Math.random() * 1000);
-        //     useStore.setState({ user: { name: userName } });
-        //     let user = {
-        //         name: userName,
-        //         image: '/images/random-game.png'
-        //     }
-        //     socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
-        // } else {
-        //     let userStore = useStore.getState().user;
-        //     let userLocalStorage = JSON.parse(localStorage.getItem('user'));
-        //     if (userStore != null) {
-        //         let user = {
-        //             name: userStore.name,
-        //             image: userStore.image
-        //         }
-        //         socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
-        //     } else if (userLocalStorage != null) {
-        //         let user = {
-        //             name: userLocalStorage.name,
-        //             image: userLocalStorage.image
-        //         }
-        //         socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
-        //     }
-        // }
     };
 
     // Google Session

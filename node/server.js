@@ -44,6 +44,7 @@ function nextColor(player) {
     }
     return colorToReturn;
 }
+
 async function getRandomMaps() {
     let maps = [];
     let tuto = await fetch("http://localhost:8000/api/randomMaps", {
@@ -104,6 +105,7 @@ async function getMapData(data) {
     }
     return maps;
 }
+
 function getCommunityMaps(maps) {
     let mapsArray = [];
    
@@ -209,6 +211,7 @@ io.on('connection', (socket) => {
         }
         socket.emit('newRoomInfo', roomToJoin);
     });
+
     //Join Room
     socket.on('joinRoom', (data) => {
         let findRoom = rooms.find(room => room.id == data.id);
@@ -232,6 +235,7 @@ io.on('connection', (socket) => {
         let room = findRoomByUser(socket.id);
         room.messages.push(data);
         io.to(room.id).emit('newMessage', room.messages);
+        io.to(room.id).emit('newInfoRoom', room);
         console.log('chatMessage', room.messages);
         console.log('chatMessage', data);
     });
