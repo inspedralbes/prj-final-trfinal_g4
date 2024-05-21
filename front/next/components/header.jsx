@@ -18,7 +18,7 @@ const Header = () => {
     useEffect(() => {
         const userStore = useStore.getState().user;
 
-        if ( userStore != null ) {
+        if (userStore != null) {
             setToken(userStore.token);
             setUser(userStore.name);
             setImage(userStore.image);
@@ -71,8 +71,8 @@ const Header = () => {
     let content;
     if (token && user) {
         content = (
-            <div className="profile relative text-white">
-                <Link href="/CrearMapes" className="mr-4 text-white mr-6 hover:text-yellow-500">
+            <div className="profile relative text-white flex items-center">
+                <Link href="/CrearMapes" className="mr-4 text-white hover:text-yellow-500">
                     Pujar Mapes
                 </Link>
                 <Link href="/howToPlay" className="mr-4">
@@ -87,6 +87,7 @@ const Header = () => {
                     </div>
                 )}
             </div>
+
         );
     } else {
         content = (
