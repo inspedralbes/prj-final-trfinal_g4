@@ -45,7 +45,7 @@ function nextColor(player) {
 }
 async function getRandomMaps() {
     let maps = [];
-    let tuto = await fetch("http://localhost:8000/api/getRandomMaps", {
+    let tuto = await fetch("http://localhost:8000/api/randomMaps", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -68,7 +68,6 @@ async function getOriginalMaps() {
     return maps;
 }
 
-
 async function getMapData(data) {
     let maps = [];
     let tuto = await fetch("http://localhost:8000/api/maps/7", {
@@ -80,14 +79,15 @@ async function getMapData(data) {
     let tutoJson = await tuto.json();
     maps.push(tutoJson);
     switch (data.mode) {
-        case 'Aleatoris':
+        case 'Aleatori':
+            console.log("Aleatoris");
             let randomMaps = await getRandomMaps();
             randomMaps.forEach(map => {
                 maps.push(map);
             });
             break;
         case 'Mapes originals':
-            let originalMaps = getOriginalMaps();
+            let originalMaps = await getOriginalMaps();
             originalMaps.forEach(map => {
                 maps.push(map);
             });
