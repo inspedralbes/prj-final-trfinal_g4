@@ -6,12 +6,15 @@ import Header from '../components/header';
 import useStore from '../src/store';
 import socket from '../services/sockets';
 import { useRouter } from 'next/router';
+import ErrorPopup from '../components/errorPopup';
 
 function Rooms() {
     const router = useRouter();
     const session = useSession();
     const [showRooms, setShowRooms] = useState([]); // Mostrar salas públicas
     const [roomCode, setRoomCode] = useState(Array.from({ length: 6 }, () => '')); // Código de la sala
+    const [codeErrorMessage, setCodeErrorMessage] = useState(null);
+    const [incorrectCodeErrorMessage, setIncorrectCodeErrorMessage] = useState(null);
     var rooms = useStore.getState().rooms; // Salas
 
     //Mostrar salas pilladas desde el store en tiempo real (públicas) (sockets.js)
@@ -81,10 +84,15 @@ function Rooms() {
     const addPrivateRoom = () => {
         let code = roomCode.join('');
         if (code.length < 6) {
-            alert('El codi no està sencer')
+            setCodeErrorMessage('Codi incomplet');
+            setIncorrectCodeErrorMessage(null); // Reinicia el mensaje de error de código incorrecto
         } else {
+            setCodeErrorMessage(null); // Reinicia el mensaje de error de código incompleto
+            let found = false;
             rooms.forEach(room => {
-                if (room.accessCode == code) {
+                if (room.accessCode === code) {
+                    found = true;
+                    // Resto del código para unirse a la sala...
                     useStore.setState({ room: room });
                     if (useStore.getState().user == null) {
                         let userName = 'user' + Math.floor(Math.random() * 1000);
@@ -103,6 +111,11 @@ function Rooms() {
                     }
                 }
             });
+            if (!found) {
+                setIncorrectCodeErrorMessage('Codi incorrecte');
+            } else {
+                setIncorrectCodeErrorMessage(null);
+            }
         }
     };
 
@@ -157,9 +170,9 @@ function Rooms() {
                     image: userStore.image
                 }
             }
-            
+
         }
-        let data = {user: user};
+        let data = { user: user };
         socket.emit('quickGame', data);
         // let roomInfo = {
         //     name: 'Partida ràpida',
@@ -214,6 +227,8 @@ function Rooms() {
         <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-r from-blue-400 to-indigo-500">
             <Header />
             <div className='lg:grid lg:grid-cols-2 mb-9 lg:gap-9'>
+                {codeErrorMessage && <ErrorPopup type="error" message={codeErrorMessage} clearMessage={() => setCodeErrorMessage(null)} />}
+                {incorrectCodeErrorMessage && <ErrorPopup type="error" message={incorrectCodeErrorMessage} clearMessage={() => setIncorrectCodeErrorMessage(null)} />}
                 <div className="bg-white shadow-md rounded-lg p-4 flex-grow m-5 lg:max-w-[600px]">
                     <h2 className="text-lg font-semibold mb-4">Sales disponibles</h2>
                     <div className="bg-gray-100 rounded-lg p-4">

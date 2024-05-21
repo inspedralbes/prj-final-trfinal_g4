@@ -25,6 +25,11 @@ function Login() {
     }
   }, [session, router]);
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -33,7 +38,13 @@ function Login() {
       return;
     }
 
+    if (!validateEmail(email)) {
+      setSessionError('El correu introduit no es valid! Torna-ho a intentar.');
+      return;
+    }
+
     setSessionError(null);
+    setSessionIncomplete(null);
 
     const user = {
       email: email,
@@ -78,12 +89,15 @@ function Login() {
     await signIn('google');
   }
 
+  const clearIncompleteMessage = () => setSessionIncomplete(null);
+  const clearErrorMessage = () => setSessionError(null);
+
   return (
     <div className="h-screen overflow-hidden">
       <Header />
       <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4">
-        {sessionIncomplete && <ErrorPopup type="incomplete" message={sessionIncomplete} />}
-        {sessionError && <ErrorPopup type="error" message={sessionError} />} {/* Mostrar el popup de error */}
+        {sessionIncomplete && <ErrorPopup type="incomplete" message={sessionIncomplete} clearMessage={clearIncompleteMessage} />}
+        {sessionError && <ErrorPopup type="error" message={sessionError} clearMessage={clearErrorMessage} />}
         <form className="bg-white shadow-md rounded-lg px-8 py-6 max-w-md w-full" onSubmit={handleSubmit}>
           <h2 className="text-3xl font-semibold text-center mb-4">Iniciar Sessió</h2>
           <div className="mb-4">
