@@ -69,7 +69,7 @@ const Create = () => {
                 useStore.setState({ user: { name: userName } });
                 let user = {
                     name: userName,
-                    image: '/images/random-game.png'
+                    image: '/images/profiles/default-NoLogin.png'
                 };
                 socket.emit('createRoom', { addRoom: roomInfo, userAdmin: user });
             } else {

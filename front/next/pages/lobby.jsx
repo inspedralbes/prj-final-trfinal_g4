@@ -93,7 +93,7 @@ const Lobby = () => {
     if (otherUser != '') {
         contentOtherUser = <div id='userRandom' className='flex items-center mt-2 mb-2'>
                                 <div className='flex items-center'>
-                                <img src={userFromLocalStorage && userFromLocalStorage.image ? 'http://localhost:8000'+userFromLocalStorage.image : '/images/profiles/default.png'} alt="User" className='w-10 h-10 ml-2 rounded-full' />
+                                <img src={'http://localhost:8000'+ room.users[1].image } alt="User" className='w-10 h-10 ml-2 rounded-full' />
                                     <p className='text-2xl ml-3 mt-1 mr-4 truncate'>{otherUser}</p>
                                 </div>
                                 { user != adminUser && room.users[1].state != 'Ready' && (
@@ -187,7 +187,7 @@ const Lobby = () => {
                             <h1 className='text-3xl font-bold mb-3'>Usuaris a la sala</h1>
                             <div id='adminUser' className='flex items-center mt-2 mb-2'>
                                 <div className='flex items-center'>
-                                <img src={userFromLocalStorage && userFromLocalStorage.image ? 'http://localhost:8000'+userFromLocalStorage.image : '/images/profiles/default.png'} alt="User" className='w-10 h-10 ml-2 rounded-full' />
+                                <img src={'http://localhost:8000'+ room.users[0].image } alt="User" className='w-10 h-10 ml-2 rounded-full' />
                                     <p className='text-2xl ml-3 mt-1 mr-4 truncate'>{adminUser}</p>
                                 </div>
                                 { user == adminUser && room.users[0].state != 'Ready' && (

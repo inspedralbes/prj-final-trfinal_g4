@@ -45,7 +45,7 @@ function Rooms() {
             useStore.setState({ user: { name: userName } });
             let user = {
                 name: userName,
-                image: '/images/random-game.png'
+                image: '/images/profiles/default-NoLogin.png'
             }
             socket.emit('joinRoom', { id: room.id, user: user });
         } else {
