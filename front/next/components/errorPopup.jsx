@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const ErrorPopup = ({ type, message }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
   let popupColor = "";
   let popupPosition = "";
   let popupTextColor = "";
@@ -26,34 +24,31 @@ const ErrorPopup = ({ type, message }) => {
       break;
     default:
       popupColor = "bg-gray-500"; 
-
   }
   
   popupPosition = "top-36";
 
+  const [displayMessage, setDisplayMessage] = useState("");
 
   useEffect(() => {
     if (message) {
-      setIsOpen(true); 
+      setDisplayMessage(message);
       const timer = setTimeout(() => {
-        setIsOpen(false); 
+        setDisplayMessage("");
       }, 3000); 
       return () => clearTimeout(timer); 
     }
-  }
-  , [message]);
-
-  if (!isOpen) {
-    return null; 
-  }
+  }, [message]);
 
   return (
     <div className={`fixed left-0 w-full ${popupPosition} flex justify-center z-50`}>
-      <div className={`p-4 rounded-md shadow-lg ${popupColor}`}>
-        <p className={`${popupTextColor}`}>
-          {message}
-        </p>
-      </div>
+      {displayMessage && (
+        <div className={`p-4 rounded-md shadow-lg ${popupColor}`}>
+          <p className={`${popupTextColor}`}>
+            {displayMessage}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

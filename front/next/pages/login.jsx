@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { login } from '../services/communicationManager';
 import { useRouter } from 'next/router';
 import { signIn, useSession } from 'next-auth/react';
@@ -11,12 +11,10 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-  const [setSession] = useState(null);
-
   const [sessionIncomplete, setSessionIncomplete] = useState(null);
   const [sessionError, setSessionError] = useState(null);
-
   const session = useSession();
+
   useEffect(() => {
     if (session?.data) {
       if (session.data.user.admin) {
@@ -35,26 +33,28 @@ function Login() {
       return;
     }
 
+    setSessionError(null);
+
     const user = {
       email: email,
       password: password
     };
 
-    login(user).then((data) => {
-      //datos de usuario (user, id, token, admin(boolean), image)
-      localStorage.setItem('user', 
-        JSON.stringify({ 
-          name: data.user, 
-          email: data.email,
-          id: data.id,
-          admin: data.admin,
-          image: data.image,
-          token: data.token
-        })
-      );
-      useStore.setState({ 
-        user: { 
-          name: data.user, 
+    try {
+      const data = await login(user);
+
+      localStorage.setItem('user', JSON.stringify({
+        name: data.user,
+        email: data.email,
+        id: data.id,
+        admin: data.admin,
+        image: data.image,
+        token: data.token
+      }));
+
+      useStore.setState({
+        user: {
+          name: data.user,
           email: data.email,
           id: data.id,
           admin: data.admin,
@@ -62,15 +62,16 @@ function Login() {
           token: data.token
         }
       });
+
       if (data.admin == 1) {
         useStore.setState({ admin: true });
         router.push('/admin');
       } else {
         router.push('/rooms');
       }
-    }).catch(() => {
-        setSessionError('Error al iniciar sessió, si us plau, torna a intentar-ho.');
-      });
+    } catch (error) {
+      setSessionError('Dades de inici de sessió incorrectes! Torna a provar.');
+    }
   };
 
   const loginGoogle = async () => {
@@ -82,8 +83,7 @@ function Login() {
       <Header />
       <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4">
         {sessionIncomplete && <ErrorPopup type="incomplete" message={sessionIncomplete} />}
-        {sessionError && <ErrorPopup type="error" message={sessionError} />}
-        {/* {sessionSuccess && <ErrorPopup type="success" message={sessionSuccess} />} */}
+        {sessionError && <ErrorPopup type="error" message={sessionError} />} {/* Mostrar el popup de error */}
         <form className="bg-white shadow-md rounded-lg px-8 py-6 max-w-md w-full" onSubmit={handleSubmit}>
           <h2 className="text-3xl font-semibold text-center mb-4">Iniciar Sessió</h2>
           <div className="mb-4">
