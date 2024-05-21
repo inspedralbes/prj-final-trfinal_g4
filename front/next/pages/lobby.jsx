@@ -33,6 +33,7 @@ const Lobby = () => {
     if ( room && room.messages ) {
         room.messages.map((message) => {
             console.log(message);
+            console.log(message.message);
             if (message.user == user) {
                 chatMessages += <div className='chat-message'>
                                     <div className='flex items-end justify-end'>

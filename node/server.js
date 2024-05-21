@@ -143,7 +143,7 @@ io.on('connection', (socket) => {
                 accessCode: data.addRoom.accessCode,
                 accesible: true,
                 status: 'Waiting',
-                messages: [],
+                messages: [{ user: 'Server', message: `${data.userAdmin.name} ha creat la sala` }],
                 game: {
                     maps: mapsFull,
                     currentMap: 0,
@@ -155,11 +155,11 @@ io.on('connection', (socket) => {
             socket.join(newRoom.id);
             io.emit('allRooms', rooms);
             console.log('newRoom', newRoom.game.maps);
+            console.log('message', newRoom.messages);
             io.to(newRoom.id).emit('newInfoRoom', newRoom);
-            let message = { user: 'Server', message: `${data.userAdmin.name} ha creat la sala` };
-            socket.emit('chatMessage', message);
         });
     });
+
     socket.on('quickGame', async (data) => {
         let roomToJoin=null;
         rooms.forEach(room => {
@@ -192,7 +192,7 @@ io.on('connection', (socket) => {
                     accessCode: null,
                     accesible: true,
                     status: 'Waiting',
-                    messages: [],
+                    messages: [{ user: 'Server', message: `${data.user.name} ha creat la sala` }],
                     game: {
                         maps: mapsFull,
                         currentMap: 0,
@@ -219,13 +219,12 @@ io.on('connection', (socket) => {
             findRoom.users.push(newUser);
             findRoom.accesible = false;
             findRoom.status = 'inLobby';
+            findRoom.messages.push({ user: 'Server', message: `${data.user.name} s'ha unit a la sala` });
             socket.join(findRoom.id);
         }
         io.emit('allRooms', rooms);
         io.to(findRoom.id).emit('newInfoRoom', findRoom);
         console.log('soy gay', findRoom);
-        let message = { user: 'Server', message: `${data.user.name} s'ha unit a la sala` };
-        socket.emit('chatMessage', message);
     });
 
     //Chat Room
@@ -261,8 +260,7 @@ io.on('connection', (socket) => {
                 room.users.splice(0, 1);
                 room.accesible = true;
                 // console.log("Room BBBBBBBBBBBBBBBBBBBBBBB", room);
-                let message = { user: 'Server', message: `${name} a sortit de la sala` };
-                socket.emit('chatMessage', message);
+                room.messages.push({ user: 'Server', message: `${name} a sortit de la sala` });
                 socket.leave(room.id);
                 socket.emit('newInfoRoom', null);
                 io.to(room.id).emit('newInfoRoom', room);
@@ -270,8 +268,7 @@ io.on('connection', (socket) => {
                 rooms.splice(rooms.indexOf(room), 1);
             }
         } else {
-            let message = { user: 'Server', message: `${room.users.find(user => user.id == socket.id).name} a sortit de la sala` };
-            socket.emit('chatMessage', message);
+            room.messages.push({ user: 'Server', message: `${room.users.find(user => user.id == socket.id).name} a sortit de la sala` });
             room.users.splice(1, 1);
             room.accesible = true;
             console.log("Room CCCCCCCCCCCCCCCCCCCCCCCCCCCCC", room);
