@@ -162,6 +162,7 @@ io.on('connection', (socket) => {
         });
     });
 
+    //Quick Game
     socket.on('quickGame', async (data) => {
         let roomToJoin=null;
         rooms.forEach(room => {
@@ -174,6 +175,7 @@ io.on('connection', (socket) => {
             roomToJoin.users.push(newUser);
             roomToJoin.accesible = false;
             roomToJoin.status = 'inLobby';
+            roomToJoin.messages.push({ user: 'Server', message: `${data.user.name} s'ha unit a la sala` });
             socket.join(roomToJoin.id);
             io.emit('allRooms', rooms);
             io.to(roomToJoin.id).emit('newInfoRoom', roomToJoin);
