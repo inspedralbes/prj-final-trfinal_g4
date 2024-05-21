@@ -54,11 +54,16 @@ function Mapas() {
     };
 
     if (loading) {
-        return <div>Loading...</div>; // Mostrar un mensaje de carga o un spinner
+        return null; // No mostrar nada mientras se está cargando
     }
 
     return (
-        <div className="h-screen overflow-hidden">
+        <div className="h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
+        </div>
+    );
+
+    return (
+        <div className="h-screen overflow-hidden bg-gradient-to-r from-blue-400 to-indigo-500">
             <Header />
             <div className="flex flex-col items-center justify-center h-full bg-gradient-to-r from-blue-400 to-indigo-500">
                 <div className="w-full sm:w-1/2 bg-white rounded-lg p-8 mx-auto mb-8">
