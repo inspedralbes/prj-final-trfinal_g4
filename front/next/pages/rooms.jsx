@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
-import { FaCheck } from "react-icons/fa6";
 import Header from '../components/header';
 import useStore from '../src/store';
 import socket from '../services/sockets';
@@ -75,9 +74,16 @@ function Rooms() {
 
     const handleInputChange = (index, event) => {
         const { value } = event.target;
+        if (value.length > 1) return; // Prevent input of more than one character
+
         const newRoomCode = [...roomCode];
         newRoomCode[index] = value.toUpperCase();
         setRoomCode(newRoomCode);
+
+        // Move to the next input if the current input is not empty
+        if (value && index < inputRefs.length - 1) {
+            inputRefs[index + 1].current.focus();
+        }
     };
 
     // Unirse a la sala privada
@@ -122,31 +128,37 @@ function Rooms() {
     // Navegación entre inputs
     const handleKeyDown = (index, e) => {
         const { key } = e;
-        if (key == 'ArrowLeft' || key == 'ArrowRight') {
+        if (key === 'ArrowLeft' || key === 'ArrowRight') {
             e.preventDefault();
-            const nextIndex = key == 'ArrowLeft' ? index - 1 : index + 1;
+            const nextIndex = key === 'ArrowLeft' ? index - 1 : index + 1;
             if (nextIndex >= 0 && nextIndex < inputRefs.length) {
                 inputRefs[nextIndex].current.focus();
             }
-        } else if (key == 'Backspace') {
-            if (index > 0 && inputRefs[index].current.value == '') {
-                inputRefs[index - 1].current.focus();
-            } else if (index == 0 && inputRefs[index].current.value == '') {
-                if (inputRefs[index - 1]) {
-                    inputRefs[index - 1].current.focus();
-                }
+        } else if (key === 'Backspace') {
+            e.preventDefault();
+            let newRoomCode = [...roomCode];
+            if (newRoomCode[index] !== '') {
+                newRoomCode[index] = '';
+                setRoomCode(newRoomCode);
             } else {
-                inputRefs[index].current.value = '';
-            }
-        } else if (key == 'Delete') {
-            if (inputRefs[index].current.value == '' && index < inputRefs.length - 1) {
-                inputRefs[index + 1].current.focus();
-            } else {
-                for (let i = index; i < inputRefs.length - 1; i++) {
-                    inputRefs[i].current.value = inputRefs[i + 1].current.value;
+                for (let i = index - 1; i >= 0; i--) {
+                    if (newRoomCode[i] !== '') {
+                        newRoomCode[i] = '';
+                        setRoomCode(newRoomCode);
+                        inputRefs[i].current.focus();
+                        break;
+                    }
                 }
-                inputRefs[inputRefs.length - 1].current.value = '';
             }
+        } else if (key === 'Delete') {
+            e.preventDefault();
+            let newRoomCode = [...roomCode];
+            for (let i = index; i < inputRefs.length - 1; i++) {
+                newRoomCode[i] = newRoomCode[i + 1];
+            }
+            newRoomCode[inputRefs.length - 1] = '';
+            setRoomCode(newRoomCode);
+            inputRefs[index].current.focus();
         }
     };
 
