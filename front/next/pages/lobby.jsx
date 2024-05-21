@@ -9,6 +9,7 @@ const Lobby = () => {
     var user = useStore.getState().user.name;
     const [room, setRoom] = useState(useStore.getState().room);
     const [message, setMessage] = useState('');
+    const URL = 'http://localhost:8000';
 
     useEffect(() => {
         const handleRoomChange = () => {
@@ -222,13 +223,13 @@ const Lobby = () => {
                                 { room && room.game.maps && (
                                     <ul className='text-2xl font-bold flex items-center justify-center text-center mb-4 mt-2'>
                                         <li>
-                                            <img src={`${room.game.maps[0].imageUrl}`} alt="mapa" className="w-24 h-12" />
+                                            <img src={`${URL}${room.game.maps[0].image}`} alt="mapa" className="w-24 h-12" />
                                         </li>
                                         <li>
-                                            <img src={`${room.game.maps[1].imageUrl}`} alt="mapa" className="w-24 h-12 mx-2" />
+                                            <img src={`${URL}${room.game.maps[1].image}`} alt="mapa" className="w-24 h-12 mx-2" />
                                         </li>
                                         <li>
-                                            <img src={`${room.game.maps[2].imageUrl}`} alt="mapa" className="w-24 h-12" />
+                                            <img src={`${URL}${room.game.maps[2].image}`} alt="mapa" className="w-24 h-12" />
                                         </li>
                                     </ul>
                                 )}
