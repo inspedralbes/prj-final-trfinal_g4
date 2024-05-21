@@ -167,7 +167,7 @@ class UserController extends Controller
             $img = $request->file('image');
             $imgName = $img->getClientOriginalName();
             $img->move(public_path('images/profiles'), $imgName);
-            $user->image = $imgPath;
+            $user->image = '/' . $imgPath;
         }
 
         //booleans

@@ -9,6 +9,8 @@ const Lobby = () => {
     var user = useStore.getState().user.name;
     const [room, setRoom] = useState(useStore.getState().room);
     const [message, setMessage] = useState('');
+    const URL = 'http://localhost:8000';
+    const userFromLocalStorage = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
         const handleRoomChange = () => {
@@ -31,6 +33,7 @@ const Lobby = () => {
     if ( room && room.messages ) {
         room.messages.map((message) => {
             console.log(message);
+            console.log(message.message);
             if (message.user == user) {
                 chatMessages += <div className='chat-message'>
                                     <div className='flex items-end justify-end'>
@@ -86,7 +89,7 @@ const Lobby = () => {
         contentOtherUser = <div id='userRandom' className='flex items-center mt-2 mb-2'>
                                 <div className='flex items-center'>
                                 <img src={userFromLocalStorage && userFromLocalStorage.image ? 'http://localhost:8000'+userFromLocalStorage.image : '/images/profiles/default.png'} alt="User" className='w-10 h-10 ml-2 rounded-full' />
-                                    <p className='text-2xl ml-3 mt-1 mr-4'>{otherUser}</p>
+                                    <p className='text-2xl ml-3 mt-1 mr-4 truncate'>{otherUser}</p>
                                 </div>
                                 { user != adminUser && room.users[1].state != 'Ready' && (
                                     <div id='buttons-check' className='flex items-center ml-auto'>
@@ -148,9 +151,9 @@ const Lobby = () => {
             <Header />
             <div className='flex flex-col justify-center items-center p-4 text-white mt-9'>
                 <h1 className='text-4xl font-bold tracking-wider my-5 animate-pulse text-center mt-9 pt-9'>ESPERANT ACOMPANYANT</h1>
-                <div className='min-h-[600px] max-w-[500px] lg:min-w-[850px] text-center lg:flex lg:flex-inline'>
+                <div className='min-h-[600px] max-w-[500px] lg:min-w-[1050px] text-center lg:flex lg:flex-inline'>
                     {/* Chat section */}
-                    <div className='h-[600px] max-w-[500px] mx-auto lg:min-w-[400px] bg-gray-700 rounded-lg flex flex-col m-5 mt-9'>
+                    <div className='h-[600px] max-w-[500px] mx-auto lg:min-w-[500px] bg-gray-700 rounded-lg flex flex-col lg:m-3 lg:mt-9 mt-9'>
                         <div id='messages' className='flex-grow flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-rhumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
                             { chatMessages }
                         </div>
@@ -173,16 +176,15 @@ const Lobby = () => {
                         </div>
                     </div>
                     {/* users & info room section */}
-                    <div className='h-[600px] max-w-[500px] mx-auto lg:min-w-[400px] flex flex-col m-5 mt-9 bg-gray-700 rounded-lg'>
+                    <div className='h-[600px] max-w-[500px] mx-auto lg:min-w-[500px] flex flex-col lg:m-3 lg:mt-9 mt-9 bg-gray-700 rounded-lg'>
                         {/* Users section */}
                         <div className='h-[200px] mt-4 p-3'>
                             <h1 className='text-3xl font-bold mb-3'>Usuaris a la sala</h1>
                             <div id='adminUser' className='flex items-center mt-2 mb-2'>
                                 <div className='flex items-center'>
                                 <img src={userFromLocalStorage && userFromLocalStorage.image ? 'http://localhost:8000'+userFromLocalStorage.image : '/images/profiles/default.png'} alt="User" className='w-10 h-10 ml-2 rounded-full' />
-                                    <p className='text-2xl ml-3 mt-1 mr-4'>{adminUser}</p>
+                                    <p className='text-2xl ml-3 mt-1 mr-4 truncate'>{adminUser}</p>
                                 </div>
-
                                 { user == adminUser && room.users[0].state != 'Ready' && (
                                     <div id='buttons-check' className='flex items-center ml-auto'>
                                         <button className='bg-green-500 hover:bg-green-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mx-2 rounded-lg' onClick={() => userReady()}>
@@ -201,7 +203,6 @@ const Lobby = () => {
                                     <div className='flex items-center ml-auto text-green-500 bg-gray-600 p-2 rounded-lg'>
                                         <p>Llest per jugar!!</p>
                                     </div>
-                                
                                 )}
                             </div>
                             {contentOtherUser}
@@ -224,13 +225,13 @@ const Lobby = () => {
                                 { room && room.game.maps && (
                                     <ul className='text-2xl font-bold flex items-center justify-center text-center mb-4 mt-2'>
                                         <li>
-                                            <img src={`${room.game.maps[0].imageUrl}`} alt="mapa" className="w-24 h-12" />
+                                            <img src={`${URL}${room.game.maps[1].image}`} alt="mapa" className="w-24 h-12" />
                                         </li>
                                         <li>
-                                            <img src={`${room.game.maps[1].imageUrl}`} alt="mapa" className="w-24 h-12 mx-2" />
+                                            <img src={`${URL}${room.game.maps[2].image}`} alt="mapa" className="w-24 h-12 mx-2" />
                                         </li>
                                         <li>
-                                            <img src={`${room.game.maps[2].imageUrl}`} alt="mapa" className="w-24 h-12" />
+                                            <img src={`${URL}${room.game.maps[3].image}`} alt="mapa" className="w-24 h-12" />
                                         </li>
                                     </ul>
                                 )}

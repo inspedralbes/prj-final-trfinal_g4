@@ -52,6 +52,7 @@ const Perfil = () => {
                         token: token
                     })
                 );
+                console.log('UserLOCAL:', JSON.parse(localStorage.getItem('user')));
                 useStore.setState({
                     user: {
                         name: data.user,
@@ -62,6 +63,7 @@ const Perfil = () => {
                         token: token
                     }
                 });
+                console.log('UserSTORE:', useStore.getState().user);
             });
         } catch (error) {
             console.log('Error al actualizar el usuario:', error);
@@ -100,7 +102,7 @@ const Perfil = () => {
                     </div>
                 </div>
                 <div className="col-span-3 flex flex-col items-center justify-center mt-9 pt-9">
-                    <div className="w-4/6 max-w-xl bg-gray-100 rounded-lg shadow-lg p-8 mr-10">
+                    <div className="w-4/6 max-w-xl bg-gray-100 rounded-lg shadow-lg p-8 mr-10 mt-9 mb-9">
                         <h2 className="text-3xl font-bold mb-8 text-gray-800 truncate">Editar perfil</h2>
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="mb-6">
