@@ -26,7 +26,7 @@ export default class Preloader extends Phaser.Scene {
 
 
         
-        this.load.tilemapTiledJSON('mapatuto', 'maps/mapatuto.json');
+        this.load.tilemapTiledJSON('mapatuto', useStore.getState().gameData.maps[useStore.getState().gameData.currentMap].mapRoute);
     }
 
     create() {

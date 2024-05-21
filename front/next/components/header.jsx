@@ -18,7 +18,7 @@ const Header = () => {
     useEffect(() => {
         const userStore = useStore.getState().user;
 
-        if ( userStore != null ) {
+        if (userStore != null) {
             setToken(userStore.token);
             setUser(userStore.name);
             setImage(userStore.image);
@@ -71,22 +71,23 @@ const Header = () => {
     let content;
     if (token && user) {
         content = (
-            <div className="profile relative text-white">
-                <a href="/CrearMapes" className="mr-4 text-white mr-6 hover:text-yellow-500">
+            <div className="profile relative text-white flex items-center">
+                <Link href="/CrearMapes" className="mr-4 text-white hover:text-yellow-500">
                     Pujar Mapes
-                </a>
-                <a href="/howToPlay" className="mr-4">
+                </Link>
+                <Link href="/howToPlay" className="mr-4">
                     Tutorial
-                </a>
+                </Link>
                 <img src={`${url}${image}`} className="w-10 h-10 mx-4 text-3xl cursor-pointer rounded-full" onClick={toggleDropdown} />
                 {dropdownOpen && (
                     <div className="dropdown absolute right-0 mt-2 bg-black bg-opacity-50 rounded-md shadow-lg">
-                        <a href="/perfil" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Perfil</a>
-                        <a href="/mapas" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Mapas</a>
+                        <Link href="/perfil" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Perfil</Link>
+                        <Link href="/mapas" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Mapas</Link>
                         <button onClick={logoutHandler} className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Logout</button>
                     </div>
                 )}
             </div>
+
         );
     } else {
         content = (

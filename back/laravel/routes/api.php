@@ -22,6 +22,9 @@ Route::get('/maps', [MapController::class, 'index']);
 Route::get('/maps/{map}', [MapController::class, 'getMap']);
 Route::get('/mapsByDifficulty/{difficulty}', [MapController::class, 'mapsByDifficulty']);
 Route::get('download/{id}', [MapController::class, 'download']);
+Route::get('/defaultMaps', [MapController::class, 'getDefaultMaps']);
+Route::get('/randomMaps', [MapController::class, 'getRandomMaps']);
+
 
 Route::get('/saves', [SaveController::class, 'index']);
 Route::get('/saves/{save}', [SaveController::class, 'show']);
