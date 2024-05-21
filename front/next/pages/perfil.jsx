@@ -52,6 +52,7 @@ const Perfil = () => {
                         token: token
                     })
                 );
+                console.log('UserLOCAL:', JSON.parse(localStorage.getItem('user')));
                 useStore.setState({
                     user: {
                         name: data.user,
@@ -62,6 +63,7 @@ const Perfil = () => {
                         token: token
                     }
                 });
+                console.log('UserSTORE:', useStore.getState().user);
             });
         } catch (error) {
             console.log('Error al actualizar el usuario:', error);

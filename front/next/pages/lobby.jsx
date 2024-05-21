@@ -200,7 +200,6 @@ const Lobby = () => {
                                     <div className='flex items-center ml-auto text-green-500 bg-gray-600 p-2 rounded-lg'>
                                         <p>Llest per jugar!!</p>
                                     </div>
-                                
                                 )}
                             </div>
                             {contentOtherUser}
