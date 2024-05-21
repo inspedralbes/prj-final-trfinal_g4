@@ -57,11 +57,6 @@ function Mapas() {
     }
 
     return (
-        <div className="h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
-        </div>
-    );
-
-    return (
         <div className="h-screen overflow-hidden bg-gradient-to-r from-blue-400 to-indigo-500">
             <Header />
             <div className="flex flex-col items-center justify-center h-full bg-gradient-to-r from-blue-400 to-indigo-500">
