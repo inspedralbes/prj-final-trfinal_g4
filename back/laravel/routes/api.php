@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\DB;
 */
 
 Route::get('/maps', [MapController::class, 'index']);
-Route::get('/maps/{map}', [MapController::class, 'show']);
+Route::get('/maps/{map}', [MapController::class, 'getMap']);
 Route::post('/maps', [MapController::class, 'store']);
 Route::put('/maps/{map}', [MapController::class, 'update']);
 
@@ -49,15 +49,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/reportedMaps', [ReportedMapsController::class, 'store']);
 });
 
-    Route::middleware('admin')->group(function () {
-        Route::get('/users', [UserController::class, 'index']);
-        Route::get('/reportedMaps', [ReportedMapsController::class, 'index']);
-        Route::get('/reportedMaps/{reportedMap} ', [ReportedMapsController::class, 'show']);
-        Route::delete('/reportedMaps/{reportedMap}', [ReportedMapsController::class, 'destroyReport']);
-        Route::get('/reportedMapsByUser/{user}', [ReportedMapsController::class, 'getReportedMapsByUser']);
-        Route::get('/reportedReasons', [ReportedMapsController::class, 'getReportedReason']);
-        Route::get('/savesByUser/{user}', [SaveController::class, 'getSavesByUser']);
-        Route::get('download/{id}', [MapController::class, 'download']);
-        Route::delete('/maps/{map}', [MapController::class, 'destroy']);
-    });
-
+Route::middleware('admin')->group(function () {
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/reportedMaps', [ReportedMapsController::class, 'index']);
+    Route::get('/reportedMaps/{reportedMap} ', [ReportedMapsController::class, 'show']);
+    Route::delete('/reportedMaps/{reportedMap}', [ReportedMapsController::class, 'destroyReport']);
+    Route::get('/reportedMapsByUser/{user}', [ReportedMapsController::class, 'getReportedMapsByUser']);
+    Route::get('/reportedReasons', [ReportedMapsController::class, 'getReportedReason']);
+    Route::get('/savesByUser/{user}', [SaveController::class, 'getSavesByUser']);
+    Route::get('download/{id}', [MapController::class, 'download']);
+    Route::delete('/maps/{map}', [MapController::class, 'destroy']);
+});
