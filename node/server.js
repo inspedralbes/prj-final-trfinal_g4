@@ -254,7 +254,7 @@ io.on('connection', (socket) => {
     //Exit Room
     socket.on('exitRoom', () => {
         let room = findRoomByUser(socket.id);
-        // console.log(`Socket ${socket.id} is leaving room ${room.id}`);
+        console.log(`Socket ${socket.id} is leaving room ${room.id}`);
         if (socket.id == room.admin[0]) {
             console.log(`soy admin ${socket.id}`);
             console.log(`room admin ${room.admin[0]}`);
@@ -273,6 +273,7 @@ io.on('connection', (socket) => {
                 io.to(room.id).emit('newInfoRoom', room);
             } else {
                 rooms.splice(rooms.indexOf(room), 1);
+                console.log("Room BBBBBBBBBBBBBBBBBBBBBBB", room);
             }
         } else {
             room.messages.push({ user: 'Server', message: `${room.users.find(user => user.id == socket.id).name} a sortit de la sala` });
@@ -416,6 +417,8 @@ io.on('connection', (socket) => {
                 socket.leave(room.id);
                 socket.emit('newInfoRoom', null);
                 io.to(room.id).emit('newInfoRoom', room);
+            } else if (room.users.length == 1 && socket.id == room.admin[0]){
+                rooms.splice(rooms.indexOf(room), 1);
             }
         } else if (room && room.status == 'Playing') {
             // room.game.players = room.game.players.filter(player => player.id != socket.id);
