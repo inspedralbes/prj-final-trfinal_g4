@@ -2,7 +2,6 @@ import React, { useState, useEffect, use } from 'react';
 import { RiAdminLine } from "react-icons/ri";
 import { FaRegMap } from "react-icons/fa";
 import { TbMapExclamation } from "react-icons/tb";
-import { GoGraph } from "react-icons/go";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { getMaps } from '../services/communicationManager';
 import { getReportedMaps } from '../services/communicationManager';
@@ -55,6 +54,7 @@ function AdminPanel() {
             .then((data) => setMaps(data))
             .then((data) => console.log("data", data))
             .catch((error) => console.error('Error fetching maps:', error));
+
         const userLocal = JSON.parse(localStorage.getItem('user'));
         let userID = userLocal.id;
         let tokenLocal = userLocal.token;
@@ -62,8 +62,8 @@ function AdminPanel() {
         getReportedMaps(tokenLocal, userID)
             .then((data) => setReportedMaps(data))
             .catch((error) => console.error('Error fetching reported maps:', error));
+        
         getUsers(tokenLocal, userID)
-
             .then((data) => {
                 console.log("data", data);
                 setUsers(data);
@@ -78,9 +78,7 @@ function AdminPanel() {
 
     const handleDeleteMap = async (mapId) => {
         try {
-            // console.log("map id", mapId);
             await destroyMap(mapId);
-            // console.log("Map deleted");
             setMaps(maps.filter(map => map.id !== mapId));
         } catch (error) {
             console.error('Error deleting map:', error);
@@ -100,7 +98,6 @@ function AdminPanel() {
     const handleDownloadFile = async (mapId, mapName) => {
         try {
             await downloadFile(mapId, mapName);
-            // console.log("Map downloaded!!!");
         } catch (error) {
             console.error('Error downloading map:', error);
         }
@@ -136,9 +133,6 @@ function AdminPanel() {
                 <div className="flex flex-col items-center justify-center">
                     <TbMapExclamation style={{ color: 'white', fontSize: '4.5em', display: 'flex', cursor: 'pointer' }} onClick={() => handleIconClick('reportedMaps')} />
                 </div>
-                <div className="flex flex-col items-center justify-center">
-                    <GoGraph style={{ color: 'white', fontSize: '4.5em', display: 'flex', cursor: 'pointer' }} />
-                </div>
             </div>
 
             {selectedIcon === 'maps' && (
@@ -166,7 +160,6 @@ function AdminPanel() {
                             </div>
                             {filterByIdAndNameAndUser.length > 0 ? (
                                 <ul className='lista-users'>
-
                                     {currentMaps.length > 0 && currentMaps.map((map) => (
                                         <li key={map.id} className='info-maps'>
                                             <div className='info-map_container-img'>
@@ -181,13 +174,11 @@ function AdminPanel() {
                                                     <MdOutlineReportProblem style={{ color: 'orange', fontSize: '3em', cursor: 'pointer' }} />
                                                 </div>
                                                 <div>
-
                                                     <MdOutlineFileDownload style={{ color: 'green', fontSize: '3em', cursor: 'pointer' }} onClick={() => handleDownloadFile(map.id, map.name)} />
                                                 </div>
                                                 <div>
                                                     <RiDeleteBinLine style={{ color: 'red', fontSize: '2.8em', cursor: 'pointer' }} onClick={() => handleDeleteMap(map.id)} />
                                                 </div>
-
                                             </div>
                                         </li>
                                     ))}
@@ -207,7 +198,6 @@ function AdminPanel() {
                             </div>
                         </div>
                     </div>
-
                 </div>
             )}
 
@@ -226,7 +216,6 @@ function AdminPanel() {
                                 className='input-search'
                             />
                         </div>
-
                         <div className='users-view'>
                             <div className='arrow-left-right'>
                                 {currentPageReportedMaps !== 1 && !searchReportedMapById && (
@@ -245,8 +234,6 @@ function AdminPanel() {
                                             )}
                                             <span> {map.reason} </span>
                                             <button style={{ backgroundColor: '#BF0A1D', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer' }} onClick={() => handleCancelReport(map.id)}>Cancelar reporte</button>
-
-
                                         </div>
                                     ))}
                                 </ul>
@@ -256,7 +243,6 @@ function AdminPanel() {
                                     <ul className='lista-reportes'></ul>
                                 </div>
                             )}
-
                             <div className='arrow-left-right'>
                                 {indexOfLastReportedMap < filterByIdAndReasonReportedMaps.length && !searchReportedMapById && (
                                     <div className="container-icon-arrow-reportedMaps">
@@ -266,8 +252,6 @@ function AdminPanel() {
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             )}
 
@@ -320,8 +304,6 @@ function AdminPanel() {
                                             </div>
                                         </li>
                                     ))}
-
-
                                 </ul>
                             ) : (
                                 <div>
@@ -342,13 +324,6 @@ function AdminPanel() {
 
                 </div>
             )}
-
-
-
-
-
-
-
 
         </div>
     )
