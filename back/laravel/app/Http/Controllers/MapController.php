@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Map;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class MapController extends Controller
 {
@@ -209,5 +210,13 @@ class MapController extends Controller
         }
 
         return response()->download($path);
+    }
+
+    public function getMapFiles(string $map)
+    {
+        $file = 'http://localhost:8000/'+$map;
+        
+
+        return response($file, 200)->header('Access-Control-Allow-Origin', '*')->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')->header('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token, Authorization, Accept,charset,boundary,Content-Length,Accept-Encoding,X-CSRF-Token,X-Requested-With,Accept-Version,Content-MD5,Date,X-Api-Version,X-File-Name');
     }
 }

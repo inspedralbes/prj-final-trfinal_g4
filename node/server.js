@@ -106,11 +106,10 @@ async function getMapData(data) {
     return maps;
 }
 
-function getCommunityMaps(maps) {
+async function getCommunityMaps(maps) {
     let mapsArray = [];
-   
-    maps.forEach(async map => {
 
+    await Promise.all(maps.map(async map => {
         let mapData = await fetch("http://localhost:8000/api/maps/" + map.id, {
             method: "GET",
             headers: {
@@ -120,8 +119,8 @@ function getCommunityMaps(maps) {
         let mapDataJson = await mapData.json();
 
         mapsArray.push(mapDataJson);
-        
-    });
+    }));
+
     return mapsArray;
 }
 
@@ -182,14 +181,14 @@ io.on('connection', (socket) => {
         } else{
             let id = lastRoom++;
             let config = {
-                mode: 'Aleatori',
+                mode: 'Mapes originals',
                 maps: []
             }
             getMapData(config).then((mapsFull) => {
                 let newRoom = {
                     name: 'Quick Game'+Math.floor(Math.random() * 1000),
                     isPublic: true,
-                    mode: 'Aleatori',
+                    mode: 'Mapes originals',
                     admin: [socket.id, data.user.name, data.user.image],
                     users: [{ id: socket.id, name: data.user.name, state: null, image: data.user.image }],
                     id: id,

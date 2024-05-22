@@ -21,19 +21,20 @@
         "name": "next"
       }
     ],
-    "strictNullChecks": true
+    "strictNullChecks": false,
   },
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "pages/game.jsx"
   ],
   "exclude": [
     "node_modules"
   ],
-  "baseUrl": ".", 
+  "baseUrl": ".",
   "paths": {
-      "@/app/*": ["app/*"]
-    }
+    "@/app/*": ["app/*"]
+  }
 }

@@ -243,7 +243,7 @@ const Lobby = () => {
                                 <p className='text-2xl font-bold'>Mapes seleccionats:</p>
                                 { room && room.game.maps && (
                                     <ul className='text-2xl font-bold flex items-center justify-center text-center mb-4 mt-2'>
-                                        <li>
+                                         <li>
                                             <img src={`${URL}${room.game.maps[1].image}`} alt="mapa" className="w-24 h-12" />
                                         </li>
                                         <li>
@@ -251,7 +251,7 @@ const Lobby = () => {
                                         </li>
                                         <li>
                                             <img src={`${URL}${room.game.maps[3].image}`} alt="mapa" className="w-24 h-12" />
-                                        </li>
+                                        </li> 
                                     </ul>
                                 )}
                             </div>

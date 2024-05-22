@@ -25,6 +25,7 @@ Route::get('download/{id}', [MapController::class, 'download']);
 Route::get('/defaultMaps', [MapController::class, 'getDefaultMaps']);
 Route::get('/randomMaps', [MapController::class, 'getRandomMaps']);
 
+// Route::get('/mapFiles/{map}', [MapController::class, 'getMapFiles']);
 
 Route::get('/saves', [SaveController::class, 'index']);
 Route::get('/saves/{save}', [SaveController::class, 'show']);
