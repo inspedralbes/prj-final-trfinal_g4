@@ -25,27 +25,27 @@ let lastRoom = 0;
 
 
 io.on('connection', (socket) => {
-  console.log(`Connected: ${socket.id}`);
+  // console.log(`Connected: ${socket.id}`);
 
   socket.on('userConnected', ({username}) => {
-    console.log(`User connected: ${username}`);
+    // console.log(`User connected: ${username}`);
   });
 
 
   socket.on('userConnected', ({ username }) => {
-    console.log(`User connected: ${username}`);
+    // console.log(`User connected: ${username}`);
   });
 
   socket.on('joinRoom', () => {
-    console.log(socket.id);
+    // console.log(socket.id);
     if (rooms.length == 0) {
       rooms.push({ id: lastRoom, users: [] });
       rooms[0].users.push({ x: 0, y: 0, id: socket.id });
-      console.log(rooms);
+      // console.log(rooms);
       socket.join(lastRoom);
       io.to(lastRoom).emit('updateData', lastRoom);
     } else {
-      console.log(rooms[rooms.length - 1].users);
+      // console.log(rooms[rooms.length - 1].users);
       if (rooms[rooms.length - 1].users.length == 2) {
         rooms.push({ id: lastRoom, users: [{ x: 0, y: 0, id: socket.id }] });
         socket.join(lastRoom);
@@ -121,7 +121,7 @@ io.on('connection', (socket) => {
 
   socket.on('chat message', (dataMessage) => {
     const { msg, room } = dataMessage;
-    console.log(`msg: ${msg}, room: ${room}`);
+    // console.log(`msg: ${msg}, room: ${room}`);
     io.to(room).emit('chat message', msg);
   });
 
@@ -186,12 +186,12 @@ io.on('connection', (socket) => {
 
   socket.on('chat message', (dataMessage) => {
     const { msg, room } = dataMessage;
-    console.log(`msg: ${msg}, room: ${room}`);
+    // console.log(`msg: ${msg}, room: ${room}`);
     io.to(room).emit('chat message', msg);
   });
 
   socket.on('register', async (data) => {
-    console.log('register -->', data);
+    // console.log('register -->', data);
     const response = await fetch('http://localhost:1337/api/auth/local/register', {
       method: 'POST',
       headers: {
@@ -203,7 +203,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('login', async (data) => {
-    console.log('login -->', data);
+    // console.log('login -->', data);
     const response = await fetch('http://localhost:1337/api/auth/local', {
       method: 'POST',
       headers: {
@@ -213,7 +213,7 @@ io.on('connection', (socket) => {
     });
   });
   socket.on('changeMove', (data) => {
-    console.log('updatePosition -->', data);
+    // console.log('updatePosition -->', data);
     // let room = rooms.findIndex((r) => r.id === data.room);
     // console.log('room:', data);
     // if (rooms[room]?.users[0]?.id === socket.id) {
@@ -235,11 +235,11 @@ io.on('connection', (socket) => {
   // });
 
   socket.on('disconnect', () => {
-    console.log('a user disconnected');
+    // console.log('a user disconnected');
   });
 });
 
 
 server.listen(3727, 'localhost', () => {
-  console.log('Server running at http://localhost:3727');
+  // console.log('Server running at http://localhost:3727');
 });

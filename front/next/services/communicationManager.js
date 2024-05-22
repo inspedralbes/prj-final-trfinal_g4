@@ -9,7 +9,15 @@ export function login(user) {
             },
             body: JSON.stringify(user)
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.status == 200) {
+                    return response.json();
+                } else if (response.status == 401) {
+                    reject('Error al iniciar sessió: Usuari o contrasenya incorrectes');
+                } else {
+                    reject('Error al iniciar sessió: ' + response.status)
+                }
+            })
             .then(data => {
                 resolve(data);
             })
@@ -30,7 +38,13 @@ export function register(user) {
             },
             body: JSON.stringify(user)
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    reject('Error al registrar usuario: ' + response.status)
+                }
+            })
             .then(data => {
                 resolve(data);
             })
@@ -80,23 +94,27 @@ export function destroyUser(user) {
     });
 }
 
-export function updateUser(user) {
+export function updateUser(userData, token) {
     return new Promise((resolve, reject) => {
         fetch(`${url}users/`, {
-            method: 'PUT',
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
+                'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(user)
+            body: userData
         })
-            .then(response => response.json())
-            .then(data => {
-                resolve(data);
-            })
-            .catch(error => {
-                reject(error);
-            });
+        .then(response => {
+            if (!response.ok) {
+                reject(`Error: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            resolve(data);
+        })
+        .catch(error => {
+            reject(error);
+        });
     });
 }
 
@@ -169,17 +187,21 @@ export function createUser(user) {
     });
 }
 
-export function createMap(mapData) {
+export function createMap(formData, token) {
     return new Promise((resolve, reject) => {
         fetch(`${url}maps/`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${mapData.token}`
+                'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(mapData)
+            body: formData
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    reject(`Error: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 resolve(data);
             })
@@ -188,7 +210,6 @@ export function createMap(mapData) {
             });
     });
 }
-
 
 export function getMaps() {
     return new Promise((resolve, reject) => {
@@ -331,7 +352,20 @@ export function destroyReport(mapId, user) {
     });
 }
 
-
-
-
-
+export function getMapByDifficulty(difficulty) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}mapsByDifficulty/${difficulty}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}

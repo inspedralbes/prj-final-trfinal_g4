@@ -23,8 +23,8 @@ import './styles.css';
 
 function AdminPanel() {
     const [maps, setMaps] = useState([]);
-    const [reportedMaps, setReportedMaps] = useState([]); // Add reportedMaps state
-    const [allUsers, setUsers] = useState([]); // Add users state
+    const [reportedMaps, setReportedMaps] = useState([]);
+    const [allUsers, setUsers] = useState([]);
     const [selectedIcon, setSelectedIcon] = useState(null);
     const [searchReportedMapById, setSearchReportedMapById] = useState('');
     const [searchUsersById, setsearchUsersById] = useState('');
@@ -74,9 +74,9 @@ function AdminPanel() {
 
     const handleDeleteMap = async (mapId) => {
         try {
-            console.log("map id", mapId);
+            // console.log("map id", mapId);
             await destroyMap(mapId);
-            console.log("Map deleted");
+            // console.log("Map deleted");
             setMaps(maps.filter(map => map.id !== mapId));
         } catch (error) {
             console.error('Error deleting map:', error);
@@ -96,7 +96,7 @@ function AdminPanel() {
     const handleDownloadFile = async (mapId, mapName) => {
         try {
             await downloadFile(mapId, mapName);
-            console.log("Map downloaded!!!");
+            // console.log("Map downloaded!!!");
         } catch (error) {
             console.error('Error downloading map:', error);
         }

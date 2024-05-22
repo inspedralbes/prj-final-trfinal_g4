@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import useStore from '../src/store';
 import { Game as GameType } from 'phaser';
 
 const Game = () => {
@@ -7,7 +7,6 @@ const Game = () => {
     const [game, setGame] = useState<GameType>();
     const dialogMessages = useState([]);
     const gameTexts = useState([]);
-
     const [messages, setMessages] = useState({});
 
     useEffect(() => {

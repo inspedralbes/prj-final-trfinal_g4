@@ -25,6 +25,9 @@ Route::post('/maps', [MapController::class, 'store']);
 Route::put('/maps/{map}', [MapController::class, 'update']);
 
 Route::get('/mapsByDifficulty/{difficulty}', [MapController::class, 'mapsByDifficulty']);
+Route::get('/defaultMaps', [MapController::class, 'getDefaultMaps']);
+Route::get('/randomMaps', [MapController::class, 'getRandomMaps']);
+
 
 Route::get('/saves', [SaveController::class, 'index']);
 Route::get('/saves/{save}', [SaveController::class, 'show']);
@@ -34,13 +37,14 @@ Route::delete('/saves/{save}', [SaveController::class, 'destroy']);
 
 Route::get('/users/{user}', [UserController::class, 'show']);
 Route::post('/users', [UserController::class, 'store']);
-Route::put('/users/{user}', [UserController::class, 'update']);
 Route::delete('/users/{user}', [UserController::class, 'destroy']);
 
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'store']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    //users
+    Route::post('/users', [UserController::class, 'update']);
     Route::post('/logout', [UserController::class, 'logout']);
     Route::post('/reportedMaps', [ReportedMapsController::class, 'store']);
 });
