@@ -1,20 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/header';
 import { createMap } from '../services/communicationManager';
 import { useRouter } from 'next/router';
+import ErrorPopup from '../components/errorPopup';
 
 function Mapas() {
     const [name, setName] = useState('');
     const [difficulty, setDifficulty] = useState('');
     const [img, setImg] = useState(null);
     const [map, setmap] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [popupMessage, setPopupMessage] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
     const router = useRouter();
+
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+        if (!user) {
+            router.push('/login');
+        } else {
+            setLoading(false);
+        }
+    }, [router]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        let id = JSON.parse(localStorage.getItem('user')).id;
-        let token = JSON.parse(localStorage.getItem('user')).token;
+        if (!name || !difficulty || !img || !map) {
+            setPopupMessage('Por favor, completa todos los campos.');
+            return;
+        }
+        
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (!user) {
+            alert('Usuario no autenticado');
+            return;
+        }
+        const { id, token } = user;
     
         const formData = new FormData();
         formData.append('name', name);
@@ -24,30 +46,35 @@ function Mapas() {
         formData.append('user_id', id);
         
         try {
-
             console.log('Form Data:', formData);
             await createMap(formData, token);
-            alert('Mapa creado exitosamente');
+            setSuccessMessage('Mapa creado exitosamente');
             router.push('/');
         } catch (error) {
             alert('Error al crear el mapa: ' + error.message);
         }
     
-        // Limpia el formulario después de enviar
         setName('');
         setDifficulty('');
         setImg(null);
         setmap(null);
+        setPopupMessage(null);
     };
     
 
+    if (loading) {
+        return null;
+    }
+
     return (
-        <div className="h-screen overflow-hidden">
+        <div className="h-screen overflow-hidden bg-gradient-to-r from-blue-400 to-indigo-500">
             <Header />
             <div className="flex flex-col items-center justify-center h-full bg-gradient-to-r from-blue-400 to-indigo-500">
+            {popupMessage && <ErrorPopup type="incomplete" message={popupMessage} clearMessage={() => setPopupMessage(null)} />}
+            {successMessage && <ErrorPopup type="success" message={successMessage} clearMessage={() => setSuccessMessage(null)} />}
                 <div className="w-full sm:w-1/2 bg-white rounded-lg p-8 mx-auto mb-8">
                     <h1 className="text-3xl font-bold mb-4">Enviar mapa</h1>
-                    <form onSubmit={handleSubmit} className="space-y-4" enctype="multipart/form-data">
+                    <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
                         <div>
                             <label htmlFor="nombre" className="block text-gray-700 font-semibold mb-2">Nom:</label>
                             <input

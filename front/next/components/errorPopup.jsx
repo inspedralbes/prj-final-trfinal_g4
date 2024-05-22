@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-const ErrorPopup = ({ type, message }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
+const ErrorPopup = ({ type, message, clearMessage }) => {
   let popupColor = "";
-  let popupPosition = "";
   let popupTextColor = "";
 
   switch (type) {
@@ -25,35 +22,33 @@ const ErrorPopup = ({ type, message }) => {
       popupTextColor = "text-black";
       break;
     default:
-      popupColor = "bg-gray-500"; 
-
+      popupColor = "bg-gray-500";
   }
-  
-  popupPosition = "top-36";
 
+  const [displayMessage, setDisplayMessage] = useState("");
 
   useEffect(() => {
     if (message) {
-      setIsOpen(true); 
+      setDisplayMessage(message);
       const timer = setTimeout(() => {
-        setIsOpen(false); 
-      }, 3000); 
-      return () => clearTimeout(timer); 
+        setDisplayMessage("");
+        if (clearMessage) {
+          clearMessage();
+        }
+      }, 3000);
+      return () => clearTimeout(timer);
     }
-  }
-  , [message]);
-
-  if (!isOpen) {
-    return null; 
-  }
+  }, [message, clearMessage]);
 
   return (
-    <div className={`fixed left-0 w-full ${popupPosition} flex justify-center z-50`}>
-      <div className={`p-4 rounded-md shadow-lg ${popupColor}`}>
-        <p className={`${popupTextColor}`}>
-          {message}
-        </p>
-      </div>
+    <div className="fixed top-0 inset-x-0 flex justify-center items-center z-50 mt-10 pointer-events-none">
+      {displayMessage && (
+        <div className={`p-4 rounded-md shadow-lg ${popupColor} pointer-events-auto`}>
+          <p className={`${popupTextColor}`}>
+            {displayMessage}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

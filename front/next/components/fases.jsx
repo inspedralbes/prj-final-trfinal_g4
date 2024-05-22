@@ -70,7 +70,6 @@ const Fases = ({ selectedImages, setSelectedImages }) => {
                     </CustomImageWithOverlay>
                 ))}
             </div>
-            <button onClick={showInfo()}>c</button>
             <div className="w-full sm:w-4/4 flex flex-col sm:flex-row items-center justify-center">
                 <div className="flex flex-col sm:flex-row items-center justify-center sm:flex-wrap gap-x-4">
                     {mapsDifficulty1.map((map, index) => (

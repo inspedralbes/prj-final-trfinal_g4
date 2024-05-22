@@ -1,17 +1,19 @@
 import React, { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { signOut, useSession } from 'next-auth/react';
-import { FaCheck } from "react-icons/fa6";
 import Header from '../components/header';
 import useStore from '../src/store';
 import socket from '../services/sockets';
 import { useRouter } from 'next/router';
+import ErrorPopup from '../components/errorPopup';
 
 function Rooms() {
     const router = useRouter();
     const session = useSession();
     const [showRooms, setShowRooms] = useState([]); // Mostrar salas públicas
     const [roomCode, setRoomCode] = useState(Array.from({ length: 6 }, () => '')); // Código de la sala
+    const [codeErrorMessage, setCodeErrorMessage] = useState(null);
+    const [incorrectCodeErrorMessage, setIncorrectCodeErrorMessage] = useState(null);
     var rooms = useStore.getState().rooms; // Salas
 
     //Mostrar salas pilladas desde el store en tiempo real (públicas) (sockets.js)
@@ -72,19 +74,31 @@ function Rooms() {
 
     const handleInputChange = (index, event) => {
         const { value } = event.target;
+        if (value.length > 1) return; // Prevent input of more than one character
+
         const newRoomCode = [...roomCode];
         newRoomCode[index] = value.toUpperCase();
         setRoomCode(newRoomCode);
+
+        // Move to the next input if the current input is not empty
+        if (value && index < inputRefs.length - 1) {
+            inputRefs[index + 1].current.focus();
+        }
     };
 
     // Unirse a la sala privada
     const addPrivateRoom = () => {
         let code = roomCode.join('');
         if (code.length < 6) {
-            alert('El codi no està sencer')
+            setCodeErrorMessage('Codi incomplet');
+            setIncorrectCodeErrorMessage(null); // Reinicia el mensaje de error de código incorrecto
         } else {
+            setCodeErrorMessage(null); // Reinicia el mensaje de error de código incompleto
+            let found = false;
             rooms.forEach(room => {
-                if (room.accessCode == code) {
+                if (room.accessCode === code) {
+                    found = true;
+                    // Resto del código para unirse a la sala...
                     useStore.setState({ room: room });
                     if (useStore.getState().user == null) {
                         let userName = 'user' + Math.floor(Math.random() * 1000);
@@ -103,37 +117,48 @@ function Rooms() {
                     }
                 }
             });
+            if (!found) {
+                setIncorrectCodeErrorMessage('Codi incorrecte');
+            } else {
+                setIncorrectCodeErrorMessage(null);
+            }
         }
     };
 
     // Navegación entre inputs
     const handleKeyDown = (index, e) => {
         const { key } = e;
-        if (key == 'ArrowLeft' || key == 'ArrowRight') {
+        if (key === 'ArrowLeft' || key === 'ArrowRight') {
             e.preventDefault();
-            const nextIndex = key == 'ArrowLeft' ? index - 1 : index + 1;
+            const nextIndex = key === 'ArrowLeft' ? index - 1 : index + 1;
             if (nextIndex >= 0 && nextIndex < inputRefs.length) {
                 inputRefs[nextIndex].current.focus();
             }
-        } else if (key == 'Backspace') {
-            if (index > 0 && inputRefs[index].current.value == '') {
-                inputRefs[index - 1].current.focus();
-            } else if (index == 0 && inputRefs[index].current.value == '') {
-                if (inputRefs[index - 1]) {
-                    inputRefs[index - 1].current.focus();
-                }
+        } else if (key === 'Backspace') {
+            e.preventDefault();
+            let newRoomCode = [...roomCode];
+            if (newRoomCode[index] !== '') {
+                newRoomCode[index] = '';
+                setRoomCode(newRoomCode);
             } else {
-                inputRefs[index].current.value = '';
-            }
-        } else if (key == 'Delete') {
-            if (inputRefs[index].current.value == '' && index < inputRefs.length - 1) {
-                inputRefs[index + 1].current.focus();
-            } else {
-                for (let i = index; i < inputRefs.length - 1; i++) {
-                    inputRefs[i].current.value = inputRefs[i + 1].current.value;
+                for (let i = index - 1; i >= 0; i--) {
+                    if (newRoomCode[i] !== '') {
+                        newRoomCode[i] = '';
+                        setRoomCode(newRoomCode);
+                        inputRefs[i].current.focus();
+                        break;
+                    }
                 }
-                inputRefs[inputRefs.length - 1].current.value = '';
             }
+        } else if (key === 'Delete') {
+            e.preventDefault();
+            let newRoomCode = [...roomCode];
+            for (let i = index; i < inputRefs.length - 1; i++) {
+                newRoomCode[i] = newRoomCode[i + 1];
+            }
+            newRoomCode[inputRefs.length - 1] = '';
+            setRoomCode(newRoomCode);
+            inputRefs[index].current.focus();
         }
     };
 
@@ -157,9 +182,9 @@ function Rooms() {
                     image: userStore.image
                 }
             }
-            
+
         }
-        let data = {user: user};
+        let data = { user: user };
         socket.emit('quickGame', data);
     };
 
@@ -183,6 +208,8 @@ function Rooms() {
         <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-r from-blue-400 to-indigo-500">
             <Header />
             <div className='lg:grid lg:grid-cols-2 mb-9 lg:gap-9'>
+                {codeErrorMessage && <ErrorPopup type="error" message={codeErrorMessage} clearMessage={() => setCodeErrorMessage(null)} />}
+                {incorrectCodeErrorMessage && <ErrorPopup type="error" message={incorrectCodeErrorMessage} clearMessage={() => setIncorrectCodeErrorMessage(null)} />}
                 <div className="bg-white shadow-md rounded-lg p-4 flex-grow m-5 lg:max-w-[600px]">
                     <h2 className="text-lg font-semibold mb-4">Sales disponibles</h2>
                     <div className="bg-gray-100 rounded-lg p-4">

@@ -2,6 +2,7 @@ import React, { use, useEffect, useState } from 'react';
 import Header from '../components/header';
 import { updateUser } from '../services/communicationManager';
 import { useRouter } from 'next/router';
+import ErrorPopup from '../components/errorPopup';
 
 const Perfil = () => {
     const [name, setName] = useState('');
@@ -10,6 +11,7 @@ const Perfil = () => {
     const [password, setPassword] = useState('');
     const [password_confirmation, setConfirmPassword] = useState('');
     const [image, setImage] = useState(null);
+    const [popupMessage, setPopupMessage] = useState(null);
     const router = useRouter();
 
     const [userFromLocalStorage, setUserFromLocalStorage] = useState(null);
@@ -23,12 +25,25 @@ const Perfil = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (name == '' && username == '' && email == '' && password == '' && password_confirmation == '' && image == null) {
+            setPopupMessage('No s\'ha modificat res.');
+            return;
+        }
+
+        if (password !== password_confirmation) {
+            setPopupMessage('Les contrasenyes no coincideixen.');
+            return;
+        } else if (password.length < 8) {
+            setPopupMessage('La contrasenya ha de tenir com a mínim 8 caràcters.');
+            return;
+        }
+
         const user = JSON.parse(localStorage.getItem('user'));
         const token = user.token;
         const userId = user.id;
 
         const formData = new FormData();
-        formData.append('user_id', userId);  // Add user ID to formData
+        formData.append('user_id', userId);
         if (name != '') formData.append('name', name);
         if (username != '') formData.append('username', username);
         if (email != '') formData.append('email', email);
@@ -75,6 +90,7 @@ const Perfil = () => {
         setPassword('');
         setConfirmPassword('');
         setImage(null);
+        setPopupMessage(null); 
         router.reload();
     };
 
@@ -82,6 +98,7 @@ const Perfil = () => {
         <div className="min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
             <Header />
             <div className='grid grid-cols-4'>
+            {popupMessage && <ErrorPopup type="error" message={popupMessage} clearMessage={() => setPopupMessage(null)} />}
                 <div className="bg-gray-700 text-white min-h-screen">
                     <div className="flex flex-col justify-center items-center text-center min-h-screen p-4">
                         <div className="text-xl mx-auto mb-3">
