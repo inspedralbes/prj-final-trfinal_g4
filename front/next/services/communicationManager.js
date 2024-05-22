@@ -1,5 +1,6 @@
 const url = 'http://localhost:8000/api/';
 
+//Login
 export function login(user) {
     return new Promise((resolve, reject) => {
         fetch(`${url}login`, {
@@ -28,6 +29,7 @@ export function login(user) {
 
 }
 
+//Register
 export function register(user) {
     return new Promise((resolve, reject) => {
         console.log(user);
@@ -54,6 +56,7 @@ export function register(user) {
     });
 }
 
+//Logout
 export function logout(token) {
     console.log('su puta madre');
     return new Promise((resolve, reject) => {
@@ -95,6 +98,7 @@ export function destroyUser(user) {
     });
 }
 
+// fetch actualizar usuario
 export function updateUser(userData, token) {
     return new Promise((resolve, reject) => {
         fetch(`${url}users/`, {
@@ -119,6 +123,7 @@ export function updateUser(userData, token) {
     });
 }
 
+// fetch obtener usuarios
 export function getUsers() {
     return new Promise((resolve, reject) => {
         fetch(`${url}allUsers/`, {
@@ -142,6 +147,7 @@ export function getUsers() {
     });
 }
 
+// fetch obtener usuario
 export function getUser(user) {
     return new Promise((resolve, reject) => {
         fetch(`${url}users/${user}`, {
@@ -161,6 +167,7 @@ export function getUser(user) {
     });
 }
 
+// fetch crear usuario
 export function createUser(user) {
     return new Promise((resolve, reject) => {
         fetch(`${url}users/`, {
@@ -181,6 +188,7 @@ export function createUser(user) {
     });
 }
 
+// fetch crear mapa
 export function createMap(formData, token) {
     return new Promise((resolve, reject) => {
         fetch(`${url}maps/`, {
@@ -205,6 +213,7 @@ export function createMap(formData, token) {
     });
 }
 
+// fetch obtener mapas
 export function getMaps() {
     return new Promise((resolve, reject) => {
         fetch(`${url}maps/`, {
@@ -223,6 +232,7 @@ export function getMaps() {
     });
 }
 
+// fetch obtener mapas reportados
 export function getReportedMaps() {
     return new Promise((resolve, reject) => {
         fetch(`${url}reportedMaps/`, {
@@ -241,6 +251,7 @@ export function getReportedMaps() {
     });
 }
 
+// fetch update mapa
 export function updateMap(mapData) {
     return new Promise((resolve, reject) => {
         fetch(`${url}maps/${mapData.id}`, {
@@ -261,6 +272,7 @@ export function updateMap(mapData) {
     });
 }
 
+// fetch eliminar mapa
 export function destroyMap(mapData) {
     return new Promise((resolve, reject) => {
         fetch(`${url}maps/${mapData}`, {
@@ -279,6 +291,7 @@ export function destroyMap(mapData) {
             });
     });
 }
+
 
 export function downloadFile(mapId) {
     return new Promise((resolve, reject) => {
@@ -302,6 +315,7 @@ export function downloadFile(mapId) {
     });
 }
 
+// fetch obtener mapa por dificultad
 export function getMapByDifficulty(difficulty) {
     return new Promise((resolve, reject) => {
         fetch(`${url}mapsByDifficulty/${difficulty}`, {
