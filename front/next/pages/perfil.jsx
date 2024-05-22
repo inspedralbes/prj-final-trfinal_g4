@@ -56,7 +56,7 @@ const Perfil = () => {
             console.log('Form Data:', formData);
             console.log('Token:', token);
             console.log('User ID:', userId);
-            updateUser(formData, token).then(data => {
+            await updateUser(formData, token).then(data => {
                 console.log('Usuario actualizado:', data);
                 localStorage.setItem('user', 
                     JSON.stringify({
