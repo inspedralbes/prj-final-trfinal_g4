@@ -428,6 +428,8 @@ io.on('connection', (socket) => {
             // }
         }
 
+        io.emit('allRooms', rooms);
+        
         console.log(`Disconnected: ${socket.id}`);
     });
 });
