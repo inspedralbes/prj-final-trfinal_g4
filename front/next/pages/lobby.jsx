@@ -63,7 +63,7 @@ const Lobby = () => {
         }
     }, [router]);
 
-    const chatMessages = room.messages.map((msg, index) => {
+    const chatMessages = room ? room.messages.map((msg, index) => {
         if (msg.user == user) {
             return (
                 <div key={index} className='chat-message'>
@@ -115,7 +115,7 @@ const Lobby = () => {
                 </div>
             );
         }
-    });
+    }) :[];
 
     const adminUser = room && room.admin ? room.admin[1] : '';
     let otherUser = '';
@@ -201,8 +201,7 @@ const Lobby = () => {
                             <h1 className='text-3xl font-bold mb-3'>Usuaris a la sala</h1>
                             <div id='adminUser' className='flex items-center mt-2 mb-2'>
                                 <div className='flex items-center'>
-                                    <img src={ URL + room.users[0].image } alt="User" className='w-10 h-10 ml-2 rounded-full' />
-                                    <p className='text-2xl ml-3 mt-1 mr-4 truncate'>{adminUser}</p>
+                                <img src={ room ? URL + room.users[0].image : '' } alt="User" className='w-10 h-10 ml-2 rounded-full' />                                    <p className='text-2xl ml-3 mt-1 mr-4 truncate'>{adminUser}</p>
                                 </div>
                                 { user === adminUser && room.users[0].state !== 'Ready' && (
                                     <div id='buttons-check' className='flex items-center ml-auto'>

@@ -2,19 +2,6 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Header from '../components/header';
 
-var activeIframe = false;
-let iframe = '';
-
-const discordActive = () => {
-  activeIframe = !activeIframe;
-  console.log(activeIframe);
-  if (discordActive == true) {
-    iframe = <iframe src="https://discord.com/widget?id=1241064242988322896&theme=dark" width="350" height="250" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-  } else {
-    iframe = '';
-  }
-}
-
 const IndexPage = () => {
   const [isIframeVisible, setIsIframeVisible] = useState(false);
 
