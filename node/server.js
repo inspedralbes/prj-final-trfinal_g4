@@ -263,6 +263,7 @@ io.on('connection', (socket) => {
                 let name = room.admin[1];
                 room.admin[0] = room.users[1].id;
                 room.admin[1] = room.users[1].name;
+                room.admin[2] = room.users[1].image;
                 room.users.splice(0, 1);
                 room.accesible = true;
                 // console.log("Room BBBBBBBBBBBBBBBBBBBBBBB", room);
@@ -390,6 +391,40 @@ io.on('connection', (socket) => {
 
     //Disconnect
     socket.on('disconnect', () => {
+        let room = findRoomByUser(socket.id);
+
+        if (room && room.status == 'Waiting') {
+            rooms.splice(rooms.indexOf(room), 1);
+        } else if (room && room.status == 'inLobby') {
+            if (room.users.length > 1 && socket.id == room.admin[0]) {
+                let name = room.admin[1];
+                room.admin[0] = room.users[1].id;
+                room.admin[1] = room.users[1].name;
+                room.admin[2] = room.users[1].image;
+                room.users.splice(0, 1);
+                room.accesible = true;
+                room.status = 'Waiting';
+                room.messages.push({ user: 'Server', message: `${name} a sortit de la sala` });
+                socket.leave(room.id);
+                socket.emit('newInfoRoom', null);
+                io.to(room.id).emit('newInfoRoom', room);
+            } else if (room.users.length > 1 && socket.id != room.admin[0]) {
+                room.messages.push({ user: 'Server', message: `${room.users.find(user => user.id == socket.id).name} a sortit de la sala` });
+                room.users.splice(1, 1);
+                room.accesible = true;
+                room.status = 'Waiting';
+                socket.leave(room.id);
+                socket.emit('newInfoRoom', null);
+                io.to(room.id).emit('newInfoRoom', room);
+            }
+        } else if (room && room.status == 'Playing') {
+            // room.game.players = room.game.players.filter(player => player.id != socket.id);
+            // room.game.playersData = room.game.playersData.filter(player => player.id != socket.id);
+            // if (room.game.players.length == 0) {
+            //     rooms.splice(rooms.indexOf(room), 1);
+            // }
+        }
+
         console.log(`Disconnected: ${socket.id}`);
     });
 });
