@@ -73,6 +73,60 @@
 
 }
 
+.container-icon-arrow-users {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: auto;
+    box-shadow: 0 0 10px rgba(61, 143, 237, 0.757);
+    border-radius: 10px;
+    height: 200px;
+}
+
+.container-icon-arrow-maps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: auto;
+    box-shadow: 0 0 10px rgba(232, 127, 22, 0.757);
+    border-radius: 10px;
+    height: 200px;
+}
+
+.container-icon-arrow-reportedMaps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-right: auto;
+    box-shadow: 0 0 10px rgba(138, 10, 10, 0.757);
+    border-radius: 10px;
+    height: 200px;
+}
+
+.container-filter-users {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.arrow-left-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
 .container-icon-maps {
     display: flex;
     justify-content: center;
@@ -151,28 +205,20 @@
 }
 
 .info-reportedMap {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    background-color: #F2D2CE;
-    justify-self: center;
-    align-items: center;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(232, 147, 147, 0.638);
-    padding-bottom: 10px;
-
-}
-
-.span-content {
     display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     width: 100%;
+    color: white;
     height: 100%;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
     margin-left: auto;
     margin-right: auto;
+    justify-content: center;
+    padding: 30px 30px 30px 30px;
+    text-align: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(138, 10, 10, 0.757);
+
 }
 
 .info-map {
@@ -188,9 +234,7 @@
     border-radius: 10px;
 }
 
-.a{
-    
-}
+.a {}
 
 .info-users {
     display: grid;
@@ -205,6 +249,22 @@
     text-align: center;
     align-items: center;
     box-shadow: 0 0 10px rgba(61, 143, 237, 0.757);
+    border-radius: 10px;
+}
+
+.info-maps {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    width: 100%;
+    color: white;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    padding: 15px 20px 15px 20px;
+    text-align: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(232, 127, 22, 0.757);
     border-radius: 10px;
 }
 

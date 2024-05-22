@@ -17,6 +17,8 @@ import { TiTickOutline } from "react-icons/ti";
 import { TiTimesOutline } from "react-icons/ti";
 import { GrUserAdmin } from "react-icons/gr";
 import { LuUser2 } from "react-icons/lu";
+import { IoIosArrowDropright } from "react-icons/io";
+import { IoIosArrowDropleft } from "react-icons/io";
 import './styles.css';
 
 function AdminPanel() {
@@ -25,14 +27,33 @@ function AdminPanel() {
     const [allUsers, setUsers] = useState([]); // Add users state
     const [selectedIcon, setSelectedIcon] = useState(null);
     const [searchReportedMapById, setSearchReportedMapById] = useState('');
+    const [searchUsersById, setsearchUsersById] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const usersPerPage = 4;
 
+    const [currentPageMaps, setCurrentPageMaps] = useState(1);
+    const mapsPerPage = 3;
+
+    const filterByIdAndNameUsers = allUsers.filter(user => user.id.toString().includes(searchUsersById) || user.name.toLowerCase().includes(searchUsersById.toLowerCase()));
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const currentUsers = filterByIdAndNameUsers.slice(indexOfFirstUser, indexOfLastUser);
+
+    const filterByIdAndReasonReportedMaps = reportedMaps.filter(map => map.map_id.toString().includes(searchReportedMapById) || map.reason.toLowerCase().includes(searchReportedMapById.toLowerCase()));
+    const indexOfLastReportedMap = currentPageMaps * mapsPerPage;
+    const indexOfFirstMap = indexOfLastReportedMap - mapsPerPage;
+    const currentReportedMaps = filterByIdAndReasonReportedMaps.slice(indexOfFirstMap, indexOfLastReportedMap);
+
+    const filterByIdAndNameAndUser = maps.filter(map => map.id.toString().includes(searchReportedMapById) || map.name.toLowerCase().includes(searchReportedMapById.toLowerCase()) || allUsers.find(user => user.id === map.user_id).name.toLowerCase().includes(searchReportedMapById.toLowerCase()));
+    const indexOfLastMap = currentPageMaps * mapsPerPage;
+    const indexOfFirstReportedMap = indexOfLastMap - mapsPerPage;
     useEffect(() => {
         getMaps()
             .then((data) => setMaps(data))
             .catch((error) => console.error('Error fetching maps:', error));
-            const userID = localStorage.getItem('userID');
-            let token = localStorage.getItem('token');
-            token = token.replace(/"/g, '');
+        const userID = localStorage.getItem('userID');
+        let token = localStorage.getItem('token');
+        token = token.replace(/"/g, '');
 
         getReportedMaps(token, userID)
             .then((data) => setReportedMaps(data))
@@ -81,6 +102,11 @@ function AdminPanel() {
         }
     }
 
+    const handleSearchChange = (e) => {
+        setsearchUsersById(e.target.value);
+        setCurrentPage(1);
+    }
+
     const filterByIdReportedMaps = searchReportedMapById ? reportedMaps.filter(map => map.map_id.toString().includes(searchReportedMapById)) : reportedMaps;
 
     return (
@@ -108,24 +134,24 @@ function AdminPanel() {
                     <div className='container-icon-maps'>
                         <FaRegMap style={{ fontSize: '12em', color: '#D5671C' }} />
                     </div>
-                    {maps.length > 0 && (
-                        <div className='container-principal'>
-                            <div className='container-titles'>
-                                <p>Image</p>
-                                <p>Name</p>
-                                <p>Description</p>
-                                <p>Author</p>
-                                <p>Options</p>
-                            </div>
-                            <br />
-                            <ul className='Grid_content_maps'>
-
-                                {maps.map((map) => (
-                                    <div key={map.id} className='info-map'>
-                                        <div className='info-map_container-img'>
-                                            <img className="info-map-img" src={`http://localhost:8000/${map.image}`} style={{ width: '250px', height: '150px', borderRadius: '7%' }} />
+                    {currentMaps.length > 0 && (
+                        <div>
+                            <div className='users-view'>
+                                <div className='arrow-left-right'>
+                                    {currentPageMaps !== 1 && (
+                                        <div className="container-icon-arrow-maps">
+                                            <button onClick={() => setCurrentPageMaps(currentPageMaps - 1)} disabled={currentPageMaps === 1}><IoIosArrowDropleft style={{ fontSize: '2.5em', color: '#D5671C' }} /></button>
                                         </div>
-                                        <div className="info-map_container-datos">
+                                    )}
+                                </div>
+                                <ul className='lista-users'>
+
+                                    {currentMaps.map((map) => (
+                                        <li key={map.id} className='info-maps'>
+                                            <div className='info-map_container-img'>
+                                                <img className="info-map-img" src={`http://localhost:8000/${map.image}`} style={{ width: '250px', height: '150px', borderRadius: '7%' }} />
+                                            </div>
+
 
                                             <span>{map.name}</span>
                                             <span>{map.description}</span>
@@ -147,12 +173,17 @@ function AdminPanel() {
                                             </div>
 
 
+                                        </li>
+                                    ))}
+                                </ul>
+                                <div className='arrow-left-right'>
+                                    {indexOfLastReportedMap < maps.length && (
+                                        <div className="container-icon-arrow-maps">
+                                            <button onClick={() => setCurrentPageMaps(currentPageMaps + 1)} disabled={indexOfLastReportedMap >= maps.length}><IoIosArrowDropright style={{ fontSize: '2.5em', color: '#D5671C' }} /></button>
                                         </div>
-
-
-                                    </div>
-                                ))}
-                            </ul>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     )}
                 </div>
@@ -163,39 +194,57 @@ function AdminPanel() {
                     <div className='container-icon-report'>
                         <MdOutlineReportProblem style={{ fontSize: '12em', color: '#BF0A1D' }} />
                     </div>
-                    {reportedMaps.length > 0 ? (
-                        <div>
-                            <div className='filter-reportedMaps'>
-                                <input
-                                    type="text"
-                                    placeholder='Search by map id'
-                                    value={searchReportedMapById}
-                                    onChange={(e) => setSearchReportedMapById(e.target.value)}
-                                    className='input-search'
-                                />
+                    <div>
+                        <div className='container-filter-users'>
+                            <input
+                                type="text"
+                                placeholder='Search by map id and Reason'
+                                value={searchReportedMapById}
+                                onChange={(e) => setSearchReportedMapById(e.target.value)}
+                                className='input-search'
+                            />
+                        </div>
+
+                        <div className='users-view'>
+                            <div className='arrow-left-right'>
+                                {currentPage !== 1 && !searchReportedMapById && (
+                                    <div className="container-icon-arrow-users">
+                                        <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}><IoIosArrowDropleft style={{ fontSize: '2.5em', color: '#BF0A1D' }} /></button>
+                                    </div>
+                                )}
                             </div>
-                            <ul className='lista-reportes'>
-                                {filterByIdReportedMaps.map((map) => (
-                                    <div key={map.id} className='info-reportedMap'>
-                                        <div className='span-content'>
+                            {filterByIdAndReasonReportedMaps.length > 0 ? (
+                                <ul className='lista-users'>
+                                    {currentReportedMaps.length > 0 && currentReportedMaps.map((map) => (
+                                        <div key={map.id} className='info-reportedMap'>
                                             <span> {map.map_id} </span>
                                             {allUsers.length > 0 && (
                                                 <span>{allUsers.find(user => user.id === map.user_id).name}</span>
                                             )}
                                             <span> {map.reason} </span>
                                             <button style={{ backgroundColor: '#BF0A1D', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer' }} onClick={() => handleCancelReport(map.id)}>Cancelar reporte</button>
-                                        </div>
 
+
+                                        </div>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <div>
+                                    {searchReportedMapById && <p>No se encontraron mapas con ese ID</p>}
+                                    <ul className='lista-reportes'></ul>
+                                </div>
+                            )}
+
+                            <div className='arrow-left-right'>
+                                {indexOfLastReportedMap < filterByIdAndReasonReportedMaps.length && !searchReportedMapById && (
+                                    <div className="container-icon-arrow-reportedMaps">
+                                        <button onClick={() => setCurrentPage(currentPage + 1)} disabled={indexOfLastReportedMap >= reportedMaps.length}><IoIosArrowDropright style={{ fontSize: '2.5em', color: '#BF0A1D' }} /></button>
                                     </div>
-                                ))}
-                            </ul>
+                                )}
+                            </div>
                         </div>
-                    ) : (
-                        <div className='noReported-maps-container'>
-                            <BsInfoCircle style={{ color: 'blue', fontSize: '2em', padding: '2px' }} />
-                            <p className=''>No hay mapas reportados!</p>
-                        </div>
-                    )}
+                    </div>
+
 
                 </div>
             )}
@@ -205,11 +254,28 @@ function AdminPanel() {
                     <div className="container-icon-users">
                         <RiAdminLine style={{ fontSize: '12em', color: '#2C66E3' }} />
                     </div>
-                    {allUsers.length > 0 && (
-                        <div>
-                            <div className='users-view'>
+                    <div>
+                        <div className='container-filter-users'>
+                            <input
+                                type="text"
+                                placeholder='Search by name and ID'
+                                value={searchUsersById}
+                                onChange={handleSearchChange}
+                                className='input-search'
+                            />
+                        </div>
+
+                        <div className='users-view'>
+                            <div className='arrow-left-right'>
+                                {currentPage !== 1 && !searchUsersById && (
+                                    <div className="container-icon-arrow-users">
+                                        <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}><IoIosArrowDropleft style={{ fontSize: '2.5em', color: '#2C66E3' }} /></button>
+                                    </div>
+                                )}
+                            </div>
+                            {filterByIdAndNameUsers.length > 0 ? (
                                 <ul className='lista-users'>
-                                    {allUsers.map((user) => (
+                                    {currentUsers.length > 0 && currentUsers.map((user) => (
                                         <li key={user.id} className="info-users">
                                             <div>
                                                 {user.admin === 0 ? (
@@ -219,7 +285,7 @@ function AdminPanel() {
                                                 )
                                                 }
                                             </div>
-                                            <p className="a">{user.name}</p>
+                                            <p className="">{user.name}</p>
                                             <p className="">{user.email}</p>
                                             <p className="">{user.admin === 1 ? <TiTickOutline style={{ fontSize: '2em', color: 'rgba(13, 129, 41 , 0.757)' }} /> : <TiTimesOutline style={{ fontSize: '2em', color: 'rgba(138, 10, 10, 0.757)' }} />}</p>
                                             <div>
@@ -232,10 +298,26 @@ function AdminPanel() {
                                             </div>
                                         </li>
                                     ))}
+
+
                                 </ul>
+                            ) : (
+                                <div>
+                                    {searchUsersById && <p>No se encontraron usuarios con ese ID</p>}
+                                    <ul className='lista-users'></ul>
+                                </div>
+                            )}
+
+                            <div className='arrow-left-right'>
+                                {indexOfLastUser < filterByIdAndNameUsers.length && !searchUsersById && (
+                                    <div className="container-icon-arrow-users">
+                                        <button onClick={() => setCurrentPage(currentPage + 1)} disabled={indexOfLastUser >= allUsers.length}><IoIosArrowDropright style={{ fontSize: '2.5em', color: '#2C66E3' }} /></button>
+                                    </div>
+                                )}
                             </div>
                         </div>
-                    )}
+                    </div>
+
                 </div>
             )}
 
