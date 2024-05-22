@@ -3,6 +3,7 @@ import Header from '../components/header';
 import { updateUser } from '../services/communicationManager';
 import { useRouter } from 'next/router';
 import ErrorPopup from '../components/errorPopup';
+import useStore from '../src/store';
 
 const Perfil = () => {
     const [name, setName] = useState('');
@@ -30,10 +31,10 @@ const Perfil = () => {
             return;
         }
 
-        if (password !== password_confirmation) {
+        if (password != password_confirmation && password != '' && password_confirmation != '') {
             setPopupMessage('Les contrasenyes no coincideixen.');
             return;
-        } else if (password.length < 8) {
+        } else if (password.length < 8 && password != '') {
             setPopupMessage('La contrasenya ha de tenir com a mínim 8 caràcters.');
             return;
         }
@@ -55,14 +56,14 @@ const Perfil = () => {
             console.log('Form Data:', formData);
             console.log('Token:', token);
             console.log('User ID:', userId);
-            await updateUser(formData, token).then(data => {
+            updateUser(formData, token).then(data => {
                 console.log('Usuario actualizado:', data);
                 localStorage.setItem('user', 
                     JSON.stringify({
                         name: data.user,
                         email: data.email,
                         id: data.id,
-                        admin: data.admin,
+                            admin: data.admin,
                         image: data.image,
                         token: token
                     })
