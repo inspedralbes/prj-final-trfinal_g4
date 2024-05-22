@@ -45,9 +45,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/reportedMaps', [ReportedMapsController::class, 'store']);
 });
 
-Route::middleware('auth:api')->group(function () {
     Route::middleware('admin')->group(function () {
-        Route::get('/users/{userID}', [UserController::class, 'index']);
+        Route::get('/users', [UserController::class, 'index']);
         Route::get('/reportedMaps', [ReportedMapsController::class, 'index']);
         Route::get('/reportedMaps/{reportedMap} ', [ReportedMapsController::class, 'show']);
         Route::delete('/reportedMaps/{reportedMap}', [ReportedMapsController::class, 'destroyReport']);
@@ -57,4 +56,4 @@ Route::middleware('auth:api')->group(function () {
         Route::get('download/{id}', [MapController::class, 'download']);
         Route::delete('/maps/{map}', [MapController::class, 'destroy']);
     });
-});
+

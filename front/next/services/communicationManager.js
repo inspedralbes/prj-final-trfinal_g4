@@ -108,7 +108,7 @@ export function getUsers(token, userID) {
     }
 
     return new Promise((resolve, reject) => {
-        fetch(`${url}users/${userID}`, {
+        fetch(`${url}users?userID=${userID}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -208,14 +208,16 @@ export function getMaps() {
     });
 }
 
-export function getReportedMaps(user) {
+export function getReportedMaps(token, userID) {
+    console.log("token getReportedMaps", token);
+    console.log("userID getReportedMaps", userID);
     return new Promise((resolve, reject) => {
-        fetch(`${url}reportedMaps/`, {
+        fetch(`${url}reportedMaps?userID=${userID}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(user)
         })
             .then(response => response.json())
             .then(data => {
