@@ -25,8 +25,8 @@ Route::get('download/{id}', [MapController::class, 'download']);
 Route::get('/defaultMaps', [MapController::class, 'getDefaultMaps']);
 Route::get('/randomMaps', [MapController::class, 'getRandomMaps']);
 
-Route::get('/mapsComunity/{difficulty}', [MapController::class, 'mapsComunity']);
-Route::get('/mapsComunity', [MapController::class, 'mapsComunityAll']);
+Route::get('/mapsCommunity/{difficulty}', [MapController::class, 'mapsCommunity']);
+Route::get('/mapsCommunity', [MapController::class, 'mapsCommunityAll']);
 
 Route::get('/saves', [SaveController::class, 'index']);
 Route::get('/saves/{save}', [SaveController::class, 'show']);

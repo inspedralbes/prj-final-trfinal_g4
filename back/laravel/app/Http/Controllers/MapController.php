@@ -211,7 +211,7 @@ class MapController extends Controller
         return response()->download($path);
     }
 
-    public function mapsComunity($difficulty)
+    public function mapsCommunity($difficulty)
     {
         $maps = Map::where('difficulty', $difficulty)->where('state', 'Approved')->get();
 
@@ -224,7 +224,7 @@ class MapController extends Controller
         }
     }
 
-    public function mapsComunityAll()
+    public function mapsCommunityAll()
     {
         $maps = Map::where('state', 'Approved')->get();
 
