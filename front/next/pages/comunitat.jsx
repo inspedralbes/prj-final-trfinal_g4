@@ -21,7 +21,7 @@ const Comunidad = () => {
             <Header />
             <div className='min-h-screen mt-9 pt-9'>
                 <h1 className='text-6xl font-bold text-white text-center mt-9 pt-9'>Comunitat</h1>
-                <div className='grid grid-cols-1 lg:grid-cols-2 lg:gap-9'>
+                <div className='grid grid-cols-1 lg:grid-cols-2 lg:gap-9 mt-9'>
                     <div className="flex justify-center mt-8">
                         <button className="bg-gradient-to-r from-red-700 to-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4">
                             Nivell 1

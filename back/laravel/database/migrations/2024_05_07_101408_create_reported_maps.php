@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('reported_maps', function (Blueprint $table) {
             $table->id();
             $table->foreignId('map_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->integer('user_id')->constrained()->cascadeOnDelete()->nullable();
             $table->json('reason');
             $table->timestamps();
         });

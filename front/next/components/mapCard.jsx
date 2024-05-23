@@ -15,11 +15,11 @@ const MapCard = ({ map }) => {
             </div>
             <div className="flex justify-between mt-4">
                 <button className="flex items-center bg-blue-500 text-white rounded-lg px-4 py-2">
-                    <BiSolidLike />
+                    <BiSolidLike className='mr-2' />
                     M'agrada
                 </button>
                 <button className="flex items-center bg-red-500 text-white rounded-lg px-4 py-2">
-                    <MdReport />
+                    <MdReport className='mr-2' />
                     Reportar
                 </button>
             </div>

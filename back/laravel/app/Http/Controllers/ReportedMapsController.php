@@ -43,17 +43,21 @@ class ReportedMapsController extends Controller
     {
         $request->validate([
             'map_id' => 'required | integer',
-            'user_id' => 'required | integer',
-            'reason' => 'required | array'
+            'reason' => 'required '
         ]);
 
         $map = Map::where('id', $request->map_id)->first();
-        $user = User::where('id', $request->user_id)->first();
+        if ($request->user_id) {
+            $user = User::where('id', $request->user_id)->first();
+            $userID = $user->id;
+        } else {
+            $user = null;
+        }
 
-        if ($map && $user) {
+        if ($map) {
             $newReportedMap = new ReportedMaps();
             $newReportedMap->map_id = $request->map_id;
-            $newReportedMap->user_id = $request->user_id;
+            $newReportedMap->user_id = $userID;
             $newReportedMap->reason = $request->reason;
             $newReportedMap->save();
 
@@ -61,25 +65,16 @@ class ReportedMapsController extends Controller
 
             if ($map->reports > 5) {
                 $map->state = 'Reported';
-                $map->save();
             }
 
             $map->save();
 
             return response()->json($newReportedMap, 200);
-        } else if ( $map && !$user) {
-            return response()->json([
-                'error' => 'User not found'
-            ], 404);
-        } else if (!$map && $user) {
+        } else {
             return response()->json([
                 'error' => 'Map not found'
             ], 404);
-        } else {
-            return response()->json([
-                'error' => 'Map and user not found'
-            ], 404);
-        }
+        } 
     }
 
     public function destroy(ReportedMaps $reportedMap)
