@@ -18,6 +18,7 @@ import { GrUserAdmin } from "react-icons/gr";
 import { LuUser2 } from "react-icons/lu";
 import { IoIosArrowDropright } from "react-icons/io";
 import { IoIosArrowDropleft } from "react-icons/io";
+import { CiSquareCheck } from "react-icons/ci";
 import './styles.css';
 
 function AdminPanel() {
@@ -28,26 +29,51 @@ function AdminPanel() {
     const [searchReportedMapById, setSearchReportedMapById] = useState('');
     const [searchUsersById, setsearchUsersById] = useState('');
     const [searchMapsById, setSearchMapsById] = useState('');
+    //new
+    const [selectedState, setSelectedState] = useState('');
+    const [selectReason, setSelectReason] = useState('');
+
     const [currentPageMaps, setCurrentPageMaps] = useState(1);
     const [currentPageReportedMaps, setCurrentPageReportedMaps] = useState(1);
     const [currentPageUsers, setCurrentPageUsers] = useState(1);
     const usersPerPage = 4;
     const mapsPerPage = 3;
 
+    const reasons = ['mapa incomplet', 'no vàlid', 'obscè', 'contingut inapropiat', 'contingut duplicat', 'contingut violent', 'contingut sexual'];
+
+    //users
     const filterByIdAndNameUsers = allUsers.filter(user => user.id.toString().includes(searchUsersById) || user.name.toLowerCase().includes(searchUsersById.toLowerCase()));
     const indexOfLastUser = currentPageUsers * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const currentUsers = filterByIdAndNameUsers.slice(indexOfFirstUser, indexOfLastUser);
 
-    const filterByIdAndReasonReportedMaps = reportedMaps.filter(map => map.map_id.toString().includes(searchReportedMapById));
-    const indexOfLastReportedMap = currentPageReportedMaps * mapsPerPage;
-    const indexOfFirstReportedMap = indexOfLastReportedMap - mapsPerPage;
-    const currentReportedMaps = filterByIdAndReasonReportedMaps.slice(indexOfFirstReportedMap, indexOfLastReportedMap);
+    //maps
+    const filterMapsByState = maps.filter(map => (selectedState ? map.state === selectedState : true));
 
-    const filterByIdAndNameAndUser = maps.filter(map => map.name.toLowerCase().includes(searchMapsById.toLowerCase()));
+    const handleSelectFilterStateMapsChange = (e) => {
+
+        setSelectedState(e.target.value);
+        setCurrentPageMaps(1);
+    }
+    const filterByIdAndNameAndUser = filterMapsByState.filter(map => map.name.toLowerCase().includes(searchMapsById.toLowerCase()));
     const indexOfLastMap = currentPageMaps * mapsPerPage;
     const indexOfFirstMap = indexOfLastMap - mapsPerPage;
     const currentMaps = filterByIdAndNameAndUser.slice(indexOfFirstMap, indexOfLastMap);
+
+    //reportedMaps
+    const filterMapsReportedByReason = reportedMaps.filter(map => ((selectReason === "" || map.reason === selectReason)));
+
+    const handleSelectFilterReasonMapsReportedChange = (e) => {
+        const selectedValue = e.target.value;
+        setSelectReason(selectedValue);
+        setCurrentPageReportedMaps(1);
+        console.log("selectedValue", selectedValue);
+    }
+
+    const filterByIdAndReasonReportedMaps = filterMapsReportedByReason.filter(map => map.map_id.toString().includes(searchReportedMapById));
+    const indexOfLastReportedMap = currentPageReportedMaps * mapsPerPage;
+    const indexOfFirstReportedMap = indexOfLastReportedMap - mapsPerPage;
+    const currentReportedMaps = filterByIdAndReasonReportedMaps.slice(indexOfFirstReportedMap, indexOfLastReportedMap);
 
     useEffect(() => {
         getMaps()
@@ -62,7 +88,7 @@ function AdminPanel() {
         getReportedMaps(tokenLocal, userID)
             .then((data) => setReportedMaps(data))
             .catch((error) => console.error('Error fetching reported maps:', error));
-        
+
         getUsers(tokenLocal, userID)
             .then((data) => {
                 console.log("data", data);
@@ -141,15 +167,39 @@ function AdminPanel() {
                         <FaRegMap style={{ fontSize: '12em', color: '#D5671C' }} />
                     </div>
                     <div>
+
                         <div className='container-filter-users'>
                             <input
                                 type="text"
-                                placeholder='Search by name and ID'
+                                placeholder='Buscar por ID'
                                 value={searchMapsById}
                                 onChange={handleSearchChangeMaps}
                                 className='input-search'
                             />
+                            <select
+                                className='dropdown-menu'
+                                onChange={handleSelectFilterStateMapsChange}
+                                style={{
+                                    color: '#333', // color del texto
+                                    backgroundColor: '#fff', // color de fondo
+                                    border: '1px solid #ccc', // borde
+                                    borderRadius: '4px', // bordes redondeados
+                                    padding: '10px', // espacio interior
+                                    fontSize: '16px', // tamaño del texto
+                                    width: '150px', // ancho
+                                }}
+
+                            >
+                                <option value="">Todos</option>
+                                {
+                                    [...new Set(maps.map(map => map.state))].map((state, index) =>
+                                        <option key={index} value={state}>{state}</option>
+                                    )
+                                }
+                            </select>
+
                         </div>
+
                         <div className='users-view'>
                             <div className='arrow-left-right'>
                                 {currentPageMaps !== 1 && !searchMapsById && (
@@ -179,6 +229,23 @@ function AdminPanel() {
                                                 <div>
                                                     <RiDeleteBinLine style={{ color: 'red', fontSize: '2.8em', cursor: 'pointer' }} onClick={() => handleDeleteMap(map.id)} />
                                                 </div>
+                                                {map.state === 'pending' && (
+                                                    <div>
+                                                        <button onClick={() => handleApproveMap(map.id)} style={{ backgroundColor: 'green', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', width: '100px' }}>Aprobar</button>
+                                                    </div>
+                                                )}
+                                                {map.state === 'reported' && (
+                                                    <div>
+                                                        <button onClick={() => handleApproveMap(map.id)} style={{ backgroundColor: 'red', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', width: '130px' }}>Quitar Reporte</button>
+                                                    </div>
+                                                )}
+                                                {map.state === 'approved' && (
+                                                    <div>
+                                                        <CiSquareCheck style={{ color: 'rgba(13, 129, 41 , 0.957)', fontSize: '3.1em', display: 'flex' }} />
+                                                    </div>
+                                                )}
+
+
                                             </div>
                                         </li>
                                     ))}
@@ -210,11 +277,31 @@ function AdminPanel() {
                         <div className='container-filter-users'>
                             <input
                                 type="text"
-                                placeholder='Search by map id and Reason'
+                                placeholder='Search map reported by ID'
                                 value={searchReportedMapById}
                                 onChange={handleSearchChangeReportedMaps}
                                 className='input-search'
                             />
+                            <select
+                                className='dropdown-menu-reportedMap'
+                                onChange={handleSelectFilterReasonMapsReportedChange}
+                                style={{
+                                    color: '#333', // color del texto
+                                    backgroundColor: '#fff', // color de fondo
+                                    border: '1px solid #ccc', // borde
+                                    borderRadius: '4px', // bordes redondeados
+                                    padding: '10px', // espacio interior
+                                    fontSize: '16px', // tamaño del texto
+                                    width: '200px', // ancho
+                                }}
+                            >
+                                <option value="">Todos</option>
+                                {
+                                    reasons.map((reason, index) =>
+                                        <option key={index} value={reason}>{reason.charAt(0).toUpperCase() + reason.slice(1)}</option>
+                                    )
+                                }
+                            </select>
                         </div>
                         <div className='users-view'>
                             <div className='arrow-left-right'>
