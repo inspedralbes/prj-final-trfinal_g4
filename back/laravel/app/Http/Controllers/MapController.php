@@ -210,4 +210,30 @@ class MapController extends Controller
 
         return response()->download($path);
     }
+
+    public function mapsComunity($difficulty)
+    {
+        $maps = Map::where('difficulty', $difficulty)->where('state', 'Approved')->get();
+
+        if ($maps->isEmpty()) {
+            return response()->json([
+                'error' => 'No maps found'
+            ], 404);
+        } else {
+            return response()->json($maps, 200);
+        }
+    }
+
+    public function mapsComunityAll()
+    {
+        $maps = Map::where('state', 'Approved')->get();
+
+        if ($maps->isEmpty()) {
+            return response()->json([
+                'error' => 'No maps found'
+            ], 404);
+        } else {
+            return response()->json($maps, 200);
+        }
+    }
 }
