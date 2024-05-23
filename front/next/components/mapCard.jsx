@@ -2,15 +2,35 @@ import React, {useState} from 'react';
 import { BiSolidLike } from "react-icons/bi";
 import { MdReport } from "react-icons/md";
 import { BiSolidDislike } from "react-icons/bi";
-import { likeMap, reportMap } from '../services/communicationManager';
+import { likeMap, dislikeMap, reportMap } from '../services/communicationManager';
 
 const MapCard = ({ map }) => {
     const URL = 'http://localhost:8000';
     const [reason, setReason] = useState('');
+    const [liked, setLiked] = useState(false);
+    const [disliked, setDisliked] = useState(false);
 
     const addLikeMap = () => {
-        likeMap(map.id).then((data) => {
+        const mapData = {
+            map_id: map.id
+        };
+
+        likeMap(mapData).then((data) => {
             console.log(data);
+            setLiked(true);
+            setDisliked(false);
+        });
+    };
+
+    const addDislikeMap = () => {
+        const mapData = {
+            map_id: map.id
+        };
+
+        dislikeMap(mapData).then((data) => {
+            console.log(data);
+            setLiked(false);
+            setDisliked(true);
         });
     };
 
@@ -35,11 +55,19 @@ const MapCard = ({ map }) => {
             </div>
             <div className="flex justify-between mt-4">
                 <div className='flex flex-inline gap-2'>
-                    <button className="flex items-center bg-blue-500 text-white rounded-lg px-3 py-2" onClick={addLikeMap}>
-                        <BiSolidLike className='hover:animate-bounce'/>
+                    <button
+                        className={`flex items-center rounded-lg px-3 py-2 ${liked ? 'bg-green-500' : 'bg-blue-500'} text-white`}
+                        onClick={!liked ? addLikeMap : null}
+                        disabled={liked} // Desactiva el botón si se ha dado like
+                    >
+                        <BiSolidLike className='hover:animate-bounce' />
                     </button>
-                    <button className="flex items-center bg-blue-500 text-white rounded-lg px-3 py-2" onClick={addLikeMap}>
-                        <BiSolidDislike className='hover:animate-bounce'/>
+                    <button
+                        className={`flex items-center rounded-lg px-3 py-2 ${disliked ? 'bg-red-500' : 'bg-blue-500'} text-white`}
+                        onClick={!disliked ? addDislikeMap : null}
+                        disabled={disliked} // Desactiva el botón si se ha dado dislike
+                    >
+                        <BiSolidDislike className='hover:animate-bounce' />
                     </button>
                 </div>
                 <button className="flex items-center bg-red-500 text-white rounded-lg px-4 py-2" onClick={addReportMap}>

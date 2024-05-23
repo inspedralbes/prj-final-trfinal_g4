@@ -392,6 +392,26 @@ export function likeMap(mapId) {
     });
 }
 
+// Dar dislike a un mapa
+export function dislikeMap(mapId) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}mapsCommunity/dislike`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(mapId)
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
 // Reportar un mapa (map_id, reason)
 export function reportMap(map) {
     return new Promise((resolve, reject) => {

@@ -29,6 +29,7 @@ Route::get('/randomMaps', [MapController::class, 'getRandomMaps']);
 Route::get('/mapsCommunity/{difficulty}', [MapController::class, 'mapsCommunity']);
 Route::get('/mapsCommunity', [MapController::class, 'mapsCommunityAll']);
 Route::post('/mapsCommunity/like', [MapController::class, 'addLike']);
+Route::post('/mapsCommunity/dislike', [MapController::class, 'removeLike']);
 Route::post('/reportedMaps', [ReportedMapsController::class, 'store']);
 
 Route::get('/saves', [SaveController::class, 'index']);
