@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('state')->default('pending');
             $table->boolean('default')->default(0);
             $table->integer('reports')->default(0);
+            $table->integer('likes')->default(0);
             $table->timestamps();
         });
 

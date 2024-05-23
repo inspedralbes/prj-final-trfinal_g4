@@ -25,8 +25,11 @@ Route::get('download/{id}', [MapController::class, 'download']);
 Route::get('/defaultMaps', [MapController::class, 'getDefaultMaps']);
 Route::get('/randomMaps', [MapController::class, 'getRandomMaps']);
 
+// Community routes
 Route::get('/mapsCommunity/{difficulty}', [MapController::class, 'mapsCommunity']);
 Route::get('/mapsCommunity', [MapController::class, 'mapsCommunityAll']);
+Route::post('/mapsCommunity/like', [MapController::class, 'addLike']);
+Route::post('/reportedMaps', [ReportedMapsController::class, 'store']);
 
 Route::get('/saves', [SaveController::class, 'index']);
 Route::get('/saves/{save}', [SaveController::class, 'show']);
@@ -43,7 +46,7 @@ Route::delete('/users/{user}', [UserController::class, 'destroy']);
 
 Route::get('/reportedMaps', [ReportedMapsController::class, 'index']);
 Route::get('/reportedMaps/{reportedMap} ', [ReportedMapsController::class, 'show']);
-Route::post('/reportedMaps', [ReportedMapsController::class, 'store']);
+
 Route::delete('/reportedMaps/{reportedMap}', [ReportedMapsController::class, 'destroy']);
 Route::get('/reportedMapsByUser/{user}', [ReportedMapsController::class, 'getReportedMapsByUser']);
 

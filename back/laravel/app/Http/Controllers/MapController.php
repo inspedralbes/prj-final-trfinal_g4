@@ -236,4 +236,24 @@ class MapController extends Controller
             return response()->json($maps, 200);
         }
     }
+
+    public function addLike(Request $request)
+    {
+        $map = Map::find($request->map_id);
+        if (!$map) {
+            return response()->json([
+                'error' => 'Map not found'
+            ], 404);
+        }
+
+        $map->likes = $map->likes + 1;
+
+        if ($map->save()) {
+            return response()->json($map, 200);
+        } else {
+            return response()->json([
+                'error' => 'Error updating the map'
+            ], 500);
+        }
+    }
 }
