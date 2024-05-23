@@ -44,7 +44,7 @@ class ReportedMapsController extends Controller
         $request->validate([
             'map_id' => 'required | integer',
             'user_id' => 'required | integer',
-            'reason' => 'required | string'
+            'reason' => 'required | array'
         ]);
 
         $map = Map::where('id', $request->map_id)->first();
