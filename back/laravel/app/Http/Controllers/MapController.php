@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Map;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class MapController extends Controller
@@ -214,6 +215,15 @@ class MapController extends Controller
     public function mapsCommunity($difficulty)
     {
         $maps = Map::where('difficulty', $difficulty)->where('state', 'Approved')->get();
+
+        foreach ($maps as $map) {
+            if ($map->user_id) {
+                $user = User::find($map->user_id);
+                $map->user = $user->username;
+            } else {
+                $map->user = null;
+            }
+        }
 
         if ($maps->isEmpty()) {
             return response()->json([
