@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { BiSolidLike } from "react-icons/bi";
+import { BiSolidLike, BiSolidDislike } from "react-icons/bi";
 import { MdReport } from "react-icons/md";
-import { BiSolidDislike } from "react-icons/bi";
-import { likeMap, dislikeMap, reportMap } from '../services/communicationManager';
+import { likeMap, dislikeMap } from '../services/communicationManager';
 
-const MapCard = ({ map }) => {
+const MapCard = ({ map, onReport }) => {
     const URL = 'http://localhost:8000';
     const [reason, setReason] = useState([]);
     const [otherReasons, setOtherReasons] = useState('');
@@ -36,21 +35,18 @@ const MapCard = ({ map }) => {
         });
     };
 
-    const addReportMap = () => {
-        const reportData = {
-            map_id: map.id,
-            reason: reason.join(', ')
-        };
-
-        reportMap(reportData).then((data) => {
-            console.log(data);
-            setShowModal(false); // Cierra el modal después de enviar el reporte
-        });
+    const handleReport = () => {
+        const reportReasons = reason;
+        if (otherReasons) {
+            reportReasons.push(otherReasons);
+        }
+        onReport(map.id, reportReasons);
+        setShowModal(false); 
     };
 
     const handleCheckboxChange = (event) => {
         const value = event.target.value;
-        setReason((prevReasons) => 
+        setReason((prevReasons) =>
             event.target.checked
                 ? [...prevReasons, value]
                 : prevReasons.filter((reason) => reason !== value)
@@ -161,7 +157,7 @@ const MapCard = ({ map }) => {
                         </div>
                         <textarea
                             value={otherReasons}
-                            onChange={(e) => setReason(e.target.value.split(', '))}
+                            onChange={(e) => setOtherReasons(e.target.value)}
                             placeholder="Escriu altres motius..."
                             className="w-full p-2 border border-gray-300 rounded mb-4"
                         />
@@ -169,7 +165,7 @@ const MapCard = ({ map }) => {
                             <button className="bg-gray-500 text-white rounded-lg px-4 py-2 mr-2" onClick={() => setShowModal(false)}>
                                 Cancelar
                             </button>
-                            <button className="bg-red-500 text-white rounded-lg px-4 py-2" onClick={addReportMap}>
+                            <button className="bg-red-500 text-white rounded-lg px-4 py-2" onClick={handleReport}>
                                 Enviar
                             </button>
                         </div>

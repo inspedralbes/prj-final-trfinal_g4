@@ -1,20 +1,19 @@
-import React, { use, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/header';
-import { getMapsForCommunity, getMapsForCommunityByLevel } from '../services/communicationManager';
+import { getMapsForCommunity, getMapsForCommunityByLevel, reportMapService } from '../services/communicationManager';
 import MapCard from '../components/mapCard';
-
 
 const Comunidad = () => {
     const [maps, setMaps] = useState([]);
 
     useEffect(() => {
-        if (maps.length == 0) {
+        if (maps.length === 0) {
             getMapsForCommunity().then((data) => {
                 console.log(data);
                 setMaps(data);
             });
         }
-    });
+    }, [maps.length]);
 
     const getMaps = () => {
         getMapsForCommunity().then((data) => {
@@ -30,9 +29,13 @@ const Comunidad = () => {
         });
     };
 
-    // const searchMaps = (search) => {
-        
-    // };
+    const reportMap = (mapId, reasons) => {
+        const reportData = {
+            map_id: mapId,
+            reason: reasons.join(', ')
+        };
+        console.log('mapa report',reportData);
+    };
 
     return (
         <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center">
@@ -62,10 +65,11 @@ const Comunidad = () => {
                     </div>
                 </div>
                 <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-9 m-4 mt-9 pt-9'>
-                    { maps.length > 0 ? maps.map((map) => {
-                        return <MapCard key={map.id} map={map} />;
-                    }) : <h1 className='text-2xl font-bold text-white text-center mt-9 pt-9'>No hi ha mapes per mostrar</h1>
-                    }
+                    {maps.length > 0 ? maps.map((map) => (
+                        <MapCard key={map.id} map={map} onReport={reportMap} />
+                    )) : (
+                        <h1 className='text-2xl font-bold text-white text-center mt-9 pt-9'>No hi ha mapes per mostrar</h1>
+                    )}
                 </div>
             </div>
         </div>
