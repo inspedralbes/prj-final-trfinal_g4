@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../components/header';
-
+import { getMapsForCommunity } from '../services/communicationManager';
 
 
 const Comunidad = () => {
+
+    getMapsForCommunity().then((maps) => {
+        console.log(maps);
+        const [maps, setMaps] = useState([]);
+    });
+    
+
     return (
         <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center">
             <Header />
@@ -28,9 +35,9 @@ const Comunidad = () => {
                 </div>
             </div>
             <div>
-                {/* {maps.map((map) => (
+                {maps.map((map) => (
                     <MapCard map={map} />
-                ))} */}
+                ))}
             </div>
         </div>
     );
