@@ -238,6 +238,15 @@ class MapController extends Controller
     {
         $maps = Map::where('state', 'Approved')->get();
 
+        foreach ($maps as $map) {
+            if ($map->user_id) {
+                $user = User::find($map->user_id);
+                $map->user = $user->username;
+            } else {
+                $map->user = null;
+            }
+        }
+
         if ($maps->isEmpty()) {
             return response()->json([
                 'error' => 'No maps found'

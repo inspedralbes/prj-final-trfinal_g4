@@ -10,6 +10,7 @@ const Comunidad = () => {
     useEffect(() => {
         if (maps.length === 0) {
             getMapsForCommunity().then((data) => {
+                console.log(data);
                 setMaps(data);
             });
         }
