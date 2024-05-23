@@ -89,8 +89,6 @@ const MapCard = ({ map }) => {
         }
     };
 
-    console.log(reason);
-
     return (
         <div className="bg-white rounded-lg shadow-md p-4 lg:min-w-[320px]">
             <h2 className="text-xl font-bold mb-2">{map.name}</h2>

@@ -431,3 +431,22 @@ export function reportMap(map) {
             });
     });
 }
+
+// Buscar mapas por nombre o descripción
+export function searchMaps(fraseCerca) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}searchMapsCommunity/${fraseCerca}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}

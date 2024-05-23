@@ -297,4 +297,19 @@ class MapController extends Controller
             ], 500);
         }
     }
+
+    public function searchMaps($sentence)
+    {
+        $maps = Map::where('name', 'like', '%' . $sentence . '%')
+                    ->orWhere('description', 'like', '%' . $sentence . '%')
+                    ->get();
+
+        if ($maps->isEmpty()) {
+            return response()->json([
+                'error' => 'No maps found'
+            ], 404);
+        } else {
+            return response()->json($maps, 200);
+        }
+    }
 }

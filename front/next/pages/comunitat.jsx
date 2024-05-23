@@ -1,11 +1,12 @@
 import React, { use, useState, useEffect } from 'react';
 import Header from '../components/header';
-import { getMapsForCommunity, getMapsForCommunityByLevel } from '../services/communicationManager';
+import { getMapsForCommunity, getMapsForCommunityByLevel, searchMaps } from '../services/communicationManager';
 import MapCard from '../components/mapCard';
 
 
 const Comunidad = () => {
     const [maps, setMaps] = useState([]);
+    const [fraseCerca, setFraseCerca] = useState('');
 
     useEffect(() => {
         if (maps.length == 0) {
@@ -30,9 +31,14 @@ const Comunidad = () => {
         });
     };
 
-    // const searchMaps = (search) => {
-        
-    // };
+    const handleSearchMaps = () => {
+        if (fraseCerca !== '') {
+            searchMaps(fraseCerca).then((data) => {
+                console.log(data);
+                setMaps(data);
+            });
+        }
+    };
 
     return (
         <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center">
@@ -57,8 +63,8 @@ const Comunidad = () => {
                         </button>
                     </div>
                     <div className="flex justify-center mt-8">
-                        <input type="text" placeholder="Nom o descripció del mapa..." className="border border-gray-300 rounded-l-full py-2 px-4 pl-8 focus:outline-none focus:border-blue-500" />
-                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-full">
+                        <input value={fraseCerca} onChange={(e) => setFraseCerca(e.target.value)} type="text" placeholder="Nom o descripció del mapa..." className="border border-gray-300 rounded-l-full py-2 px-4 pl-8 focus:outline-none focus:border-blue-500" />
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-full" onClick={handleSearchMaps}>
                             Cercar
                         </button>
                     </div>
