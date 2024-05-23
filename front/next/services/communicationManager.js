@@ -333,3 +333,41 @@ export function getMapByDifficulty(difficulty) {
             });
     });
 }
+
+// Obtener todos los mapas para mostrar en comunidad
+export function getMapsForCommunity() {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}mapsCommunity/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+// Obtener todos los mapas para mostrar en comunidad filtrados por Nivel
+export function getMapsForCommunityByLevel(level) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}mapsCommunity/${level}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
