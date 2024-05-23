@@ -1,6 +1,6 @@
 import React, { use, useState, useEffect } from 'react';
 import Header from '../components/header';
-import { getMapsForCommunity } from '../services/communicationManager';
+import { getMapsForCommunity, getMapsForCommunityByLevel } from '../services/communicationManager';
 import MapCard from '../components/mapCard';
 
 
@@ -8,14 +8,31 @@ const Comunidad = () => {
     const [maps, setMaps] = useState([]);
 
     useEffect(() => {
-        if (maps.length === 0) {
+        if (maps.length == 0) {
             getMapsForCommunity().then((data) => {
                 console.log(data);
                 setMaps(data);
             });
         }
     });
-    
+
+    const getMaps = () => {
+        getMapsForCommunity().then((data) => {
+            console.log(data);
+            setMaps(data);
+        });
+    };
+
+    const getMapsByLevel = (level) => {
+        getMapsForCommunityByLevel(level).then((data) => {
+            console.log(data);
+            setMaps(data);
+        });
+    };
+
+    // const searchMaps = (search) => {
+        
+    // };
 
     return (
         <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center">
@@ -24,13 +41,16 @@ const Comunidad = () => {
                 <h1 className='text-6xl font-bold text-white text-center mt-9 pt-9'>Comunitat</h1>
                 <div className='grid grid-cols-1 lg:grid-cols-2 lg:gap-9 mt-9'>
                     <div className="flex justify-center mt-8">
-                        <button className="bg-gradient-to-r from-red-700 to-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4">
+                        <button className="bg-green-500 hover:animate-bounce text-white font-bold py-2 px-4 rounded-full mr-4" onClick={getMaps}>
+                            Tots
+                        </button>
+                        <button className="bg-gradient-to-r from-red-700 to-blue-700 hover:animate-bounce text-white font-bold py-2 px-4 rounded-full mr-4" onClick={() => getMapsByLevel(1)}>
                             Nivell 1
                         </button>
-                        <button className="bg-gradient-to-r from-green-700 to-orange-700 text-white font-bold py-2 px-4 rounded-full mr-4">
+                        <button className="bg-gradient-to-r from-green-700 to-orange-700 hover:animate-bounce text-white font-bold py-2 px-4 rounded-full mr-4" onClick={() => getMapsByLevel(2)}>
                             Nivell 2
                         </button>
-                        <button className="bg-gradient-to-r from-black to-white text-white font-bold py-2 px-4 rounded-full">
+                        <button className="bg-gradient-to-r from-black to-white hover:animate-bounce text-white font-bold py-2 px-4 rounded-full" onClick={() => getMapsByLevel(3)}>
                             Nivell 3
                         </button>
                     </div>
@@ -42,9 +62,10 @@ const Comunidad = () => {
                     </div>
                 </div>
                 <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-9 m-4 mt-9 pt-9'>
-                    {maps.map((map) => (
-                        <MapCard map={map} />
-                    ))}
+                    { maps.length > 0 ? maps.map((map) => {
+                        return <MapCard key={map.id} map={map} />;
+                    }) : <h1 className='text-2xl font-bold text-white text-center mt-9 pt-9'>No hi ha mapes per mostrar</h1>
+                    }
                 </div>
             </div>
         </div>
