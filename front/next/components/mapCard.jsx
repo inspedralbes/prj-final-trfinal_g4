@@ -54,20 +54,27 @@ const MapCard = ({ map }) => {
         if ( useStore.getState().user.id == null ) {
             reportData = {
                 map_id: map.id,
-                reason: reason
+                reason: JSON.stringify(reason)
             };
+
+            reportMap(reportData).then((data) => {
+                console.log(data);
+                setShowModal(false); 
+            });
         } else {
             reportData = {
                 map_id: map.id,
-                reason: reason,
-                user: useStore.getState().user.id
+                reason: JSON.stringify(reason),
+                user_id: useStore.getState().user.id
             };
+
+            reportMap(reportData).then((data) => {
+                console.log(data);
+                setShowModal(false); 
+            });
         }
+
         
-        reportMap(reportData).then((data) => {
-            console.log(data);
-            setShowModal(false); 
-        });
     
     };
 
