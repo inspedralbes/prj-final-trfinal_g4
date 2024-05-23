@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { use, useState, useEffect } from 'react';
 import Header from '../components/header';
-import { getMapsForCommunity, getMapsForCommunityByLevel, reportMapService } from '../services/communicationManager';
+import { getMapsForCommunity, getMapsForCommunityByLevel } from '../services/communicationManager';
 import MapCard from '../components/mapCard';
+
 
 const Comunidad = () => {
     const [maps, setMaps] = useState([]);
 
     useEffect(() => {
-        if (maps.length === 0) {
+        if (maps.length == 0) {
             getMapsForCommunity().then((data) => {
                 console.log(data);
                 setMaps(data);
             });
         }
-    }, [maps.length]);
+    });
 
     const getMaps = () => {
         getMapsForCommunity().then((data) => {
@@ -29,19 +30,17 @@ const Comunidad = () => {
         });
     };
 
-    const reportMap = (mapId, reasons) => {
-        const reportData = {
-            map_id: mapId,
-            reason: reasons.join(', ')
-        };
-        console.log('mapa report',reportData);
-    };
+    // const searchMaps = (search) => {
+        
+    // };
 
     return (
         <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center">
             <Header />
             <div className='min-h-screen mt-9 pt-9'>
                 <h1 className='text-6xl font-bold text-white text-center mt-9 pt-9'>Comunitat</h1>
+                <p className='text-white text-center text-2xl mt-4'>Descobreix els mapes creats per la comunitat</p>
+
                 <div className='grid grid-cols-1 lg:grid-cols-2 lg:gap-9 mt-9'>
                     <div className="flex justify-center mt-8">
                         <button className="bg-green-500 hover:animate-bounce text-white font-bold py-2 px-4 rounded-full mr-4" onClick={getMaps}>
@@ -66,7 +65,7 @@ const Comunidad = () => {
                 </div>
                 <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-9 m-4 mt-9 pt-9'>
                     {maps.length > 0 ? maps.map((map) => (
-                        <MapCard key={map.id} map={map} onReport={reportMap} />
+                        <MapCard key={map.id} map={map} />
                     )) : (
                         <h1 className='text-2xl font-bold text-white text-center mt-9 pt-9'>No hi ha mapes per mostrar</h1>
                     )}

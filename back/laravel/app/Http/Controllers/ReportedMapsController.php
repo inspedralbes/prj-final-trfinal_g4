@@ -51,7 +51,7 @@ class ReportedMapsController extends Controller
             $user = User::where('id', $request->user_id)->first();
             $userID = $user->id;
         } else {
-            $user = null;
+            $userID = null;
         }
 
         if ($map) {

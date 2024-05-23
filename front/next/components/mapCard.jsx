@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { BiSolidLike, BiSolidDislike } from "react-icons/bi";
+import { BiSolidLike } from "react-icons/bi";
 import { MdReport } from "react-icons/md";
-import { likeMap, dislikeMap } from '../services/communicationManager';
+import { BiSolidDislike } from "react-icons/bi";
+import { likeMap, dislikeMap, reportMap } from '../services/communicationManager';
+import useStore from '../src/store';
 
-const MapCard = ({ map, onReport }) => {
+const MapCard = ({ map }) => {
     const URL = 'http://localhost:8000';
     const [reason, setReason] = useState([]);
     const [otherReasons, setOtherReasons] = useState('');
@@ -35,24 +37,52 @@ const MapCard = ({ map, onReport }) => {
         });
     };
 
-    const handleReport = () => {
-        const reportReasons = reason;
-        if (otherReasons) {
-            reportReasons.push(otherReasons);
+    const addReportMap = () => {
+        
+        if (reason.length == 0 && otherReasons == '') {
+            return;
+        } else if (reason.length == 0 && otherReasons != '') {
+            const addOtherReason = 'Altres motius: ' + otherReasons;
+            reason.push(addOtherReason);
+        } else if (reason.length > 0 && otherReasons != '') {
+            const addOtherReason = 'Altres motius: ' + otherReasons;
+            reason.push(addOtherReason);
         }
-        onReport(map.id, reportReasons);
-        setShowModal(false); 
+
+        var reportData = {};
+
+        if ( useStore.getState().user.id == null ) {
+            reportData = {
+                map_id: map.id,
+                reason: reason
+            };
+        } else {
+            reportData = {
+                map_id: map.id,
+                reason: reason,
+                user: useStore.getState().user.id
+            };
+        }
+        
+        reportMap(reportData).then((data) => {
+            console.log(data);
+            setShowModal(false); 
+        });
+    
     };
 
     const handleCheckboxChange = (event) => {
         const value = event.target.value;
-        setReason((prevReasons) =>
-            event.target.checked
-                ? [...prevReasons, value]
-                : prevReasons.filter((reason) => reason !== value)
-        );
-        console.log(reason);
+        const checked = event.target.checked;
+
+        if (checked && !reason.includes(value)) {
+            setReason([...reason, value]);
+        } else if (!checked && reason.includes(value)) {
+            setReason(reason.filter((r) => r !== value));
+        }
     };
+
+    console.log(reason);
 
     return (
         <div className="bg-white rounded-lg shadow-md p-4 lg:min-w-[320px]">
@@ -69,7 +99,8 @@ const MapCard = ({ map, onReport }) => {
                         onClick={!liked ? addLikeMap : null}
                         disabled={liked}
                     >
-                        <BiSolidLike className='hover:animate-bounce' />
+                        {map.likes}
+                        <BiSolidLike className='ml-1 hover:animate-bounce' />
                     </button>
                     <button
                         className={`flex items-center rounded-lg px-3 py-2 ${disliked ? 'bg-red-500' : 'bg-blue-500'} text-white`}
@@ -165,7 +196,7 @@ const MapCard = ({ map, onReport }) => {
                             <button className="bg-gray-500 text-white rounded-lg px-4 py-2 mr-2" onClick={() => setShowModal(false)}>
                                 Cancelar
                             </button>
-                            <button className="bg-red-500 text-white rounded-lg px-4 py-2" onClick={handleReport}>
+                            <button className="bg-red-500 text-white rounded-lg px-4 py-2" onClick={addReportMap}>
                                 Enviar
                             </button>
                         </div>
