@@ -108,7 +108,6 @@ async function getMapData(data) {
 
 function getCommunityMaps(maps) {
     let mapsArray = [];
-   
     maps.forEach(async map => {
 
         let mapData = await fetch("http://localhost:8000/api/maps/" + map.id, {
@@ -256,9 +255,6 @@ io.on('connection', (socket) => {
         let room = findRoomByUser(socket.id);
         console.log(`Socket ${socket.id} is leaving room ${room.id}`);
         if (socket.id == room.admin[0]) {
-            console.log(`soy admin ${socket.id}`);
-            console.log(`room admin ${room.admin[0]}`);
-            console.log(`room users ${room.users}`);
             if (room.users.length > 1) {
                 let name = room.admin[1];
                 room.admin[0] = room.users[1].id;
@@ -266,21 +262,24 @@ io.on('connection', (socket) => {
                 room.admin[2] = room.users[1].image;
                 room.users.splice(0, 1);
                 room.accesible = true;
-                // console.log("Room BBBBBBBBBBBBBBBBBBBBBBB", room);
                 room.messages.push({ user: 'Server', message: `${name} a sortit de la sala` });
+                room.messages.map(message => {
+                    if (message.user != 'Server') {
+                        
+                    }
+                });
                 socket.leave(room.id);
                 socket.emit('newInfoRoom', null);
                 io.to(room.id).emit('newInfoRoom', room);
             } else {
                 rooms.splice(rooms.indexOf(room), 1);
-                console.log("Room BBBBBBBBBBBBBBBBBBBBBBB", room);
             }
         } else {
             room.messages.push({ user: 'Server', message: `${room.users.find(user => user.id == socket.id).name} a sortit de la sala` });
             room.users.splice(1, 1);
             room.accesible = true;
-            console.log("Room CCCCCCCCCCCCCCCCCCCCCCCCCCCCC", room);
             socket.leave(room.id);
+
             socket.emit('newInfoRoom', null);
             io.to(room.id).emit('newInfoRoom', room);
         }
