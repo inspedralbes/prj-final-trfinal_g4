@@ -42,6 +42,7 @@ function nextColor(player) {
     } else {
         colorToReturn = player.colorsUnlocked[colorIndex + 1]
     }
+    console.log(player.colorsUnlocked);
     return colorToReturn;
 }
 
@@ -361,21 +362,6 @@ io.on('connection', (socket) => {
                 room.game.playersData[0].color = 'red';
                 room.game.playersData[1].colorsUnlocked = ['blue'];
                 room.game.playersData[1].color = 'blue';
-
-                // fetch("localhost:8000/api/saves", {
-                //     method: "POST",
-                //     headers: {
-                //         "Content-Type": "application/json",
-                //     },
-                //     body: JSON.stringify({
-                //         user_id: room.users[0].id,
-                //         FirstMap: room.game.maps[1].id,
-                //         SecondMap: room.game.maps[2].id,
-                //         ThirdMap: room.game.maps[3].id,
-                //         state: room.game.currentMap
-
-                //     })
-                // })
             } else {
                 if (room.game.currentMap == 2) {
                     room.game.playersData[0].colorsUnlocked.push('green');
@@ -387,6 +373,7 @@ io.on('connection', (socket) => {
 
             }
             room.game.currentMap = room.game.currentMap++;
+            console.log(room.game)
             io.to(findRoomByUser(socket.id).id).emit('winFront', room.game)
         }
         
