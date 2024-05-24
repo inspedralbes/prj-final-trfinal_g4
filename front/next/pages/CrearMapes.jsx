@@ -16,11 +16,11 @@ const steps = [
     {
         icon: FaFileAlt,
         title: "Crea un projecte nou",
-        description: "Obre l'editor Tiled i crea un projecte nou (la grandaria de el sprite ha de ser de 32x32).",
+        description: "Obre l'editor Tiled i crea un projecte nou (la grandaria de el sprite ha de ser de 16x16), pots seleccionar l'opció d'infinit.",
     },
     {
         icon: FaLayerGroup,
-        title: "Utilitza aquesta imatge com Tileset i crea totes les capes",
+        title: "Utilitza aquesta imatge com Tileset i crea totes les capes, tenint en compte que el conjunt de patrons ha de ser de 16x16 pixels i seleccionar l'opció d'empotrar en el mapa.",
         description: (
             <>
                 <p>
