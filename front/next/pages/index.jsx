@@ -19,9 +19,8 @@ const IndexPage = () => {
     >
       <Header />
       <div className='flex flex-col justify-center items-center'>
-        <h1 className="text-6xl font-bold text-white text-center mb-5">CHROMATIC BOND</h1>
         <Link href="/rooms">
-          <button className="text-2xl text-white font-bold py-2 px-4 rounded bg-indigo-500 hover:bg-indigo-700">JUGAR</button>
+          <button className="text-4xl text-white font-bold py-4 px-6 rounded bg-indigo-500 hover:bg-indigo-700 mt-[400px]">JUGAR</button>
         </Link>
         <div className='absolute bottom-5 left-5 flex flex-col items-start'>
           {isIframeVisible && (
