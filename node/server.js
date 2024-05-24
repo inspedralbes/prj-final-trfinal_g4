@@ -263,11 +263,8 @@ io.on('connection', (socket) => {
                 room.users.splice(0, 1);
                 room.accesible = true;
                 room.messages.push({ user: 'Server', message: `${name} a sortit de la sala` });
-                room.messages.map(message => {
-                    if (message.user != 'Server') {
-                        
-                    }
-                });
+                room.messages = room.messages.filter(message => message.user == 'Server');
+                console.log('exitRoom Messages: ', room.messages);
                 socket.leave(room.id);
                 socket.emit('newInfoRoom', null);
                 io.to(room.id).emit('newInfoRoom', room);
@@ -279,7 +276,8 @@ io.on('connection', (socket) => {
             room.users.splice(1, 1);
             room.accesible = true;
             socket.leave(room.id);
-
+            room.messages = room.messages.filter(message => message.user == 'Server');
+            console.log('exitRoom Messages: ', room.messages);
             socket.emit('newInfoRoom', null);
             io.to(room.id).emit('newInfoRoom', room);
         }
@@ -342,7 +340,6 @@ io.on('connection', (socket) => {
     });
 
     socket.on('death', () => {
-
         io.to(findRoomByUser(socket.id).id).emit('deathFront')
     });
 
@@ -405,6 +402,8 @@ io.on('connection', (socket) => {
                 room.accesible = true;
                 room.status = 'Waiting';
                 room.messages.push({ user: 'Server', message: `${name} a sortit de la sala` });
+                room.messages = room.messages.filter(message => message.user == 'Server');
+                console.log('exitRoom Messages: ', room.messages);
                 socket.leave(room.id);
                 socket.emit('newInfoRoom', null);
                 io.to(room.id).emit('newInfoRoom', room);
@@ -413,6 +412,8 @@ io.on('connection', (socket) => {
                 room.users.splice(1, 1);
                 room.accesible = true;
                 room.status = 'Waiting';
+                room.messages = room.messages.filter(message => message.user == 'Server');
+                console.log('exitRoom Messages: ', room.messages);
                 socket.leave(room.id);
                 socket.emit('newInfoRoom', null);
                 io.to(room.id).emit('newInfoRoom', room);
@@ -420,13 +421,13 @@ io.on('connection', (socket) => {
                 rooms.splice(rooms.indexOf(room), 1);
             }
         } else if (room && room.status == 'Playing') {
-            // room.game.players = room.game.players.filter(player => player.id != socket.id);
-            // room.game.playersData = room.game.playersData.filter(player => player.id != socket.id);
-            // if (room.game.players.length == 0) {
-            //     rooms.splice(rooms.indexOf(room), 1);
-            // }
+            room.game.playersData = room.game.playersData.filter(player => player.id != socket.id);
+            room.game.players = room.game.players.filter(player => player.id != socket.id);
+            room.users = room.users.filter(user => user.id != socket.id);
+            rooms.splice(rooms.indexOf(room), 1);
+            socket.leave(room.id);
+            socket.emit('newInfoRoom', null);
         }
-
         io.emit('allRooms', rooms);
         
         console.log(`Disconnected: ${socket.id}`);

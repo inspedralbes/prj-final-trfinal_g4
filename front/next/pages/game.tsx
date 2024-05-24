@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import useStore from '../src/store';
 import { Game as GameType } from 'phaser';
+import { useRouter } from 'next/router';
 
 const Game = () => {
     const isDevelopment = process?.env?.NODE_ENV !== 'production';
     const [game, setGame] = useState<GameType>();
-    const dialogMessages = useState([]);
-    const gameTexts = useState([]);
-    const [messages, setMessages] = useState({});
+    const [room, setRoom] = useState(null);
+    const router = useRouter();
 
     useEffect(() => {
         async function initPhaser() {
@@ -39,6 +39,26 @@ const Game = () => {
         }
         initPhaser();
     }, []);
+
+    useEffect(() => {
+        const handleRoomChange = () => {
+            if (room == null) {
+                router.push('/rooms');
+            }
+        };
+
+        const unsubscribe = useStore.subscribe(
+            (state) => {
+                setRoom(state.room);
+            }
+        );
+
+        handleRoomChange();
+
+        return () => {
+            unsubscribe();
+        };
+    }, [router.pathname]);
 
     return (
         <>
