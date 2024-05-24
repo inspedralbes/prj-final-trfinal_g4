@@ -97,21 +97,20 @@ class MapController extends Controller
             $img = $request->file('img');
             $imgName = $img->getClientOriginalName();
             $img->move(public_path('/images/maps'), $imgName);
-            $newMap->image = $imgPath;
+            $newMap->image = '/' . $imgPath;
 
             $mapPath = $request->file('map')->storeAs('/maps', $request->file('map')->getClientOriginalName());
             $map = $request->file('map');
             $mapName = $map->getClientOriginalName();
             $map->move(public_path('/maps'), $mapName);
+            $newMap->mapRoute = '/' . $mapPath;
         } else {
             return response()->json([
                 'error' => 'Image or map not found'
             ], 404);
         }
 
-        $newMap->mapRoute = $mapPath;
         $newMap->difficulty = $request->difficulty;
-
         $newMap->user_id = $request->user_id;
 
         if ($newMap->save()) {
