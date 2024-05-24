@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Header from '../components/header';
+import fondoGif from '../public/images/ChromaticBondGif.gif';
 
 const IndexPage = () => {
   const [isIframeVisible, setIsIframeVisible] = useState(false);
@@ -10,12 +11,16 @@ const IndexPage = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center">
+    <div 
+      className="min-h-screen flex flex-col justify-center items-center bg-cover bg-center bg-no-repeat" 
+      style={{ 
+        backgroundImage: `url(${fondoGif.src})`,
+      }}
+    >
       <Header />
       <div className='flex flex-col justify-center items-center'>
-        <h1 className="text-6xl font-bold text-white text-center mb-5">CHROMATIC BOND</h1>
         <Link href="/rooms">
-          <button className="text-2xl text-white font-bold py-2 px-4 rounded bg-indigo-500 hover:bg-indigo-700">JUGAR</button>
+          <button className="text-4xl text-white font-bold py-4 px-6 rounded bg-indigo-500 hover:bg-indigo-700 mt-[400px]">JUGAR</button>
         </Link>
         <div className='absolute bottom-5 left-5 flex flex-col items-start'>
           {isIframeVisible && (
@@ -24,7 +29,7 @@ const IndexPage = () => {
               width="350"
               height="500"
               allowtransparency="true"
-              frameborder="0"
+              frameBorder="0"
               sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
               className="mb-2"
             ></iframe>

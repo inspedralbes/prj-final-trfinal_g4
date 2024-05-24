@@ -95,7 +95,7 @@ function Login() {
   return (
     <div className="h-screen overflow-hidden">
       <Header />
-      <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center p-4">
+      <div className="bg-gradient-to-r from-blue-600 from-5% via-purple-500 via-50% to-red-600 to-90% min-h-screen flex flex-col justify-center items-center p-4">
         {sessionIncomplete && <ErrorPopup type="incomplete" message={sessionIncomplete} clearMessage={clearIncompleteMessage} />}
         {sessionError && <ErrorPopup type="error" message={sessionError} clearMessage={clearErrorMessage} />}
         <form className="bg-white shadow-md rounded-lg px-8 py-6 max-w-md w-full" onSubmit={handleSubmit}>
