@@ -68,7 +68,7 @@ const Lobby = () => {
             return (
                 <div key={index} className='chat-message'>
                     <div className='flex items-end justify-end'>
-                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end max-w-[200px]'>
+                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end max-w-[450px]'>
                             <div>
                                 <span className='px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white text-wrap'>
                                     {msg.message}
@@ -83,7 +83,7 @@ const Lobby = () => {
             return (
                 <div key={index} className='chat-message'>
                     <div className='flex items-center justify-center'>
-                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 items-center max-w-[200px]'>
+                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 items-center max-w-[450px]'>
                             <div>
                                 <span className='px-4 py-2 rounded-lg inline-block bg-red-600 text-white text-wrap'>
                                     {msg.message}
@@ -97,7 +97,7 @@ const Lobby = () => {
             return (
                 <div key={index} className='chat-message'>
                     <div className='flex items-end'>
-                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start max-w-[200px]'>
+                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start max-w-[450px]'>
                             <div>
                                 <span className='px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600 text-wrap'>
                                     {msg.message}
@@ -173,9 +173,9 @@ const Lobby = () => {
                 <div className='min-h-[600px] max-w-[500px] lg:min-w-[1050px] text-center lg:flex lg:flex-inline'>
                     {/* Chat section */}
                     <div className='h-[600px] max-w-[500px] mx-auto lg:min-w-[500px] bg-gray-700 rounded-lg flex flex-col lg:m-3 lg:mt-9 mt-9'>
-                        <div id='messages' className='flex-grow flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-rhumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
-                            { chatMessages }
-                        </div>
+                    <div id='messages' class='flex-grow flex flex-col space-y-4 p-3 overflow-x-hidden overflow-y-auto scrollbar-thumb-blue scrollbar-rhumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
+                        { chatMessages }
+                    </div>
                         <div className='border-t-2 border-gray-200 px-4 pt-4 mb-2 mb-16 mx-2'>
                             <div className='relative flex'>
                                 <input 
