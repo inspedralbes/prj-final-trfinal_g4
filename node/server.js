@@ -23,7 +23,7 @@ const io = new Server(server, {
 });
 
 function findRoomByUser(userId) {
-    let findRoom;
+    let findRoom = null;
     rooms.forEach(room => {
         room.users.forEach(user => {
             if (user.id == userId) {
@@ -53,7 +53,7 @@ async function getRandomMaps() {
             "Content-Type": "application/json",
         }
     });
-    maps= await tuto.json();
+    maps = await tuto.json();
 
     return maps;
 }
@@ -66,7 +66,7 @@ async function getOriginalMaps() {
             "Content-Type": "application/json",
         }
     });
-    maps= await tuto.json();
+    maps = await tuto.json();
     return maps;
 }
 
@@ -106,10 +106,10 @@ async function getMapData(data) {
     return maps;
 }
 
-function getCommunityMaps(maps) {
+async function getCommunityMaps(maps) {
     let mapsArray = [];
-    maps.forEach(async map => {
 
+    await Promise.all(maps.map(async map => {
         let mapData = await fetch("http://localhost:8000/api/maps/" + map.id, {
             method: "GET",
             headers: {
@@ -119,8 +119,8 @@ function getCommunityMaps(maps) {
         let mapDataJson = await mapData.json();
 
         mapsArray.push(mapDataJson);
-        
-    });
+    }));
+
     return mapsArray;
 }
 
@@ -131,104 +131,110 @@ io.on('connection', (socket) => {
 
     //Create Room
     socket.on('createRoom', async (data) => {
-        let id = lastRoom++;
-        // let mapData = null;
-        getMapData(data.addRoom).then((mapsFull) => {
-            let newRoom = {
-                name: data.addRoom.name,
-                isPublic: data.addRoom.public,
-                mode: data.addRoom.mode,
-                admin: [socket.id, data.userAdmin.name, data.userAdmin.image],
-                users: [{ id: socket.id, name: data.userAdmin.name, state: null, image: data.userAdmin.image }],
-                id: id,
-                accessCode: data.addRoom.accessCode,
-                accesible: true,
-                status: 'Waiting',
-                messages: [{ user: 'Server', message: `${data.userAdmin.name} ha creat la sala` }],
-                game: {
-                    maps: mapsFull,
-                    currentMap: 0,
-                    players: [],
-                    playersData: []
-                }
-            };
-            rooms.push(newRoom);
-            socket.join(newRoom.id);
-            io.emit('allRooms', rooms);
-            console.log('newRoom', newRoom.game.maps);
-            console.log('message', newRoom.messages);
-            io.to(newRoom.id).emit('newInfoRoom', newRoom);
-        });
-    });
-
-    //Quick Game
-    socket.on('quickGame', async (data) => {
-        let roomToJoin=null;
-        rooms.forEach(room => {
-            if (room.isPublic && room.status!='Playing' && room.users.length<2) {
-                roomToJoin = room;
-            }
-        });
-        if(roomToJoin!=null){
-            let newUser = { id: socket.id, name: data.user.name, state: null, image: data.user.image };
-            roomToJoin.users.push(newUser);
-            roomToJoin.accesible = false;
-            roomToJoin.status = 'inLobby';
-            roomToJoin.messages.push({ user: 'Server', message: `${data.user.name} s'ha unit a la sala` });
-            socket.join(roomToJoin.id);
-            io.emit('allRooms', rooms);
-            io.to(roomToJoin.id).emit('newInfoRoom', roomToJoin);
-        } else{
+        if (findRoomByUser(socket.id) == null) {
             let id = lastRoom++;
-            let config = {
-                mode: 'Aleatori',
-                maps: []
-            }
-            getMapData(config).then((mapsFull) => {
+            // let mapData = null;
+            getMapData(data.addRoom).then((mapsFull) => {
                 let newRoom = {
-                    name: 'Quick Game'+Math.floor(Math.random() * 1000),
-                    isPublic: true,
-                    mode: 'Aleatori',
-                    admin: [socket.id, data.user.name, data.user.image],
-                    users: [{ id: socket.id, name: data.user.name, state: null, image: data.user.image }],
+                    name: data.addRoom.name,
+                    isPublic: data.addRoom.public,
+                    mode: data.addRoom.mode,
+                    admin: [socket.id, data.userAdmin.name, data.userAdmin.image],
+                    users: [{ id: socket.id, name: data.userAdmin.name, state: null, image: data.userAdmin.image }],
                     id: id,
-                    accessCode: null,
+                    accessCode: data.addRoom.accessCode,
                     accesible: true,
                     status: 'Waiting',
-                    messages: [{ user: 'Server', message: `${data.user.name} ha creat la sala` }],
+                    messages: [{ user: 'Server', message: `${data.userAdmin.name} ha creat la sala` }],
                     game: {
                         maps: mapsFull,
                         currentMap: 0,
                         players: [],
                         playersData: []
                     }
-                }
+                };
                 rooms.push(newRoom);
                 socket.join(newRoom.id);
                 io.emit('allRooms', rooms);
+                console.log('newRoom', newRoom.game.maps);
+                console.log('message', newRoom.messages);
                 io.to(newRoom.id).emit('newInfoRoom', newRoom);
-                roomToJoin = newRoom;
             });
         }
-        socket.emit('newRoomInfo', roomToJoin);
+    });
+
+    //Quick Game
+    socket.on('quickGame', async (data) => {
+        if (findRoomByUser(socket.id) == null) {
+            let roomToJoin = null;
+            rooms.forEach(room => {
+                if (room.isPublic && room.status != 'Playing' && room.users.length < 2) {
+                    roomToJoin = room;
+                }
+            });
+            if (roomToJoin != null) {
+                let newUser = { id: socket.id, name: data.user.name, state: null, image: data.user.image };
+                roomToJoin.users.push(newUser);
+                roomToJoin.accesible = false;
+                roomToJoin.status = 'inLobby';
+                roomToJoin.messages.push({ user: 'Server', message: `${data.user.name} s'ha unit a la sala` });
+                socket.join(roomToJoin.id);
+                io.emit('allRooms', rooms);
+                io.to(roomToJoin.id).emit('newInfoRoom', roomToJoin);
+            } else {
+                let id = lastRoom++;
+                let config = {
+                    mode: 'Mapes originals',
+                    maps: []
+                }
+                getMapData(config).then((mapsFull) => {
+                    let newRoom = {
+                        name: 'Quick Game' + Math.floor(Math.random() * 1000),
+                        isPublic: true,
+                        mode: 'Mapes originals',
+                        admin: [socket.id, data.user.name, data.user.image],
+                        users: [{ id: socket.id, name: data.user.name, state: null, image: data.user.image }],
+                        id: id,
+                        accessCode: null,
+                        accesible: true,
+                        status: 'Waiting',
+                        messages: [{ user: 'Server', message: `${data.user.name} ha creat la sala` }],
+                        game: {
+                            maps: mapsFull,
+                            currentMap: 0,
+                            players: [],
+                            playersData: []
+                        }
+                    }
+                    rooms.push(newRoom);
+                    socket.join(newRoom.id);
+                    io.emit('allRooms', rooms);
+                    io.to(newRoom.id).emit('newInfoRoom', newRoom);
+                    roomToJoin = newRoom;
+                });
+            }
+            socket.emit('newRoomInfo', roomToJoin);
+        }
     });
 
     //Join Room
     socket.on('joinRoom', (data) => {
-        let findRoom = rooms.find(room => room.id == data.id);
-        if (findRoom == undefined) {
-            return;
-        } else {
-            let newUser = { id: socket.id, name: data.user.name, state: null, image: data.user.image };
-            findRoom.users.push(newUser);
-            findRoom.accesible = false;
-            findRoom.status = 'inLobby';
-            findRoom.messages.push({ user: 'Server', message: `${data.user.name} s'ha unit a la sala` });
-            socket.join(findRoom.id);
+        if (findRoomByUser(socket.id) == null) {
+            let findRoom = rooms.find(room => room.id == data.id);
+            if (findRoom == undefined) {
+                return;
+            } else {
+                let newUser = { id: socket.id, name: data.user.name, state: null, image: data.user.image };
+                findRoom.users.push(newUser);
+                findRoom.accesible = false;
+                findRoom.status = 'inLobby';
+                findRoom.messages.push({ user: 'Server', message: `${data.user.name} s'ha unit a la sala` });
+                socket.join(findRoom.id);
+            }
+            io.emit('allRooms', rooms);
+            io.to(findRoom.id).emit('newInfoRoom', findRoom);
+            console.log('soy gay', findRoom);
         }
-        io.emit('allRooms', rooms);
-        io.to(findRoom.id).emit('newInfoRoom', findRoom);
-        console.log('soy gay', findRoom);
     });
 
     //Chat Room
@@ -313,7 +319,7 @@ io.on('connection', (socket) => {
                     color: 'black'
                 }
             ];
-            console.log("Room CCCCCCCCCCCCCCCCCCCCCCCCCCCCC", room.game.maps);
+        console.log("Room CCCCCCCCCCCCCCCCCCCCCCCCCCCCC", room.game.maps);
         io.to(room.id).emit('gameStarted', room);
     })
 
@@ -356,20 +362,20 @@ io.on('connection', (socket) => {
                 room.game.playersData[1].colorsUnlocked = ['blue'];
                 room.game.playersData[1].color = 'blue';
 
-                fetch("localhost:8000/api/saves", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        user_id: room.users[0].id,
-                        FirstMap: room.game.maps[1].id,
-                        SecondMap: room.game.maps[2].id,
-                        ThirdMap: room.game.maps[3].id,
-                        state: room.game.currentMap
+                // fetch("localhost:8000/api/saves", {
+                //     method: "POST",
+                //     headers: {
+                //         "Content-Type": "application/json",
+                //     },
+                //     body: JSON.stringify({
+                //         user_id: room.users[0].id,
+                //         FirstMap: room.game.maps[1].id,
+                //         SecondMap: room.game.maps[2].id,
+                //         ThirdMap: room.game.maps[3].id,
+                //         state: room.game.currentMap
 
-                    })
-                })
+                //     })
+                // })
             } else {
                 if (room.game.currentMap == 2) {
                     room.game.playersData[0].colorsUnlocked.push('green');
@@ -380,11 +386,13 @@ io.on('connection', (socket) => {
                 }
 
             }
-            room.game.currentMap = room.game.maps[room.game.maps.indexOf(room.game.currentMap) + 1];
+            room.game.currentMap = room.game.currentMap++;
             io.to(findRoomByUser(socket.id).id).emit('winFront', room.game)
         }
-        io.to(findRoomByUser(socket.id).id).emit('winFront')
+        
     });
+
+    
 
     //Disconnect
     socket.on('disconnect', () => {

@@ -58,9 +58,12 @@ const Lobby = () => {
     };
 
     useEffect(() => {
-        if (useStore.getState().room != null && useStore.getState().room.status === 'Playing') {
-            router.push('/game');
-        }
+        socket.on('gameStarted', (data) => {
+            if (useStore.getState().room != null && useStore.getState().room.status === 'Playing') {
+                console.log('Redirecting to game...');
+                router.push('/game');
+            }
+        });
     }, [router]);
 
     const chatMessages = room ? room.messages.map((msg, index) => {
@@ -130,10 +133,10 @@ const Lobby = () => {
         contentOtherUser = (
             <div id='userRandom' className='flex items-center mt-2 mb-2'>
                 <div className='flex items-center'>
-                    <img src={URL + room.users[1].image } alt="User" className='w-10 h-10 ml-2 rounded-full' />
+                    <img src={URL + room.users[1].image} alt="User" className='w-10 h-10 ml-2 rounded-full' />
                     <p className='text-2xl ml-3 mt-1 mr-4 truncate'>{otherUser}</p>
                 </div>
-                { user !== adminUser && room.users[1].state !== 'Ready' && (
+                {user !== adminUser && room.users[1].state !== 'Ready' && (
                     <div id='buttons-check' className='flex items-center ml-auto'>
                         <button className='bg-green-500 hover:bg-green-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mx-2 rounded-lg' onClick={() => userReady()}>
                             <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -147,7 +150,7 @@ const Lobby = () => {
                         </button>
                     </div>
                 )}
-                { room && room.users[1].state === 'Ready' && (
+                {room && room.users[1].state === 'Ready' && (
                     <div className='flex items-center ml-auto text-green-500 bg-gray-600 p-2 rounded-lg'>
                         <p>Llest per jugar!!</p>
                     </div>
@@ -178,12 +181,12 @@ const Lobby = () => {
                     </div>
                         <div className='border-t-2 border-gray-200 px-4 pt-4 mb-2 mb-16 mx-2'>
                             <div className='relative flex'>
-                                <input 
-                                placeholder='Escriu un missatge...' 
-                                type="text" 
-                                value={message} 
-                                onChange={(e) => setMessage(e.target.value)} 
-                                className='focus:ring-red-500 focus:border-red-500 w-full focus:placeholder-gray-400 text-gray-600 placeholder-gray-300 pl-12 bg-gray-100 rounded-full py-3 border-gray-200' />
+                                <input
+                                    placeholder='Escriu un missatge...'
+                                    type="text"
+                                    value={message}
+                                    onChange={(e) => setMessage(e.target.value)}
+                                    className='focus:ring-red-500 focus:border-red-500 w-full focus:placeholder-gray-400 text-gray-600 placeholder-gray-300 pl-12 bg-gray-100 rounded-full py-3 border-gray-200' />
                                 <span className='absolute inset-y-0 flex items-center'>
                                     <button className='inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300' onClick={sendMessage}>
                                         <svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 45 45' stroke='currentColor' className='h-6 w-6 text-gray-600 fill-gray-800 hover:animate-pulse'>
@@ -203,7 +206,7 @@ const Lobby = () => {
                                 <div className='flex items-center'>
                                 <img src={ room ? URL + room.users[0].image : '' } alt="User" className='w-10 h-10 ml-2 rounded-full' />                                    <p className='text-2xl ml-3 mt-1 mr-4 truncate'>{adminUser}</p>
                                 </div>
-                                { user === adminUser && room.users[0].state !== 'Ready' && (
+                                {user === adminUser && room.users[0].state !== 'Ready' && (
                                     <div id='buttons-check' className='flex items-center ml-auto'>
                                         <button className='bg-green-500 hover:bg-green-700 text-white font-bold inline-flex items-center justify-center px-4 py-2 mx-2 rounded-lg' onClick={() => userReady()}>
                                             <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -217,7 +220,7 @@ const Lobby = () => {
                                         </button>
                                     </div>
                                 )}
-                                { room && room.users[0].state === 'Ready' && (
+                                {room && room.users[0].state === 'Ready' && (
                                     <div className='flex items-center ml-auto text-green-500 bg-gray-600 p-2 rounded-lg'>
                                         <p>Llest per jugar!!</p>
                                     </div>
@@ -229,7 +232,7 @@ const Lobby = () => {
                         <div className='h-[400px] flex flex-col items-center p-3'>
                             <h1 className='text-3xl font-bold mb-3 mt-5'>Informació de partida</h1>
                             <div className='bg-white rounded-lg w-[350px] text-black'>
-                                { room && room.isPublic === false && (
+                                {room && room.isPublic === false && (
                                     <div>
                                         <p className='text-2xl font-bold mt-2'>Codi de la sala:</p>
                                         <p className='text-2xl text-red-500'>{room.accessCode}</p>
@@ -240,7 +243,7 @@ const Lobby = () => {
                                 <p className='text-2xl font-bold'>Mode joc:</p>
                                 <p className='text-2xl'>{room && room.mode}</p>
                                 <p className='text-2xl font-bold'>Mapes seleccionats:</p>
-                                { room && room.game.maps && (
+                                {room && room.game.maps && (
                                     <ul className='text-2xl font-bold flex items-center justify-center text-center mb-4 mt-2'>
                                         <li>
                                             <img src={`${URL}${room.game.maps[1].image}`} alt="mapa" className="w-24 h-12" />
@@ -257,7 +260,7 @@ const Lobby = () => {
                         </div>
                     </div>
                 </div>
-                { user === adminUser && room && room.users.length > 1 && room.users[0].state === 'Ready' &&  room.users[1].state === 'Ready' && (
+                {user === adminUser && room && room.users.length > 1 && room.users[0].state === 'Ready' && room.users[1].state === 'Ready' && (
                     <button className="text-white text-2xl font-bold py-2 px-4 w-40 rounded mt-5 bg-red-500 hover:bg-red-700" onClick={emitStart}>
                         Iniciar Joc
                     </button>
