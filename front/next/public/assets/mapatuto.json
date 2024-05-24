@@ -1,12 +1,4 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"json",
-         "target":"mapatuto.json"
-        }
-    },
  "height":52,
  "infinite":true,
  "layers":[
@@ -3845,7 +3837,7 @@
                 }, 
                 {
                  "height":37.25,
-                 "id":53,
+                 "id":52,
                  "name":"endGameWhi",
                  "properties":[
                         {
@@ -3856,13 +3848,13 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":16.6666666666667,
-                 "x":2588.20833333333,
-                 "y":362.708333333333
+                 "width":16.6667,
+                 "x":199.27165,
+                 "y":121.375
                 }, 
                 {
                  "height":37.25,
-                 "id":47,
+                 "id":53,
                  "name":"endGameBla",
                  "properties":[
                         {
@@ -3874,8 +3866,8 @@
                  "type":"",
                  "visible":true,
                  "width":16.6667,
-                 "x":2644.99998333333,
-                 "y":362.708333333333
+                 "x":256.06165,
+                 "y":121.375
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -3884,7 +3876,7 @@
          "y":0
         }],
  "nextlayerid":20,
- "nextobjectid":48,
+ "nextobjectid":54,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

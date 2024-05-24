@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import useStore from '../src/store';
 import { Game as GameType } from 'phaser';
+import socket from '../services/sockets';
 
+import { useRouter } from 'next/router';
 const Game = () => {
+    const router = useRouter();
     const isDevelopment = process?.env?.NODE_ENV !== 'production';
     const [game, setGame] = useState<GameType>();
     const dialogMessages = useState([]);
@@ -20,7 +23,7 @@ const Game = () => {
                 width: window.innerWidth,
                 height: window.innerHeight,
                 scene: [
-                    Preloader, GameHome,
+                    Preloader
                 ],
                 physics: {
                     default: 'arcade',
@@ -49,4 +52,9 @@ const Game = () => {
     )
 }
 
+
+socket.on('finishGame', (data) => {
+    const router = useRouter();
+    router.push('/rooms');
+});
 export default Game;
