@@ -41,7 +41,7 @@ const Comunidad = () => {
     };
 
     return (
-        <div className="bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen flex flex-col justify-center items-center">
+        <div className="bg-gradient-to-r  from-red-600 from-5% via-blue-400 via-50% to-pink-500 min-h-screen flex flex-col justify-center items-center">
             <Header />
             <div className='min-h-screen mt-9 pt-9'>
                 <h1 className='text-6xl font-bold text-white text-center mt-9 pt-9'>Comunitat</h1>

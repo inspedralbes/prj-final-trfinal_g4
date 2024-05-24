@@ -169,7 +169,7 @@ const Lobby = () => {
         <div className='bg-gradient-to-r from-blue-800 from-20% via-green-400 to-yellow-500 min-h-screen'>
             <Header />
             <div className='flex flex-col justify-center items-center p-4 text-white mt-9'>
-                <h1 className='text-4xl font-bold tracking-wider my-5 animate-pulse text-center mt-9 pt-9'>ESPERANT ACOMPANYANT</h1>
+                <h1 className='text-6xl font-bold tracking-wider my-5 animate-pulse text-center mt-9 pt-9'>ESPERANT ACOMPANYANT</h1>
                 <div className='min-h-[600px] max-w-[500px] lg:min-w-[1050px] text-center lg:flex lg:flex-inline'>
                     {/* Chat section */}
                     <div className='h-[600px] max-w-[500px] mx-auto lg:min-w-[500px] bg-gray-700 rounded-lg flex flex-col lg:m-3 lg:mt-9 mt-9'>
