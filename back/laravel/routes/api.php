@@ -48,7 +48,6 @@ Route::delete('/users/{user}', [UserController::class, 'destroy']);
 
 Route::get('/reportedMaps', [ReportedMapsController::class, 'index']);
 Route::get('/reportedMaps/{reportedMap} ', [ReportedMapsController::class, 'show']);
-
 Route::delete('/reportedMaps/{reportedMap}', [ReportedMapsController::class, 'destroy']);
 Route::get('/reportedMapsByUser/{user}', [ReportedMapsController::class, 'getReportedMapsByUser']);
 

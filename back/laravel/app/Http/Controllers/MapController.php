@@ -37,7 +37,7 @@ class MapController extends Controller
     }
 
     public function getDefaultMaps(){
-        $maps = response()->json(Map::where('isOriginal', 1)->get(), 200);
+        $maps = response()->json(Map::where('default', 1)->get(), 200);
         if ($maps->isEmpty()) {
             return response()->json([
                 'error' => 'No maps found'
