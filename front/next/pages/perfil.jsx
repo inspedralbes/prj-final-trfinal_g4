@@ -96,7 +96,7 @@ const Perfil = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
+        <div className="min-h-screen bg-gradient-to-r from-blue-800 from-20% via-green-400 via-5% to-yellow-500">
             <Header />
             <div className='grid grid-cols-4'>
             {popupMessage && <ErrorPopup type="error" message={popupMessage} clearMessage={() => setPopupMessage(null)} />}

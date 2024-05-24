@@ -79,7 +79,7 @@ const HowToPlay = () => {
     return (
         <div>
             <Header />
-            <div className="min-h-screen w-full flex flex-col bg-gradient-to-r from-blue-400 to-indigo-500 text-white">
+            <div className="min-h-screen w-full flex flex-col bg-gradient-to-r from-yellow-500 from-5% via-orange-500 via-50% to-yellow-500 text-white">
                 <div className="mt-9 pt-9 text-center">
                     <h1 className="text-6xl mb-4 mt-10 font-bold">COM CREAR MAPES?</h1>
                 </div>

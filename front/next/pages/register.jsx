@@ -53,7 +53,7 @@ function Register() {
   const clearRegistrationError = () => setRegistrationError(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
+    <div className="min-h-screen bg-gradient-to-r from-red-500 from-5% via-orange-500 via-50% to-yellow-500 to-indigo-500">
       <Header />
       <div className="min-h-screen flex flex-col justify-center items-center p-4">
         {formIncomplete && <ErrorPopup type="incomplete" message={formIncomplete} clearMessage={clearFormIncomplete} />}

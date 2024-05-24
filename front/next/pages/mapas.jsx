@@ -69,7 +69,7 @@ function Mapas() {
     return (
         <div className="h-screen overflow-hidden bg-gradient-to-r from-blue-400 to-indigo-500">
             <Header />
-            <div className="flex flex-col items-center justify-center h-full bg-gradient-to-r from-blue-400 to-indigo-500">
+            <div className="flex flex-col items-center justify-center h-full bg-gradient-to-r from-purple-500 from-5% via-blue-500 via-50% to-red-600">
             {popupMessage && <ErrorPopup type="incomplete" message={popupMessage} clearMessage={() => setPopupMessage(null)} />}
             {successMessage && <ErrorPopup type="success" message={successMessage} clearMessage={() => setSuccessMessage(null)} />}
                 <div className="w-full sm:w-1/2 bg-white rounded-lg p-8 mx-auto mb-8">

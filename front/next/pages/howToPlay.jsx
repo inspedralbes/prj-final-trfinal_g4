@@ -3,7 +3,7 @@ import Header from '../components/header';
 
 const HowToPlay = () => {
     return (
-        <div className="min-h-screen w-full bg-gradient-to-r from-blue-400 to-indigo-500 text-white">
+        <div className="min-h-screen w-full bg-gradient-to-r from-green-600 from-5% via-blue-400 via-50% to-yellow-500 text-white">
             <Header />
             <div className='flex flex-col items-center justify-center mt-9 pt-9'>
                 <h1 className="text-6xl font-bold tracking-widest text-center mt-9 pt-9 truncate">
