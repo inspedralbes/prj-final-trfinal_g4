@@ -45,9 +45,9 @@ export default class Preloader extends Phaser.Scene {
             atlasURL: `assets/pressButton.json`,
         });
         let mapRoute = useStore.getState().gameData.maps[useStore.getState().gameData.currentMap].mapRoute;
-        if (mapRoute.charAt(0) === '/') {
-            mapRoute = mapRoute.substring(1);
-        }
+        // if (mapRoute.charAt(0) === '/') {
+        //     mapRoute = mapRoute.substring(1);
+        // }
         this.load.tilemapTiledJSON({
             key: 'mapa',
             url: mapRoute,

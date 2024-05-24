@@ -3,14 +3,11 @@ import useStore from '../src/store';
 import { Game as GameType } from 'phaser';
 import socket from '../services/sockets';
 import { useRouter } from 'next/router';
-
-import { useRouter } from 'next/router';
 const Game = () => {
     const router = useRouter();
     const isDevelopment = process?.env?.NODE_ENV !== 'production';
     const [game, setGame] = useState<GameType>();
     const [room, setRoom] = useState(null);
-    const router = useRouter();
 
     useEffect(() => {
         async function initPhaser() {
@@ -43,25 +40,25 @@ const Game = () => {
         initPhaser();
     }, []);
 
-    useEffect(() => {
-        const handleRoomChange = () => {
-            if (room == null) {
-                router.push('/rooms');
-            }
-        };
+    // useEffect(() => {
+    //     const handleRoomChange = () => {
+    //         if (room == null) {
+    //             router.push('/rooms');
+    //         }
+    //     };
 
-        const unsubscribe = useStore.subscribe(
-            (state) => {
-                setRoom(state.room);
-            }
-        );
+    //     const unsubscribe = useStore.subscribe(
+    //         (state) => {
+    //             setRoom(state.room);
+    //         }
+    //     );
 
-        handleRoomChange();
+    //     handleRoomChange();
 
-        return () => {
-            unsubscribe();
-        };
-    }, [router.pathname]);
+    //     return () => {
+    //         unsubscribe();
+    //     };
+    // }, []);
 
     return (
         <>
