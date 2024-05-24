@@ -68,9 +68,9 @@ const Lobby = () => {
             return (
                 <div key={index} className='chat-message'>
                     <div className='flex items-end justify-end'>
-                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end'>
+                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end max-w-[200px]'>
                             <div>
-                                <span className='px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white'>
+                                <span className='px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white text-wrap'>
                                     {msg.message}
                                 </span>
                             </div>
@@ -83,9 +83,9 @@ const Lobby = () => {
             return (
                 <div key={index} className='chat-message'>
                     <div className='flex items-center justify-center'>
-                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 items-center'>
+                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 items-center max-w-[200px]'>
                             <div>
-                                <span className='px-4 py-2 rounded-lg inline-block bg-red-600 text-white'>
+                                <span className='px-4 py-2 rounded-lg inline-block bg-red-600 text-white text-wrap'>
                                     {msg.message}
                                 </span>
                             </div>
@@ -97,9 +97,9 @@ const Lobby = () => {
             return (
                 <div key={index} className='chat-message'>
                     <div className='flex items-end'>
-                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start'>
+                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start max-w-[200px]'>
                             <div>
-                                <span className='px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600'>
+                                <span className='px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600 text-wrap'>
                                     {msg.message}
                                 </span>
                             </div>
