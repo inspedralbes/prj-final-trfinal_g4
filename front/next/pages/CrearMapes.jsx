@@ -16,11 +16,11 @@ const steps = [
     {
         icon: FaFileAlt,
         title: "Crea un projecte nou",
-        description: "Obre l'editor Tiled i crea un projecte nou (la grandaria de el sprite ha de ser de 32x32).",
+        description: "Obre l'editor Tiled i crea un projecte nou (la grandaria de el sprite ha de ser de 16x16), pots seleccionar l'opció d'infinit.",
     },
     {
         icon: FaLayerGroup,
-        title: "Utilitza aquesta imatge com Tileset i crea totes les capes",
+        title: "Utilitza aquesta imatge com Tileset i crea totes les capes, tenint en compte que el conjunt de patrons ha de ser de 16x16 pixels i seleccionar l'opció d'empotrar en el mapa.",
         description: (
             <>
                 <p>
@@ -28,6 +28,7 @@ const steps = [
                     <a href="/assets/White-terrain.png" download className="underline ml-1">Tileset</a>.
                 </p>
                 <p className="mt-4">Crea totes les capes que vulguis que tingui el teu mapa, tenint en compte el següent:</p>
+                <p className="mt-4 mb-2 text-yellow-500"><strong>NO FA FALTA AFEGIR LA VARIABLE TINT COLOR DESDE EL TILED, JA QUE EL COLOR L'AGAFEM NOSALTRES.</strong></p>
                 <ul className="list-disc list-inside ml-4">
                     <li>Si el mapa és de dificultat 1, les capes obligatòries són: Red, Blue i Purple.</li>
                     <li>Si el mapa és de dificultat 2, les capes obligatòries són: Red, Blue, Purple, Orange, Green i Yellow.</li>
@@ -49,6 +50,7 @@ const steps = [
                     <li>El jugador 1 apareixerà d'un objecte que es diu "spawn-1" i el jugador 2 d'un objecte que es diu "spawn-2".</li>
                     <li>Les banderes de final de partida es diuen "endGame".</li>
                     <li>Les zones de mort s'han de dir "death".</li>
+                    <li>Totes les tiles que han de tenir colisions, has d'afegir l'atribut collides i l'has de marcar com true.</li>
                 </ul>
                 <p className="mt-4">Variables dels objectes:</p>
                 <ul className="list-disc list-inside ml-4">
