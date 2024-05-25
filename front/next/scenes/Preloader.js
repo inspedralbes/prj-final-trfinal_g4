@@ -51,12 +51,8 @@ export default class Preloader extends Phaser.Scene {
         this.load.tilemapTiledJSON({
             key: 'mapa',
             url: mapRoute,
-
-
         });
         console.log('bababoi');
-
-
     }
 
     create() {
