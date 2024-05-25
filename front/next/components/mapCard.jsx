@@ -12,6 +12,7 @@ const MapCard = ({ map }) => {
     const [liked, setLiked] = useState(false);
     const [disliked, setDisliked] = useState(false);
     const [showModal, setShowModal] = useState(false);
+    var likesMap = map.likes;
 
     const addLikeMap = () => {
         const mapData = {
@@ -23,6 +24,8 @@ const MapCard = ({ map }) => {
             setLiked(true);
             setDisliked(false);
         });
+
+        likesMap = likesMap + 1;
     };
 
     const addDislikeMap = () => {
@@ -35,6 +38,8 @@ const MapCard = ({ map }) => {
             setLiked(false);
             setDisliked(true);
         });
+
+        likesMap = likesMap - 1;
     };
 
     const addReportMap = () => {
@@ -104,7 +109,7 @@ const MapCard = ({ map }) => {
                         onClick={!liked ? addLikeMap : null}
                         disabled={liked}
                     >
-                        {map.likes}
+                        {likesMap}
                         <BiSolidLike className='ml-1 hover:animate-bounce' />
                     </button>
                     <button

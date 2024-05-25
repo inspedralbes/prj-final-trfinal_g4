@@ -338,7 +338,6 @@ io.on('connection', (socket) => {
         room.game.currentMap++;
         if (room.game.currentMap == room.game.maps.length) {
             io.to(findRoomByUser(socket.id).id).emit('finishGame')
-
         } else {
             if (room.game.currentMap == 1) {
                 room.game.playersData[0].colorsUnlocked = ['red'];
@@ -353,15 +352,11 @@ io.on('connection', (socket) => {
                     room.game.playersData[0].colorsUnlocked.push('white');
                     room.game.playersData[1].colorsUnlocked.push('black');
                 }
-
             }
             room.game.currentMap = room.game.currentMap++;
             io.to(findRoomByUser(socket.id).id).emit('winFront', room.game)
         }
-        
     });
-
-    
 
     //Disconnect
     socket.on('disconnect', () => {
@@ -392,19 +387,25 @@ io.on('connection', (socket) => {
                 socket.leave(room.id);
                 socket.emit('newInfoRoom', null);
                 io.to(room.id).emit('newInfoRoom', room);
-            } else if (room.users.length == 1 && socket.id == room.admin[0]){
+            } else if (room.users.length == 1 && socket.id == room.admin[0]) {
                 rooms.splice(rooms.indexOf(room), 1);
             }
         } else if (room && room.status == 'Playing') {
-            room.game.playersData = room.game.playersData.filter(player => player.id != socket.id);
-            room.game.players = room.game.players.filter(player => player.id != socket.id);
-            room.users = room.users.filter(user => user.id != socket.id);
-            rooms.splice(rooms.indexOf(room), 1);
             socket.leave(room.id);
             socket.emit('newInfoRoom', null);
-        }
-        io.emit('allRooms', rooms);        
-    });
+            const socketsInRoom = io.sockets.adapter.rooms.get(room.id);
+            if (socketsInRoom) {
+                socketsInRoom.forEach((socketId) => {
+                    const socketToLeave = io.sockets.sockets.get(socketId);
+                    if (socketToLeave) {
+                        socketToLeave.leave(room.id);
+                        socketToLeave.emit('newInfoRoom', null);
+                    }
+                });
+                rooms.splice(rooms.indexOf(room), 1);
+            }
+            io.emit('allRooms', rooms);
+        }});
 });
 
 
