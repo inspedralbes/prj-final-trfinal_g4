@@ -4,6 +4,7 @@ import useStore from '../src/store';
 import socket from '../services/sockets';
 import { useEffect } from 'react';
 import { platform } from 'os';
+import Preloader from './Preloader';
 
 export default class GameHome extends Phaser.Scene {
     done = false;
@@ -257,7 +258,7 @@ export default class GameHome extends Phaser.Scene {
                 case 'spawn-1':
                     {
                         this.character1 = this.physics.add.sprite(x, y, 'character1-idle');
-                        // console.log(this.character1);
+                        this.character1.setTint(this.colors.find(color => color.color == useStore.getState().gameData.playersData[0].color).hex);
                         const w = this.character1.width;
                         const h = this.character1.height;
 
@@ -704,7 +705,7 @@ export default class GameHome extends Phaser.Scene {
             }
         });
         this.player = selectPlayer();
-        this.add.text(400, 100, 'Player: '+this.player, { fontSize: '20px', fill: '#fff' });
+        this.add.text(400, 100, 'Player: ' + this.player, { fontSize: '20px', fill: '#fff' });
         this.handleCollision = function (player1, player2, button) {
             let toReturn = false;
             if (player1) {
@@ -1231,7 +1232,7 @@ export default class GameHome extends Phaser.Scene {
                 } else {
                     this.character2.flipX = false;
                 }
-              
+
                 this.priorX = data[1].x;
                 this.priorY = data[1].y;
             }
@@ -1590,8 +1591,9 @@ export default class GameHome extends Phaser.Scene {
                 }
             }
         });
-        socket.on('winFront', () => {
-
+        socket.on('winFront', () => {   
+            this.scene.remove('preloader')
+            this.scene.add('preloader', Preloader, true);
             this.scene.start("preloader")
         });
         if (this.player == 1) {
@@ -1606,26 +1608,26 @@ export default class GameHome extends Phaser.Scene {
                     console.log("hi")
 
                     this.platforms.forEach(platform => {
-                        if(platform.color == 'Whi' || platform.color == 'Gra'){
+                        if (platform.color == 'Whi' || platform.color == 'Gra') {
                             platform.setAlpha(1);
-                            if(platform.collisionC1 != null){
+                            if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = true;
                             }
-                            if(platform.collisionC2 != null){
+                            if (platform.collisionC2 != null) {
                                 platform.collisionC2.active = true;
                             }
                         } else {
                             platform.setAlpha(0);
-                            if(platform.collisionC1 != null){
+                            if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
-                            if(platform.collisionC2 != null){
+                            if (platform.collisionC2 != null) {
                                 platform.collisionC2.active = false;
                             }
                         }
                     });
                     this.buttons.forEach(button => {
-                        if(button.color == 'Whi' || button.color == 'Gra'){
+                        if (button.color == 'Whi' || button.color == 'Gra') {
                             button.setAlpha(1);
                         }
                         else {
@@ -1634,7 +1636,7 @@ export default class GameHome extends Phaser.Scene {
                     }
                     );
                     break;
-                    
+
                 case 'red':
                     this.c1White.active = false;
                     this.c1Red.active = true;
@@ -1644,26 +1646,26 @@ export default class GameHome extends Phaser.Scene {
                     this.c1Gray.active = false;
                     console.log("hi")
                     this.platforms.forEach(platform => {
-                        if(platform.color == 'Red' || platform.color == 'Pur'){
+                        if (platform.color == 'Red' || platform.color == 'Pur') {
                             platform.setAlpha(1);
-                            if(platform.collisionC1 != null){
+                            if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = true;
                             }
-                            if(platform.collisionC2 != null){
+                            if (platform.collisionC2 != null) {
                                 platform.collisionC2.active = true;
                             }
                         } else {
                             platform.setAlpha(0);
-                            if(platform.collisionC1 != null){
+                            if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
-                            if(platform.collisionC2 != null){
+                            if (platform.collisionC2 != null) {
                                 platform.collisionC2.active = false;
                             }
                         }
                     });
                     this.buttons.forEach(button => {
-                        if(button.color == 'Red' || button.color == 'Pur'){
+                        if (button.color == 'Red' || button.color == 'Pur') {
                             button.setAlpha(1);
                         }
                         else {
@@ -1681,27 +1683,27 @@ export default class GameHome extends Phaser.Scene {
                     this.c1Gray.active = false;
                     console.log("hi")
                     this.platforms.forEach(platform => {
-                        if(platform.color == 'Gre' || platform.color == 'Yel'){
+                        if (platform.color == 'Gre' || platform.color == 'Yel') {
                             platform.setAlpha(1);
-                            if(platform.collisionC1 != null){
+                            if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = true;
                             }
-                            if(platform.collisionC2 != null){
+                            if (platform.collisionC2 != null) {
                                 platform.collisionC2.active = true;
                             }
                         } else {
                             platform.setAlpha(0);
-                            if(platform.collisionC1 != null){
+                            if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
-                            if(platform.collisionC2 != null){
+                            if (platform.collisionC2 != null) {
                                 platform.collisionC2.active = false;
                             }
                         }
                     }
                     );
                     this.buttons.forEach(button => {
-                        if(button.color == 'Gre' || button.color == 'Yel'){
+                        if (button.color == 'Gre' || button.color == 'Yel') {
                             button.setAlpha(1);
                         }
                         else {
@@ -1722,26 +1724,26 @@ export default class GameHome extends Phaser.Scene {
                     this.c2Purple.active = false;
 
                     this.platforms.forEach(platform => {
-                        if(platform.color == 'Bla' || platform.color == 'Gra'){
+                        if (platform.color == 'Bla' || platform.color == 'Gra') {
                             platform.setAlpha(1);
-                            if(platform.collisionC1 != null){
+                            if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = true;
                             }
-                            if(platform.collisionC2 != null){
+                            if (platform.collisionC2 != null) {
                                 platform.collisionC2.active = true;
                             }
                         } else {
                             platform.setAlpha(0);
-                            if(platform.collisionC1 != null){
+                            if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
-                            if(platform.collisionC2 != null){
+                            if (platform.collisionC2 != null) {
                                 platform.collisionC2.active = false;
                             }
                         }
                     });
                     this.buttons.forEach(button => {
-                        if(button.color == 'Bla' || button.color == 'Gra'){
+                        if (button.color == 'Bla' || button.color == 'Gra') {
                             button.setAlpha(1);
                         }
                         else {
@@ -1759,29 +1761,29 @@ export default class GameHome extends Phaser.Scene {
                     this.c2Gray.active = false;
                     this.c2Yellow.active = false;
                     this.c2Purple.active = true;
-                    
+
                     this.platforms.forEach(platform => {
-                        if(platform.color == 'Blu' || platform.color == 'Pur'){
+                        if (platform.color == 'Blu' || platform.color == 'Pur') {
                             platform.setAlpha(1);
-                            if(platform.collisionC1 != null){
+                            if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = true;
                             }
-                            if(platform.collisionC2 != null){
+                            if (platform.collisionC2 != null) {
                                 platform.collisionC2.active = true;
                             }
                         }
                         else {
                             platform.setAlpha(0);
-                            if(platform.collisionC1 != null){
+                            if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
-                            if(platform.collisionC2 != null){
+                            if (platform.collisionC2 != null) {
                                 platform.collisionC2.active = false;
                             }
                         }
                     });
                     this.buttons.forEach(button => {
-                        if(button.color == 'Blu' || button.color == 'Pur'){
+                        if (button.color == 'Blu' || button.color == 'Pur') {
                             button.setAlpha(1);
                         }
                         else {
@@ -1799,20 +1801,20 @@ export default class GameHome extends Phaser.Scene {
                     this.c2Yellow.active = true;
                     this.c2Purple.active = false;
                     this.platforms.forEach(platform => {
-                        if(platform.color == 'Ora' || platform.color == 'Yel'){
+                        if (platform.color == 'Ora' || platform.color == 'Yel') {
                             platform.setAlpha(1);
-                            if(platform.collisionC1 != null){
+                            if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = true;
                             }
-                            if(platform.collisionC2 != null){
+                            if (platform.collisionC2 != null) {
                                 platform.collisionC2.active = true;
                             }
                         } else {
                             platform.setAlpha(0);
-                            if(platform.collisionC1 != null){
+                            if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
-                            if(platform.collisionC2 != null){
+                            if (platform.collisionC2 != null) {
                                 platform.collisionC2.active = false;
                             }
                         }
@@ -2079,7 +2081,7 @@ export default class GameHome extends Phaser.Scene {
                 }
             } else {
                 this.cameras.main.startFollow(this.character2);
-                if(this.cameras.main){
+                if (this.cameras.main) {
 
                     this.cameras.main.setBackgroundColor(this.character2.tintTopLeft);
                 }
