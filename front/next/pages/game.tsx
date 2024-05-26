@@ -53,8 +53,5 @@ const Game = () => {
 }
 
 
-socket.on('finishGame', (data) => {
-    const router = useRouter();
-    router.push('/rooms');
-});
+
 export default Game;

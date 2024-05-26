@@ -1592,9 +1592,10 @@ export default class GameHome extends Phaser.Scene {
             }
         });
         socket.on('winFront', () => {   
-            this.scene.remove('preloader')
-            this.scene.add('preloader', Preloader, true);
-            this.scene.start("preloader")
+            // this.scene.remove('preloader')
+            // this.scene.add('preloader', Preloader, true);
+            
+            this.time.delayedCall(500, this.scene.switch, ['preloader'], this.scene);
         });
         if (this.player == 1) {
             switch (useStore.getState().gameData.playersData[0].color) {
