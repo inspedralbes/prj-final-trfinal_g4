@@ -28,6 +28,13 @@ Route::get('/mapsByDifficulty/{difficulty}', [MapController::class, 'mapsByDiffi
 Route::get('/defaultMaps', [MapController::class, 'getDefaultMaps']);
 Route::get('/randomMaps', [MapController::class, 'getRandomMaps']);
 
+// Community routes
+Route::get('/mapsCommunity/{difficulty}', [MapController::class, 'mapsCommunity']);
+Route::get('/mapsCommunity', [MapController::class, 'mapsCommunityAll']);
+Route::get('/searchMapsCommunity/{sentence}', [MapController::class, 'searchMaps']);
+Route::post('/mapsCommunity/like', [MapController::class, 'addLike']);
+Route::post('/mapsCommunity/dislike', [MapController::class, 'removeLike']);
+Route::post('/reportedMaps', [ReportedMapsController::class, 'store']);
 
 Route::get('/saves', [SaveController::class, 'index']);
 Route::get('/saves/{save}', [SaveController::class, 'show']);
@@ -46,7 +53,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //users
     Route::post('/users', [UserController::class, 'update']);
     Route::post('/logout', [UserController::class, 'logout']);
-    Route::post('/reportedMaps', [ReportedMapsController::class, 'store']);
 });
 
 Route::middleware('admin')->group(function () {

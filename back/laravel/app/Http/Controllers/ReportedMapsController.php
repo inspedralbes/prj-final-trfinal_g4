@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Map;
 use App\Models\ReportedMaps;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Map;

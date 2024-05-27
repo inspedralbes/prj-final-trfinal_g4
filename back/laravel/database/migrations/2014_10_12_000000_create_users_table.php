@@ -39,6 +39,22 @@ return new class extends Migration
             'email'=> 'a22betvilver@inspedralbes.cat',
             'password'=> '$2y$10$1opw2CB1RHEZorsHBIdonOJ8nBtTdZLrfqtDFYRYX1P7j7D992ooW'
         ]);
+        
+        DB::table('users')->insert([
+            'name'=> 'Fabian123',
+            'username'=> 'Fabian123',
+            'email'=> 'a21fabrolfer@inspedralbes.cat',
+            'password'=> '$2y$10$MWSkRRURBdKMjTWyeN3j4uI0pXACT3wWhnqfWDdJTaxpXqwiVXBEi',
+            'image'=> '/images/profiles/fabian.png'
+        ]);
+
+        DB::table('users')->insert([
+            'name'=> 'Sara123',
+            'username'=> 'Sara123',
+            'email'=> 'a21sarmarbau@inspedralbes.cat',
+            'password'=> '$2y$10$KoGovY7AYFCS4VVjA/erlOI.Qx4EXG2dBBcHi6mU.cROL620RyxZy',
+            'image'=> '/images/profiles/SaraPerfil.png'
+        ]);
     }
 
     /**

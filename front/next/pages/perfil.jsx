@@ -3,6 +3,7 @@ import Header from '../components/header';
 import { updateUser } from '../services/communicationManager';
 import { useRouter } from 'next/router';
 import ErrorPopup from '../components/errorPopup';
+import useStore from '../src/store';
 
 const Perfil = () => {
     const [name, setName] = useState('');
@@ -30,10 +31,10 @@ const Perfil = () => {
             return;
         }
 
-        if (password !== password_confirmation) {
+        if (password != password_confirmation && password != '' && password_confirmation != '') {
             setPopupMessage('Les contrasenyes no coincideixen.');
             return;
-        } else if (password.length < 8) {
+        } else if (password.length < 8 && password != '') {
             setPopupMessage('La contrasenya ha de tenir com a mínim 8 caràcters.');
             return;
         }
@@ -62,7 +63,7 @@ const Perfil = () => {
                         name: data.user,
                         email: data.email,
                         id: data.id,
-                        admin: data.admin,
+                            admin: data.admin,
                         image: data.image,
                         token: token
                     })
@@ -95,7 +96,7 @@ const Perfil = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500">
+        <div className="min-h-screen bg-gradient-to-r from-blue-800 from-20% via-green-400 via-5% to-yellow-500">
             <Header />
             <div className='grid grid-cols-4'>
             {popupMessage && <ErrorPopup type="error" message={popupMessage} clearMessage={() => setPopupMessage(null)} />}

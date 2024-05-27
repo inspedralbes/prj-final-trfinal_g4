@@ -45,4 +45,11 @@ socket.on('winFront', (data) =>{
     useStore.setState({gameData: data})
 });
 
+socket.on("finishGame", () => {
+    useStore.getState().room = null;
+      
+      useStore.setState({ game: null });
+      
+  });
+
 export default socket;

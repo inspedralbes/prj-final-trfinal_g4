@@ -94,7 +94,7 @@ const Create = () => {
     
 
     return (
-        <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-400 to-indigo-500 p-8">
+        <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-500 from-5% via-red-700 via-60% to-yellow-500 p-8">
             <Header />
             <div className="flex flex-col justify-center items-center w-full sm:w-1/3 mb-8 mt-9 pt-9">
                     <h1 className="text-white text-4xl font-bold mb-4">Crear sala</h1>

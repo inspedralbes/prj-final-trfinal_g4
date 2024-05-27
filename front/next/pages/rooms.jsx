@@ -205,7 +205,7 @@ function Rooms() {
     }
 
     return (
-        <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-r from-blue-400 to-indigo-500">
+        <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-r from-red-500 from-5% via-purple-600 via-60% to-white-500">
             <Header />
             <div className='lg:grid lg:grid-cols-2 mb-9 lg:gap-9'>
                 {codeErrorMessage && <ErrorPopup type="error" message={codeErrorMessage} clearMessage={() => setCodeErrorMessage(null)} />}

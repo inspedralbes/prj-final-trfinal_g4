@@ -1,5 +1,6 @@
 const url = 'http://localhost:8000/api/';
 
+//Login
 export function login(user) {
     return new Promise((resolve, reject) => {
         fetch(`${url}login`, {
@@ -28,6 +29,7 @@ export function login(user) {
 
 }
 
+//Register
 export function register(user) {
     return new Promise((resolve, reject) => {
         console.log(user);
@@ -54,6 +56,7 @@ export function register(user) {
     });
 }
 
+//Logout
 export function logout(token) {
     return new Promise((resolve, reject) => {
         fetch(`${url}logout`, {
@@ -94,6 +97,7 @@ export function destroyUser(user) {
     });
 }
 
+// fetch actualizar usuario
 export function updateUser(userData, token) {
     console.log("userData", userData);
     console.log("token updateUser", token);
@@ -150,6 +154,7 @@ export function getUsers(token, userID) {
     });
 }
 
+// fetch obtener usuario
 export function getUser(user) {
     return new Promise((resolve, reject) => {
         fetch(`${url}users/${user}`, {
@@ -169,6 +174,7 @@ export function getUser(user) {
     });
 }
 
+// fetch crear usuario
 export function createUser(user) {
     return new Promise((resolve, reject) => {
         fetch(`${url}users/`, {
@@ -189,6 +195,7 @@ export function createUser(user) {
     });
 }
 
+// fetch crear mapa
 export function createMap(formData, token) {
     return new Promise((resolve, reject) => {
         fetch(`${url}maps/`, {
@@ -213,6 +220,7 @@ export function createMap(formData, token) {
     });
 }
 
+// fetch obtener mapas
 export function getMaps() {
     return new Promise((resolve, reject) => {
         fetch(`${url}maps/`, {
@@ -304,6 +312,7 @@ export function destroyMap(mapID, userID, token) {
     });
 }
 
+
 export function downloadFile(mapId, mapName, userID, token) {
     console.log("map name", mapName);
     console.log("map info", mapId);
@@ -371,9 +380,128 @@ export function destroyReport(mapId, userID, token) {
     });
 }
 
+
+// fetch obtener mapa por dificultad
 export function getMapByDifficulty(difficulty) {
     return new Promise((resolve, reject) => {
         fetch(`${url}mapsByDifficulty/${difficulty}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+// Obtener todos los mapas para mostrar en comunidad
+export function getMapsForCommunity() {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}mapsCommunity/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+// Obtener todos los mapas para mostrar en comunidad filtrados por Nivel
+export function getMapsForCommunityByLevel(level) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}mapsCommunity/${level}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+// Dar like a un mapa
+export function likeMap(mapId) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}mapsCommunity/like`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(mapId)
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+// Dar dislike a un mapa
+export function dislikeMap(mapId) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}mapsCommunity/dislike`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(mapId)
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+// Reportar un mapa (map_id, reason)
+export function reportMap(map) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}reportedMaps`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(map)
+        })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+// Buscar mapas por nombre o descripción
+export function searchMaps(fraseCerca) {
+    return new Promise((resolve, reject) => {
+        fetch(`${url}searchMapsCommunity/${fraseCerca}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
