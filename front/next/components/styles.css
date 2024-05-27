@@ -12,6 +12,11 @@
     padding-left: 20px;
 }
 
+.cancel-report:hover {
+    box-shadow: 0 5px rgba(138, 10, 10, 0.757);
+
+}
+
 .Grid_content_maps {
     width: 80%;
     height: 80%;
@@ -166,6 +171,50 @@
 
 }
 
+.sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    width: 90%;
+    height: 250px;
+}
+
+.barra-lateral {
+    display: flex;
+    margin: auto;
+    border-right: 3px solid #000;
+    /* Ajusta el color y el grosor a tu gusto */
+    padding-right: 10px;
+}
+
+.explicacion {
+    margin-right: 50px;
+    text-align: center;
+    margin-left: 0;
+}
+
+
+
+.section {
+    background-color: aliceblue;
+    display: grid;
+    border-radius: 10px;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 10px;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(138, 10, 10, 0.757);
+    height: 100%;
+}
+
 .container {
     display: grid;
     grid-template-rows: 1fr 2fr;
@@ -198,6 +247,90 @@
     outline: none;
 }
 
+.icons {
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: black;
+    font-size: 3.5em;
+    display: flex;
+    cursor: pointer;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 45%;
+    }
+}
+
+@keyframes hide-caret {
+    0% {
+        border-right-color: white;
+    }
+
+    100% {
+        border-right-color: transparent;
+    }
+}
+
+@keyframes underline-text {
+    0% {
+        border-bottom: none;
+    }
+
+    100% {
+        border-bottom: .15em solid white;
+    }
+}
+
+.animated-text {
+    font-size: 4em;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: .15em solid white;
+    width: 0;
+    animation: typing 4s steps(40, end),
+        hide-caret 1s 5s forwards,
+        underline-text 1s 6s forwards;
+    /* Eliminar 'blink-caret .75s step-end infinite' */
+    animation-fill-mode: forwards;
+    text-align: center;
+    position: absolute;
+    top: 25%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent
+    }
+
+    50% {
+        border-color: orange;
+    }
+}
+
+.icon-settings {
+    text-align: center;
+    position: absolute;
+    top: 10%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+}
+
+.icons:hover {
+    color: white;
+    border-radius: 5px;
+}
+
 .input-search::placeholder {
     color: #BF0A1D;
     /* Color del marcador de posición */
@@ -208,21 +341,74 @@
     padding-left: 100px;
 }
 
+.reports {
+    background-color: aqua;
+    gap: 2em;
+}
+
+.lista-reports {}
+
+.button-cerrar:hover {
+    box-shadow: 0 5px rgba(138, 10, 10, 0.757);
+}
+
+.button-verReportes:hover {
+
+    box-shadow: 0 5px rgba(61, 143, 237, 0.757);
+}
+
 .info-reportedMap {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    display: flex;
+    gap: 100px;
     width: 100%;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.info-all {
+    padding-top: 20px;
+    display: grid;
+    grid-template-rows: 1fr 3fr;
+    width: 100%;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(138, 10, 10, 0.757);
+}
+
+.container-all {
+    background-color: aqua;
+}
+
+
+.lista-reports {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    width: 100%;
+    gap: 10px;
     color: white;
     height: 100%;
     margin-left: auto;
     margin-right: auto;
     justify-content: center;
-    padding: 30px 30px 30px 30px;
+    padding: 10px 10px 10px 10px;
     text-align: center;
     align-items: center;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(138, 10, 10, 0.757);
+}
 
+.container-lista-reports {
+    width: 100%;
 }
 
 .info-map {

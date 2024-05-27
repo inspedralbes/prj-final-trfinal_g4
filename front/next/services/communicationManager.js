@@ -95,6 +95,8 @@ export function destroyUser(user) {
 }
 
 export function updateUser(userData, token) {
+    console.log("userData", userData);
+    console.log("token updateUser", token);
     return new Promise((resolve, reject) => {
         fetch(`${url}users/`, {
             method: 'POST',
@@ -103,18 +105,18 @@ export function updateUser(userData, token) {
             },
             body: userData
         })
-        .then(response => {
-            if (!response.ok) {
-                reject(`Error: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            reject(error);
-        });
+            .then(response => {
+                if (!response.ok) {
+                    reject(`Error: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
     });
 }
 
@@ -270,16 +272,29 @@ export function updateMap(mapData, user) {
     });
 }
 
-export function destroyMap(mapData, user) {
+export function destroyMap(mapID, userID, token) {
+    console.log("mapID", mapID);
+    console.log("userID", userID);
+    console.log("token", token);
+    if (!userID) {
+        console.error('userID is undefined');
+    }
+
     return new Promise((resolve, reject) => {
-        fetch(`${url}maps/${mapData}`, {
+        fetch(`${url}maps/${mapID}?userID=${userID}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ mapData: mapData, user: user })
+
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 resolve(data);
             })
@@ -289,29 +304,28 @@ export function destroyMap(mapData, user) {
     });
 }
 
-export function downloadFile(mapId, mapName, user) {
+export function downloadFile(mapId, mapName, userID, token) {
     console.log("map name", mapName);
     console.log("map info", mapId);
+    if (!userID) {
+        console.error('userID is undefined');
+    }
+
     return new Promise((resolve, reject) => {
-        fetch(`${url}download/${mapId}`, {
+        fetch(`${url}download/${mapId}?userID=${userID}`, {
             method: 'GET',
-            body: JSON.stringify({ mapId: mapId, mapName: mapName, user: user })
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+
         })
             .then(response => {
-                const contentDisposition = response.headers.get('Content-Disposition');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 const randomNumber = Math.floor(Math.random() * 900000) + 100000;
                 let filename = mapName + '_' + randomNumber;
-                console.log(" contentDisposition", contentDisposition);
-                if (contentDisposition) {
-                    const filenameMatch = contentDisposition.match(/filename=([^ ]*)/i);
-                    if (filenameMatch) {
-                        filename = filenameMatch[1];
-                        console.log("filenameMatch", filenameMatch);
-                    }
-
-
-                }
-
                 console.log('Updated filename:', filename); // Add this line
 
                 return response.blob().then(blob => ({ blob, filename }));
@@ -333,14 +347,19 @@ export function downloadFile(mapId, mapName, user) {
     });
 }
 
-export function destroyReport(mapId, user) {
+export function destroyReport(mapId, userID, token) {
+    if (!userID) {
+        console.error('userID is undefined');
+    }
+
     return new Promise((resolve, reject) => {
-        fetch(`${url}reportedMaps/${mapId}`, {
+        fetch(`${url}reportedMaps/${mapId}?userID=${userID}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ mapId: mapId, user: user })
+
         })
             .then(response => response.json())
             .then(data => {

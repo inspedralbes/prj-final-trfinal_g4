@@ -53,7 +53,7 @@ async function getRandomMaps() {
             "Content-Type": "application/json",
         }
     });
-    maps= await tuto.json();
+    maps = await tuto.json();
 
     return maps;
 }
@@ -66,7 +66,7 @@ async function getOriginalMaps() {
             "Content-Type": "application/json",
         }
     });
-    maps= await tuto.json();
+    maps = await tuto.json();
     return maps;
 }
 
@@ -108,7 +108,7 @@ async function getMapData(data) {
 
 function getCommunityMaps(maps) {
     let mapsArray = [];
-   
+
     maps.forEach(async map => {
 
         let mapData = await fetch("http://localhost:8000/api/maps/" + map.id, {
@@ -120,7 +120,7 @@ function getCommunityMaps(maps) {
         let mapDataJson = await mapData.json();
 
         mapsArray.push(mapDataJson);
-        
+
     });
     return mapsArray;
 }
@@ -164,13 +164,13 @@ io.on('connection', (socket) => {
 
     //Quick Game
     socket.on('quickGame', async (data) => {
-        let roomToJoin=null;
+        let roomToJoin = null;
         rooms.forEach(room => {
-            if (room.isPublic && room.status!='Playing' && room.users.length<2) {
+            if (room.isPublic && room.status != 'Playing' && room.users.length < 2) {
                 roomToJoin = room;
             }
         });
-        if(roomToJoin!=null){
+        if (roomToJoin != null) {
             let newUser = { id: socket.id, name: data.user.name, state: null, image: data.user.image };
             roomToJoin.users.push(newUser);
             roomToJoin.accesible = false;
@@ -179,7 +179,7 @@ io.on('connection', (socket) => {
             socket.join(roomToJoin.id);
             io.emit('allRooms', rooms);
             io.to(roomToJoin.id).emit('newInfoRoom', roomToJoin);
-        } else{
+        } else {
             let id = lastRoom++;
             let config = {
                 mode: 'Aleatori',
@@ -187,7 +187,7 @@ io.on('connection', (socket) => {
             }
             getMapData(config).then((mapsFull) => {
                 let newRoom = {
-                    name: 'Quick Game'+Math.floor(Math.random() * 1000),
+                    name: 'Quick Game' + Math.floor(Math.random() * 1000),
                     isPublic: true,
                     mode: 'Aleatori',
                     admin: [socket.id, data.user.name, data.user.image],
@@ -314,7 +314,7 @@ io.on('connection', (socket) => {
                     color: 'black'
                 }
             ];
-            console.log("Room CCCCCCCCCCCCCCCCCCCCCCCCCCCCC", room.game.maps);
+        console.log("Room CCCCCCCCCCCCCCCCCCCCCCCCCCCCC", room.game.maps);
         io.to(room.id).emit('gameStarted', room);
     })
 
