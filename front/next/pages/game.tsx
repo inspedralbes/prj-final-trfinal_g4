@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import useStore from '../src/store';
 import { Game as GameType } from 'phaser';
 import socket from '../services/sockets';
-
 import { useRouter } from 'next/router';
+import useStore from '../src/store';
+
 const Game = () => {
     const router = useRouter();
-    const isDevelopment = process?.env?.NODE_ENV !== 'production';
     const [game, setGame] = useState<GameType>();
     const dialogMessages = useState([]);
     const gameTexts = useState([]);
     const [messages, setMessages] = useState({});
+    const [room, setRoom] = useState(null);
+    
 
     useEffect(() => {
         async function initPhaser() {
             const Phaser = await import('phaser');
-            const { default: GameHome } = await import('../scenes/GameHome');
             const { default: Preloader } = await import('../scenes/Preloader');
             const phaserGame = new Phaser.Game({
                 type: Phaser.WEBGL,
@@ -30,10 +30,7 @@ const Game = () => {
                     arcade: {
                         debug: true,
                         gravity: { y: 500, x: 0},
-                        // debug: isDevelopment,
-
                     },
-
                 },
                 backgroundColor: '#B6B4B4',
             });
@@ -41,7 +38,31 @@ const Game = () => {
             setGame(phaserGame);
         }
         initPhaser();
+
+   
+
+        
     }, []);
+
+    useEffect(() => {
+        const handleRoomChange = () => {
+            if ( useStore.getState().room==null) {
+                router.push('/rooms');
+            }
+        };
+
+        const unsubscribe = useStore.subscribe((state) => {
+            setRoom(state.room);
+            console.log('room', state.room);
+            handleRoomChange();
+        });
+
+        handleRoomChange();
+
+        return () => {
+            unsubscribe();
+        };
+    }, [room, router]);
 
     return (
         <>
@@ -51,7 +72,5 @@ const Game = () => {
         </>
     )
 }
-
-
 
 export default Game;

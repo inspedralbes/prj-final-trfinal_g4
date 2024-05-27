@@ -5,7 +5,7 @@ import socket from '../services/sockets';
 import { useEffect } from 'react';
 import { platform } from 'os';
 import Preloader from './Preloader';
-
+import { useRouter } from 'next/router';
 export default class GameHome extends Phaser.Scene {
     done = false;
     c1Red;
@@ -705,7 +705,6 @@ export default class GameHome extends Phaser.Scene {
             }
         });
         this.player = selectPlayer();
-        this.add.text(400, 100, 'Player: ' + this.player, { fontSize: '20px', fill: '#fff' });
         this.handleCollision = function (player1, player2, button) {
             let toReturn = false;
             if (player1) {
@@ -2057,6 +2056,9 @@ export default class GameHome extends Phaser.Scene {
                 this.cameras.main.startFollow(this.character1);
                 if (this.cameras.main) {
                     this.cameras.main.setBackgroundColor(this.character1.tintTopLeft);
+                }
+                if(this.cursors.down.isDown){
+                    router
                 }
                 if (this.cursors.left.isDown) {
                     this.character1.flipX = true;
