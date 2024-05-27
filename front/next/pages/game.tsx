@@ -4,6 +4,7 @@ import socket from '../services/sockets';
 import { useRouter } from 'next/router';
 import { Game as GameType } from 'phaser';
 
+
 const Game = () => {
     const router = useRouter();
     const [game, setGame] = useState<GameType | undefined>();
@@ -12,20 +13,21 @@ const Game = () => {
     useEffect(() => {
         async function initPhaser() {
             const Phaser = await import('phaser');
-            const { default: Preloader } = await import('../scenes/Preloader');
+            // const { default: Preloader } = await import('../scenes/Preloader');
             const {default: VideoScene} = await import('../scenes/VideoScene');
+            const {default: Preloader} = await import('../scenes/Preloader');
             const phaserGame = new Phaser.Game({
                 type: Phaser.WEBGL,
                 parent: 'game-content',
                 width: window.innerWidth,
                 height: window.innerHeight,
                 scene: [
-                    VideoScene, Preloader
+                    Preloader
                 ],
                 physics: {
                     default: 'arcade',
                     arcade: {
-                        debug: false,
+                        debug: true,
                         gravity: { y: 500, x: 0},
                     },
                 },
@@ -45,7 +47,7 @@ const Game = () => {
 
         const unsubscribe = useStore.subscribe((state) => {
             setRoom(state.room);
-            console.log('room', state.room);
+            // console.log('room', state.room);
             handleRoomChange();
         });
 

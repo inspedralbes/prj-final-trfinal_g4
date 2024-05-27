@@ -72,7 +72,7 @@ async function getOriginalMaps() {
 
 async function getMapData(data) {
     let maps = [];
-    let tuto = await fetch("http://localhost:8000/api/maps/7", {
+    let tuto = await fetch("http://localhost:8000/api/maps/4", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -310,7 +310,7 @@ io.on('connection', (socket) => {
 
     socket.on('updatePosition', (data) => {
         let room = findRoomByUser(socket.id);
-        if (room) {
+        if (room && data.x &&data.y && data.direction) {
             let player = room.game.playersData.find(player => player.id == socket.id);
             player.x = data.x;
             player.y = data.y;

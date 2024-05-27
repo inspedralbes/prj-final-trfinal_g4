@@ -468,14 +468,14 @@
                  "name":"button",
                  "properties":[
                         {
-                         "name":"Color",
+                         "name":"affected",
                          "type":"string",
-                         "value":"Blu"
+                         "value":"1"
                         }, 
                         {
-                         "name":"affected",
-                         "type":"int",
-                         "value":1
+                         "name":"color",
+                         "type":"string",
+                         "value":"Blu"
                         }],
                  "rotation":0,
                  "type":"",
@@ -490,21 +490,21 @@
                  "name":"button",
                  "properties":[
                         {
-                         "name":"Color",
+                         "name":"affected",
                          "type":"string",
-                         "value":"Red"
+                         "value":"2"
                         }, 
                         {
-                         "name":"affected",
-                         "type":"int",
-                         "value":2
+                         "name":"color",
+                         "type":"string",
+                         "value":"Red"
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":11,
-                 "x":467,
-                 "y":-151.667
+                 "x":369.666666666667,
+                 "y":-194.333666666667
                 }, 
                 {
                  "height":10.6667,
@@ -817,7 +817,7 @@
                  "y":-142.5
                 }, 
                 {
-                 "height":14.6666666666667,
+                 "height":14.6667,
                  "id":16,
                  "name":"platform",
                  "properties":[
@@ -849,9 +849,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":63.3333333333335,
-                 "x":2144.66666666667,
-                 "y":-159.333333333333
+                 "width":63.3333,
+                 "x":2144.67,
+                 "y":-159.333
                 }, 
                 {
                  "height":9,
@@ -973,7 +973,7 @@
                  "y":-368
                 }, 
                 {
-                 "height":8.33333333333334,
+                 "height":8.33333,
                  "id":21,
                  "name":"button",
                  "properties":[
@@ -990,9 +990,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":11.333333333333,
+                 "width":11.3333,
                  "x":2771,
-                 "y":-168.666666666667
+                 "y":-168.667
                 }, 
                 {
                  "height":8,
@@ -1184,8 +1184,8 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":15.666666666667,
-                 "x":3488.33333333333,
+                 "width":15.6667,
+                 "x":3488.33,
                  "y":-256
                 }, 
                 {
@@ -1212,9 +1212,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":766.666666666667,
-                 "x":800.666666666667,
-                 "y":48.6666666666667
+                 "width":766.667,
+                 "x":800.667,
+                 "y":48.6667
                 }, 
                 {
                  "height":139,
@@ -1239,15 +1239,15 @@
                  "y":113
                 }, 
                 {
-                 "height":189.333333333333,
+                 "height":189.333,
                  "id":33,
                  "name":"death",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":2080.66666666667,
+                 "width":2080.67,
                  "x":1712,
-                 "y":-31.3333333333333
+                 "y":-31.3333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1654,7 +1654,7 @@
                  "x":80,
                  "y":0
                 }],
-         "height":64,
+         "height":48,
          "id":3,
          "name":"red",
          "opacity":1,
@@ -1856,7 +1856,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":6,
+ "nextlayerid":12,
  "nextobjectid":34,
  "orientation":"orthogonal",
  "renderorder":"right-down",
@@ -1866,13 +1866,13 @@
         {
          "columns":22,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/..\/..\/chromatic-bond-v16\/prj-final-trfinal_g4\/front\/next\/public\/assets\/White-terrain.png",
+         "image":"..\/..\/..\/..\/..\/..\/..\/..\/..\/..\/..\/..\/..\/chromatic-bond-v16\/prj-final-trfinal_g4\/front\/next\/public\/assets\/White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
          "name":"tilesetWhite",
          "spacing":0,
-         "tilecount":242,
+         "tilecount":93,
          "tileheight":16,
          "tiles":[
                 {

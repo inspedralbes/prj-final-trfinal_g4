@@ -28,7 +28,6 @@ export default class Preloader extends Phaser.Scene {
         this.add.text(400, 100, 'Carregant', { fontSize: '20px', fill: '#fff' });
         let { gameData } = useStore.getState();
         let currentMap = gameData.maps[gameData.currentMap];
-
         console.log('Loading assets for map:', currentMap);
         console.log('Loading assets for map:', currentMap.mapRoute);
         console.log('Loading assets for map:', gameData.maps);
@@ -44,18 +43,44 @@ export default class Preloader extends Phaser.Scene {
             textureURL: `assets/pressButton.png`,
             atlasURL: `assets/pressButton.json`,
         });
-        let mapRoute = useStore.getState().gameData.maps[useStore.getState().gameData.currentMap].mapRoute;
-        // if (mapRoute.charAt(0) === '/') {
-        //     mapRoute = mapRoute.substring(1);
-        // }
+        let mapRouteTuto = useStore.getState().gameData.maps[useStore.getState().gameData.currentMap].mapRoute;
+        if (mapRouteTuto.charAt(0) === '/') {
+            mapRouteTuto = mapRouteTuto.substring(1);
+        }
+        let map1=useStore.getState().gameData.maps[1].mapRoute;
+        if (map1.charAt(0) === '/') {
+            map1 = map1.substring(1);
+        }
+        let map2=useStore.getState().gameData.maps[2].mapRoute;
+        if (map2.charAt(0) === '/') {
+            map2 = map2.substring(1);
+        }
+        let map3=useStore.getState().gameData.maps[3].mapRoute;
+        if (map3.charAt(0) === '/') {
+            map3 = map3.substring(1);
+        }
         this.load.tilemapTiledJSON({
-            key: 'mapa',
-            url: mapRoute,
+            key: 'mapa0',
+            url: mapRouteTuto,
+        });
+        this.load.tilemapTiledJSON({
+            key: 'mapa1',
+            url: map1,
+        });
+        this.load.tilemapTiledJSON({
+            key: 'mapa2',
+            url: map2,
+        });
+        this.load.tilemapTiledJSON({
+            key: 'mapa3',
+            url: map3,
         });
         console.log('bababoi');
+        
     }
 
     create() {
+        this.add.text(400, 100, 'Estoy aqui', { fontSize: '20px', fill: '#fff' });
         const scene = this.scene.get('gamehome');
         console.log(scene);
         if (scene) {
@@ -70,7 +95,7 @@ export default class Preloader extends Phaser.Scene {
                     console.log({ key: 'mapa' })
                     console.log(useStore.getState().gameData.currentMap)
 
-                    this.scene.start('preloader');
+                    this.scene.switch('preloader');
                     control = useStore.getState().gameData.currentMap;
                 } else {
                     this.add.text(400, 100, 'Carregant', { fontSize: '20px', fill: '#fff' });
@@ -90,63 +115,15 @@ export default class Preloader extends Phaser.Scene {
                     });
                 }
             }
-            scene.events.once('destroy', function () {
-                console.log("Sexo");
-                this.scene.add('gamehome', GameHome, true);
-
-                if (control != useStore.getState().gameData.currentMap) {
-                    console.log({ key: 'mapa' })
-                    console.log(useStore.getState().gameData.currentMap)
-
-                    this.scene.start('preloader');
-                    control = useStore.getState().gameData.currentMap;
-                } else {
-                    this.add.text(400, 100, 'Carregant', { fontSize: '20px', fill: '#fff' });
-                    let yPos = 150;
-                    do {
-                        this.add.text(400, yPos, Math.random().toFixed(50).toString(), { fontSize: '20px', fill: '#fff' });
-                        yPos += 30;
-                    } while (!{ key: 'mapa' });
-                    this.time.delayedCall(3000, () => {
-                        if ({ key: 'mapa' }) {
-                            console.log("AIUUUUUUUUUUUUDA");
-                            // this.scene.start('gamehome');
-                        }
-
-
-
-                    });
-                }
-            }, this);
-            
-            this.events.on('destroy', function () {
-                console.log("Pene, pene pene pene");
-                this.scene.add('gamehome', GameHome, true);
-
-                if (control != useStore.getState().gameData.currentMap) {
-                    console.log({ key: 'mapa' })
-                    console.log(useStore.getState().gameData.currentMap)
-
-                    this.scene.start('preloader');
-                    control = useStore.getState().gameData.currentMap;
-                } else {
-                    this.add.text(400, 100, 'Carregant', { fontSize: '20px', fill: '#fff' });
-                    let yPos = 150;
-                    do {
-                        this.add.text(400, yPos, Math.random().toFixed(50).toString(), { fontSize: '20px', fill: '#fff' });
-                        yPos += 30;
-                    } while (!{ key: 'mapa' });
-                }
-            }, this);
         } else {
-
+            this.scene.remove("gamehome");
             this.scene.add('gamehome', GameHome, true);
 
             if (control != useStore.getState().gameData.currentMap) {
                 console.log({ key: 'mapa' })
                 console.log(useStore.getState().gameData.currentMap)
 
-                this.scene.start('preloader');
+                this.scene.switch('preloader');
                 control = useStore.getState().gameData.currentMap;
             } else {
                 this.add.text(400, 100, 'Carregant', { fontSize: '20px', fill: '#fff' });
