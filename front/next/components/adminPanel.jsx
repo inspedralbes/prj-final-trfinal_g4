@@ -120,11 +120,23 @@ function AdminPanel() {
     const handleUserAdmin = async (userID) => {
         try {
             const formData = new FormData();
-            formData.append('admin', 1);
+            formData.append('admin', true);
             formData.append('user_id', userID);
             updateUser(formData, tokenLocal);
             setUsers(allUsers.map(user => user.id === userID ? { ...user, admin: 1 } : user));
-            
+
+        } catch (error) {
+            console.error('Error updating user:', error);
+        }
+    }
+
+    const handleUserNotAdmin = async (userID) => {
+        try {
+            const formData = new FormData();
+            formData.append('admin', false);
+            formData.append('user_id', userID);
+            updateUser(formData, tokenLocal);
+            setUsers(allUsers.map(user => user.id === userID ? { ...user, admin: 0 } : user));
         } catch (error) {
             console.error('Error updating user:', error);
         }
@@ -469,7 +481,7 @@ function AdminPanel() {
                                                 {user.admin === 0 ? (
                                                     <button style={{ color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', boxShadow: '0 0 10px rgba(13, 129, 41 , 0.957)' }} onClick={() => handleUserAdmin(user.id)}>Hacer admin</button>
                                                 ) : (
-                                                    <button style={{ color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', boxShadow: '0 0 10px rgba(138, 10, 10, 0.957)' }}>Quitar admin</button>
+                                                    <button style={{ color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', boxShadow: '0 0 10px rgba(138, 10, 10, 0.957)' }} onClick={() => handleUserNotAdmin(user.id)}>Quitar admin</button>
 
                                                 )}
                                             </div>

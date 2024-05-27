@@ -77,6 +77,8 @@ class UserController extends Controller
                 'message' => 'Dades incorrectes!'
             ],401);
         }
+
+        
         
         return response()->json([
             'message' => 'Logged in!',
@@ -171,12 +173,21 @@ class UserController extends Controller
         }
 
         //booleans
-        if ($request->admin) {
+
+        if ($request->admin ) {
+            
             $request->validate([
                 'admin' => 'required'
             ]);
-            $user->admin = $request->admin;
+            if($request->admin == "true"){
+                $user->admin = 1;
+            }else{
+                $user->admin = 0;
+            }
+
         }
+
+        
         
         if ($request->googleLogin) {
             $request->validate([
