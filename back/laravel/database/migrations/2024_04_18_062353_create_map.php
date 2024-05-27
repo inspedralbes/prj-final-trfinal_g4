@@ -29,9 +29,9 @@ return new class extends Migration
 
         DB::table('maps')->insert([
             'name' => 'Mapa 1',
-            'description' => 'Mapa original do jogo',
+            'description' => 'Mapa original del joc lvl 1',
             'image' => '/images/maps/mapa1.png',
-            'mapRoute' => '/maps/mapatuto.json',
+            'mapRoute' => '/maps/mapa-lvl1.json',
             'difficulty' => 1,
             'isOriginal' => true,
             'user_id' => 1,
@@ -40,9 +40,9 @@ return new class extends Migration
 
         DB::table('maps')->insert([
             'name' => 'Mapa 2',
-            'description' => 'Mapa original do jogo',
+            'description' => 'Mapa original del joc lvl 2',
             'image' => '/images/maps/mapa2.png',
-            'mapRoute' => '/maps/mapatuto.json',
+            'mapRoute' => '/maps/mapa-lvl2.json',
             'difficulty' => 2,
             'isOriginal' => true,
             'user_id' => 1,

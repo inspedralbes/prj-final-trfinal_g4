@@ -17,18 +17,19 @@ const Game = () => {
         async function initPhaser() {
             const Phaser = await import('phaser');
             const { default: Preloader } = await import('../scenes/Preloader');
+            const {default: VideoScene} = await import('../scenes/VideoScene');
             const phaserGame = new Phaser.Game({
                 type: Phaser.WEBGL,
                 parent: 'game-content',
                 width: window.innerWidth,
                 height: window.innerHeight,
                 scene: [
-                    Preloader
+                    VideoScene, Preloader
                 ],
                 physics: {
                     default: 'arcade',
                     arcade: {
-                        debug: true,
+                        debug: false,
                         gravity: { y: 500, x: 0},
                     },
                 },
