@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Map;
 use App\Models\ReportedMaps;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ReportedMapsController extends Controller
@@ -39,12 +41,40 @@ class ReportedMapsController extends Controller
 
     public function store(Request $request)
     {
-        $newReportedMap = new ReportedMaps();
-        $newReportedMap->map_id = $request->map_id;
-        $newReportedMap->user_id = $request->user_id;
-        $newReportedMap->reason = $request->reason;
-        $newReportedMap->save();
-        return response()->json($newReportedMap, 201);
+        $request->validate([
+            'map_id' => 'required | integer',
+            'reason' => 'required '
+        ]);
+
+        $map = Map::where('id', $request->map_id)->first();
+        if ($request->user_id) {
+            $user = User::where('id', $request->user_id)->first();
+            $userID = $user->id;
+        } else {
+            $userID = null;
+        }
+
+        if ($map) {
+            $newReportedMap = new ReportedMaps();
+            $newReportedMap->map_id = $request->map_id;
+            $newReportedMap->user_id = $userID;
+            $newReportedMap->reason = $request->reason;
+            $newReportedMap->save();
+
+            $map->reports++;
+
+            if ($map->reports > 5) {
+                $map->state = 'Reported';
+            }
+
+            $map->save();
+
+            return response()->json($newReportedMap, 200);
+        } else {
+            return response()->json([
+                'error' => 'Map not found'
+            ], 404);
+        } 
     }
 
     public function destroy(ReportedMaps $reportedMap)

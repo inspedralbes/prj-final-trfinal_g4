@@ -6,6 +6,7 @@ import ErrorPopup from '../components/errorPopup';
 
 function Mapas() {
     const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
     const [difficulty, setDifficulty] = useState('');
     const [img, setImg] = useState(null);
     const [map, setmap] = useState(null);
@@ -25,26 +26,27 @@ function Mapas() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        if (!name || !difficulty || !img || !map) {
+
+        if (!name || !description || !difficulty || !img || !map) {
             setPopupMessage('Por favor, completa todos los campos.');
             return;
         }
-        
+
         const user = JSON.parse(localStorage.getItem('user'));
         if (!user) {
             alert('Usuario no autenticado');
             return;
         }
         const { id, token } = user;
-    
+
         const formData = new FormData();
         formData.append('name', name);
+        formData.append('description', description);
         formData.append('difficulty', difficulty);
         formData.append('img', img);
         formData.append('map', map);
         formData.append('user_id', id);
-        
+
         try {
             console.log('Form Data:', formData);
             await createMap(formData, token);
@@ -53,23 +55,23 @@ function Mapas() {
         } catch (error) {
             alert('Error al crear el mapa: ' + error.message);
         }
-    
+
         setName('');
+        setDescription('');
         setDifficulty('');
         setImg(null);
         setmap(null);
         setPopupMessage(null);
     };
-    
 
     if (loading) {
         return null;
     }
 
     return (
-        <div className="h-screen overflow-hidden bg-gradient-to-r from-blue-400 to-indigo-500">
+        <div className="h-screen overflow-hidden bg-gradient-to-r from-purple-500 from-5% via-blue-500 via-50% to-red-600">
             <Header />
-            <div className="flex flex-col items-center justify-center h-full bg-gradient-to-r from-blue-400 to-indigo-500">
+            <div className="flex flex-col items-center justify-center">
             {popupMessage && <ErrorPopup type="incomplete" message={popupMessage} clearMessage={() => setPopupMessage(null)} />}
             {successMessage && <ErrorPopup type="success" message={successMessage} clearMessage={() => setSuccessMessage(null)} />}
                 <div className="w-full sm:w-1/2 bg-white rounded-lg p-8 mx-auto mb-8">
@@ -84,6 +86,16 @@ function Mapas() {
                                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">Descripció:</label>
+                            <textarea
+                                id="description"
+                                name="description"
+                                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
                             />
                         </div>
                         <div>
@@ -130,6 +142,6 @@ function Mapas() {
             </div>
         </div>
     );
-}
 
+    }
 export default Mapas;

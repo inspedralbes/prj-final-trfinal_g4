@@ -21,9 +21,11 @@ return new class extends Migration
             $table->binary('image');
             $table->binary('mapRoute');
             $table->enum('difficulty', array(1, 2, 3));
-            $table->boolean('isOriginal')->default(false);
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('state')->default('pending');
+            $table->boolean('default')->default(0);
+            $table->integer('reports')->default(0);
+            $table->integer('likes')->default(0);
             $table->timestamps();
         });
 
@@ -33,7 +35,7 @@ return new class extends Migration
             'image' => '/images/maps/mapa1.png',
             'mapRoute' => '/maps/mapa-lvl1.json',
             'difficulty' => 1,
-            'isOriginal' => true,
+            'default' => true,
             'user_id' => 1,
             'state' => 'approved'
         ]);
@@ -44,7 +46,7 @@ return new class extends Migration
             'image' => '/images/maps/mapa2.png',
             'mapRoute' => '/maps/mapa-lvl2.json',
             'difficulty' => 2,
-            'isOriginal' => true,
+            'default' => true,
             'user_id' => 1,
             'state' => 'approved'
         ]);
@@ -55,7 +57,7 @@ return new class extends Migration
             'image' => '/images/maps/mapa3.png',
             'mapRoute' => '/maps/mapatuto.json',
             'difficulty' => 3,
-            'isOriginal' => true,
+            'default' => true,
             'user_id' => 1,
             'state' => 'approved'
         ]);

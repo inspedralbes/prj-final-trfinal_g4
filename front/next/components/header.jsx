@@ -73,10 +73,13 @@ const Header = () => {
         content = (
             <div className="profile relative text-white flex items-center">
                 <Link href="/CrearMapes" className="mr-4 text-white hover:text-yellow-500">
-                    Pujar Mapes
+                    Com Pujar Mapes
                 </Link>
-                <Link href="/howToPlay" className="mr-4">
-                    Tutorial
+                <Link href="/howToPlay" className="mr-4 text-white hover:text-yellow-500">
+                    Com Jugar
+                </Link>
+                <Link href="/comunitat" className="mr-4 text-white hover:text-yellow-500">
+                    Comunitat
                 </Link>
                 <img src={`${url}${image}`} className="w-10 h-10 mx-4 text-3xl cursor-pointer rounded-full" onClick={toggleDropdown} />
                 {dropdownOpen && (
@@ -93,10 +96,13 @@ const Header = () => {
         content = (
             <div className="flex items-center">
                 <Link href="/CrearMapes" className="mr-4 text-white mr-6 hover:text-yellow-500">
-                    Pujar Mapes
+                    Com Pujar Mapes
                 </Link>
                 <Link href="/howToPlay" className="mr-4 text-white mr-6 hover:text-yellow-500">
-                    Tutorial
+                    Com Jugar
+                </Link>
+                <Link href="/comunitat" className="mr-4 text-white hover:text-yellow-500">
+                    Comunitat
                 </Link>
                 <Link href="/login">
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded mr-4 mt-4 md:mt-0">LOGIN</button>

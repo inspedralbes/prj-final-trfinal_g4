@@ -42,7 +42,6 @@ function nextColor(player) {
     } else {
         colorToReturn = player.colorsUnlocked[colorIndex + 1]
     }
-    console.log(player.colorsUnlocked);
     return colorToReturn;
 }
 
@@ -83,7 +82,6 @@ async function getMapData(data) {
     maps.push(tutoJson);
     switch (data.mode) {
         case 'Aleatori':
-            console.log("Aleatoris");
             let randomMaps = await getRandomMaps();
             randomMaps.forEach(map => {
                 maps.push(map);
@@ -97,9 +95,7 @@ async function getMapData(data) {
             break;
         case 'Mapes de la comunitat':
             let communityMaps = await getCommunityMaps(data.maps);
-            console.log("Garcilaso de la Vega", communityMaps);
             communityMaps.forEach(map => {
-                console.log("Garcilaso de la Verga", map);
                 maps.push(map);
             });
             break;
@@ -127,7 +123,6 @@ async function getCommunityMaps(maps) {
 
 //connection
 io.on('connection', (socket) => {
-    console.log(`Connected: ${socket.id}`);
     socket.emit('allRooms', rooms);
 
     //Create Room
@@ -157,8 +152,6 @@ io.on('connection', (socket) => {
                 rooms.push(newRoom);
                 socket.join(newRoom.id);
                 io.emit('allRooms', rooms);
-                console.log('newRoom', newRoom.game.maps);
-                console.log('message', newRoom.messages);
                 io.to(newRoom.id).emit('newInfoRoom', newRoom);
             });
         }
@@ -234,7 +227,6 @@ io.on('connection', (socket) => {
             }
             io.emit('allRooms', rooms);
             io.to(findRoom.id).emit('newInfoRoom', findRoom);
-            console.log('soy gay', findRoom);
         }
     });
 
@@ -244,8 +236,6 @@ io.on('connection', (socket) => {
         room.messages.push(data);
         io.to(room.id).emit('newMessage', room.messages);
         io.to(room.id).emit('newInfoRoom', room);
-        console.log('chatMessage', room.messages);
-        console.log('chatMessage', data);
     });
 
     //Change State User
@@ -254,25 +244,21 @@ io.on('connection', (socket) => {
         let user = room.users.find(user => user.id == socket.id);
         user.state = data.state;
         io.to(room.id).emit('newInfoRoom', room);
-        console.log('changeState', room);
     });
 
     //Exit Room
     socket.on('exitRoom', () => {
         let room = findRoomByUser(socket.id);
-        // console.log(`Socket ${socket.id} is leaving room ${room.id}`);
         if (socket.id == room.admin[0]) {
-            console.log(`soy admin ${socket.id}`);
-            console.log(`room admin ${room.admin[0]}`);
-            console.log(`room users ${room.users}`);
             if (room.users.length > 1) {
                 let name = room.admin[1];
                 room.admin[0] = room.users[1].id;
                 room.admin[1] = room.users[1].name;
+                room.admin[2] = room.users[1].image;
                 room.users.splice(0, 1);
                 room.accesible = true;
-                // console.log("Room BBBBBBBBBBBBBBBBBBBBBBB", room);
                 room.messages.push({ user: 'Server', message: `${name} a sortit de la sala` });
+                room.messages = room.messages.filter(message => message.user == 'Server');
                 socket.leave(room.id);
                 socket.emit('newInfoRoom', null);
                 io.to(room.id).emit('newInfoRoom', room);
@@ -283,8 +269,8 @@ io.on('connection', (socket) => {
             room.messages.push({ user: 'Server', message: `${room.users.find(user => user.id == socket.id).name} a sortit de la sala` });
             room.users.splice(1, 1);
             room.accesible = true;
-            console.log("Room CCCCCCCCCCCCCCCCCCCCCCCCCCCCC", room);
             socket.leave(room.id);
+            room.messages = room.messages.filter(message => message.user == 'Server');
             socket.emit('newInfoRoom', null);
             io.to(room.id).emit('newInfoRoom', room);
         }
@@ -293,7 +279,6 @@ io.on('connection', (socket) => {
 
     socket.on('startGame', () => {
         let room = findRoomByUser(socket.id);
-        // console.log("choto", room);
         room.status = 'Playing';
         io.emit('allRooms', rooms);
         room.game.players = room.users;
@@ -320,7 +305,6 @@ io.on('connection', (socket) => {
                     color: 'black'
                 }
             ];
-        console.log("Room CCCCCCCCCCCCCCCCCCCCCCCCCCCCC", room.game.maps);
         io.to(room.id).emit('gameStarted', room);
     })
 
@@ -331,7 +315,6 @@ io.on('connection', (socket) => {
             player.x = data.x;
             player.y = data.y;
             player.direction = data.direction;
-            // console.log('updatePosition', player);
             io.to(room.id).emit('updatePositionFront', room.game.playersData);
         }
     });
@@ -347,7 +330,6 @@ io.on('connection', (socket) => {
     });
 
     socket.on('death', () => {
-
         io.to(findRoomByUser(socket.id).id).emit('deathFront')
     });
 
@@ -356,7 +338,6 @@ io.on('connection', (socket) => {
         room.game.currentMap++;
         if (room.game.currentMap == room.game.maps.length) {
             io.to(findRoomByUser(socket.id).id).emit('finishGame')
-
         } else {
             if (room.game.currentMap == 1) {
                 room.game.playersData[0].colorsUnlocked = ['red'];
@@ -371,24 +352,63 @@ io.on('connection', (socket) => {
                     room.game.playersData[0].colorsUnlocked.push('white');
                     room.game.playersData[1].colorsUnlocked.push('black');
                 }
-
             }
             room.game.currentMap = room.game.currentMap++;
-            console.log(room.game)
             io.to(findRoomByUser(socket.id).id).emit('winFront', room.game)
         }
-        
     });
-
-    
 
     //Disconnect
     socket.on('disconnect', () => {
-        console.log(`Disconnected: ${socket.id}`);
-    });
+        let room = findRoomByUser(socket.id);
+
+        if (room && room.status == 'Waiting') {
+            rooms.splice(rooms.indexOf(room), 1);
+        } else if (room && room.status == 'inLobby') {
+            if (room.users.length > 1 && socket.id == room.admin[0]) {
+                let name = room.admin[1];
+                room.admin[0] = room.users[1].id;
+                room.admin[1] = room.users[1].name;
+                room.admin[2] = room.users[1].image;
+                room.users.splice(0, 1);
+                room.accesible = true;
+                room.status = 'Waiting';
+                room.messages.push({ user: 'Server', message: `${name} a sortit de la sala` });
+                room.messages = room.messages.filter(message => message.user == 'Server');
+                socket.leave(room.id);
+                socket.emit('newInfoRoom', null);
+                io.to(room.id).emit('newInfoRoom', room);
+            } else if (room.users.length > 1 && socket.id != room.admin[0]) {
+                room.messages.push({ user: 'Server', message: `${room.users.find(user => user.id == socket.id).name} a sortit de la sala` });
+                room.users.splice(1, 1);
+                room.accesible = true;
+                room.status = 'Waiting';
+                room.messages = room.messages.filter(message => message.user == 'Server');
+                socket.leave(room.id);
+                socket.emit('newInfoRoom', null);
+                io.to(room.id).emit('newInfoRoom', room);
+            } else if (room.users.length == 1 && socket.id == room.admin[0]) {
+                rooms.splice(rooms.indexOf(room), 1);
+            }
+        } else if (room && room.status == 'Playing') {
+            socket.leave(room.id);
+            socket.emit('newInfoRoom', null);
+            const socketsInRoom = io.sockets.adapter.rooms.get(room.id);
+            if (socketsInRoom) {
+                socketsInRoom.forEach((socketId) => {
+                    const socketToLeave = io.sockets.sockets.get(socketId);
+                    if (socketToLeave) {
+                        socketToLeave.leave(room.id);
+                        socketToLeave.emit('newInfoRoom', null);
+                    }
+                });
+                rooms.splice(rooms.indexOf(room), 1);
+            }
+            io.emit('allRooms', rooms);
+        }});
 });
 
 
 server.listen(port, () => {
-    console.log(`Server running on port ${port}`)
+    // console.log(`Server running on port ${port}`)
 })

@@ -66,14 +66,14 @@ const Lobby = () => {
         });
     }, [router]);
 
-    const chatMessages = room.messages.map((msg, index) => {
+    const chatMessages = room ? room.messages.map((msg, index) => {
         if (msg.user == user) {
             return (
                 <div key={index} className='chat-message'>
                     <div className='flex items-end justify-end'>
-                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end'>
+                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-1 items-end max-w-[450px]'>
                             <div>
-                                <span className='px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white'>
+                                <span className='px-4 py-2 rounded-lg inline-block rounded-br-none bg-blue-600 text-white text-wrap'>
                                     {msg.message}
                                 </span>
                             </div>
@@ -86,9 +86,9 @@ const Lobby = () => {
             return (
                 <div key={index} className='chat-message'>
                     <div className='flex items-center justify-center'>
-                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 items-center'>
+                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 items-center max-w-[450px]'>
                             <div>
-                                <span className='px-4 py-2 rounded-lg inline-block bg-red-600 text-white'>
+                                <span className='px-4 py-2 rounded-lg inline-block bg-red-600 text-white text-wrap'>
                                     {msg.message}
                                 </span>
                             </div>
@@ -100,9 +100,9 @@ const Lobby = () => {
             return (
                 <div key={index} className='chat-message'>
                     <div className='flex items-end'>
-                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start'>
+                        <div className='flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start max-w-[450px]'>
                             <div>
-                                <span className='px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600'>
+                                <span className='px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600 text-wrap'>
                                     {msg.message}
                                 </span>
                             </div>
@@ -118,7 +118,7 @@ const Lobby = () => {
                 </div>
             );
         }
-    });
+    }) :[];
 
     const adminUser = room && room.admin ? room.admin[1] : '';
     let otherUser = '';
@@ -169,16 +169,16 @@ const Lobby = () => {
     };
 
     return (
-        <div className='bg-gradient-to-r from-blue-400 to-indigo-500 min-h-screen'>
+        <div className='bg-gradient-to-r from-blue-800 from-20% via-green-400 to-yellow-500 min-h-screen'>
             <Header />
             <div className='flex flex-col justify-center items-center p-4 text-white mt-9'>
-                <h1 className='text-4xl font-bold tracking-wider my-5 animate-pulse text-center mt-9 pt-9'>ESPERANT ACOMPANYANT</h1>
+                <h1 className='text-6xl font-bold tracking-wider my-5 animate-pulse text-center mt-9 pt-9'>ESPERANT ACOMPANYANT</h1>
                 <div className='min-h-[600px] max-w-[500px] lg:min-w-[1050px] text-center lg:flex lg:flex-inline'>
                     {/* Chat section */}
                     <div className='h-[600px] max-w-[500px] mx-auto lg:min-w-[500px] bg-gray-700 rounded-lg flex flex-col lg:m-3 lg:mt-9 mt-9'>
-                        <div id='messages' className='flex-grow flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-rhumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
-                            {chatMessages}
-                        </div>
+                    <div id='messages' class='flex-grow flex flex-col space-y-4 p-3 overflow-x-hidden overflow-y-auto scrollbar-thumb-blue scrollbar-rhumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
+                        { chatMessages }
+                    </div>
                         <div className='border-t-2 border-gray-200 px-4 pt-4 mb-2 mb-16 mx-2'>
                             <div className='relative flex'>
                                 <input
@@ -204,8 +204,7 @@ const Lobby = () => {
                             <h1 className='text-3xl font-bold mb-3'>Usuaris a la sala</h1>
                             <div id='adminUser' className='flex items-center mt-2 mb-2'>
                                 <div className='flex items-center'>
-                                    <img src={URL + room.users[0].image} alt="User" className='w-10 h-10 ml-2 rounded-full' />
-                                    <p className='text-2xl ml-3 mt-1 mr-4 truncate'>{adminUser}</p>
+                                <img src={ room ? URL + room.users[0].image : '' } alt="User" className='w-10 h-10 ml-2 rounded-full' />                                    <p className='text-2xl ml-3 mt-1 mr-4 truncate'>{adminUser}</p>
                                 </div>
                                 {user === adminUser && room.users[0].state !== 'Ready' && (
                                     <div id='buttons-check' className='flex items-center ml-auto'>

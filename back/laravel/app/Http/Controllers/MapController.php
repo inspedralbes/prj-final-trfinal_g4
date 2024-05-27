@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Map;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -36,7 +37,7 @@ class MapController extends Controller
     }
 
     public function getDefaultMaps(){
-        $maps = response()->json(Map::where('isOriginal', 1)->get(), 200);
+        $maps = response()->json(Map::where('default', 1)->get(), 200);
         if ($maps->isEmpty()) {
             return response()->json([
                 'error' => 'No maps found'
@@ -97,21 +98,20 @@ class MapController extends Controller
             $img = $request->file('img');
             $imgName = $img->getClientOriginalName();
             $img->move(public_path('/images/maps'), $imgName);
-            $newMap->image = $imgPath;
+            $newMap->image = '/' . $imgPath;
 
             $mapPath = $request->file('map')->storeAs('/maps', $request->file('map')->getClientOriginalName());
             $map = $request->file('map');
             $mapName = $map->getClientOriginalName();
             $map->move(public_path('/maps'), $mapName);
+            $newMap->mapRoute = '/' . $mapPath;
         } else {
             return response()->json([
                 'error' => 'Image or map not found'
             ], 404);
         }
 
-        $newMap->mapRoute = $mapPath;
         $newMap->difficulty = $request->difficulty;
-
         $newMap->user_id = $request->user_id;
 
         if ($newMap->save()) {
@@ -218,5 +218,106 @@ class MapController extends Controller
         
 
         return response($file, 200)->header('Access-Control-Allow-Origin', '*')->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')->header('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token, Authorization, Accept,charset,boundary,Content-Length,Accept-Encoding,X-CSRF-Token,X-Requested-With,Accept-Version,Content-MD5,Date,X-Api-Version,X-File-Name');
+    }
+
+    public function mapsCommunity($difficulty)
+    {
+        $maps = Map::where('difficulty', $difficulty)->where('state', 'Approved')->get();
+
+        foreach ($maps as $map) {
+            if ($map->user_id) {
+                $user = User::find($map->user_id);
+                $map->user = $user->username;
+            } else {
+                $map->user = null;
+            }
+        }
+
+        if ($maps->isEmpty()) {
+            return response()->json([
+                'error' => 'No maps found'
+            ], 404);
+        } else {
+            return response()->json($maps, 200);
+        }
+    }
+
+    public function mapsCommunityAll()
+    {
+        $maps = Map::where('state', 'Approved')->get();
+
+        foreach ($maps as $map) {
+            if ($map->user_id) {
+                $user = User::find($map->user_id);
+                $map->user = $user->username;
+            } else {
+                $map->user = null;
+            }
+        }
+
+        if ($maps->isEmpty()) {
+            return response()->json([
+                'error' => 'No maps found'
+            ], 404);
+        } else {
+            return response()->json($maps, 200);
+        }
+    }
+
+    public function addLike(Request $request)
+    {
+        $map = Map::find($request->map_id);
+
+        if (!$map) {
+            return response()->json([
+                'error' => 'Map not found'
+            ], 404);
+        }
+
+        $map->likes = $map->likes + 1;
+
+        if ($map->save()) {
+            return response()->json($map, 200);
+        } else {
+            return response()->json([
+                'error' => 'Error updating the map'
+            ], 500);
+        }
+    }
+
+    public function removeLike(Request $request)
+    {
+        $map = Map::find($request->map_id);
+        
+        if (!$map) {
+            return response()->json([
+                'error' => 'Map not found'
+            ], 404);
+        }
+
+        $map->likes = $map->likes - 1;
+
+        if ($map->save()) {
+            return response()->json($map, 200);
+        } else {
+            return response()->json([
+                'error' => 'Error updating the map'
+            ], 500);
+        }
+    }
+
+    public function searchMaps($sentence)
+    {
+        $maps = Map::where('name', 'like', '%' . $sentence . '%')
+                    ->orWhere('description', 'like', '%' . $sentence . '%')
+                    ->get();
+
+        if ($maps->isEmpty()) {
+            return response()->json([
+                'error' => 'No maps found'
+            ], 404);
+        } else {
+            return response()->json($maps, 200);
+        }
     }
 }
