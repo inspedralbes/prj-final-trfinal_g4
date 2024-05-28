@@ -13,6 +13,7 @@ function Login() {
   const router = useRouter();
   const [sessionIncomplete, setSessionIncomplete] = useState(null);
   const [sessionError, setSessionError] = useState(null);
+  const userID = localStorage.getItem('userID');
   const session = useSession();
 
   useEffect(() => {
