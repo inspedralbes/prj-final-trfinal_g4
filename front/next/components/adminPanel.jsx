@@ -144,7 +144,6 @@ function AdminPanel() {
     useEffect(() => {
         getMaps()
             .then((data) => setMaps(data))
-            .catch((error) => //console.error('Error fetching maps:', error));
 
         const userLocal = JSON.parse(localStorage.getItem('user'));
 
@@ -153,13 +152,11 @@ function AdminPanel() {
 
         getReportedMaps(tokenLocal, userID)
             .then((data) => setReportedMaps(data))
-            .catch((error) => //console.error('Error fetching reported maps:', error));
 
         getUsers(tokenLocal, userID)
             .then((data) => {
                 setUsers(data);
             })
-            .catch((error) => //console.error('Error fetching users: ', error));
 
     }, []);
 
