@@ -48,12 +48,12 @@ const Create = () => {
             name: roomName,
             public: isPublic,
             mode: gameMode,
-            maps: selectedImages.filter(image => image.imageUrl !== '/images/random-game.png').map(image => ({ id: image.id, imageUrl: image.imageUrl }))
+            maps: selectedImages.filter(image => image.imageUrl != '/images/random-game.png').map(image => ({ id: image.id, imageUrl: image.imageUrl }))
         };
     
         console.log('Room Info:', roomInfo);
     
-        if (roomInfo.name == '' || roomInfo.mode == '') {
+        if (roomInfo.name == '' || roomInfo.mode == '' || (roomInfo.mode == 'Mapes de la comunitat' && roomInfo.maps.length < 3) ) {
             setPopupMessage('Falten dades per omplir.');
             return;
         } else {
@@ -92,6 +92,9 @@ const Create = () => {
         }
     };
     
+
+    console.log('Selected Images:', selectedImages);
+    console.log('Game Mode:', gameMode)
 
     return (
         <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-500 from-5% via-red-700 via-60% to-yellow-500 p-8">
@@ -140,7 +143,7 @@ const Create = () => {
                     </button>
                 </div>
                 
-                {gameMode === 'Mapes de la comunitat' && (
+                { gameMode == 'Mapes de la comunitat' && (
                     <Fases selectedImages={selectedImages} setSelectedImages={setSelectedImages} />
                 )}
         </div>
