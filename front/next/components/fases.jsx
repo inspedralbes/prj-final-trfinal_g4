@@ -21,7 +21,7 @@ const Fases = ({ selectedImages, setSelectedImages }) => {
                 const maps3 = await getMapByDifficulty(3);
                 setMapsDifficulty3(maps3.filter(map => map.default === 0).map(map => ({ id: map.id, imageUrl: `http://localhost:8000${map.image}` })));
             } catch (error) {
-                console.error(error);
+                // //console.error(error);
             }
         };
 
@@ -36,7 +36,6 @@ const Fases = ({ selectedImages, setSelectedImages }) => {
         setCurrentPhaseIndex(prevIndex => (prevIndex + 1) % maps.length);
     };
     const showInfo = () =>{
-        console.log(document.getElementById("gameMode"));
     }
     const handleImageClick = (map, phaseIndex) => {
         setSelectedImages(prevImages => {

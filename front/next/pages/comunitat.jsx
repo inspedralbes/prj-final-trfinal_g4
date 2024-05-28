@@ -11,7 +11,6 @@ const Comunidad = () => {
     useEffect(() => {
         if (maps.length == 0) {
             getMapsForCommunity().then((data) => {
-                console.log(data);
                 setMaps(data);
             });
         }
@@ -19,14 +18,12 @@ const Comunidad = () => {
 
     const getMaps = () => {
         getMapsForCommunity().then((data) => {
-            console.log(data);
             setMaps(data);
         });
     };
 
     const getMapsByLevel = (level) => {
         getMapsForCommunityByLevel(level).then((data) => {
-            console.log(data);
             setMaps(data);
         });
     };
@@ -34,7 +31,6 @@ const Comunidad = () => {
     const handleSearchMaps = () => {
         if (fraseCerca !== '') {
             searchMaps(fraseCerca).then((data) => {
-                console.log(data);
                 setMaps(data);
             });
         }

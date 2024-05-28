@@ -48,7 +48,6 @@ function Mapas() {
         formData.append('user_id', id);
 
         try {
-            console.log('Form Data:', formData);
             await createMap(formData, token);
             setSuccessMessage('Mapa creado exitosamente');
             router.push('/');

@@ -47,7 +47,6 @@ const Game = () => {
 
         const unsubscribe = useStore.subscribe((state) => {
             setRoom(state.room);
-            // console.log('room', state.room);
             handleRoomChange();
         });
 

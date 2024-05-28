@@ -20,7 +20,6 @@ const MapCard = ({ map }) => {
         };
 
         likeMap(mapData).then((data) => {
-            console.log(data);
             setLiked(true);
             setDisliked(false);
         });
@@ -34,7 +33,6 @@ const MapCard = ({ map }) => {
         };
 
         dislikeMap(mapData).then((data) => {
-            console.log(data);
             setLiked(false);
             setDisliked(true);
         });
@@ -63,7 +61,6 @@ const MapCard = ({ map }) => {
             };
 
             reportMap(reportData).then((data) => {
-                console.log(data);
                 setShowModal(false); 
             });
         } else {
@@ -74,7 +71,6 @@ const MapCard = ({ map }) => {
             };
 
             reportMap(reportData).then((data) => {
-                console.log(data);
                 setShowModal(false); 
             });
         }

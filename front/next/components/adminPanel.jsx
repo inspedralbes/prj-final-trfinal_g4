@@ -77,7 +77,6 @@ function AdminPanel() {
         const selectedValue = e.target.value;
         setSelectReason(selectedValue);
         setCurrentPageReportedMaps(1);
-        console.log("selectedValue", selectedValue);
     }
 
     const filterByIdAndReasonReportedMaps = filterMapsReportedByReason.filter(map => map.map_id.toString().includes(searchReportedMapById));
@@ -96,7 +95,7 @@ function AdminPanel() {
             await destroyMap(mapID, userID, tokenLocal);
             setMaps(maps.filter(map => map.id !== mapID));
         } catch (error) {
-            console.error('Error deleting map:', error);
+            //console.error('Error deleting map:', error);
         }
     }
 
@@ -104,7 +103,7 @@ function AdminPanel() {
         try {
             await downloadFile(mapID, mapName, userID, tokenLocal);
         } catch (error) {
-            console.error('Error downloading map:', error);
+            //console.error('Error downloading map:', error);
         }
     }
 
@@ -113,7 +112,7 @@ function AdminPanel() {
             await destroyReport(mapID, userID, tokenLocal);
             setReportedMaps(reportedMaps.filter(map => map.id !== mapID));
         } catch (error) {
-            console.error('Error deleting report:', error);
+            //console.error('Error deleting report:', error);
         }
     }
 
@@ -126,7 +125,7 @@ function AdminPanel() {
             setUsers(allUsers.map(user => user.id === userID ? { ...user, admin: 1 } : user));
 
         } catch (error) {
-            console.error('Error updating user:', error);
+            //console.error('Error updating user:', error);
         }
     }
 
@@ -138,15 +137,14 @@ function AdminPanel() {
             updateUser(formData, tokenLocal);
             setUsers(allUsers.map(user => user.id === userID ? { ...user, admin: 0 } : user));
         } catch (error) {
-            console.error('Error updating user:', error);
+            //console.error('Error updating user:', error);
         }
     }
 
     useEffect(() => {
         getMaps()
             .then((data) => setMaps(data))
-            .then((data) => console.log("data", data))
-            .catch((error) => console.error('Error fetching maps:', error));
+            .catch((error) => //console.error('Error fetching maps:', error));
 
         const userLocal = JSON.parse(localStorage.getItem('user'));
 
@@ -155,14 +153,13 @@ function AdminPanel() {
 
         getReportedMaps(tokenLocal, userID)
             .then((data) => setReportedMaps(data))
-            .catch((error) => console.error('Error fetching reported maps:', error));
+            .catch((error) => //console.error('Error fetching reported maps:', error));
 
         getUsers(tokenLocal, userID)
             .then((data) => {
-                console.log("data", data);
                 setUsers(data);
             })
-            .catch((error) => console.error('Error fetching users: ', error));
+            .catch((error) => //console.error('Error fetching users: ', error));
 
     }, []);
 

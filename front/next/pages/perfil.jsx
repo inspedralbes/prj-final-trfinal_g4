@@ -19,7 +19,6 @@ const Perfil = () => {
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'));
-        console.log('User:', user);
         setUserFromLocalStorage(user);
     }, []);
 
@@ -53,11 +52,7 @@ const Perfil = () => {
         if (image != null) formData.append('image', image);
 
         try {
-            console.log('Form Data:', formData);
-            console.log('Token:', token);
-            console.log('User ID:', userId);
             await updateUser(formData, token).then(data => {
-                console.log('Usuario actualizado:', data);
                 localStorage.setItem('user', 
                     JSON.stringify({
                         name: data.user,
@@ -68,7 +63,6 @@ const Perfil = () => {
                         token: token
                     })
                 );
-                console.log('UserLOCAL:', JSON.parse(localStorage.getItem('user')));
                 useStore.setState({
                     user: {
                         name: data.user,
@@ -79,10 +73,10 @@ const Perfil = () => {
                         token: token
                     }
                 });
-                console.log('UserSTORE:', useStore.getState().user);
             });
         } catch (error) {
-            console.log('Error al actualizar el usuario:', error);
+            setPopupMessage('Error al modificar el perfil.');
+            return;
         }
 
         setName('');

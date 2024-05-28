@@ -32,7 +32,6 @@ export function login(user) {
 //Register
 export function register(user) {
     return new Promise((resolve, reject) => {
-        console.log(user);
         fetch(`${url}register`, {
             method: 'POST',
             headers: {
@@ -99,8 +98,6 @@ export function destroyUser(user) {
 
 // fetch actualizar usuario
 export function updateUser(userData, token) {
-    console.log("userData", userData);
-    console.log("token updateUser", token);
     return new Promise((resolve, reject) => {
         fetch(`${url}users/`, {
             method: 'POST',
@@ -125,10 +122,8 @@ export function updateUser(userData, token) {
 }
 
 export function getUsers(token, userID) {
-    console.log("token", token);
-    console.log("userID", userID);
     if (!userID) {
-        console.error('userID is undefined');
+        //console.error('userID is undefined');
     }
 
     return new Promise((resolve, reject) => {
@@ -240,8 +235,6 @@ export function getMaps() {
 }
 
 export function getReportedMaps(token, userID) {
-    console.log("token getReportedMaps", token);
-    console.log("userID getReportedMaps", userID);
     return new Promise((resolve, reject) => {
         fetch(`${url}reportedMaps?userID=${userID}`, {
             method: 'GET',
@@ -281,11 +274,8 @@ export function updateMap(mapData, user) {
 }
 
 export function destroyMap(mapID, userID, token) {
-    console.log("mapID", mapID);
-    console.log("userID", userID);
-    console.log("token", token);
     if (!userID) {
-        console.error('userID is undefined');
+        //console.error('userID is undefined');
     }
 
     return new Promise((resolve, reject) => {
@@ -314,10 +304,8 @@ export function destroyMap(mapID, userID, token) {
 
 
 export function downloadFile(mapId, mapName, userID, token) {
-    console.log("map name", mapName);
-    console.log("map info", mapId);
     if (!userID) {
-        console.error('userID is undefined');
+        //console.error('userID is undefined');
     }
 
     return new Promise((resolve, reject) => {
@@ -335,7 +323,6 @@ export function downloadFile(mapId, mapName, userID, token) {
                 }
                 const randomNumber = Math.floor(Math.random() * 900000) + 100000;
                 let filename = mapName + '_' + randomNumber;
-                console.log('Updated filename:', filename); // Add this line
 
                 return response.blob().then(blob => ({ blob, filename }));
             })
@@ -344,7 +331,6 @@ export function downloadFile(mapId, mapName, userID, token) {
                 const a = document.createElement('a');
                 a.href = url;
                 a.download = filename;
-                console.log("filename ", filename);
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
@@ -358,7 +344,7 @@ export function downloadFile(mapId, mapName, userID, token) {
 
 export function destroyReport(mapId, userID, token) {
     if (!userID) {
-        console.error('userID is undefined');
+        //console.error('userID is undefined');
     }
 
     return new Promise((resolve, reject) => {

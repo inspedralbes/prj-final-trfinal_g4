@@ -15,22 +15,14 @@ export default class Preloader extends Phaser.Scene {
     }
 
     preload() {
-        console.log('Preloader');
         this.load.setBaseURL(BASE_URL);
         this.load.crossOrigin = 'anonymous';
         this.load.setCORS('anonymous');
-
-        console.log('Loading assets...');
         this.loadAssets();
     }
 
     loadAssets() {
         this.add.text(400, 100, 'Carregant', { fontSize: '20px', fill: '#fff' });
-        let { gameData } = useStore.getState();
-        let currentMap = gameData.maps[gameData.currentMap];
-        console.log('Loading assets for map:', currentMap);
-        console.log('Loading assets for map:', currentMap.mapRoute);
-        console.log('Loading assets for map:', gameData.maps);
         this.load.atlas('character1', `assets/character1.png`, `assets/character1.json`);
         this.load.atlas('flag-movement', `assets/flag-movement.png`, `assets/flag-movement.json`);
         this.load.atlas('death', `assets/appearing-character.png`, `assets/appearing-character.json`);
@@ -74,27 +66,17 @@ export default class Preloader extends Phaser.Scene {
         this.load.tilemapTiledJSON({
             key: 'mapa3',
             url: map3,
-        });
-        console.log('bababoi');
-        
+        });        
     }
 
     create() {
         this.add.text(400, 100, 'Estoy aqui', { fontSize: '20px', fill: '#fff' });
         const scene = this.scene.get('gamehome');
-        console.log(scene);
         if (scene) {
-
             this.scene.remove("gamehome");
-            console.log(this.scene.get('gamehome'));
-
             if(this.scene.get('gamehome')==null){
                 this.scene.add('gamehome', GameHome, true);
-
                 if (control != useStore.getState().gameData.currentMap) {
-                    console.log({ key: 'mapa' })
-                    console.log(useStore.getState().gameData.currentMap)
-
                     this.scene.switch('preloader');
                     control = useStore.getState().gameData.currentMap;
                 } else {
@@ -106,12 +88,8 @@ export default class Preloader extends Phaser.Scene {
                     } while (!{ key: 'mapa' });
                     this.time.delayedCall(3000, () => {
                         if ({ key: 'mapa' }) {
-                            console.log("AIUUUUUUUUUUUUDA");
                             // this.scene.start('gamehome');
                         }
-
-
-
                     });
                 }
             }
@@ -120,9 +98,6 @@ export default class Preloader extends Phaser.Scene {
             this.scene.add('gamehome', GameHome, true);
 
             if (control != useStore.getState().gameData.currentMap) {
-                console.log({ key: 'mapa' })
-                console.log(useStore.getState().gameData.currentMap)
-
                 this.scene.switch('preloader');
                 control = useStore.getState().gameData.currentMap;
             } else {
@@ -134,12 +109,8 @@ export default class Preloader extends Phaser.Scene {
                 } while (!{ key: 'mapa' });
                 this.time.delayedCall(3000, () => {
                     if ({ key: 'mapa' }) {
-                        console.log("ME ESTAN MATANDO");
                         // this.scene.start('gamehome');
                     }
-
-
-
                 });
             }
         }
