@@ -186,23 +186,22 @@ function AdminPanel() {
     }
 
     return (
-        <div className="flex  items-center h-screen bg-teal-900">
-            <div className="grid grid-rows-3 w-48 h-screen bg-teal-700">
-
-                <div className="flex flex-col items-center justify-center">
+        <div className="flex items-center min-h-screen bg-teal-900">
+            <div className="grid grid-cols items-center justify-center min-h-screen w-48 bg-teal-700">
+                <div>
                     <RiAdminLine className='icons' onClick={() => handleIconClick('allUsers')} />
                 </div>
-                <div className="flex flex-col items-center justify-center">
+                <div>
                     <FaRegMap className='icons' onClick={() => handleIconClick('maps')} />
                 </div>
-                <div className="flex flex-col items-center justify-center">
+                <div>
                     <TbMapExclamation className='icons' onClick={() => handleIconClick('reportedMaps')} />
                 </div>
             </div>
 
             {!selectedIcon && (
                 <div className='container-home'>
-                    <div className='icon-settings'>
+                    <div className='icon-settings mt-9'>
                         <IoSettingsOutline style={{ fontSize: '4em', color: 'white' }} />
                     </div>
 
@@ -235,7 +234,7 @@ function AdminPanel() {
 
             {selectedIcon === 'maps' && (
                 <div className="container">
-                    <div className='container-icon-maps'>
+                    <div className='container-icon-maps mt-9'>
                         <FaRegMap style={{ fontSize: '12em', color: '#D5671C' }} />
                     </div>
                     <div>
@@ -355,7 +354,7 @@ function AdminPanel() {
 
             {selectedIcon === 'reportedMaps' && (
                 <div className='container'>
-                    <div className='container-icon-report'>
+                    <div className='container-icon-report mt-9'>
                         <MdOutlineReportProblem style={{ fontSize: '12em', color: '#BF0A1D' }} />
                     </div>
                     <div>
@@ -439,8 +438,8 @@ function AdminPanel() {
 
 
             {selectedIcon === 'allUsers' && (
-                <div className="container">
-                    <div className="container-icon-users">
+                <div className="container ">
+                    <div className="container-icon-users mt-9">
                         <RiAdminLine style={{ fontSize: '12em', color: '#2C66E3' }} />
                     </div>
                     <div>

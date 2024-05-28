@@ -1,9 +1,11 @@
 import AdminPanel from "../components/adminPanel";
+import Header from "../components/header";
 
 function Admin() {
     return (
         <div>
-            <AdminPanel />
+            <Header />
+            <AdminPanel/>
         </div>
     )
 }
