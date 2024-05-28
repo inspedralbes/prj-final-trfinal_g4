@@ -3,6 +3,7 @@ import useStore from '../src/store';
 import socket from '../services/sockets';
 import Preloader from './Preloader';
 
+
 export default class GameHome extends Phaser.Scene {
     done = false;
     c1Red = null;
@@ -41,6 +42,7 @@ export default class GameHome extends Phaser.Scene {
     handleCollision;
     colors = [{ color: 'white', hex: 0xffffff }, { color: 'black', hex: 0x303030 }, { color: 'gray', hex: 0x969696 }, { color: 'red', hex: 0xf1090d }, { color: 'green', hex: 0x29b127 }, { color: 'blue', hex: 0x2b80ff }, { color: 'orange', hex: 0xe26b09 }, { color: 'yellow', hex: 0xdada00 }, { color: 'purple', hex: 0x91209e }];
     animationButtonPLaying;
+    otherButtonPressing;
     constructor() {
         super('gamehome');
     }
@@ -55,6 +57,13 @@ export default class GameHome extends Phaser.Scene {
     init() {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.activePointer = this.input.activePointer;
+        this.buttons = [];
+        this.spawns = [];
+        this.death = [];
+        this.platforms = [];
+        this.doors = [];
+        this.flags = [];
+
     }
 
     create() {
@@ -254,7 +263,7 @@ export default class GameHome extends Phaser.Scene {
 
                         this.character1.setPosition(x, y);
 
-                      
+
 
                         this.anims.create({
                             key: 'idle',
@@ -300,6 +309,7 @@ export default class GameHome extends Phaser.Scene {
                         this.spawns.push({ spawn1X, spawn1Y });
                         this.character1.body.setSize(w * 0.50, h * 0.90);
                         // console.log("1", this.spawns);
+
                         break;
 
                     }
@@ -362,7 +372,7 @@ export default class GameHome extends Phaser.Scene {
 
                         }
                         this.spawns.push({ spawn2X, spawn2Y });
-                        // console.log("1, 2", this.spawns);
+
                         break;
                     };
             }
@@ -418,15 +428,15 @@ export default class GameHome extends Phaser.Scene {
                         } else {
                             flag_endGame.player = 2;
                         }
-                        if(gray){this.physics.add.collider(flag_endGame, gray);}
-                        if(white){this.physics.add.collider(flag_endGame, white);}
-                        if(black){this.physics.add.collider(flag_endGame, black);}
-                        if(red){this.physics.add.collider(flag_endGame, red);}
-                        if(blue){this.physics.add.collider(flag_endGame, blue);}
-                        if(purple){this.physics.add.collider(flag_endGame, purple);}
-                        if(green){this.physics.add.collider(flag_endGame, green);}
-                        if(orange){this.physics.add.collider(flag_endGame, orange);}
-                        if(yellow){this.physics.add.collider(flag_endGame, yellow);}
+                        if (gray) { this.physics.add.collider(flag_endGame, gray); }
+                        if (white) { this.physics.add.collider(flag_endGame, white); }
+                        if (black) { this.physics.add.collider(flag_endGame, black); }
+                        if (red) { this.physics.add.collider(flag_endGame, red); }
+                        if (blue) { this.physics.add.collider(flag_endGame, blue); }
+                        if (purple) { this.physics.add.collider(flag_endGame, purple); }
+                        if (green) { this.physics.add.collider(flag_endGame, green); }
+                        if (orange) { this.physics.add.collider(flag_endGame, orange); }
+                        if (yellow) { this.physics.add.collider(flag_endGame, yellow); }
                         this.flags.push(flag_endGame);
 
                         break;
@@ -471,18 +481,18 @@ export default class GameHome extends Phaser.Scene {
                         }
                         button.color = findColorParam(objData.properties);
                         button.affected = findAffectedParam(objData.properties);
-                        if(gray){this.physics.add.collider(button, gray);}
-                        if(white){this.physics.add.collider(button, white);}
-                        if(black){this.physics.add.collider(button, black);}
-                        if(red){this.physics.add.collider(button, red);}
-                        if(blue){this.physics.add.collider(button, blue);}
-                        if(purple){this.physics.add.collider(button, purple);}
-                        if(green){this.physics.add.collider(button, green);}
-                        if(orange){this.physics.add.collider(button, orange);}
-                        if(yellow){this.physics.add.collider(button, yellow);}
+                        if (gray) { this.physics.add.collider(button, gray); }
+                        if (white) { this.physics.add.collider(button, white); }
+                        if (black) { this.physics.add.collider(button, black); }
+                        if (red) { this.physics.add.collider(button, red); }
+                        if (blue) { this.physics.add.collider(button, blue); }
+                        if (purple) { this.physics.add.collider(button, purple); }
+                        if (green) { this.physics.add.collider(button, green); }
+                        if (orange) { this.physics.add.collider(button, orange); }
+                        if (yellow) { this.physics.add.collider(button, yellow); }
                         button.setPosition(x, y);
                         button.scale = 0.20;
-                        button.body.allowGravity=false;
+                        button.body.allowGravity = false;
                         button.setInteractive();
                         button.name = ogName;
                         this.buttons.push(button);
@@ -562,9 +572,7 @@ export default class GameHome extends Phaser.Scene {
                     platform.velocity = findVelocityParam(objData.properties);
                     platform.direction = findDirectionParam(objData.properties);
                     platform.affected = findAffectedParam(objData.properties);
-                    if (platform.affected == '6') {
-                        console.log("platformFantasma", platform);
-                    }
+                    platform.onUse = false;
                     console.log("move up", platform.movement);
                     platform.body.allowGravity = false;
 
@@ -651,68 +659,13 @@ export default class GameHome extends Phaser.Scene {
         if (green) {
             this.greenView = green;
         }
-        this.buttons.forEach(button => {
-            button.associated = [];
-            this.platforms.forEach(platform => {
-                if (platform.affected == button.affected) {
-                    button.associated.push(platform);
-                }
-            });
 
-        });
-        this.platforms.forEach(platform => {
-            platform.collisionC1 = null;
-            platform.collisionC2 = null;
-            switch (platform.color) {
-                case 'Whi':
-                    platform.setTint(this.colors.find(color => color.color == 'white').hex);
-
-                    platform.collisionC1 = this.physics.add.collider(platform, this.character1);
-                    break;
-                case 'Bla':
-                    platform.setTint(this.colors.find(color => color.color == 'black').hex);
-                    platform.collisionC2 = this.physics.add.collider(platform, this.character2);
-                    break;
-                case 'Gra':
-                    platform.setTint(this.colors.find(color => color.color == 'gray').hex);
-                    platform.collisionC1 = this.physics.add.collider(platform, this.character1);
-                    platform.collisionC2 = this.physics.add.collider(platform, this.character2);
-                    break;
-                case 'Red':
-                    platform.setTint(this.colors.find(color => color.color == 'red').hex);
-                    platform.collisionC1 = this.physics.add.collider(platform, this.character1);
-                    break;
-                case 'Blu':
-                    platform.setTint(this.colors.find(color => color.color == 'blue').hex);
-                    platform.collisionC2 = this.physics.add.collider(platform, this.character2);
-                    break;
-                case 'Pur':
-                    platform.setTint(this.colors.find(color => color.color == 'purple').hex);
-                    platform.collisionC1 = this.physics.add.collider(platform, this.character1);
-                    platform.collisionC2 = this.physics.add.collider(platform, this.character2);
-                    break;
-                case 'Gre':
-                    platform.setTint(this.colors.find(color => color.color == 'green').hex);
-                    platform.collisionC1 = this.physics.add.collider(platform, this.character1);
-                    break;
-                case 'Ora':
-                    platform.setTint(this.colors.find(color => color.color == 'orange').hex);
-                    platform.collisionC2 = this.physics.add.collider(platform, this.character2);
-                    break;
-                case 'Yel':
-                    platform.setTint(this.colors.find(color => color.color == 'yellow').hex);
-                    platform.collisionC1 = this.physics.add.collider(platform, this.character1);
-                    platform.collisionC2 = this.physics.add.collider(platform, this.character2);
-                    break;
-            }
-        });
         this.player = selectPlayer();
         this.handleCollision = function (player1, player2, button) {
             let toReturn = false;
             if (player1) {
-                console.log(this.character1.tintTopLeft);
-                console.log(this.colors.find(color => color.color == 'white').hex);
                 let characterColor = this.colors.find(color => color.hex == this.character1.tintTopLeft).color;
+                console.log(characterColor);
                 switch (characterColor) {
                     case 'white':
                         if (button.color == 'Whi' || button.color == 'Gra') {
@@ -730,9 +683,8 @@ export default class GameHome extends Phaser.Scene {
                         }
                         break;
                 }
-            } else if (player2) {
-                console.log(this.colors.find(color => color.color == 'black').hex);
-                console.log(this.character2.tintTopLeft);
+            } else if (player2 && toReturn == false) {
+
                 let characterColor = this.colors.find(color => color.hex == this.character2.tintTopLeft).color;
                 switch (characterColor) {
                     case 'black':
@@ -768,7 +720,22 @@ export default class GameHome extends Phaser.Scene {
 
                 }
             }
+
             return toReturn;
+        }
+        this.otherButtonPressing = function (platform, compareButton) {
+            let isOtherPressed = false;
+            this.buttons.forEach(button => {
+                if (platform.affected == button.affected && compareButton != button) {
+                    const isPlayer1Colliding = this.physics.overlap(button, this.character1);
+                    const isPlayer2Colliding = this.physics.overlap(button, this.character2);
+                    if (this.handleCollision(isPlayer1Colliding, isPlayer2Colliding, button)) {
+                        isOtherPressed = true;
+                    }
+                }
+
+            });
+            return isOtherPressed
         }
         function selectPlayer() {
             // console.log(useStore.getState().playerData.id, "=", useStore.getState().gameData.players[0].id);
@@ -853,14 +820,69 @@ export default class GameHome extends Phaser.Scene {
                 this.character1.flipX = playerData[0].direction == 'left';
             }
         }
-       
+        this.buttons.forEach(button => {
+            button.associated = [];
+            this.platforms.forEach(platform => {
+                if (platform.affected == button.affected) {
+                    button.associated.push(platform);
+                    console.log("associated", button, platform);
+                }
+            });
+
+        });
+        this.platforms.forEach(platform => {
+            platform.collisionC1 = null;
+            platform.collisionC2 = null;
+            switch (platform.color) {
+                case 'Whi':
+                    platform.setTint(this.colors.find(color => color.color == 'white').hex);
+
+                    platform.collisionC1 = this.physics.add.collider(platform, this.character1);
+                    break;
+                case 'Bla':
+                    platform.setTint(this.colors.find(color => color.color == 'black').hex);
+                    platform.collisionC2 = this.physics.add.collider(platform, this.character2);
+                    break;
+                case 'Gra':
+                    platform.setTint(this.colors.find(color => color.color == 'gray').hex);
+                    platform.collisionC1 = this.physics.add.collider(platform, this.character1);
+                    platform.collisionC2 = this.physics.add.collider(platform, this.character2);
+                    break;
+                case 'Red':
+                    platform.setTint(this.colors.find(color => color.color == 'red').hex);
+                    platform.collisionC1 = this.physics.add.collider(platform, this.character1);
+                    break;
+                case 'Blu':
+                    platform.setTint(this.colors.find(color => color.color == 'blue').hex);
+                    platform.collisionC2 = this.physics.add.collider(platform, this.character2);
+                    break;
+                case 'Pur':
+                    platform.setTint(this.colors.find(color => color.color == 'purple').hex);
+                    platform.collisionC1 = this.physics.add.collider(platform, this.character1);
+                    platform.collisionC2 = this.physics.add.collider(platform, this.character2);
+                    break;
+                case 'Gre':
+                    platform.setTint(this.colors.find(color => color.color == 'green').hex);
+                    platform.collisionC1 = this.physics.add.collider(platform, this.character1);
+                    break;
+                case 'Ora':
+                    platform.setTint(this.colors.find(color => color.color == 'orange').hex);
+                    platform.collisionC2 = this.physics.add.collider(platform, this.character2);
+                    break;
+                case 'Yel':
+                    platform.setTint(this.colors.find(color => color.color == 'yellow').hex);
+                    platform.collisionC1 = this.physics.add.collider(platform, this.character1);
+                    platform.collisionC2 = this.physics.add.collider(platform, this.character2);
+                    break;
+            }
+        });
         // this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         window.character1 = this.character1;
         this.death.forEach(death => {
             this.physics.add.overlap(death, this.character1, (death, character1) => {
                 this.animationPlaying = true;
-                
-                
+
+
                 socket.emit('death', { player: this.player });
                 setTimeout(() => {
                     this.character1.setPosition(this.spawns[0].spawn1X, this.spawns[0].spawn1Y);
@@ -870,8 +892,8 @@ export default class GameHome extends Phaser.Scene {
             })
             this.physics.add.overlap(death, this.character2, (death, character2) => {
                 this.animationPlaying = true;
-                
-                
+
+
                 socket.emit('death', { player: this.player });
                 setTimeout(() => {
                     this.character1.setPosition(this.spawns[0].spawn1X, this.spawns[0].spawn1Y);
@@ -1249,8 +1271,8 @@ export default class GameHome extends Phaser.Scene {
         socket.on('deathFront', () => {
             console.log("SI")
             this.animationPlaying = true;
-            
-            
+
+
 
             this.character1.setPosition(this.spawns[0].spawn1X, this.spawns[0].spawn1Y);
             this.character2.setPosition(this.spawns[1].spawn2X, this.spawns[1].spawn2Y);
@@ -1601,15 +1623,15 @@ export default class GameHome extends Phaser.Scene {
         if (this.player == 1) {
             switch (useStore.getState().gameData.playersData[0].color) {
                 case 'white':
-                    if(this.c1White != null){
+                    if (this.c1White != null) {
                         this.c1White.active = true;
                         this.c1Gray.active = true;
                     }
-                    if(this.c1Red != null){
+                    if (this.c1Red != null) {
                         this.c1Red.active = false;
                         this.c1Purple.active = false;
                     }
-                    if(this.c1Green != null){
+                    if (this.c1Green != null) {
                         this.c1Green.active = false;
                         this.c1Yellow.active = false;
                     }
@@ -1867,6 +1889,7 @@ export default class GameHome extends Phaser.Scene {
             }
         }
         if (this.player == 2) {
+            this.character1.body.allowGravity = false;
             switch (useStore.getState().gameData.playersData[1].color) {
                 case 'black':
                     this.blackView.setAlpha(1);
@@ -1916,6 +1939,7 @@ export default class GameHome extends Phaser.Scene {
                     break;
             }
         } else {
+            this.character2.body.allowGravity = false;
             switch (useStore.getState().gameData.playersData[0].color) {
                 case 'white':
                     this.whiteView.setAlpha(1);
@@ -1970,15 +1994,6 @@ export default class GameHome extends Phaser.Scene {
 
     update() {
         if (this.done) {
-            if (this.cursors.down.isDown) {
-                console.log(this.c1Green.active);
-                console.log(this.c1Yellow.active);
-                console.log(this.c1Purple.active);
-                console.log(this.c1Red.active);
-                console.log(this.c1Gray.active);
-                console.log(this.c1White.active);
-
-            }
             if (this.cursors.space.isDown && this.pressable) {
                 socket.emit('changeColor');
                 this.pressable = false;
@@ -1988,55 +2003,33 @@ export default class GameHome extends Phaser.Scene {
             }
 
             this.buttons.forEach(button => {
-                const isPlayer1Colliding = this.physics.overlap(button, this.character1);
-                const isPlayer2Colliding = this.physics.overlap(button, this.character2);
 
+                if (button.name == 'button-1') {
+                    console.log(button.associated)
+                }
+
+                let isPlayer1Colliding = this.physics.overlap(button, this.character1);
+                let isPlayer2Colliding = this.physics.overlap(button, this.character2);
                 if (button.associated.length > 0) {
+                    let collidingGood = this.handleCollision(isPlayer1Colliding, isPlayer2Colliding, button);
+                    console.log(collidingGood);
+                    if (collidingGood == true) {
+                        console.log("entrando con", collidingGood)
+                        button.associated.forEach(platform => {
+                            if (this.otherButtonPressing(platform, button) == false) {
+                                let platformVelocityY = 0;
 
-                    button.associated.forEach(platform => {
-                        let platformVelocityY = 0;
-                        if (this.handleCollision(isPlayer1Colliding, isPlayer2Colliding, button)) {
-                            platformVelocityY = -32;
-                            console.log('colliding');
-                            if (platform.velocity == "Fast") {
-                                platformVelocityY -= 32;
-                            }
-                        }
-                        const hasMovedEnough = Math.abs(platform.body.x) >= platform.body.x + platform.movement || Math.abs(platform.body.y) >= platform.body.y + platform.movement;
-                        if (hasMovedEnough && platformVelocityY < 0) {
-                            platformVelocityY = 0;
-                        }
-                        if (platform.direction == 'up') {
-                            if (platform.y < platform.posY && platformVelocityY == 0) {
-                                platformVelocityY = 32;
-                                if (platform.velocity == 'Fast') {
-                                    platformVelocityY += 32;
+                                platformVelocityY = -32;
+                                console.log(button.associated);
+                                if (platform.velocity == "Fast") {
+                                    platformVelocityY -= 32;
                                 }
-                            }
-                            let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
-                            if (hasMovedEnough && platformVelocityY < 0) {
-                                // console.log(platform.movement)
-                                platformVelocityY = 0;
-                            }
-                            platform.body.setVelocityY(platformVelocityY);
-                        } else {
+                                console.log(platform);
+                                console.log(button.associated);
 
-                            if (platform.direction == 'left') {
-                                if (platform.x < platform.posX && platformVelocityY == 0) {
-                                    platformVelocityY = 32;
-                                    if (platform.velocity == 'Fast') {
-                                        platformVelocityY += 32;
-                                    }
-                                }
-
-                                let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
-                                if (hasMovedEnough && platformVelocityY < 0) {
-                                    platformVelocityY = 0;
-                                }
-                                platform.body.setVelocityX(platformVelocityY);
-                            } else {
-                                if (platform.direction == 'right') {
-                                    if (platform.x > platform.posX && platformVelocityY == 0) {
+                                console.log(platformVelocityY)
+                                if (platform.direction == 'up') {
+                                    if (platform.y < platform.posY && platformVelocityY == 0) {
                                         platformVelocityY = 32;
                                         if (platform.velocity == 'Fast') {
                                             platformVelocityY += 32;
@@ -2044,30 +2037,132 @@ export default class GameHome extends Phaser.Scene {
                                     }
                                     let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
                                     if (hasMovedEnough && platformVelocityY < 0) {
+                                        // console.log(platform.movement)
                                         platformVelocityY = 0;
                                     }
-                                    platform.body.setVelocityX(platformVelocityY * -1);
-                                }
-                                else {
-                                    if (platform.direction == 'down') {
-                                        if (platform.y > platform.posY && platformVelocityY == 0) {
+                                    platform.body.setVelocityY(platformVelocityY);
+                                } else {
+
+                                    if (platform.direction == 'left') {
+                                        if (button.name == 'button-1') {
+                                            console.log(platformVelocityY)
+                                        }
+                                        if (platform.x < platform.posX && platformVelocityY == 0) {
                                             platformVelocityY = 32;
                                             if (platform.velocity == 'Fast') {
                                                 platformVelocityY += 32;
                                             }
                                         }
+
                                         let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
                                         if (hasMovedEnough && platformVelocityY < 0) {
                                             platformVelocityY = 0;
                                         }
-                                        platform.body.setVelocityY(platformVelocityY * -1);
+                                        platform.body.setVelocityX(platformVelocityY);
+                                    } else {
+                                        if (platform.direction == 'right') {
+                                            if (platform.x > platform.posX && platformVelocityY == 0) {
+                                                platformVelocityY = 32;
+                                                if (platform.velocity == 'Fast') {
+                                                    platformVelocityY += 32;
+                                                }
+                                            }
+                                            let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
+                                            if (hasMovedEnough && platformVelocityY < 0) {
+                                                platformVelocityY = 0;
+                                            }
+                                            platform.body.setVelocityX(platformVelocityY * -1);
+                                        }
+                                        else {
+                                            if (platform.direction == 'down') {
+                                                if (platform.y > platform.posY && platformVelocityY == 0) {
+                                                    platformVelocityY = 32;
+                                                    if (platform.velocity == 'Fast') {
+                                                        platformVelocityY += 32;
+                                                    }
+                                                }
+                                                let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
+                                                if (hasMovedEnough && platformVelocityY < 0) {
+                                                    platformVelocityY = 0;
+                                                }
+                                                platform.body.setVelocityY(platformVelocityY * -1);
+                                            }
+                                        }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        if (button.associated.length > 0 && this.otherButtonPressing(button.associated[0], button) == false) {
+                            button.associated.forEach(platform => {
+                                let platformVelocityY = 0;
+                                if (platform.direction == 'up') {
+                                    if (platform.y < platform.posY && platformVelocityY == 0) {
+                                        platformVelocityY = 32;
+                                        if (platform.velocity == 'Fast') {
+                                            platformVelocityY += 32;
+                                        }
+                                    }
+                                    let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
+                                    if (hasMovedEnough && platformVelocityY < 0) {
+                                        // console.log(platform.movement)
+                                        platformVelocityY = 0;
+                                    }
+                                    platform.body.setVelocityY(platformVelocityY);
+                                } else {
 
+                                    if (platform.direction == 'left') {
+                                        if (button.name == 'button-1') {
+                                            console.log(platformVelocityY)
+                                        }
+                                        if (platform.x < platform.posX && platformVelocityY == 0) {
+                                            platformVelocityY = 32;
+                                            if (platform.velocity == 'Fast') {
+                                                platformVelocityY += 32;
+                                            }
+                                        }
+
+                                        let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
+                                        if (hasMovedEnough && platformVelocityY < 0) {
+                                            platformVelocityY = 0;
+                                        }
+                                        platform.body.setVelocityX(platformVelocityY);
+                                    } else {
+                                        if (platform.direction == 'right') {
+                                            if (platform.x > platform.posX && platformVelocityY == 0) {
+                                                platformVelocityY = 32;
+                                                if (platform.velocity == 'Fast') {
+                                                    platformVelocityY += 32;
+                                                }
+                                            }
+                                            let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
+                                            if (hasMovedEnough && platformVelocityY < 0) {
+                                                platformVelocityY = 0;
+                                            }
+                                            platform.body.setVelocityX(platformVelocityY * -1);
+                                        }
+                                        else {
+                                            if (platform.direction == 'down') {
+                                                if (platform.y > platform.posY && platformVelocityY == 0) {
+                                                    platformVelocityY = 32;
+                                                    if (platform.velocity == 'Fast') {
+                                                        platformVelocityY += 32;
+                                                    }
+                                                }
+                                                let hasMovedEnough = platform.posX >= platform.body.x + platform.movement || platform.posY >= platform.body.y + platform.movement;
+                                                if (hasMovedEnough && platformVelocityY < 0) {
+                                                    platformVelocityY = 0;
+                                                }
+                                                platform.body.setVelocityY(platformVelocityY * -1);
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
                 }
+
             });
 
             this.flags.forEach(flag => {

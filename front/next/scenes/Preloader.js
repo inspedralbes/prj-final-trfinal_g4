@@ -4,7 +4,7 @@ import GameHome from './GameHome';
 import socket from '../services/sockets';
 
 
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = 'http://localhost:8000';   
 let control = useStore.getState().gameData.currentMap
 
 export default class Preloader extends Phaser.Scene {

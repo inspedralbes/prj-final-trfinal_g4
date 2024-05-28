@@ -249,7 +249,7 @@ io.on('connection', (socket) => {
     //Exit Room
     socket.on('exitRoom', () => {
         let room = findRoomByUser(socket.id);
-        if (socket.id == room.admin[0]) {
+        if (room && socket.id == room.admin[0]) {
             if (room.users.length > 1) {
                 let name = room.admin[1];
                 room.admin[0] = room.users[1].id;
@@ -266,13 +266,17 @@ io.on('connection', (socket) => {
                 rooms.splice(rooms.indexOf(room), 1);
             }
         } else {
-            room.messages.push({ user: 'Server', message: `${room.users.find(user => user.id == socket.id).name} a sortit de la sala` });
-            room.users.splice(1, 1);
-            room.accesible = true;
-            socket.leave(room.id);
-            room.messages = room.messages.filter(message => message.user == 'Server');
-            socket.emit('newInfoRoom', null);
-            io.to(room.id).emit('newInfoRoom', room);
+            if (room) {
+                room.messages.push({ user: 'Server', message: `${room.users.find(user => user.id == socket.id).name} a sortit de la sala` });
+                room.users.splice(1, 1);
+                room.accesible = true;
+                socket.leave(room.id);
+                room.messages = room.messages.filter(message => message.user == 'Server');
+                socket.emit('newInfoRoom', null);
+                io.to(room.id).emit('newInfoRoom', room);
+            }
+
+
         }
         io.emit('allRooms', rooms);
     });
@@ -310,12 +314,14 @@ io.on('connection', (socket) => {
 
     socket.on('updatePosition', (data) => {
         let room = findRoomByUser(socket.id);
-        if (room && data.x &&data.y && data.direction) {
+        if (room && data.x && data.y && data.direction) {
             let player = room.game.playersData.find(player => player.id == socket.id);
-            player.x = data.x;
-            player.y = data.y;
-            player.direction = data.direction;
-            io.to(room.id).emit('updatePositionFront', room.game.playersData);
+            if (player) {
+                player.x = data.x;
+                player.y = data.y;
+                player.direction = data.direction;
+                io.to(room.id).emit('updatePositionFront', room.game.playersData);
+            }
         }
     });
 
@@ -330,7 +336,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('death', () => {
-        io.to(findRoomByUser(socket.id).id).emit('deathFront')
+        if (findRoomByUser(socket.id) != null) { io.to(findRoomByUser(socket.id).id).emit('deathFront') }
+
     });
 
     socket.on('win', () => {
@@ -338,6 +345,8 @@ io.on('connection', (socket) => {
         room.game.currentMap++;
         if (room.game.currentMap == room.game.maps.length) {
             io.to(findRoomByUser(socket.id).id).emit('finishGame')
+            socket.leave(room.id);
+            rooms.splice(rooms.indexOf(room), 1);
         } else {
             if (room.game.currentMap == 1) {
                 room.game.playersData[0].colorsUnlocked = ['red'];
@@ -405,7 +414,8 @@ io.on('connection', (socket) => {
                 rooms.splice(rooms.indexOf(room), 1);
             }
             io.emit('allRooms', rooms);
-        }});
+        }
+    });
 });
 
 

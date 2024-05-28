@@ -441,28 +441,6 @@
          "name":"Objects",
          "objects":[
                 {
-                 "height":33,
-                 "id":1,
-                 "name":"spawn-1",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":15.5,
-                 "x":-176.5,
-                 "y":-80.5
-                }, 
-                {
-                 "height":32,
-                 "id":2,
-                 "name":"spawn-2",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":17,
-                 "x":-144.5,
-                 "y":-80.5
-                }, 
-                {
                  "height":8,
                  "id":3,
                  "name":"button",
@@ -485,36 +463,14 @@
                  "y":-56.3333
                 }, 
                 {
-                 "height":7.66667,
-                 "id":4,
-                 "name":"button",
-                 "properties":[
-                        {
-                         "name":"affected",
-                         "type":"string",
-                         "value":"2"
-                        }, 
-                        {
-                         "name":"color",
-                         "type":"string",
-                         "value":"Red"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":11,
-                 "x":369.666666666667,
-                 "y":-194.333666666667
-                }, 
-                {
                  "height":10.6667,
                  "id":5,
                  "name":"platform",
                  "properties":[
                         {
                          "name":"affected",
-                         "type":"int",
-                         "value":1
+                         "type":"string",
+                         "value":"1"
                         }, 
                         {
                          "name":"color",
@@ -529,7 +485,7 @@
                         {
                          "name":"movement",
                          "type":"float",
-                         "value":100
+                         "value":600
                         }, 
                         {
                          "name":"velocity",
@@ -545,35 +501,13 @@
                 }, 
                 {
                  "height":8,
-                 "id":6,
-                 "name":"button",
-                 "properties":[
-                        {
-                         "name":"affected",
-                         "type":"int",
-                         "value":2
-                        }, 
-                        {
-                         "name":"color",
-                         "type":"string",
-                         "value":"Blu"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":12.5,
-                 "x":658.5,
-                 "y":-57
-                }, 
-                {
-                 "height":8,
                  "id":7,
                  "name":"button",
                  "properties":[
                         {
                          "name":"affected",
-                         "type":"int",
-                         "value":3
+                         "type":"string",
+                         "value":"3"
                         }, 
                         {
                          "name":"color",
@@ -594,8 +528,8 @@
                  "properties":[
                         {
                          "name":"affected",
-                         "type":"int",
-                         "value":4
+                         "type":"string",
+                         "value":"4"
                         }, 
                         {
                          "name":"color",
@@ -610,226 +544,19 @@
                  "y":-185.667
                 }, 
                 {
-                 "height":14.5,
-                 "id":10,
-                 "name":"platform",
-                 "properties":[
-                        {
-                         "name":"affected",
-                         "type":"int",
-                         "value":2
-                        }, 
-                        {
-                         "name":"color",
-                         "type":"string",
-                         "value":"Pur"
-                        }, 
-                        {
-                         "name":"direction",
-                         "type":"string",
-                         "value":"left"
-                        }, 
-                        {
-                         "name":"movement",
-                         "type":"float",
-                         "value":200
-                        }, 
-                        {
-                         "name":"velocity",
-                         "type":"string",
-                         "value":"normal"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":76.5,
-                 "x":530.5,
-                 "y":-47
-                }, 
-                {
-                 "height":8,
-                 "id":11,
-                 "name":"button",
-                 "properties":[
-                        {
-                         "name":"affected",
-                         "type":"int",
-                         "value":5
-                        }, 
-                        {
-                         "name":"color",
-                         "type":"string",
-                         "value":"Red"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":13,
-                 "x":1649.5,
-                 "y":-185
-                }, 
-                {
-                 "height":10.5,
+                 "height":13.5909090909091,
                  "id":12,
                  "name":"platform",
                  "properties":[
                         {
                          "name":"affected",
-                         "type":"int",
-                         "value":3
+                         "type":"string",
+                         "value":"3"
                         }, 
                         {
                          "name":"color",
                          "type":"string",
                          "value":"Red"
-                        }, 
-                        {
-                         "name":"direction",
-                         "type":"string",
-                         "value":"up"
-                        }, 
-                        {
-                         "name":"movement",
-                         "type":"float",
-                         "value":100
-                        }, 
-                        {
-                         "name":"velocity",
-                         "type":"string",
-                         "value":"normal"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":60,
-                 "x":1362.5,
-                 "y":-12
-                }, 
-                {
-                 "height":9.5,
-                 "id":13,
-                 "name":"platform",
-                 "properties":[
-                        {
-                         "name":"affected",
-                         "type":"int",
-                         "value":4
-                        }, 
-                        {
-                         "name":"color",
-                         "type":"string",
-                         "value":"Red"
-                        }, 
-                        {
-                         "name":"direction",
-                         "type":"string",
-                         "value":"up"
-                        }, 
-                        {
-                         "name":"movement",
-                         "type":"float",
-                         "value":100
-                        }, 
-                        {
-                         "name":"velocity",
-                         "type":"string",
-                         "value":"normal"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":59.5,
-                 "x":1474.5,
-                 "y":-12
-                }, 
-                {
-                 "height":13.5,
-                 "id":14,
-                 "name":"platform",
-                 "properties":[
-                        {
-                         "name":"affected",
-                         "type":"int",
-                         "value":5
-                        }, 
-                        {
-                         "name":"color",
-                         "type":"string",
-                         "value":"Blu"
-                        }, 
-                        {
-                         "name":"direction",
-                         "type":"string",
-                         "value":"left"
-                        }, 
-                        {
-                         "name":"movement",
-                         "type":"float",
-                         "value":100
-                        }, 
-                        {
-                         "name":"velocity",
-                         "type":"string",
-                         "value":"normal"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":61,
-                 "x":1569.5,
-                 "y":-144
-                }, 
-                {
-                 "height":13,
-                 "id":15,
-                 "name":"platform",
-                 "properties":[
-                        {
-                         "name":"affected",
-                         "type":"int",
-                         "value":6
-                        }, 
-                        {
-                         "name":"color",
-                         "type":"string",
-                         "value":"Blu"
-                        }, 
-                        {
-                         "name":"direction",
-                         "type":"string",
-                         "value":"right"
-                        }, 
-                        {
-                         "name":"movement",
-                         "type":"float",
-                         "value":200
-                        }, 
-                        {
-                         "name":"velocity",
-                         "type":"string",
-                         "value":"fast"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":62,
-                 "x":1649,
-                 "y":-142.5
-                }, 
-                {
-                 "height":14.6667,
-                 "id":16,
-                 "name":"platform",
-                 "properties":[
-                        {
-                         "name":"affected",
-                         "type":"int",
-                         "value":6
-                        }, 
-                        {
-                         "name":"color",
-                         "type":"string",
-                         "value":"Blu"
                         }, 
                         {
                          "name":"direction",
@@ -849,9 +576,83 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":63.3333,
-                 "x":2144.67,
-                 "y":-159.333
+                 "width":60,
+                 "x":1362.5,
+                 "y":-15.0909090909091
+                }, 
+                {
+                 "height":9.5,
+                 "id":13,
+                 "name":"platform",
+                 "properties":[
+                        {
+                         "name":"affected",
+                         "type":"string",
+                         "value":"4"
+                        }, 
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"Red"
+                        }, 
+                        {
+                         "name":"direction",
+                         "type":"string",
+                         "value":"up"
+                        }, 
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":700
+                        }, 
+                        {
+                         "name":"velocity",
+                         "type":"string",
+                         "value":"normal"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":59.5,
+                 "x":1474.5,
+                 "y":170
+                }, 
+                {
+                 "height":6.6666666666667,
+                 "id":16,
+                 "name":"platform",
+                 "properties":[
+                        {
+                         "name":"affected",
+                         "type":"string",
+                         "value":"6"
+                        }, 
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"Blu"
+                        }, 
+                        {
+                         "name":"direction",
+                         "type":"string",
+                         "value":"up"
+                        }, 
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":5000
+                        }, 
+                        {
+                         "name":"velocity",
+                         "type":"string",
+                         "value":"fast"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":39.3333333333335,
+                 "x":2148.66666666667,
+                 "y":-153.333333333333
                 }, 
                 {
                  "height":9,
@@ -860,8 +661,8 @@
                  "properties":[
                         {
                          "name":"affected",
-                         "type":"int",
-                         "value":7
+                         "type":"string",
+                         "value":"7"
                         }, 
                         {
                          "name":"color",
@@ -874,8 +675,7 @@
                  "width":11.5,
                  "x":2290.5,
                  "y":-377.5
-                },
-            
+                }, 
                 {
                  "height":7.5,
                  "id":18,
@@ -883,8 +683,8 @@
                  "properties":[
                         {
                          "name":"affected",
-                         "type":"int",
-                         "value":6
+                         "type":"string",
+                         "value":"6"
                         }, 
                         {
                          "name":"color",
@@ -899,88 +699,14 @@
                  "y":-168.5
                 }, 
                 {
-                 "height":14.5,
-                 "id":19,
-                 "name":"platform",
-                 "properties":[
-                        {
-                         "name":"affected",
-                         "type":"int",
-                         "value":7
-                        }, 
-                        {
-                         "name":"color",
-                         "type":"string",
-                         "value":"Pur"
-                        }, 
-                        {
-                         "name":"direction",
-                         "type":"string",
-                         "value":"right"
-                        }, 
-                        {
-                         "name":"movement",
-                         "type":"float",
-                         "value":300
-                        }, 
-                        {
-                         "name":"velocity",
-                         "type":"string",
-                         "value":"normal"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":78.5,
-                 "x":2352.5,
-                 "y":-159.5
-                }, 
-                {
-                 "height":15,
-                 "id":20,
-                 "name":"platform",
-                 "properties":[
-                        {
-                         "name":"affected",
-                         "type":"int",
-                         "value":7
-                        }, 
-                        {
-                         "name":"color",
-                         "type":"string",
-                         "value":"Pur"
-                        }, 
-                        {
-                         "name":"direction",
-                         "type":"string",
-                         "value":"right"
-                        }, 
-                        {
-                         "name":"movement",
-                         "type":"float",
-                         "value":200
-                        }, 
-                        {
-                         "name":"velocity",
-                         "type":"string",
-                         "value":"normal"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":79,
-                 "x":2352.5,
-                 "y":-368
-                }, 
-                {
-                 "height":8.33333,
+                 "height":8.33333333333334,
                  "id":21,
                  "name":"button",
                  "properties":[
                         {
                          "name":"affected",
-                         "type":"int",
-                         "value":7
+                         "type":"string",
+                         "value":"7"
                         }, 
                         {
                          "name":"color",
@@ -990,9 +716,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":11.3333,
+                 "width":11.333333333333,
                  "x":2771,
-                 "y":-168.667
+                 "y":-168.666666666667
                 }, 
                 {
                  "height":8,
@@ -1001,8 +727,8 @@
                  "properties":[
                         {
                          "name":"affected",
-                         "type":"int",
-                         "value":8
+                         "type":"string",
+                         "value":"8"
                         }, 
                         {
                          "name":"color",
@@ -1017,88 +743,14 @@
                  "y":-377
                 }, 
                 {
-                 "height":13.5,
-                 "id":23,
-                 "name":"platform",
-                 "properties":[
-                        {
-                         "name":"affected",
-                         "type":"int",
-                         "value":9
-                        }, 
-                        {
-                         "name":"color",
-                         "type":"string",
-                         "value":"Blu"
-                        }, 
-                        {
-                         "name":"direction",
-                         "type":"string",
-                         "value":"down"
-                        }, 
-                        {
-                         "name":"movement",
-                         "type":"float",
-                         "value":200
-                        }, 
-                        {
-                         "name":"velocity",
-                         "type":"string",
-                         "value":"normal"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":63.5,
-                 "x":2945,
-                 "y":-366.5
-                }, 
-                {
-                 "height":63,
-                 "id":24,
-                 "name":"platform",
-                 "properties":[
-                        {
-                         "name":"affected",
-                         "type":"int",
-                         "value":8
-                        }, 
-                        {
-                         "name":"color",
-                         "type":"string",
-                         "value":"Red"
-                        }, 
-                        {
-                         "name":"direction",
-                         "type":"string",
-                         "value":"up"
-                        }, 
-                        {
-                         "name":"movement",
-                         "type":"float",
-                         "value":100
-                        }, 
-                        {
-                         "name":"velocity",
-                         "type":"string",
-                         "value":"normal"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":15.5,
-                 "x":2848,
-                 "y":-223.5
-                }, 
-                {
                  "height":8.5,
                  "id":25,
                  "name":"button",
                  "properties":[
                         {
                          "name":"affected",
-                         "type":"int",
-                         "value":9
+                         "type":"string",
+                         "value":"9"
                         }, 
                         {
                          "name":"color",
@@ -1113,51 +765,14 @@
                  "y":-248.5
                 }, 
                 {
-                 "height":12.5,
-                 "id":26,
-                 "name":"platform",
-                 "properties":[
-                        {
-                         "name":"affected",
-                         "type":"int",
-                         "value":10
-                        }, 
-                        {
-                         "name":"color",
-                         "type":"string",
-                         "value":"Red"
-                        }, 
-                        {
-                         "name":"direction",
-                         "type":"string",
-                         "value":"up"
-                        }, 
-                        {
-                         "name":"movement",
-                         "type":"float",
-                         "value":100
-                        }, 
-                        {
-                         "name":"velocity",
-                         "type":"string",
-                         "value":"fast"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":62.5,
-                 "x":3201,
-                 "y":-223.5
-                }, 
-                {
                  "height":8.5,
                  "id":27,
                  "name":"button",
                  "properties":[
                         {
                          "name":"affected",
-                         "type":"int",
-                         "value":10
+                         "type":"string",
+                         "value":"10"
                         }, 
                         {
                          "name":"color",
@@ -1184,8 +799,8 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":15.6667,
-                 "x":3488.33,
+                 "width":15.666666666667,
+                 "x":3488.33333333333,
                  "y":-256
                 }, 
                 {
@@ -1212,10 +827,11 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":766.667,
-                 "x":800.667,
-                 "y":48.6667
-                }, 
+                 "width":766.666666666667,
+                 "x":800.666666666667,
+                 "y":48.6666666666667
+                },
+            
                 {
                  "height":139,
                  "id":31,
@@ -1239,15 +855,399 @@
                  "y":113
                 }, 
                 {
-                 "height":189.333,
+                 "height":189.333333333333,
                  "id":33,
                  "name":"death",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":2080.67,
-                 "x":1712,
-                 "y":-31.3333
+                 "width":2080.66666666667,
+                 "x":1714,
+                 "y":-31.3333333333333
+                }, 
+                {
+                 "height":10.6667,
+                 "id":34,
+                 "name":"platform",
+                 "properties":[
+                        {
+                         "name":"affected",
+                         "type":"string",
+                         "value":"2"
+                        }, 
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"Pur"
+                        }, 
+                        {
+                         "name":"direction",
+                         "type":"string",
+                         "value":"left"
+                        }, 
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":300
+                        }, 
+                        {
+                         "name":"velocity",
+                         "type":"string",
+                         "value":"normal"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":48,
+                 "x":558,
+                 "y":-31.33335
+                }, 
+                {
+                 "height":8,
+                 "id":35,
+                 "name":"button",
+                 "properties":[
+                        {
+                         "name":"affected",
+                         "type":"string",
+                         "value":"2"
+                        }, 
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"Pur"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":12.6667,
+                 "x":464.999983333334,
+                 "y":-152.666666666666
+                }, 
+                {
+                 "height":8,
+                 "id":36,
+                 "name":"button",
+                 "properties":[
+                        {
+                         "name":"affected",
+                         "type":"string",
+                         "value":"2"
+                        }, 
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"Pur"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":12.6667,
+                 "x":657.249983333333,
+                 "y":-61.4166666666667
+                }, 
+                {
+                 "height":8,
+                 "id":38,
+                 "name":"button",
+                 "properties":[
+                        {
+                         "name":"affected",
+                         "type":"string",
+                         "value":"5"
+                        }, 
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"Pur"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":12.6667,
+                 "x":1634.66665,
+                 "y":-195
+                }, 
+                {
+                 "height":11.5909,
+                 "id":39,
+                 "name":"platform",
+                 "properties":[
+                        {
+                         "name":"affected",
+                         "type":"string",
+                         "value":"5"
+                        }, 
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"Blu"
+                        }, 
+                        {
+                         "name":"direction",
+                         "type":"string",
+                         "value":"left"
+                        }, 
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":300
+                        }, 
+                        {
+                         "name":"velocity",
+                         "type":"string",
+                         "value":"normal"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":39,
+                 "x":1603,
+                 "y":-141.79545
+                }, 
+                {
+                 "height":10.9242333333333,
+                 "id":40,
+                 "name":"platform",
+                 "properties":[
+                        {
+                         "name":"affected",
+                         "type":"string",
+                         "value":"6"
+                        }, 
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"Blu"
+                        }, 
+                        {
+                         "name":"direction",
+                         "type":"string",
+                         "value":"right"
+                        }, 
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":600
+                        }, 
+                        {
+                         "name":"velocity",
+                         "type":"string",
+                         "value":"fast"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":38.6666666666667,
+                 "x":1653,
+                 "y":-141.128783333333
+                }, 
+                {
+                 "height":14.6667,
+                 "id":46,
+                 "name":"platform",
+                 "properties":[
+                        {
+                         "name":"affected",
+                         "type":"string",
+                         "value":"7"
+                        }, 
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"Pur"
+                        }, 
+                        {
+                         "name":"direction",
+                         "type":"string",
+                         "value":"right"
+                        }, 
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":300
+                        }, 
+                        {
+                         "name":"velocity",
+                         "type":"string",
+                         "value":"fast"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":63.3333,
+                 "x":2396.33335,
+                 "y":-145.33335
+                }, 
+                {
+                 "height":14.6667,
+                 "id":47,
+                 "name":"platform",
+                 "properties":[
+                        {
+                         "name":"affected",
+                         "type":"string",
+                         "value":"7"
+                        }, 
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"Pur"
+                        }, 
+                        {
+                         "name":"direction",
+                         "type":"string",
+                         "value":"right"
+                        }, 
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":300
+                        }, 
+                        {
+                         "name":"velocity",
+                         "type":"string",
+                         "value":"fast"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":63.3333,
+                 "x":2422.33335,
+                 "y":-361.33335
+                }, 
+                {
+                 "height":63,
+                 "id":48,
+                 "name":"platform",
+                 "properties":[
+                        {
+                         "name":"affected",
+                         "type":"string",
+                         "value":"8"
+                        }, 
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"Red"
+                        }, 
+                        {
+                         "name":"direction",
+                         "type":"string",
+                         "value":"up"
+                        }, 
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":300
+                        }, 
+                        {
+                         "name":"velocity",
+                         "type":"string",
+                         "value":"normal"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":15.5,
+                 "x":2842.25,
+                 "y":-200.5
+                }, 
+                {
+                 "height":13.5,
+                 "id":49,
+                 "name":"platform",
+                 "properties":[
+                        {
+                         "name":"affected",
+                         "type":"string",
+                         "value":"9"
+                        }, 
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"Blu"
+                        }, 
+                        {
+                         "name":"direction",
+                         "type":"string",
+                         "value":"down"
+                        }, 
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":200
+                        }, 
+                        {
+                         "name":"velocity",
+                         "type":"string",
+                         "value":"normal"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":63.5,
+                 "x":2977.25,
+                 "y":-337.75
+                }, 
+                {
+                 "height":12.5,
+                 "id":50,
+                 "name":"platform",
+                 "properties":[
+                        {
+                         "name":"affected",
+                         "type":"string",
+                         "value":"10"
+                        }, 
+                        {
+                         "name":"color",
+                         "type":"string",
+                         "value":"Red"
+                        }, 
+                        {
+                         "name":"direction",
+                         "type":"string",
+                         "value":"up"
+                        }, 
+                        {
+                         "name":"movement",
+                         "type":"float",
+                         "value":100
+                        }, 
+                        {
+                         "name":"velocity",
+                         "type":"string",
+                         "value":"fast"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":62.5,
+                 "x":3194.75,
+                 "y":-226.25
+                }, 
+                {
+                 "height":33,
+                 "id":51,
+                 "name":"spawn-1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":15.5,
+                 "x":2048.16666666667,
+                 "y":-202.5
+                }, 
+                {
+                 "height":32,
+                 "id":52,
+                 "name":"spawn-2",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":17,
+                 "x":2080.16666666667,
+                 "y":-202.5
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1423,7 +1423,7 @@
                     0, 0, 0, 0, 0, 0, 0, 150, 151, 151, 151, 151, 151, 151, 151, 151,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 40, 41, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1856,8 +1856,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":12,
- "nextobjectid":34,
+ "nextlayerid":6,
+ "nextobjectid":53,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
@@ -1866,7 +1866,7 @@
         {
          "columns":22,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/..\/..\/..\/..\/..\/..\/..\/..\/..\/chromatic-bond-v16\/prj-final-trfinal_g4\/front\/next\/public\/assets\/White-terrain.png",
+         "image":"..\/..\/..\/..\/..\/..\/chromatic-bond-v16\/prj-final-trfinal_g4\/front\/next\/public\/assets\/White-terrain.png",
          "imageheight":176,
          "imagewidth":352,
          "margin":0,
