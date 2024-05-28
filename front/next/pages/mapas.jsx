@@ -69,12 +69,12 @@ function Mapas() {
     }
 
     return (
-        <div className="h-screen overflow-hidden bg-gradient-to-r from-purple-500 from-5% via-blue-500 via-50% to-red-600">
+        <div className="min-h-screen overflow-hidden bg-gradient-to-r from-purple-500 from-5% via-blue-500 via-50% to-red-600">
             <Header />
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center min-h-screen">
             {popupMessage && <ErrorPopup type="incomplete" message={popupMessage} clearMessage={() => setPopupMessage(null)} />}
             {successMessage && <ErrorPopup type="success" message={successMessage} clearMessage={() => setSuccessMessage(null)} />}
-                <div className="w-full sm:w-1/2 bg-white rounded-lg p-8 mx-auto mb-8">
+                <div className="w-full sm:w-1/2 bg-white rounded-lg p-8 mx-auto">
                     <h1 className="text-3xl font-bold mb-4">Enviar mapa</h1>
                     <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
                         <div>
@@ -125,11 +125,12 @@ function Mapas() {
                             />
                         </div>
                         <div>
-                            <label htmlFor="mapRoute" className="block text-gray-700 font-semibold mb-2">Archiu del mapa:</label>
+                            <label htmlFor="mapRoute" className="block text-gray-700 font-semibold mb-2">Archiu del mapa (.json):</label>
                             <input
                                 id="map"
                                 name="map"
                                 type="file"
+                                accept=".json"
                                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
                                 onChange={(e) => setmap(e.target.files[0])}
                             />

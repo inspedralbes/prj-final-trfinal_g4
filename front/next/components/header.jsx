@@ -81,6 +81,11 @@ const Header = () => {
                 <Link href="/comunitat" className="mr-4 text-white hover:text-yellow-500">
                     Comunitat
                 </Link>
+                { useStore.getState().user.admin == 1 && (
+                    <Link href="/admin" className="mr-4 text-white hover:text-yellow-500">
+                        Administració
+                    </Link>
+                )}
                 <img src={`${url}${image}`} className="w-10 h-10 mx-4 text-3xl cursor-pointer rounded-full" onClick={toggleDropdown} />
                 {dropdownOpen && (
                     <div className="dropdown absolute right-0 mt-10 bg-black top-[0.75rem] bg-opacity-50 rounded-md shadow-lg">
