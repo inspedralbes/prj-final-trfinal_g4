@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { login } from '../services/communicationManager';
 import { useRouter } from 'next/router';
 import { signIn, useSession } from 'next-auth/react';
@@ -74,12 +74,7 @@ function Login() {
         }
       });
 
-      if (data.admin == 1) {
-        useStore.setState({ admin: true });
-        router.push('/admin');
-      } else {
-        router.push('/rooms');
-      }
+      router.push('/rooms');
     } catch (error) {
       setSessionError('Dades de inici de sessió incorrectes! Torna a provar.');
     }

@@ -33,9 +33,7 @@ const Lobby = () => {
     useEffect(() => {
         const intervalId = setInterval(() => {
             const roomMessages = useStore.getState().room.messages;
-            console.log(roomMessages);
             messages = roomMessages;
-            console.log(messages);
         }, 1000);
         return () => clearInterval(intervalId);
     }, []);
@@ -60,7 +58,6 @@ const Lobby = () => {
     useEffect(() => {
         socket.on('gameStarted', (data) => {
             if (useStore.getState().room != null && useStore.getState().room.status === 'Playing') {
-                console.log('Redirecting to game...');
                 router.push('/game');
             }
         });

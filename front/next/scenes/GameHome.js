@@ -81,9 +81,7 @@ export default class GameHome extends Phaser.Scene {
     create() {
 
         this.done = false;
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMA", { key: 'mapa' });
         const map = this.add.tilemap(`mapa${useStore.getState().gameData.currentMap}`);
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA", map);
         const tileset = map.addTilesetImage('tilesetWhite', 'tileset');
         let gray = null;
         let white = null;
@@ -124,9 +122,6 @@ export default class GameHome extends Phaser.Scene {
         }
         this.grayView = gray;
 
-        console.log("chinga", map.layers);
-
-        console.log('white')
         white = map.createLayer('white', tileset);
         if (map.layers.find(layer => layer.name === 'white')) {
             for (let y = 0; y < white.height; y++) {
@@ -134,7 +129,6 @@ export default class GameHome extends Phaser.Scene {
                     const tileW = white.getTileAt(x, y);
 
                     if (tileW && tileW.index > 0) {
-                        // console.log(tileW);
                         tileW.tint = this.colors.find(color => color.color == 'white').hex;
                     }
                 }
@@ -144,7 +138,6 @@ export default class GameHome extends Phaser.Scene {
             white.immovable = true;
         }
         this.whiteView = white;
-
 
         black = map.createLayer('black', tileset);
         if (map.layers.find(layer => layer.name === 'black')) {
@@ -269,13 +262,9 @@ export default class GameHome extends Phaser.Scene {
         }
         this.yellowView = yellow;
 
-
-
-
         const objectsLayer = map.getObjectLayer('Objects')
         objectsLayer.objects.forEach(objData => {
             let { x = 0, y = 0, name, width = 0, height = 0, xFlag = 0, yFlag = 0 } = objData;
-            console.log("ThisData", objData);
             x = parseInt(x);
             y = parseInt(y);
 
@@ -286,15 +275,12 @@ export default class GameHome extends Phaser.Scene {
                         this.character1.setTint(this.colors.find(color => color.color == useStore.getState().gameData.playersData[0].color).hex);
                         const w = this.character1.width;
                         const h = this.character1.height;
-
                         const spawn1X = x;
                         const spawn1Y = y;
                         if (this.player == 2) {
                             this.priorX = x;
                             this.priorY = y;
                         }
-
-                        console.log(useStore.getState().gameData);
                         this.character1.body.tint = this.colors.find(color => color.color == useStore.getState().gameData.playersData[0].color).hex;
                         this.physics.add.existing(this.character1);
 
@@ -329,11 +315,7 @@ export default class GameHome extends Phaser.Scene {
                             this.c1Yellow = this.physics.add.collider(this.character1, yellow);
                         }
 
-
-
-
                         // this.character1.body.setCollisionByProperty({ collides: true });
-
 
                         this.character1.setPushable(false);
                         this.cameras.main.startFollow(this.character1);
@@ -345,8 +327,6 @@ export default class GameHome extends Phaser.Scene {
                         }
                         this.spawns.push({ spawn1X, spawn1Y });
                         this.character1.body.setSize(w * 0.50, h * 0.90);
-                        // console.log("1", this.spawns);
-
                         break;
 
                     }
@@ -355,7 +335,6 @@ export default class GameHome extends Phaser.Scene {
 
                         this.character2 = this.physics.add.sprite(x, y, 'character1-idle');
                         this.character2.setTint(this.colors.find(color => color.color == useStore.getState().gameData.playersData[1].color).hex);
-                        console.log(this.character2);
                         const w = this.character2.width;
                         const h = this.character2.height;
                         this.physics.add.existing(this.character2);
@@ -418,7 +397,6 @@ export default class GameHome extends Phaser.Scene {
         this.physics.add.collider(this.character1, this.character2);
         objectsLayer.objects.forEach(objData => {
             let { x = 0, y = 0, name, width = 0, height = 0, xFlag = 0, yFlag = 0 } = objData;
-            console.log("ThisData", objData);
             x = parseInt(x);
             y = parseInt(y);
             let ogName = "nope";
@@ -480,7 +458,6 @@ export default class GameHome extends Phaser.Scene {
                     }
                 case 'button':
                     {
-                        console.log('button');
                         let button = this.physics.add.sprite(x + (width / 2), y + (height / 2), 'button').setTint(0x303030);
                         const w = button.width;
                         const h = button.height;
@@ -536,12 +513,10 @@ export default class GameHome extends Phaser.Scene {
                         break;
                     }
                 case 'platform': {
-                    // console.log('platform');
                     let platform = this.physics.add.sprite(x + (width / 2), y + (height / 2), 'platform');
                     platform.setOrigin(0.5, 0.5);
                     if (width < height) {
 
-                        // console.log(platform.scaleX, platform.scaleY);
                         platform.setSizeToFrame();
 
                         platform.displayHeight = width;
@@ -674,6 +649,8 @@ export default class GameHome extends Phaser.Scene {
         this.handleCollision = function (player1, player2, button) {
             let toReturn = false;
             if (player1) {
+                console.log(this.character1.tintTopLeft);
+                console.log(this.colors.find(color => color.color == 'white').hex);
                 let characterColor = this.colors.find(color => color.hex == this.character1.tintTopLeft).color;
                 console.log(characterColor);
                 switch (characterColor) {
@@ -748,7 +725,6 @@ export default class GameHome extends Phaser.Scene {
             return isOtherPressed
         }
         function selectPlayer() {
-            // console.log(useStore.getState().playerData.id, "=", useStore.getState().gameData.players[0].id);
             if (socket.id == useStore.getState().gameData.players[0].id) {
                 return 1;
             } else {
@@ -777,7 +753,6 @@ export default class GameHome extends Phaser.Scene {
 
         function findColorParam(data) {
             let returndata;
-            console.log(data)
             data.forEach(element => {
                 if (element.name == 'color') {
                     returndata = element.value;
@@ -1245,9 +1220,7 @@ export default class GameHome extends Phaser.Scene {
             }
 
         }
-        console.log(this.player);
         setTimeout(() => {
-            // console.log(useStore.getState().gameData.playersData);
             this.updateCharacterPosition();
         }, 1000);
 
@@ -1286,12 +1259,13 @@ export default class GameHome extends Phaser.Scene {
             this.character1.setPosition(this.spawns[0].spawn1X, this.spawns[0].spawn1Y);
             this.character2.setPosition(this.spawns[1].spawn2X, this.spawns[1].spawn2Y);
             this.animationPlaying = false;
-
         });
 
         socket.on('winFront', () => {
 
-            // this.time.delayedCall(1000, () => {
+
+            // this.time.delayedCall(500, this.scene.remove, ['preloader'], this.scene);
+            // this.time.delayedCall(700, () => {
             //     this.scene.add('preloader', Preloader, true);
             // });
 
@@ -1313,8 +1287,6 @@ export default class GameHome extends Phaser.Scene {
                         this.c1Green.active = false;
                         this.c1Yellow.active = false;
                     }
-                    console.log("hi")
-
                     this.platforms.forEach(platform => {
                         if (platform.color == 'Whi' || platform.color == 'Gra') {
                             platform.setAlpha(1);
@@ -1344,7 +1316,6 @@ export default class GameHome extends Phaser.Scene {
                     }
                     );
                     break;
-
                 case 'red':
                     if (this.c1Red != null) {
                         this.c1Red.active = true;
@@ -1358,8 +1329,6 @@ export default class GameHome extends Phaser.Scene {
                         this.c1Green.active = false;
                         this.c1Yellow.active = false;
                     }
-
-                    console.log("hi")
                     this.platforms.forEach(platform => {
                         if (platform.color == 'Red' || platform.color == 'Pur') {
                             platform.setAlpha(1);
@@ -1403,7 +1372,6 @@ export default class GameHome extends Phaser.Scene {
 
                         this.c1Purple.active = false;
                     }
-                    console.log("hi")
                     this.platforms.forEach(platform => {
                         if (platform.color == 'Gre' || platform.color == 'Yel') {
                             platform.setAlpha(1);
@@ -2254,7 +2222,6 @@ export default class GameHome extends Phaser.Scene {
                     this.character2.anims.play('idle', true);
                 }
                 if (this.cursors.up.isDown && this.character1.body.onFloor()) {
-                    // console.log('jump');
                     this.character1.setVelocityY(-280);
                 }
             } else {
@@ -2282,7 +2249,6 @@ export default class GameHome extends Phaser.Scene {
                     this.character1.anims.play('idle', true);
                 }
                 if (this.cursors.up.isDown && this.character2.body.onFloor()) {
-                    // console.log('jump');
                     this.character2.setVelocityY(-280);
 
                 }

@@ -30,10 +30,6 @@ const Header = () => {
                     var userName = userLocalStorage.name;
                     var userToken = userLocalStorage.token;
                     var userImage = userLocalStorage.image;
-
-                    console.log('User:', userName);
-                    console.log('Token:', userToken);
-                    console.log('All data User:', userLocalStorage);
                 }
 
                 useStore.setState({ user: userLocalStorage });
@@ -42,7 +38,6 @@ const Header = () => {
                 setUser(userName);
                 setImage(userImage);
             } catch (e) {
-                // console.log('Error retrieving token and user from localStorage:', e);
             }
         }
     }, []);
@@ -53,7 +48,6 @@ const Header = () => {
 
     const logoutHandler = () => {
         let tokenClean = token.replace(/['"]+/g, '');
-        console.log('Token:', tokenClean);
         if (tokenClean) {
             logout(tokenClean).then(() => {
                 localStorage.removeItem('user');
@@ -81,12 +75,17 @@ const Header = () => {
                 <Link href="/comunitat" className="mr-4 text-white hover:text-yellow-500">
                     Comunitat
                 </Link>
+                { useStore.getState().user.admin == 1 && (
+                    <Link href="/admin" className="mr-4 text-white hover:text-yellow-500">
+                        Administració
+                    </Link>
+                )}
                 <img src={`${url}${image}`} className="w-10 h-10 mx-4 text-3xl cursor-pointer rounded-full" onClick={toggleDropdown} />
                 {dropdownOpen && (
                     <div className="dropdown absolute right-0 mt-10 bg-black top-[0.75rem] bg-opacity-50 rounded-md shadow-lg">
                         <Link href="/perfil" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Perfil</Link>
-                        <Link href="/mapas" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Mapas</Link>
-                        <button onClick={logoutHandler} className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Logout</button>
+                        <Link href="/mapas" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Mapes</Link>
+                        <button onClick={logoutHandler} className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Tancar Sessió</button>
                     </div>
                 )}
             </div>
@@ -105,7 +104,7 @@ const Header = () => {
                     Comunitat
                 </Link>
                 <Link href="/login">
-                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded mr-4 mt-4 md:mt-0">LOGIN</button>
+                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded mr-4 mt-4 md:mt-0">Iniciar Sessió</button>
                 </Link>
             </div>
         );

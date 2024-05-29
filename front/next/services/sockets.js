@@ -8,7 +8,6 @@ const socket = io(url);
 //Recibir todas las rooms que hay en socket y actualizar el estate
 socket.on('allRooms', (rooms) => {
     useStore.setState({ rooms });
-    console.log(`Rooms: ${rooms}`);
 });
 
 //Recibir la nueva room que se ha creado y actualizar el estate
@@ -20,17 +19,14 @@ socket.on('newInfoRoom', (room) => {
 socket.on('newMessage', (message) => {
     const currentMessages = useStore.getState().messages;
     useStore.setState({ messages: [...currentMessages, message] });
-    console.log(`Chat Message: ${message}`);
 });
 
 socket.on('gameStarted', (data)=>{
     useStore.setState({ localUserSocketId: socket.id });
-    // console.log(data);
     let playerData = data.game.playersData.find( player => player.id == socket.id );
     useStore.setState({playerData: playerData})
     useStore.setState({gameData: data.game})
     useStore.setState({room: data})
-    console.log("ESCORTO",useStore.getState().room)
 });
 
 socket.on('updatePositionFront', (data) => {

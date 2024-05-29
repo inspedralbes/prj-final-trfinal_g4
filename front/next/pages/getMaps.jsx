@@ -10,7 +10,6 @@ function getMapsComponent() {
         getMaps()
             .then(data => {
                 setMaps(data);
-                // console.log('maps getMaps: ', data);
             })
 
     }, []);
