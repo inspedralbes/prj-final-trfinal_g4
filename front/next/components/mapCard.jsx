@@ -12,7 +12,7 @@ const MapCard = ({ map }) => {
     const [liked, setLiked] = useState(false);
     const [disliked, setDisliked] = useState(false);
     const [showModal, setShowModal] = useState(false);
-    var likesMap = map.likes;
+    const [likesMap, setLikesMap] = useState(map.likes);
 
     const addLikeMap = () => {
         const mapData = {
@@ -24,7 +24,8 @@ const MapCard = ({ map }) => {
             setDisliked(false);
         });
 
-        likesMap = likesMap + 1;
+        setLikesMap(likesMap + 1);
+        console.log(likesMap);
     };
 
     const addDislikeMap = () => {
@@ -37,7 +38,8 @@ const MapCard = ({ map }) => {
             setDisliked(true);
         });
 
-        likesMap = likesMap - 1;
+        setLikesMap(likesMap - 1);
+        console.log(likesMap);
     };
 
     const addReportMap = () => {
