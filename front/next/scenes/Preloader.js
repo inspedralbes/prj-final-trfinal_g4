@@ -81,7 +81,7 @@ export default class Preloader extends Phaser.Scene {
 
     create() {
         this.add.text(400, 100, 'Estoy aqui', { fontSize: '20px', fill: '#fff' });
-        const scene = this.scene.get('gamehome');
+        let scene = this.scene.get('gamehome');
         console.log(scene);
         if (scene) {
 
@@ -116,7 +116,6 @@ export default class Preloader extends Phaser.Scene {
                 }
             }
         } else {
-            this.scene.remove("gamehome");
             this.scene.add('gamehome', GameHome, true);
 
             if (control != useStore.getState().gameData.currentMap) {
@@ -143,6 +142,7 @@ export default class Preloader extends Phaser.Scene {
                 });
             }
         }
-        socket.emit('gameStarted', { room: useStore.getState().room, game: useStore.getState().gameData });
+        window.scene=this.scene;
+        // socket.emit('gameStarted', { room: useStore.getState().room, game: useStore.getState().gameData });
     }
 }

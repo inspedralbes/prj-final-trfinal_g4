@@ -63,13 +63,26 @@ export default class GameHome extends Phaser.Scene {
         this.platforms = [];
         this.doors = [];
         this.flags = [];
+        // this.greenView = null;
+        // this.yellowView = null;
+        // this.orangeView = null;
+        // this.purpleView = null;
+        // this.blueView = null;
+        // this.redView = null;
+        // this.grayView = null;
+        // this.blackView = null;
+        // this.whiteView = null;
+        // this.character1 = null;
+        // this.character2 = null;
+        this.done = false;
 
     }
 
     create() {
+
         this.done = false;
         console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMA", { key: 'mapa' });
-        const map = this.make.tilemap({ key: `mapa${useStore.getState().gameData.currentMap}` });
+        const map = this.add.tilemap(`mapa${useStore.getState().gameData.currentMap}`);
         console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAA", map);
         const tileset = map.addTilesetImage('tilesetWhite', 'tileset');
         let gray = null;
@@ -81,9 +94,9 @@ export default class GameHome extends Phaser.Scene {
         let orange = null;
         let yellow = null;
         let green = null;
-        if (map.layers.find(layer => layer.name === 'gray')) {
-            gray = map.createLayer('gray', tileset);
 
+        gray = map.createLayer('gray', tileset);
+        if (map.layers.find(layer => layer.name === 'gray')) {
             const rows = gray.height;
 
             for (let y = 0; y < rows; y++) {
@@ -108,13 +121,14 @@ export default class GameHome extends Phaser.Scene {
             gray.setCollisionByProperty({ collides: true });
             gray.setCollisionByProperty({ semicollides: true });
             gray.immovable = true;
-
         }
-        console.log("chinga", map.layers);
-        if (map.layers.find(layer => layer.name === 'white')) {
-            console.log('white')
-            white = map.createLayer('white', tileset);
+        this.grayView = gray;
 
+        console.log("chinga", map.layers);
+
+        console.log('white')
+        white = map.createLayer('white', tileset);
+        if (map.layers.find(layer => layer.name === 'white')) {
             for (let y = 0; y < white.height; y++) {
                 for (let x = 0; x < white.width; x++) {
                     const tileW = white.getTileAt(x, y);
@@ -129,9 +143,11 @@ export default class GameHome extends Phaser.Scene {
             white.setCollisionByProperty({ collides: true });
             white.immovable = true;
         }
-        if (map.layers.find(layer => layer.name === 'black')) {
-            black = map.createLayer('black', tileset);
+        this.whiteView = white;
 
+
+        black = map.createLayer('black', tileset);
+        if (map.layers.find(layer => layer.name === 'black')) {
             for (let y = 0; y < black.height; y++) {
                 for (let x = 0; x < black.width; x++) {
                     const tileB = black.getTileAt(x, y);
@@ -145,8 +161,11 @@ export default class GameHome extends Phaser.Scene {
             black.setCollisionByProperty({ semicollides: true });
             black.setCollisionByProperty({ collides: true });
             black.immovable = true;
-        } if (map.layers.find(layer => layer.name === 'red')) {
-            red = map.createLayer('red', tileset);
+        }
+        this.blackView = black;
+
+        red = map.createLayer('red', tileset);
+        if (map.layers.find(layer => layer.name === 'red')) {
             for (let y = 0; y < red.height; y++) {
                 for (let x = 0; x < red.width; x++) {
                     const tileR = red.getTileAt(x, y);
@@ -160,8 +179,11 @@ export default class GameHome extends Phaser.Scene {
             red.setCollisionByProperty({ semicollides: true });
             red.setCollisionByProperty({ collides: true });
             red.immovable = true;
-        } if (map.layers.find(layer => layer.name === 'blue')) {
-            blue = map.createLayer('blue', tileset);
+        }
+        this.redView = red;
+
+        blue = map.createLayer('blue', tileset);
+        if (map.layers.find(layer => layer.name === 'blue')) {
             for (let y = 0; y < blue.height; y++) {
                 for (let x = 0; x < blue.width; x++) {
                     const tileB = blue.getTileAt(x, y);
@@ -175,8 +197,11 @@ export default class GameHome extends Phaser.Scene {
             blue.setCollisionByProperty({ semicollides: true });
             blue.setCollisionByProperty({ collides: true });
             blue.immovable = true;
-        } if (map.layers.find(layer => layer.name === 'purple')) {
-            purple = map.createLayer('purple', tileset);
+        }
+        this.blueView = blue;
+
+        purple = map.createLayer('purple', tileset);
+        if (map.layers.find(layer => layer.name === 'purple')) {
             for (let y = 0; y < purple.height; y++) {
                 for (let x = 0; x < purple.width; x++) {
                     const tileP = purple.getTileAt(x, y);
@@ -189,8 +214,11 @@ export default class GameHome extends Phaser.Scene {
             purple.setCollisionByProperty({ semicollides: true });
             purple.setCollisionByProperty({ collides: true });
             purple.immovable = true;
-        } if (map.layers.find(layer => layer.name === 'green')) {
-            green = map.createLayer('green', tileset);
+        }
+        this.purpleView = purple;
+
+        green = map.createLayer('green', tileset);
+        if (map.layers.find(layer => layer.name === 'green')) {
             for (let y = 0; y < green.height; y++) {
                 for (let x = 0; x < green.width; x++) {
                     const tileG = green.getTileAt(x, y);
@@ -203,7 +231,11 @@ export default class GameHome extends Phaser.Scene {
             green.setCollisionByProperty({ semicollides: true });
             green.setCollisionByProperty({ collides: true });
             green.immovable = true;
-        } if (map.layers.find(layer => layer.name === 'orange')) {
+        }
+        this.greenView = green;
+
+        console.log('orange');
+        if (map.layers.find(layer => layer.name === 'orange')) {
             orange = map.createLayer('orange', tileset);
             for (let y = 0; y < orange.height; y++) {
                 for (let x = 0; x < orange.width; x++) {
@@ -217,8 +249,11 @@ export default class GameHome extends Phaser.Scene {
             orange.setCollisionByProperty({ semicollides: true });
             orange.setCollisionByProperty({ collides: true });
             orange.immovable = true;
-        } if (map.layers.find(layer => layer.name === 'yellow')) {
-            yellow = map.createLayer('yellow', tileset);
+        }
+        this.orangeView = orange;
+
+        yellow = map.createLayer('yellow', tileset);
+        if (map.layers.find(layer => layer.name === 'yellow')) {
             for (let y = 0; y < yellow.height; y++) {
                 for (let x = 0; x < yellow.width; x++) {
                     const tileY = yellow.getTileAt(x, y);
@@ -232,6 +267,8 @@ export default class GameHome extends Phaser.Scene {
             yellow.setCollisionByProperty({ collides: true });
             yellow.immovable = true;
         }
+        this.yellowView = yellow;
+
 
 
 
@@ -632,33 +669,6 @@ export default class GameHome extends Phaser.Scene {
         })
         window.platforms = this.platforms;
         console.log(white);
-        if (white) {
-            this.whiteView = white;
-        }
-        if (black) {
-            this.blackView = black;
-        }
-        if (gray) {
-            this.grayView = gray;
-        }
-        if (red) {
-            this.redView = red;
-        }
-        if (blue) {
-            this.blueView = blue;
-        }
-        if (purple) {
-            this.purpleView = purple;
-        }
-        if (orange) {
-            this.orangeView = orange;
-        }
-        if (yellow) {
-            this.yellowView = yellow;
-        }
-        if (green) {
-            this.greenView = green;
-        }
 
         this.player = selectPlayer();
         this.handleCollision = function (player1, player2, button) {
@@ -1026,7 +1036,7 @@ export default class GameHome extends Phaser.Scene {
                         this.purpleView.setAlpha(0);
                         this.c1Purple.active = false;
                     }
-                    if (this.yellowView) {
+                    if (this.greenView) {
                         this.greenView.setAlpha(1);
                         this.c1Green.active = true;
                         this.orangeView.setAlpha(0);
@@ -1269,7 +1279,6 @@ export default class GameHome extends Phaser.Scene {
         });
 
         socket.on('deathFront', () => {
-            console.log("SI")
             this.animationPlaying = true;
 
 
@@ -1279,343 +1288,12 @@ export default class GameHome extends Phaser.Scene {
             this.animationPlaying = false;
 
         });
-        socket.on('changeColorFront', (data) => {
-            console.log("Si");
-            if (data.id == socket.id) {
-                if (this.player == 1) {
-                    this.character1.setTint(this.colors.find(color => color.color == data.color).hex);
-                    if (data.color == 'white') {
-                        this.whiteView.setAlpha(1);
-                        this.c1White.active = true;
-                        this.blackView.setAlpha(0);
-                        this.grayView.setAlpha(1);
-                        this.c1Gray.active = true;
 
-                        this.platforms.forEach(platform => {
-                            if (platform.color != 'Whi' && platform.color != 'Gra') {
-                                platform.setAlpha(0);
-                                if (platform.collisionC1 != null) {
-                                    platform.collisionC1.active = false;
-                                }
-                                if (platform.collisionC2 != null) {
-                                    platform.collisionC2.active = false;
-                                }
-                            } else {
-                                platform.setAlpha(1);
-                                if (platform.collisionC1 != null) {
-                                    platform.collisionC1.active = true;
-                                }
-                                if (platform.collisionC2 != null) {
-                                    platform.collisionC2.active = true;
-                                }
-
-                            }
-                        });
-                        this.buttons.forEach(button => {
-                            if (button.color != 'Whi' && button.color != 'Gra') {
-                                button.setAlpha(0);
-                            }
-                            else {
-                                button.setAlpha(1);
-
-                            }
-                        });
-                        if (this.redView != null) {
-                            this.redView.setAlpha(0);
-                            this.c1Red.active = false;
-                            this.blueView.setAlpha(0);
-                            this.c1Purple.active = false;
-                            this.purpleView.setAlpha(0);
-                        }
-                        if (this.yellowView != null) {
-                            this.greenView.setAlpha(0);
-                            this.c1Green.active = false;
-                            this.orangeView.setAlpha(0);
-                            this.yellowView.setAlpha(0);
-                            this.c1Yellow.active = false;
-                        }
-                    } else {
-                        if (data.color == 'red') {
-                            this.redView.setAlpha(1);
-                            this.c1Red.active = true;
-                            this.blueView.setAlpha(0);
-                            this.purpleView.setAlpha(1);
-                            this.c1Purple.active = true;
-                            this.platforms.forEach(platform => {
-                                if (platform.color != 'Red' && platform.color != 'Pur') {
-                                    platform.setAlpha(0);
-                                    if (platform.collisionC1 != null) {
-                                        platform.collisionC1.active = false;
-                                    }
-                                    if (platform.collisionC2 != null) {
-                                        platform.collisionC2.active = false;
-                                    }
-                                } else {
-                                    platform.setAlpha(1);
-                                    if (platform.collisionC1 != null) {
-                                        platform.collisionC1.active = true;
-                                    }
-                                    if (platform.collisionC2 != null) {
-                                        platform.collisionC2.active = true;
-                                    }
-
-                                }
-                            });
-                            this.buttons.forEach(button => {
-                                if (button.color != 'Red' && button.color != 'Pur') {
-                                    button.setAlpha(0);
-                                }
-                                else {
-                                    button.setAlpha(1);
-
-                                }
-                            });
-                            if (this.whiteView != null) {
-                                this.whiteView.setAlpha(0);
-                                this.c1White.active = false;
-                                this.blackView.setAlpha(0);
-                                this.grayView.setAlpha(0);
-                                this.c1Gray.active = false;
-                            }
-                            if (this.yellowView != null) {
-                                this.greenView.setAlpha(0);
-                                this.c1Green.active = false;
-                                this.orangeView.setAlpha(0);
-                                this.yellowView.setAlpha(0);
-                                this.c1Yellow.active = false;
-                            }
-
-                        } else if (data.color == "green") {
-                            this.greenView.setAlpha(1);
-                            this.c1Green.active = true;
-                            this.orangeView.setAlpha(0);
-                            this.yellowView.setAlpha(1);
-                            this.c1Yellow.active = true;
-                            this.platforms.forEach(platform => {
-                                if (platform.color != 'Gre' && platform.color != 'Yel') {
-                                    platform.setAlpha(0);
-                                    if (platform.collisionC1 != null) {
-                                        platform.collisionC1.active = false;
-                                    }
-                                    if (platform.collisionC2 != null) {
-                                        platform.collisionC2.active = false;
-                                    }
-                                } else {
-                                    platform.setAlpha(1);
-                                    if (platform.collisionC1 != null) {
-                                        platform.collisionC1.active = true
-                                    }
-                                    if (platform.collisionC2 != null) {
-                                        platform.collisionC2.active = true;
-                                    }
-
-                                }
-                            }
-                            );
-                            this.buttons.forEach(button => {
-                                console.log(button.color);
-                                if (button.color != 'Gre' && button.color != 'Yel') {
-                                    button.setAlpha(0);
-                                } else {
-                                    button.setAlpha(1);
-
-                                }
-                            }
-                            );
-                            if (this.whiteView != null) {
-                                this.whiteView.setAlpha(0);
-                                this.c1White.active = false;
-                                this.blackView.setAlpha(0);
-                                this.grayView.setAlpha(0);
-                                this.c1Gray.active = false;
-                            }
-                            if (this.redView != null) {
-                                this.redView.setAlpha(0);
-                                this.c1Red.active = false;
-                                this.blueView.setAlpha(0);
-                                this.purpleView.setAlpha(0);
-                                this.c1Purple.active = false;
-                            }
-                        }
-                    }
-                } else {
-                    console.log("Si",)
-                    this.character2.setTint(this.colors.find(color => color.color == data.color).hex);
-                    if (data.color == 'black') {
-                        this.whiteView.setAlpha(0);
-                        this.blackView.setAlpha(1);
-                        this.c2Black.active = true;
-                        this.grayView.setAlpha(1);
-                        this.c2Gray.active = true;
-                        this.platforms.forEach(platform => {
-                            console.log(platform.color);
-                            if (platform.color != 'Bla' && platform.color != 'Gra') {
-                                platform.setAlpha(0);
-                                if (platform.collisionC1 != null) {
-                                    platform.collisionC1.active = false;
-                                }
-                                if (platform.collisionC2 != null) {
-                                    platform.collisionC2.active = false;
-                                }
-                            } else {
-                                platform.setAlpha(1);
-                                if (platform.collisionC1 != null) {
-                                    platform.collisionC1.active = true;
-                                }
-                                if (platform.collisionC2 != null) {
-                                    platform.collisionC2.active = true;
-                                }
-
-                            }
-                        }
-                        );
-                        this.buttons.forEach(button => {
-                            if (button.color != 'Bla' && button.color != 'Gra') {
-                                button.setAlpha(0);
-                            } else {
-                                button.setAlpha(1);
-
-                            }
-                        }
-                        );
-                        if (this.redView != null) {
-                            this.redView.setAlpha(0);
-                            this.blueView.setAlpha(0);
-                            this.c2Blue.active = false;
-                            this.purpleView.setAlpha(0);
-                            this.c2Purple.active = false;
-                        }
-                        if (this.orangeView != null) {
-                            this.greenView.setAlpha(0);
-                            this.orangeView.setAlpha(0);
-                            this.c2Orange.active = false;
-                            this.yellowView.setAlpha(0);
-                            this.c2Yellow.active = false;
-                        }
-                    } else if (data.color == 'blue') {
-                        this.blueView.setAlpha(1);
-                        console.log("blueBeetle18deagostoencines")
-                        this.c2Blue.active = true;
-                        this.redView.setAlpha(0);
-                        this.purpleView.setAlpha(1);
-                        this.c2Purple.active = true;
-
-                        if (this.whiteView != null) {
-                            this.whiteView.setAlpha(0);
-                            this.blackView.setAlpha(0);
-                            this.c2Black.active = false;
-                            this.grayView.setAlpha(0);
-                            this.c2Gray.active = false;
-                        }
-                        if (this.orangeView != null) {
-                            this.greenView.setAlpha(0);
-                            this.orangeView.setAlpha(0);
-                            this.c2Orange.active = false;
-                            this.yellowView.setAlpha(0);
-                            this.c2Yellow.active = false;
-                        }
-                        this.platforms.forEach(platform => {
-                            if (platform.color != 'Blu' && platform.color != 'Pur') {
-                                platform.setAlpha(0);
-                                if (platform.collisionC1 != null) {
-                                    platform.collisionC1.active = false;
-                                }
-                                if (platform.collisionC2 != null) {
-                                    platform.collisionC2.active = false;
-                                }
-                            } else {
-                                platform.setAlpha(1);
-                                if (platform.collisionC1 != null) {
-                                    platform.collisionC1.active = true
-                                }
-                                if (platform.collisionC2 != null) {
-                                    platform.collisionC2.active = true;
-                                }
-
-                            }
-                        }
-                        );
-                        this.buttons.forEach(button => {
-                            if (button.color != 'Blu' && button.color != 'Pur') {
-                                button.setAlpha(0);
-                            } else {
-                                button.setAlpha(1);
-
-                            }
-                        }
-                        );
-                    } else if (data.color == 'orange') {
-                        this.orangeView.setAlpha(1);
-                        this.c2Orange.active = true;
-                        this.greenView.setAlpha(0);
-                        this.yellowView.setAlpha(1);
-                        this.c2Yellow.active = true;
-
-                        this.platforms.forEach(platform => {
-                            if (platform.color != 'Ora' && platform.color != 'Yel') {
-                                platform.setAlpha(0);
-                                if (platform.collisionC1 != null) {
-                                    platform.collisionC1.active = false;
-                                }
-                                if (platform.collisionC2 != null) {
-                                    platform.collisionC2.active = false;
-                                }
-                            } else {
-                                platform.setAlpha(1);
-                                if (platform.collisionC1 != null) {
-                                    platform.collisionC1.active = true
-                                }
-                                if (platform.collisionC2 != null) {
-                                    platform.collisionC2.active = true;
-                                }
-
-                            }
-                        }
-                        );
-                        this.buttons.forEach(button => {
-                            if (button.color != 'Ora' && button.color != 'Yel') {
-                                button.setAlpha(0);
-                            } else {
-                                button.setAlpha(1);
-
-                            }
-                        }
-                        );
-                        if (this.whiteView != null) {
-                            this.whiteView.setAlpha(0);
-                            this.blackView.setAlpha(0);
-                            this.c2Black.active = false;
-                            this.grayView.setAlpha(0);
-                            this.c2Gray.active = false;
-                        }
-                        if (this.redView != null) {
-                            this.redView.setAlpha(0);
-                            this.blueView.setAlpha(0);
-                            this.c2Blue.active = false;
-                            this.purpleView.setAlpha(0);
-                            this.c2Purple.active = false;
-                        }
-                    }
-                }
-                if (this.cameras.main) {
-
-                    this.cameras.main.setBackgroundColor(this.colors.find(color => color.color == data.color).hex);
-                }
-            } else {
-                if (this.player == 1) {
-                    this.character2.setTint(this.colors.find(color => color.color == data.color).hex);
-                } else {
-                    this.character1.setTint(this.colors.find(color => color.color == data.color).hex);
-                }
-            }
-        });
         socket.on('winFront', () => {
 
-
-            this.time.delayedCall(500, this.scene.remove, ['preloader'], this.scene);
-            this.time.delayedCall(700, () => {
-                this.scene.add('preloader', Preloader, true);
-            });
+            // this.time.delayedCall(1000, () => {
+            //     this.scene.add('preloader', Preloader, true);
+            // });
 
 
             this.time.delayedCall(1000, this.scene.start, ['preloader'], this.scene);
@@ -1989,12 +1667,371 @@ export default class GameHome extends Phaser.Scene {
             }
         }
 
+
+        console.log("greenView:", this.greenView);
+        console.log("yellowView:", this.yellowView);
+        console.log("orangeView:", this.orangeView);
+        console.log("purpleView:", this.purpleView);
+        console.log("blueView:", this.blueView);
+        console.log("redView:", this.redView);
+        console.log("whiteView:", this.whiteView);
+        console.log("blackView:", this.blackView);
+        console.log("grayView:", this.grayView);
+
+        socket.on('changeColorFront', (data) => {
+
+            console.log("greenView:", this.greenView);
+            console.log("yellowView:", this.yellowView);
+            console.log("orangeView:", this.orangeView);
+            console.log("purpleView:", this.purpleView);
+            console.log("blueView:", this.blueView);
+            console.log("redView:", this.redView);
+            console.log("whiteView:", this.whiteView);
+            console.log("blackView:", this.blackView);
+            console.log("grayView:", this.grayView);
+            if (this.greenView == null) {
+                console.log("greenView:", this.greenView);
+            }
+            if (data.id == socket.id) {
+                if (this.player == 1) {
+                    this.character1.setTint(this.colors.find(color => color.color == data.color).hex);
+                    if (data.color == 'white') {
+                        this.whiteView.setAlpha(1);
+                        this.c1White.active = true;
+                        this.blackView.setAlpha(0);
+                        this.grayView.setAlpha(1);
+                        this.c1Gray.active = true;
+
+                        this.platforms.forEach(platform => {
+                            if (platform.color != 'Whi' && platform.color != 'Gra') {
+                                platform.setAlpha(0);
+                                if (platform.collisionC1 != null) {
+                                    platform.collisionC1.active = false;
+                                }
+                                if (platform.collisionC2 != null) {
+                                    platform.collisionC2.active = false;
+                                }
+                            } else {
+                                platform.setAlpha(1);
+                                if (platform.collisionC1 != null) {
+                                    platform.collisionC1.active = true;
+                                }
+                                if (platform.collisionC2 != null) {
+                                    platform.collisionC2.active = true;
+                                }
+
+                            }
+                        });
+                        this.buttons.forEach(button => {
+                            if (button.color != 'Whi' && button.color != 'Gra') {
+                                button.setAlpha(0);
+                            }
+                            else {
+                                button.setAlpha(1);
+
+                            }
+                        });
+                        if (this.redView != null) {
+                            this.redView.setAlpha(0);
+                            this.c1Red.active = false;
+                            this.blueView.setAlpha(0);
+                            this.c1Purple.active = false;
+                            this.purpleView.setAlpha(0);
+                        }
+                        if (this.yellowView != null) {
+                            this.greenView.setAlpha(0);
+                            this.c1Green.active = false;
+                            this.orangeView.setAlpha(0);
+                            this.yellowView.setAlpha(0);
+                            this.c1Yellow.active = false;
+                        }
+                    } else {
+                        if (data.color == 'red') {
+
+                            this.redView.setAlpha(1);
+                            this.c1Red.active = true;
+                            this.blueView.setAlpha(0);
+                            this.purpleView.setAlpha(1);
+                            this.c1Purple.active = true;
+                            this.platforms.forEach(platform => {
+                                if (platform.color != 'Red' && platform.color != 'Pur') {
+                                    platform.setAlpha(0);
+                                    if (platform.collisionC1 != null) {
+                                        platform.collisionC1.active = false;
+                                    }
+                                    if (platform.collisionC2 != null) {
+                                        platform.collisionC2.active = false;
+                                    }
+                                } else {
+                                    platform.setAlpha(1);
+                                    if (platform.collisionC1 != null) {
+                                        platform.collisionC1.active = true;
+                                    }
+                                    if (platform.collisionC2 != null) {
+                                        platform.collisionC2.active = true;
+                                    }
+
+                                }
+                            });
+                            this.buttons.forEach(button => {
+                                if (button.color != 'Red' && button.color != 'Pur') {
+                                    button.setAlpha(0);
+                                }
+                                else {
+                                    button.setAlpha(1);
+
+                                }
+                            });
+                            if (this.whiteView != null) {
+                                this.whiteView.setAlpha(0);
+                                this.c1White.active = false;
+                                this.blackView.setAlpha(0);
+                                this.grayView.setAlpha(0);
+                                this.c1Gray.active = false;
+                            }
+                            if (this.yellowView != null) {
+
+                                this.c1Green.active = false;
+                                this.orangeView.setAlpha(0);
+                                this.yellowView.setAlpha(0);
+                                this.c1Yellow.active = false;
+                            }
+
+                        } else if (data.color == "green") {
+                            console.log("green", this.greenView);
+
+                            this.greenView.setAlpha(1);
+                            this.c1Green.active = true;
+
+                            this.orangeView.setAlpha(0);
+                            this.yellowView.setAlpha(1);
+                            this.c1Yellow.active = true;
+                            this.platforms.forEach(platform => {
+                                if (platform.color != 'Gre' && platform.color != 'Yel') {
+                                    platform.setAlpha(0);
+                                    if (platform.collisionC1 != null) {
+                                        platform.collisionC1.active = false;
+                                    }
+                                    if (platform.collisionC2 != null) {
+                                        platform.collisionC2.active = false;
+                                    }
+                                } else {
+                                    platform.setAlpha(1);
+                                    if (platform.collisionC1 != null) {
+                                        platform.collisionC1.active = true
+                                    }
+                                    if (platform.collisionC2 != null) {
+                                        platform.collisionC2.active = true;
+                                    }
+
+                                }
+                            }
+                            );
+                            this.buttons.forEach(button => {
+                                console.log(button.color);
+                                if (button.color != 'Gre' && button.color != 'Yel') {
+                                    button.setAlpha(0);
+                                } else {
+                                    button.setAlpha(1);
+
+                                }
+                            }
+                            );
+                            if (this.whiteView != null) {
+                                this.whiteView.setAlpha(0);
+                                this.c1White.active = false;
+                                this.blackView.setAlpha(0);
+                                this.grayView.setAlpha(0);
+                                this.c1Gray.active = false;
+                            }
+                            if (this.redView != null) {
+                                this.redView.setAlpha(0);
+                                this.c1Red.active = false;
+                                this.blueView.setAlpha(0);
+                                this.purpleView.setAlpha(0);
+                                this.c1Purple.active = false;
+                            }
+                        }
+                    }
+                } else {
+                    this.character2.setTint(this.colors.find(color => color.color == data.color).hex);
+                    if (data.color == 'black') {
+                        this.whiteView.setAlpha(0);
+                        this.blackView.setAlpha(1);
+                        this.c2Black.active = true;
+                        this.grayView.setAlpha(1);
+                        this.c2Gray.active = true;
+                        this.platforms.forEach(platform => {
+                            console.log(platform.color);
+                            if (platform.color != 'Bla' && platform.color != 'Gra') {
+                                platform.setAlpha(0);
+                                if (platform.collisionC1 != null) {
+                                    platform.collisionC1.active = false;
+                                }
+                                if (platform.collisionC2 != null) {
+                                    platform.collisionC2.active = false;
+                                }
+                            } else {
+                                platform.setAlpha(1);
+                                if (platform.collisionC1 != null) {
+                                    platform.collisionC1.active = true;
+                                }
+                                if (platform.collisionC2 != null) {
+                                    platform.collisionC2.active = true;
+                                }
+
+                            }
+                        }
+                        );
+                        this.buttons.forEach(button => {
+                            if (button.color != 'Bla' && button.color != 'Gra') {
+                                button.setAlpha(0);
+                            } else {
+                                button.setAlpha(1);
+
+                            }
+                        }
+                        );
+                        if (this.redView != null) {
+                            this.redView.setAlpha(0);
+                            this.blueView.setAlpha(0);
+                            this.c2Blue.active = false;
+                            this.purpleView.setAlpha(0);
+                            this.c2Purple.active = false;
+                        }
+                        if (this.orangeView != null) {
+                            this.greenView.setAlpha(0);
+                            this.orangeView.setAlpha(0);
+                            this.c2Orange.active = false;
+                            this.yellowView.setAlpha(0);
+                            this.c2Yellow.active = false;
+                        }
+                    } else if (data.color == 'blue') {
+                        this.blueView.setAlpha(1);
+                        console.log("blueBeetle18deagostoencines")
+                        this.c2Blue.active = true;
+                        this.redView.setAlpha(0);
+                        this.purpleView.setAlpha(1);
+                        this.c2Purple.active = true;
+
+                        if (this.whiteView != null) {
+                            this.whiteView.setAlpha(0);
+                            this.blackView.setAlpha(0);
+                            this.c2Black.active = false;
+                            this.grayView.setAlpha(0);
+                            this.c2Gray.active = false;
+                        }
+                        if (this.orangeView != null) {
+                            this.greenView.setAlpha(0);
+                            this.orangeView.setAlpha(0);
+                            this.c2Orange.active = false;
+                            this.yellowView.setAlpha(0);
+                            this.c2Yellow.active = false;
+                        }
+                        this.platforms.forEach(platform => {
+                            if (platform.color != 'Blu' && platform.color != 'Pur') {
+                                platform.setAlpha(0);
+                                if (platform.collisionC1 != null) {
+                                    platform.collisionC1.active = false;
+                                }
+                                if (platform.collisionC2 != null) {
+                                    platform.collisionC2.active = false;
+                                }
+                            } else {
+                                platform.setAlpha(1);
+                                if (platform.collisionC1 != null) {
+                                    platform.collisionC1.active = true
+                                }
+                                if (platform.collisionC2 != null) {
+                                    platform.collisionC2.active = true;
+                                }
+
+                            }
+                        }
+                        );
+                        this.buttons.forEach(button => {
+                            if (button.color != 'Blu' && button.color != 'Pur') {
+                                button.setAlpha(0);
+                            } else {
+                                button.setAlpha(1);
+
+                            }
+                        }
+                        );
+                    } else if (data.color == 'orange') {
+                        console.log(this.orangeView);
+                        this.orangeView.setAlpha(1);
+                        this.c2Orange.active = true;
+                        this.greenView.setAlpha(0);
+                        this.yellowView.setAlpha(1);
+                        this.c2Yellow.active = true;
+
+                        this.platforms.forEach(platform => {
+                            if (platform.color != 'Ora' && platform.color != 'Yel') {
+                                platform.setAlpha(0);
+                                if (platform.collisionC1 != null) {
+                                    platform.collisionC1.active = false;
+                                }
+                                if (platform.collisionC2 != null) {
+                                    platform.collisionC2.active = false;
+                                }
+                            } else {
+                                platform.setAlpha(1);
+                                if (platform.collisionC1 != null) {
+                                    platform.collisionC1.active = true
+                                }
+                                if (platform.collisionC2 != null) {
+                                    platform.collisionC2.active = true;
+                                }
+
+                            }
+                        }
+                        );
+                        this.buttons.forEach(button => {
+                            if (button.color != 'Ora' && button.color != 'Yel') {
+                                button.setAlpha(0);
+                            } else {
+                                button.setAlpha(1);
+
+                            }
+                        }
+                        );
+                        if (this.whiteView != null) {
+                            this.whiteView.setAlpha(0);
+                            this.blackView.setAlpha(0);
+                            this.c2Black.active = false;
+                            this.grayView.setAlpha(0);
+                            this.c2Gray.active = false;
+                        }
+                        if (this.redView != null) {
+                            this.redView.setAlpha(0);
+                            this.blueView.setAlpha(0);
+                            this.c2Blue.active = false;
+                            this.purpleView.setAlpha(0);
+                            this.c2Purple.active = false;
+                        }
+                    }
+                }
+                if (this.cameras.main) {
+
+                    this.cameras.main.setBackgroundColor(this.colors.find(color => color.color == data.color).hex);
+                }
+            } else {
+                if (this.player == 1) {
+                    this.character2.setTint(this.colors.find(color => color.color == data.color).hex);
+                } else {
+                    this.character1.setTint(this.colors.find(color => color.color == data.color).hex);
+                }
+            }
+        });
         this.done = true;
     }
 
     update() {
-        if (this.done) {
+
+        if (this.done == true) {
             if (this.cursors.space.isDown && this.pressable) {
+
                 socket.emit('changeColor');
                 this.pressable = false;
             }
@@ -2012,7 +2049,7 @@ export default class GameHome extends Phaser.Scene {
                 let isPlayer2Colliding = this.physics.overlap(button, this.character2);
                 if (button.associated.length > 0) {
                     let collidingGood = this.handleCollision(isPlayer1Colliding, isPlayer2Colliding, button);
-                    console.log(collidingGood);
+
                     if (collidingGood == true) {
                         console.log("entrando con", collidingGood)
                         button.associated.forEach(platform => {

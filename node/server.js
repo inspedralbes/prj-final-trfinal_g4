@@ -356,7 +356,9 @@ io.on('connection', (socket) => {
             } else {
                 if (room.game.currentMap == 2) {
                     room.game.playersData[0].colorsUnlocked.push('green');
+                    room.game.playersData[0].color = 'green';
                     room.game.playersData[1].colorsUnlocked.push('orange');
+                    room.game.playersData[1].color = 'orange';
                 } else {
                     room.game.playersData[0].colorsUnlocked.push('white');
                     room.game.playersData[1].colorsUnlocked.push('black');

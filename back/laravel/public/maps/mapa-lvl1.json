@@ -566,7 +566,7 @@
                         {
                          "name":"movement",
                          "type":"float",
-                         "value":300
+                         "value":100
                         }, 
                         {
                          "name":"velocity",
@@ -787,40 +787,6 @@
                  "y":-233
                 }, 
                 {
-                 "height":32,
-                 "id":28,
-                 "name":"endGameBlu",
-                 "properties":[
-                        {
-                         "name":"player",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":15.666666666667,
-                 "x":3488.33333333333,
-                 "y":-256
-                }, 
-                {
-                 "height":32,
-                 "id":29,
-                 "name":"endGameRed",
-                 "properties":[
-                        {
-                         "name":"player",
-                         "type":"int",
-                         "value":1
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16.5,
-                 "x":3488,
-                 "y":-384
-                }, 
-                {
                  "height":112,
                  "id":30,
                  "name":"death",
@@ -830,8 +796,7 @@
                  "width":766.666666666667,
                  "x":800.666666666667,
                  "y":48.6666666666667
-                },
-            
+                }, 
                 {
                  "height":139,
                  "id":31,
@@ -853,7 +818,8 @@
                  "width":541,
                  "x":-318,
                  "y":113
-                }, 
+                },
+            
                 {
                  "height":189.333333333333,
                  "id":33,
@@ -1229,29 +1195,119 @@
                 }, 
                 {
                  "height":33,
-                 "id":51,
+                 "id":53,
                  "name":"spawn-1",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":15.5,
-                 "x":2048.16666666667,
-                 "y":-202.5
+                 "x":-196.5,
+                 "y":-71.1666666666667
                 }, 
                 {
                  "height":32,
-                 "id":52,
+                 "id":54,
                  "name":"spawn-2",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":17,
-                 "x":2080.16666666667,
-                 "y":-202.5
+                 "x":-164.5,
+                 "y":-71.1666666666667
+                }, 
+                {
+                 "height":32,
+                 "id":55,
+                 "name":"endGameBlu",
+                 "properties":[
+                        {
+                         "name":"player",
+                         "type":"int",
+                         "value":2
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":15.6667,
+                 "x":-97.9200000000001,
+                 "y":-68
+                }, 
+                {
+                 "height":32,
+                 "id":56,
+                 "name":"endGameRed",
+                 "properties":[
+                        {
+                         "name":"player",
+                         "type":"int",
+                         "value":1
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16.5,
+                 "x":-65.25,
+                 "y":-69
                 }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "chunks":[],
+         "height":0,
+         "id":11,
+         "name":"yellow",
+         "opacity":1,
+         "startx":0,
+         "starty":0,
+         "type":"tilelayer",
+         "visible":true,
+         "width":0,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "chunks":[],
+         "height":0,
+         "id":12,
+         "name":"green",
+         "opacity":1,
+         "startx":0,
+         "starty":0,
+         "type":"tilelayer",
+         "visible":true,
+         "width":0,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "chunks":[],
+         "height":0,
+         "id":6,
+         "name":"gray",
+         "opacity":1,
+         "startx":0,
+         "starty":0,
+         "type":"tilelayer",
+         "visible":true,
+         "width":0,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "chunks":[],
+         "height":0,
+         "id":7,
+         "name":"black",
+         "opacity":1,
+         "startx":0,
+         "starty":0,
+         "type":"tilelayer",
+         "visible":true,
+         "width":0,
          "x":0,
          "y":0
         }, 
@@ -1855,9 +1911,37 @@
          "width":208,
          "x":0,
          "y":0
+        }, 
+        {
+         "chunks":[],
+         "height":0,
+         "id":9,
+         "name":"white",
+         "opacity":1,
+         "startx":0,
+         "starty":0,
+         "type":"tilelayer",
+         "visible":true,
+         "width":0,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "chunks":[],
+         "height":0,
+         "id":10,
+         "name":"orange",
+         "opacity":1,
+         "startx":0,
+         "starty":0,
+         "type":"tilelayer",
+         "visible":true,
+         "width":0,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":6,
- "nextobjectid":53,
+ "nextlayerid":13,
+ "nextobjectid":57,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

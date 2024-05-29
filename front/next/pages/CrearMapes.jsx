@@ -27,12 +27,12 @@ const steps = [
                     Utilitza aquesta imatge com 
                     <a href="/assets/White-terrain.png" download className="underline ml-1">Tileset</a>.
                 </p>
-                <p className="mt-4">Crea totes les capes que vulguis que tingui el teu mapa, tenint en compte el següent:</p>
+                <p className="mt-4">Crea totes les capes:</p>
                 <p className="mt-4 mb-2 text-yellow-500"><strong>NO FA FALTA AFEGIR LA VARIABLE TINT COLOR DESDE EL TILED, JA QUE EL COLOR L'AGAFEM NOSALTRES.</strong></p>
                 <ul className="list-disc list-inside ml-4">
-                    <li>Si el mapa és de dificultat 1, les capes obligatòries són: Red, Blue i Purple.</li>
-                    <li>Si el mapa és de dificultat 2, les capes obligatòries són: Red, Blue, Purple, Orange, Green i Yellow.</li>
-                    <li>Si el mapa és de dificultat 3, les capes obligatòries són: Red, Blue, Purple, Orange, Green, Yellow, White, Black i Gray.</li>
+                    <li>Si el mapa és de dificultat 1, les capes que seran visibles són: Red, Blue i Purple.</li>
+                    <li>Si el mapa és de dificultat 2, les capes que seran visibles són: Red, Blue, Purple, Orange, Green i Yellow.</li>
+                    <li>Si el mapa és de dificultat 3, les capes que seran visibles són: Red, Blue, Purple, Orange, Green, Yellow, White, Black i Gray.</li>
                 </ul>
             </>
         ),
