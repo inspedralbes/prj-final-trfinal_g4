@@ -58,7 +58,7 @@ const Perfil = () => {
                         name: data.user,
                         email: data.email,
                         id: data.id,
-                            admin: data.admin,
+                        admin: data.admin,
                         image: data.image,
                         token: token
                     })
@@ -178,7 +178,7 @@ const Perfil = () => {
                                     id="image"
                                     name="img"
                                     type="file"
-                                    accept=".png, .jpg, .jpeg"
+                                    accept=".png, .PNG"
                                     onChange={(e) => setImage(e.target.files[0])}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 text-lg"
                                 />
