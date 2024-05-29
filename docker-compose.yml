@@ -11,7 +11,7 @@ services:
       - ./back/laravel:/var/www
     command: >
       bash -c "composer update
-      && cp .env.example .env
+      && cp .env.dev .env
       && php artisan key:generate
       && php artisan migrate
       && php artisan serve --host=0.0.0.0 --port=8000"

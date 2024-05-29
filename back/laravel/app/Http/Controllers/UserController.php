@@ -44,6 +44,7 @@ class UserController extends Controller
         $newUser->username = $request->username;
         $newUser->email = $request->email;
         $newUser->password = Hash::make($request->password);
+        $newUser->image = '/images/profiles/default.png';
         
         if ($request->admin) {
             $newUser->admin = $request->admin;
@@ -77,8 +78,6 @@ class UserController extends Controller
                 'message' => 'Dades incorrectes!'
             ],401);
         }
-
-        
         
         return response()->json([
             'message' => 'Logged in!',
@@ -173,21 +172,12 @@ class UserController extends Controller
         }
 
         //booleans
-
-        if ($request->admin ) {
-            
+        if ($request->admin) {
             $request->validate([
                 'admin' => 'required'
             ]);
-            if($request->admin == "true"){
-                $user->admin = 1;
-            }else{
-                $user->admin = 0;
-            }
-
+            $user->admin = $request->admin;
         }
-
-        
         
         if ($request->googleLogin) {
             $request->validate([
