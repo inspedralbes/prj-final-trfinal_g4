@@ -205,14 +205,14 @@ function AdminPanel() {
                             <div className='barra-lateral'>
                                 <RiUserSearchLine style={{ fontSize: '2em' }} />
                             </div>
-                            <p className='explicacion'>Pots administrar el usuaris filtrant-los per ID i veure si es administrador o no.</p>
+                            <p className='explicacion'>Pots administrar els usuaris filtrant-los per ID i veure si és administrador o no.</p>
                         </div>
 
                         <div className="section">
                             <div className='barra-lateral'>
                                 <TbMapSearch style={{ fontSize: '2em' }} />
                             </div>
-                            <p className='explicacion'>Pots administrar el mapas, filtrar-los per ID i per estat, descarregar l'arxiu i eliminar el mapa</p>
+                            <p className='explicacion'>Pots administrar els mapes, filtrar-los per ID i per estat, descarregar l'arxiu i eliminar el mapa.</p>
                         </div>
 
                         <div className="section">
@@ -220,7 +220,7 @@ function AdminPanel() {
                                 <TbReportSearch style={{ fontSize: '2em' }} />
                             </div>
 
-                            <p className='explicacion'>Pots administrar els mapas reportats, veien tots el reports per mapa i en general</p>
+                            <p className='explicacion'>Pots administrar els mapes reportats, veien tots el reports per mapa i en general.</p>
                         </div>
                     </div>
                 </div>
@@ -330,7 +330,7 @@ function AdminPanel() {
                                 </ul>
                             ) : (
                                 <div>
-                                    {searchMapsById && <p>No se encontraron mapas con ese ID</p>}
+                                    {searchMapsById && <p>No s'han trobat mapes amb aquest ID</p>}
                                     <ul className='lista-users'></ul>
                                 </div>
                             )}
@@ -382,26 +382,26 @@ function AdminPanel() {
                                                         <span>Creador - {allUsers.find(user => user.id === map.user_id).name}</span>
                                                     )}
                                                     <button className='button-verReportes' onClick={() => setSelectedMap(map)}>
-                                                        <p>Ver Reportes</p>
+                                                        <p>Veure Reports</p>
                                                     </button>
 
 
                                                 </div>
                                                 {selectedMap && selectedMap.map_id === map.map_id && (
                                                     <div>
-                                                        <h2>Reportes para el mapa {selectedMap.map_id}</h2>
+                                                        <h2>Reports para el mapa {selectedMap.map_id}</h2>
                                                         <hr style={{ padding: '10px 10px 10px 10px' }}></hr>
                                                         <ul style={{ listStyleType: 'none', paddingLeft: 0 }} className='container-lista-reports'>
                                                             {filterByIdAndReasonReportedMaps.filter(report => report.map_id === selectedMap.map_id).map((report, index) => (
                                                                 <li key={index} style={{ marginBottom: '10px' }} className='lista-reports'>
                                                                     <span>{index + 1}</span>
                                                                     <span>{report.reason}</span>
-                                                                    <button className='cancel-report' onClick={() => handleDeleteReport(map.id)}>Cancelar reporte</button>
+                                                                    <button className='cancel-report' onClick={() => handleDeleteReport(map.id)}>Cancelar reports</button>
                                                                 </li>
                                                             ))}
                                                         </ul>
                                                         <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: '10px' }}>
-                                                            <button className='button-cerrar' onClick={() => setSelectedMap(null)}>Cerrar</button>
+                                                            <button className='button-cerrar' onClick={() => setSelectedMap(null)}>Tancar</button>
                                                         </div>
                                                     </div>
                                                 )}
@@ -412,7 +412,7 @@ function AdminPanel() {
                                 </ul>
                             ) : (
                                 <div>
-                                    {searchReportedMapById && <p>No se encontraron mapas con ese ID</p>}
+                                    {searchReportedMapById && <p>No s'han trobat mapes amb aquest ID</p>}
                                     <ul className='lista-reportes'></ul>
                                 </div>
                             )}
@@ -472,9 +472,9 @@ function AdminPanel() {
                                             <p className="">{user.admin === 1 ? <TiTickOutline style={{ fontSize: '2em', color: 'rgba(13, 129, 41 , 0.757)' }} /> : <TiTimesOutline style={{ fontSize: '2em', color: 'rgba(138, 10, 10, 0.757)' }} />}</p>
                                             <div>
                                                 {user.admin === 0 ? (
-                                                    <button style={{ color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', boxShadow: '0 0 10px rgba(13, 129, 41 , 0.957)' }} onClick={() => handleUserAdmin(user.id)}>Hacer admin</button>
+                                                    <button style={{ color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', boxShadow: '0 0 10px rgba(13, 129, 41 , 0.957)' }} onClick={() => handleUserAdmin(user.id)}>Fer administrador</button>
                                                 ) : (
-                                                    <button style={{ color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', boxShadow: '0 0 10px rgba(138, 10, 10, 0.957)' }} onClick={() => handleUserNotAdmin(user.id)}>Quitar admin</button>
+                                                    <button style={{ color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', boxShadow: '0 0 10px rgba(138, 10, 10, 0.957)' }} onClick={() => handleUserNotAdmin(user.id)}>Quitar administrador</button>
 
                                                 )}
                                             </div>
@@ -483,7 +483,7 @@ function AdminPanel() {
                                 </ul>
                             ) : (
                                 <div>
-                                    {searchUsersById && <p>No se encontraron usuarios con ese ID</p>}
+                                    {searchUsersById && <p>No s'han trobat usuaris amb aquest ID</p>}
                                     <ul className='lista-users'></ul>
                                 </div>
                             )}
