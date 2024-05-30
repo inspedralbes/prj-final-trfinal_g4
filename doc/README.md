@@ -6,11 +6,12 @@
 - [Arquitectura bàsica](#arquitectura-bàsica)
   - [Tecnologies utilitzades](#tecnologies-utilitzades)
   - [Interrelació entre els diversos components](#interrelació-entre-els-diversos-components)
-- [Desenvolupament](#desenvolupament)
+- [Desenvolupament](./docker-Develop/README.md)
 - [Desplegament](#desplegament)
-- [Frontend](#frontend)
-- [Backend](#backend)
-- [Node.js](#nodejs)
+- [Frontend](../front/next/README.md)
+  - [Phaser](./pheaser/README.md)
+- [Backend](../back/README.md)
+- [Node.js](../node/README.md)
 
 ## Objectius
 
