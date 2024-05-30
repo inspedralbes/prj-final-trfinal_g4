@@ -1,13 +1,4 @@
-# transversals
-Esquema mínim de carpetes pels projectes transversals
-
-És obligatori seguir aquesta estructura tot i que la podeu ampliar.
 # Autors
-
-## Atenció
-Un cop comenceu heu de canviar aquesta explicació amb la corresponent al vostre projecte (utilitzant markdown)
-
-# Aquest fitxer ha de contenir com a mínim:
  * Nom dels integrants
     - Sara
     - Eric
@@ -26,3 +17,5 @@ Un cop comenceu heu de canviar aquesta explicació amb la corresponent al vostre
  * URL de producció (si és que ja està en marxa)
       - [Chromatic Bond](https://chromaticbond.cat/)
  * Estat: finalitzat, implementant Next.js i TailwindCSS, així com el backend amb Laravel.
+
+# Documentació bàsica del projecte
