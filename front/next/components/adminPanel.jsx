@@ -184,324 +184,324 @@ function AdminPanel() {
     }
 
     return (
-        <div className="flex items-center min-h-screen bg-gradient-to-r from-blue-500 from-15% via-red-500 via-60% to-yellow-500">
-            <div className="grid grid-cols items-center justify-center min-h-screen w-48 bg-teal-700">
-                <div>
-                    <RiAdminLine className='icons' onClick={() => handleIconClick('allUsers')} />
-                </div>
-                <div>
-                    <FaRegMap className='icons' onClick={() => handleIconClick('maps')} />
-                </div>
-                <div>
-                    <TbMapExclamation className='icons' onClick={() => handleIconClick('reportedMaps')} />
-                </div>
-            </div>
-
-            {!selectedIcon && (
-                <div className='container-home'>
-                    <div className='icon-settings mt-9'>
-                        <IoSettingsOutline style={{ fontSize: '4em', color: 'white' }} />
-                    </div>
-
-                    <h1 className="animated-text text-white">Hola, {userName}</h1>
-                    <div className='sections'>
-                        <div className="section">
-                            <div className='barra-lateral'>
-                                <RiUserSearchLine style={{ fontSize: '2em' }} />
-                            </div>
-                            <p className='explicacion'>Pots administrar els usuaris filtrant-los per ID i veure si és administrador o no.</p>
-                        </div>
-
-                        <div className="section">
-                            <div className='barra-lateral'>
-                                <TbMapSearch style={{ fontSize: '2em' }} />
-                            </div>
-                            <p className='explicacion'>Pots administrar els mapes, filtrar-los per ID i per estat, descarregar l'arxiu i eliminar el mapa.</p>
-                        </div>
-
-                        <div className="section">
-                            <div className='barra-lateral'>
-                                <TbReportSearch style={{ fontSize: '2em' }} />
-                            </div>
-                            <p className='explicacion'>Pots administrar els mapes reportats, veien tots el reports per mapa i en general.</p>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {selectedIcon === 'maps' && (
-                <div className="container">
-                    <div className='container-icon-maps mt-9'>
-                        <FaRegMap style={{ fontSize: '12em', color: '#FFFFFF' }} />
+        <div className="min-h-screen w-full bg-gradient-to-r from-blue-500 from-15% via-red-500 via-60% to-yellow-500">
+            <div className='flex flex-inline min-h-screen w-full items-center'>
+                <div className="grid grid-cols items-center justify-center min-h-screen w-1/6 min-w-[100px] bg-teal-700">
+                    <div>
+                        <RiAdminLine className='icons' onClick={() => handleIconClick('allUsers')} />
                     </div>
                     <div>
+                        <FaRegMap className='icons' onClick={() => handleIconClick('maps')} />
+                    </div>
+                    <div>
+                        <TbMapExclamation className='icons' onClick={() => handleIconClick('reportedMaps')} />
+                    </div>
+                </div>
 
-                        <div className='container-filter-users'>
-                            <input
-                                type="text"
-                                placeholder='Buscar por ID'
-                                value={searchMapsById}
-                                onChange={handleSearchChangeMaps}
-                                className='input-search'
-                            />
-                            <select
-                                className='dropdown-menu'
-                                onChange={handleSelectFilterStateMapsChange}
-                                style={{
-                                    color: '#333', // color del texto
-                                    backgroundColor: '#fff', // color de fondo
-                                    border: '1px solid #ccc', // borde
-                                    borderRadius: '4px', // bordes redondeados
-                                    padding: '10px', // espacio interior
-                                    fontSize: '16px', // tamaño del texto
-                                    width: '150px', // ancho
-                                }}
-
-                            >
-                                <option value="">Todos</option>
-                                {
-                                    [...new Set(maps.map(map => map.state))].map((state, index) =>
-                                        <option key={index} value={state}>{state}</option>
-                                    )
-                                }
-                            </select>
-
+                {!selectedIcon && (
+                    <div className='flex flex-col items-center justify-center mx-auto'>
+                        <div className=''>
+                            <IoSettingsOutline style={{ fontSize: '4em', color: 'white' }} />
                         </div>
-
-                        <div className='users-view'>
-                            <div className='arrow-left-right'>
-                                {currentPageMaps !== 1 && !searchMapsById && (
-                                    <div className="container-icon-arrow-maps">
-                                        <button onClick={() => setCurrentPageMaps(currentPageMaps - 1)} disabled={currentPageMaps === 1}><IoIosArrowDropleft style={{ fontSize: '2.5em', color: '#FFFFFF' }} /></button>
-                                    </div>
-                                )}
-                            </div>
-                            {filterByIdAndNameAndUser.length > 0 ? (
-                                <ul className='lista-users'>
-                                    {currentMaps.length > 0 && currentMaps.map((map) => (
-                                        <li key={map.id} className='info-maps'>
-                                            <div className='info-map_container-img'>
-                                                <img className="info-map-img" src={`http://localhost:8000${map.image}`} style={{ width: '250px', height: '150px', borderRadius: '7%' }} />
-                                            </div>
-                                            <span>{map.name}</span>
-                                            {allUsers.length > 0 && (
-                                                <span>{allUsers.find(user => user.id === map.user_id).name}</span>
-                                            )}
-                                            <div className='grid-container-iconos'>
-                                                <div style={{ position: 'relative' }}>
-                                                    <MdOutlineReportProblem style={{ color: 'orange', fontSize: '3em' }} />
-                                                    <span style={{
-                                                        position: 'absolute',
-                                                        top: 0,
-                                                        right: 0,
-                                                        padding: '0.1em',
-                                                        paddingLeft: '0.2em',
-                                                        paddingRight: '0.2em',
-                                                        backgroundColor: 'orange',
-                                                        color: 'white',
-                                                        borderRadius: '30%',
-                                                    }}>
-                                                        {map.reports}
-                                                    </span>
-                                                </div>
-                                                <div>
-                                                    <MdOutlineFileDownload style={{ color: 'green', fontSize: '3em', cursor: 'pointer' }} onClick={() => handleDownloadFile(map.id, map.name)} />
-                                                </div>
-                                                <div>
-                                                    <RiDeleteBinLine style={{ color: 'red', fontSize: '2.8em', cursor: 'pointer' }} onClick={() => handleDeleteMap(map.id)} />
-                                                </div>
-                                                {map.state === 'pending' && (
-                                                    <div>
-                                                        <button onClick={() => handleApproveMap(map.id)} style={{ backgroundColor: 'green', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', width: '100px' }}>Aprobar</button>
-                                                    </div>
-                                                )}
-                                                {map.state === 'Reported' && (
-                                                    <div>
-                                                        <MdReportOff style={{ color: '#BF0A1D', fontSize: '3.1em', display: 'flex' }} />
-                                                    </div>
-                                                )}
-                                                {map.state === 'approved' && (
-                                                    <div>
-                                                        <CiSquareCheck style={{ color: 'rgba(13, 129, 41 , 0.957)', fontSize: '3.1em', display: 'flex' }} />
-                                                    </div>
-                                                )}
-
-
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <div>
-                                    {searchMapsById && <p>No s'han trobat mapes amb aquest ID</p>}
-                                    <ul className='lista-users'></ul>
+                        <h1 className="animated-text text-white text-6xl m-5 mb-9">Hola, {userName}</h1>
+                        <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 m-5 mt-9 w-2/3'>
+                            <div className="flex flex-inline p-4 rounded-lg bg-white">
+                                <div className='mr-4 my-auto'>
+                                    <RiUserSearchLine style={{ fontSize: '2em' }} />
                                 </div>
-                            )}
-                            <div className='arrow-left-right'>
-                                {indexOfLastMap < filterByIdAndNameAndUser.length && !searchMapsById && (
-                                    <div className="container-icon-arrow-maps">
-                                        <button onClick={() => setCurrentPageMaps(currentPageMaps + 1)} disabled={indexOfLastMap >= maps.length}><IoIosArrowDropright style={{ fontSize: '2.5em', color: '#FFFFFF' }} /></button>
-                                    </div>
-                                )}
+                                <p className=''>Pots administrar els usuaris filtrant-los per ID i veure si és administrador o no.</p>
+                            </div>
+
+                            <div className="flex flex-inline p-4 rounded-lg bg-white">
+                                <div className='mr-4 my-auto'>
+                                    <TbMapSearch style={{ fontSize: '2em' }} />
+                                </div>
+                                <p className=''>Pots administrar els mapes, filtrar-los per ID i per estat, descarregar l'arxiu i eliminar el mapa.</p>
+                            </div>
+
+                            <div className="flex flex-inline p-4 rounded-lg bg-white">
+                                <div className='mr-4 my-auto'>
+                                    <TbReportSearch style={{ fontSize: '2em' }} />
+                                </div>
+                                <p className=''>Pots administrar els mapes reportats, veien tots el reports per mapa i en general.</p>
                             </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
 
-            {selectedIcon === 'reportedMaps' && (
-                <div className='container'>
-                    <div className='container-icon-report mt-9'>
-                        <MdOutlineReportProblem style={{ fontSize: '12em', color: '#FFFFFF' }} />
-                    </div>
-                    <div>
-                        <div className='container-filter-users'>
-                            <input
-                                type="text"
-                                placeholder='Search map reported by ID'
-                                value={searchReportedMapById}
-                                onChange={handleSearchChangeReportedMaps}
-                                className='input-search'
-                            />
+                {selectedIcon === 'maps' && (
+                    <div className="container">
+                        <div className='container-icon-maps mt-9'>
+                            <FaRegMap style={{ fontSize: '12em', color: '#FFFFFF' }} />
                         </div>
-                        <div className='users-view'>
-                            <div className='arrow-left-right'>
-                                {currentPageReportedMaps !== 1 && !searchReportedMapById && (
-                                    <div className="container-icon-arrow-reportedMaps">
-                                        <button onClick={() => setCurrentPageReportedMaps(currentPageReportedMaps - 1)} disabled={currentPageReportedMaps === 1}><IoIosArrowDropleft style={{ fontSize: '2.5em', color: '#BF0A1D' }} /></button>
-                                    </div>
-                                )}
-                            </div>
+                        <div>
 
-                            {filterByIdAndReasonReportedMaps.length > 0 ? (
-                                <ul className='lista-users'>
-                                    {[...new Set(currentReportedMaps.map(map => map.map_id))].map((mapId) => {
-                                        const map = currentReportedMaps.find(map => map.map_id === mapId);
-                                        return (
-                                            <div className='info-all'>
-                                                <div key={map.id} className='info-reportedMap'>
-                                                    <span> ID - {map.map_id} </span>
-                                                    {allUsers.length > 0 && (
-                                                        <span>Creador - {allUsers.find(user => user.id === map.user_id).name}</span>
-                                                    )}
-                                                    <button className='button-verReportes' onClick={() => setSelectedMap(map)}>
-                                                        <p>Veure Reports</p>
-                                                    </button>
+                            <div className='container-filter-users'>
+                                <input
+                                    type="text"
+                                    placeholder='Buscar por ID'
+                                    value={searchMapsById}
+                                    onChange={handleSearchChangeMaps}
+                                    className='input-search'
+                                />
+                                <select
+                                    className='dropdown-menu'
+                                    onChange={handleSelectFilterStateMapsChange}
+                                    style={{
+                                        color: '#333', // color del texto
+                                        backgroundColor: '#fff', // color de fondo
+                                        border: '1px solid #ccc', // borde
+                                        borderRadius: '4px', // bordes redondeados
+                                        padding: '10px', // espacio interior
+                                        fontSize: '16px', // tamaño del texto
+                                        width: '150px', // ancho
+                                    }}
 
-
-                                                </div>
-                                                {selectedMap && selectedMap.map_id === map.map_id && (
-                                                    <div>
-                                                        <h2>Reports para el mapa {selectedMap.map_id}</h2>
-                                                        <hr style={{ padding: '10px 10px 10px 10px' }}></hr>
-                                                        <ul style={{ listStyleType: 'none', paddingLeft: 0 }} className='container-lista-reports'>
-                                                            {filterByIdAndReasonReportedMaps.filter(report => report.map_id === selectedMap.map_id).map((report, index) => (
-                                                                <li key={index} style={{ marginBottom: '10px' }} className='lista-reports'>
-                                                                    <span>{index + 1}</span>
-                                                                    <span>{report.reason}</span>
-                                                                    <button className='cancel-report' onClick={() => handleDeleteReport(map.id)}>Cancelar reports</button>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
-                                                        <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: '10px' }}>
-                                                            <button className='button-cerrar' onClick={() => setSelectedMap(null)}>Tancar</button>
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                            </div>
+                                >
+                                    <option value="">Todos</option>
+                                    {
+                                        [...new Set(maps.map(map => map.state))].map((state, index) =>
+                                            <option key={index} value={state}>{state}</option>
                                         )
-                                    })}
-                                </ul>
-                            ) : (
-                                <div>
-                                    {searchReportedMapById && <p>No s'han trobat mapes amb aquest ID</p>}
-                                    <ul className='lista-reportes'></ul>
+                                    }
+                                </select>
+
+                            </div>
+
+                            <div className='users-view'>
+                                <div className='arrow-left-right'>
+                                    {currentPageMaps !== 1 && !searchMapsById && (
+                                        <div className="container-icon-arrow-maps">
+                                            <button onClick={() => setCurrentPageMaps(currentPageMaps - 1)} disabled={currentPageMaps === 1}><IoIosArrowDropleft style={{ fontSize: '2.5em', color: '#FFFFFF' }} /></button>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-
-                            <div className='arrow-left-right'>
-                                {indexOfLastReportedMap < filterByIdAndReasonReportedMaps.length && !searchReportedMapById && (
-                                    <div className="container-icon-arrow-reportedMaps">
-                                        <button onClick={() => setCurrentPageReportedMaps(currentPageReportedMaps + 1)} disabled={indexOfLastReportedMap >= reportedMaps.length}><IoIosArrowDropright style={{ fontSize: '2.5em', color: '#BF0A1D' }} /></button>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {selectedIcon === 'allUsers' && (
-                <div className="container ">
-                    <div className="container-icon-users mt-9">
-                        <RiAdminLine style={{ fontSize: '12em', color: '#FFFFFF' }} />
-                    </div>
-                    <div>
-                        <div className='container-filter-users'>
-                            <input
-                                type="text"
-                                placeholder='Search by name and ID'
-                                value={searchUsersById}
-                                onChange={handleSearchChangeUsers}
-                                className='input-search'
-                            />
-                        </div>
-
-                        <div className='users-view'>
-                            <div className='arrow-left-right'>
-                                {currentPageUsers !== 1 && !searchUsersById && (
-                                    <div className="container-icon-arrow-users">
-                                        <button onClick={() => setCurrentPageUsers(currentPageUsers - 1)} disabled={currentPageUsers === 1}><IoIosArrowDropleft style={{ fontSize: '2.5em', color: '#2C66E3' }} /></button>
-                                    </div>
-                                )}
-                            </div>
-                            {filterByIdAndNameUsers.length > 0 ? (
-                                <ul className='lista-users'>
-                                    {currentUsers.length > 0 && currentUsers.map((user) => (
-                                        <li key={user.id} className="info-users">
-                                            <div>
-                                                {user.admin === 0 ? (
-                                                    <LuUser2 style={{ fontSize: '2em', color: 'white', padding: '5px', borderRadius: '5px', boxShadow: '0 0 10px rgba(217, 213, 209, 0.88)' }} />
-                                                ) : (
-                                                    <GrUserAdmin style={{ fontSize: '2em', color: 'white', padding: '5px', borderRadius: '5px', boxShadow: '0 0 10px rgba(217, 213, 209, 0.88)' }} />
-                                                )
-                                                }
-                                            </div>
-                                            <p className="mr-3">{user.name}</p>
-                                            <p className="ml-3">{user.email}</p>
-                                            <p className="">{user.admin === 1 ? <TiTickOutline style={{ fontSize: '2em', color: 'rgba(13, 129, 41 , 0.757)' }} /> : <TiTimesOutline style={{ fontSize: '2em', color: 'rgba(138, 10, 10, 0.757)' }} />}</p>
-                                            <div>
-                                                {user.admin === 0 ? (
-                                                    <button style={{ color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', boxShadow: '0 0 10px rgba(13, 129, 41 , 0.957)' }} onClick={() => handleUserAdmin(user.id)}>Fer administrador</button>
-                                                ) : (
-                                                    <button style={{ color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', boxShadow: '0 0 10px rgba(138, 10, 10, 0.957)' }} onClick={() => handleUserNotAdmin(user.id)}>Quitar administrador</button>
-
+                                {filterByIdAndNameAndUser.length > 0 ? (
+                                    <ul className='lista-users'>
+                                        {currentMaps.length > 0 && currentMaps.map((map) => (
+                                            <li key={map.id} className='info-maps'>
+                                                <div className='info-map_container-img'>
+                                                    <img className="info-map-img" src={`http://localhost:8000${map.image}`} style={{ width: '250px', height: '150px', borderRadius: '7%' }} />
+                                                </div>
+                                                <span>{map.name}</span>
+                                                {allUsers.length > 0 && (
+                                                    <span>{allUsers.find(user => user.id === map.user_id).name}</span>
                                                 )}
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <div>
-                                    {searchUsersById && <p>No s'han trobat usuaris amb aquest ID</p>}
-                                    <ul className='lista-users'></ul>
-                                </div>
-                            )}
+                                                <div className='grid-container-iconos'>
+                                                    <div style={{ position: 'relative' }}>
+                                                        <MdOutlineReportProblem style={{ color: 'orange', fontSize: '3em' }} />
+                                                        <span style={{
+                                                            position: 'absolute',
+                                                            top: 0,
+                                                            right: 0,
+                                                            padding: '0.1em',
+                                                            paddingLeft: '0.2em',
+                                                            paddingRight: '0.2em',
+                                                            backgroundColor: 'orange',
+                                                            color: 'white',
+                                                            borderRadius: '30%',
+                                                        }}>
+                                                            {map.reports}
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <MdOutlineFileDownload style={{ color: 'green', fontSize: '3em', cursor: 'pointer' }} onClick={() => handleDownloadFile(map.id, map.name)} />
+                                                    </div>
+                                                    <div>
+                                                        <RiDeleteBinLine style={{ color: 'red', fontSize: '2.8em', cursor: 'pointer' }} onClick={() => handleDeleteMap(map.id)} />
+                                                    </div>
+                                                    {map.state === 'pending' && (
+                                                        <div>
+                                                            <button onClick={() => handleApproveMap(map.id)} style={{ backgroundColor: 'green', color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', width: '100px' }}>Aprobar</button>
+                                                        </div>
+                                                    )}
+                                                    {map.state === 'Reported' && (
+                                                        <div>
+                                                            <MdReportOff style={{ color: '#BF0A1D', fontSize: '3.1em', display: 'flex' }} />
+                                                        </div>
+                                                    )}
+                                                    {map.state === 'approved' && (
+                                                        <div>
+                                                            <CiSquareCheck style={{ color: 'rgba(13, 129, 41 , 0.957)', fontSize: '3.1em', display: 'flex' }} />
+                                                        </div>
+                                                    )}
 
-                            <div className='arrow-left-right'>
-                                {indexOfLastUser < filterByIdAndNameUsers.length && !searchUsersById && (
-                                    <div className="container-icon-arrow-users">
-                                        <button onClick={() => setCurrentPageUsers(currentPageUsers + 1)} disabled={indexOfLastUser >= allUsers.length}><IoIosArrowDropright style={{ fontSize: '2.5em', color: '#2C66E3' }} /></button>
+
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <div>
+                                        {searchMapsById && <p>No s'han trobat mapes amb aquest ID</p>}
+                                        <ul className='lista-users'></ul>
                                     </div>
                                 )}
+                                <div className='arrow-left-right'>
+                                    {indexOfLastMap < filterByIdAndNameAndUser.length && !searchMapsById && (
+                                        <div className="container-icon-arrow-maps">
+                                            <button onClick={() => setCurrentPageMaps(currentPageMaps + 1)} disabled={indexOfLastMap >= maps.length}><IoIosArrowDropright style={{ fontSize: '2.5em', color: '#FFFFFF' }} /></button>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
+                )}
 
-                </div>
-            )}
+                {selectedIcon === 'reportedMaps' && (
+                    <div className='container'>
+                        <div className='container-icon-report mt-9'>
+                            <MdOutlineReportProblem style={{ fontSize: '12em', color: '#FFFFFF' }} />
+                        </div>
+                        <div>
+                            <div className='container-filter-users'>
+                                <input
+                                    type="text"
+                                    placeholder='Search map reported by ID'
+                                    value={searchReportedMapById}
+                                    onChange={handleSearchChangeReportedMaps}
+                                    className='input-search'
+                                />
+                            </div>
+                            <div className='users-view'>
+                                <div className='arrow-left-right'>
+                                    {currentPageReportedMaps !== 1 && !searchReportedMapById && (
+                                        <div className="container-icon-arrow-reportedMaps">
+                                            <button onClick={() => setCurrentPageReportedMaps(currentPageReportedMaps - 1)} disabled={currentPageReportedMaps === 1}><IoIosArrowDropleft style={{ fontSize: '2.5em', color: '#BF0A1D' }} /></button>
+                                        </div>
+                                    )}
+                                </div>
 
+                                {filterByIdAndReasonReportedMaps.length > 0 ? (
+                                    <ul className='lista-users'>
+                                        {[...new Set(currentReportedMaps.map(map => map.map_id))].map((mapId) => {
+                                            const map = currentReportedMaps.find(map => map.map_id === mapId);
+                                            return (
+                                                <div className='info-all'>
+                                                    <div key={map.id} className='info-reportedMap'>
+                                                        <span> ID - {map.map_id} </span>
+                                                        {allUsers.length > 0 && (
+                                                            <span>Creador - {allUsers.find(user => user.id === map.user_id).name}</span>
+                                                        )}
+                                                        <button className='button-verReportes' onClick={() => setSelectedMap(map)}>
+                                                            <p>Veure Reports</p>
+                                                        </button>
+
+
+                                                    </div>
+                                                    {selectedMap && selectedMap.map_id === map.map_id && (
+                                                        <div>
+                                                            <h2>Reports para el mapa {selectedMap.map_id}</h2>
+                                                            <hr style={{ padding: '10px 10px 10px 10px' }}></hr>
+                                                            <ul style={{ listStyleType: 'none', paddingLeft: 0 }} className='container-lista-reports'>
+                                                                {filterByIdAndReasonReportedMaps.filter(report => report.map_id === selectedMap.map_id).map((report, index) => (
+                                                                    <li key={index} style={{ marginBottom: '10px' }} className='lista-reports'>
+                                                                        <span>{index + 1}</span>
+                                                                        <span>{report.reason}</span>
+                                                                        <button className='cancel-report' onClick={() => handleDeleteReport(map.id)}>Cancelar reports</button>
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                            <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: '10px' }}>
+                                                                <button className='button-cerrar' onClick={() => setSelectedMap(null)}>Tancar</button>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                </div>
+                                            )
+                                        })}
+                                    </ul>
+                                ) : (
+                                    <div>
+                                        {searchReportedMapById && <p>No s'han trobat mapes amb aquest ID</p>}
+                                        <ul className='lista-reportes'></ul>
+                                    </div>
+                                )}
+
+                                <div className='arrow-left-right'>
+                                    {indexOfLastReportedMap < filterByIdAndReasonReportedMaps.length && !searchReportedMapById && (
+                                        <div className="container-icon-arrow-reportedMaps">
+                                            <button onClick={() => setCurrentPageReportedMaps(currentPageReportedMaps + 1)} disabled={indexOfLastReportedMap >= reportedMaps.length}><IoIosArrowDropright style={{ fontSize: '2.5em', color: '#BF0A1D' }} /></button>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {selectedIcon === 'allUsers' && (
+                    <div className="container ">
+                        <div className="container-icon-users mt-9">
+                            <RiAdminLine style={{ fontSize: '12em', color: '#FFFFFF' }} />
+                        </div>
+                        <div>
+                            <div className='container-filter-users'>
+                                <input
+                                    type="text"
+                                    placeholder='Search by name and ID'
+                                    value={searchUsersById}
+                                    onChange={handleSearchChangeUsers}
+                                    className='input-search'
+                                />
+                            </div>
+
+                            <div className='users-view'>
+                                <div className='arrow-left-right'>
+                                    {currentPageUsers !== 1 && !searchUsersById && (
+                                        <div className="container-icon-arrow-users">
+                                            <button onClick={() => setCurrentPageUsers(currentPageUsers - 1)} disabled={currentPageUsers === 1}><IoIosArrowDropleft style={{ fontSize: '2.5em', color: '#2C66E3' }} /></button>
+                                        </div>
+                                    )}
+                                </div>
+                                {filterByIdAndNameUsers.length > 0 ? (
+                                    <ul className='lista-users'>
+                                        {currentUsers.length > 0 && currentUsers.map((user) => (
+                                            <li key={user.id} className="info-users">
+                                                <div>
+                                                    {user.admin === 0 ? (
+                                                        <LuUser2 style={{ fontSize: '2em', color: 'white', padding: '5px', borderRadius: '5px', boxShadow: '0 0 10px rgba(217, 213, 209, 0.88)' }} />
+                                                    ) : (
+                                                        <GrUserAdmin style={{ fontSize: '2em', color: 'white', padding: '5px', borderRadius: '5px', boxShadow: '0 0 10px rgba(217, 213, 209, 0.88)' }} />
+                                                    )
+                                                    }
+                                                </div>
+                                                <p className="mr-3">{user.name}</p>
+                                                <p className="ml-3">{user.email}</p>
+                                                <p className="">{user.admin === 1 ? <TiTickOutline style={{ fontSize: '2em', color: 'rgba(13, 129, 41 , 0.757)' }} /> : <TiTimesOutline style={{ fontSize: '2em', color: 'rgba(138, 10, 10, 0.757)' }} />}</p>
+                                                <div>
+                                                    {user.admin === 0 ? (
+                                                        <button style={{ color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', boxShadow: '0 0 10px rgba(13, 129, 41 , 0.957)' }} onClick={() => handleUserAdmin(user.id)}>Fer administrador</button>
+                                                    ) : (
+                                                        <button style={{ color: 'white', padding: '10px', borderRadius: '5px', cursor: 'pointer', boxShadow: '0 0 10px rgba(138, 10, 10, 0.957)' }} onClick={() => handleUserNotAdmin(user.id)}>Quitar administrador</button>
+
+                                                    )}
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <div>
+                                        {searchUsersById && <p>No s'han trobat usuaris amb aquest ID</p>}
+                                        <ul className='lista-users'></ul>
+                                    </div>
+                                )}
+
+                                <div className='arrow-left-right'>
+                                    {indexOfLastUser < filterByIdAndNameUsers.length && !searchUsersById && (
+                                        <div className="container-icon-arrow-users">
+                                            <button onClick={() => setCurrentPageUsers(currentPageUsers + 1)} disabled={indexOfLastUser >= allUsers.length}><IoIosArrowDropright style={{ fontSize: '2.5em', color: '#2C66E3' }} /></button>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                )}
+            </div>
         </div>
     )
 

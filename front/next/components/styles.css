@@ -278,7 +278,6 @@
 }
 
 .animated-text {
-    font-size: 4em;
     overflow: hidden;
     white-space: nowrap;
     border-right: .15em solid white;
@@ -286,13 +285,8 @@
     animation: typing 4s steps(40, end),
         hide-caret 1s 5s forwards,
         underline-text 1s 6s forwards;
-    /* Eliminar 'blink-caret .75s step-end infinite' */
     animation-fill-mode: forwards;
     text-align: center;
-    position: absolute;
-    top: 25%;
-    left: 55%;
-    transform: translate(-50%, -50%);
 }
 
 
