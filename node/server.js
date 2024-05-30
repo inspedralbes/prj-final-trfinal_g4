@@ -346,9 +346,8 @@ io.on('connection', (socket) => {
         let room = findRoomByUser(socket.id);
         room.game.currentMap++;
         if (room.game.currentMap == room.game.maps.length) {
-            io.to(findRoomByUser(socket.id).id).emit('finishGame')
-            socket.leave(room.id);
-            rooms.splice(rooms.indexOf(room), 1);
+            io.to(findRoomByUser(socket.id).id).emit('goToCredits')
+
         } else {
             if (room.game.currentMap == 1) {
                 room.game.playersData[0].colorsUnlocked = ['red'];
@@ -369,6 +368,11 @@ io.on('connection', (socket) => {
             room.game.currentMap = room.game.currentMap++;
             io.to(findRoomByUser(socket.id).id).emit('winFront', room.game)
         }
+    });
+    socket.on("finishGame", () => {
+        socket.emit('finishGame');
+        socket.leave(room.id);
+        rooms.splice(rooms.indexOf(room), 1);
     });
 
     //Disconnect
