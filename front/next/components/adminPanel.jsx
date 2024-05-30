@@ -186,7 +186,7 @@ function AdminPanel() {
     return (
         <div className="min-h-screen w-full bg-gradient-to-r from-blue-500 from-15% via-red-500 via-60% to-yellow-500">
             <div className='flex flex-inline min-h-screen w-full items-center'>
-                <div className="grid grid-cols items-center justify-center min-h-screen w-1/6 min-w-[100px] bg-teal-700">
+                <div className="grid grid-cols items-center justify-center min-h-screen w-1/6 min-w-[100px] bg-sky-800">
                     <div>
                         <RiAdminLine className='icons' onClick={() => handleIconClick('allUsers')} />
                     </div>
