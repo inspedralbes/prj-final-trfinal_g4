@@ -84,10 +84,14 @@ function AdminPanel() {
     const indexOfFirstReportedMap = indexOfLastReportedMap - mapsPerPage;
     const currentReportedMaps = filterByIdAndReasonReportedMaps.slice(indexOfFirstReportedMap, indexOfLastReportedMap);
 
-    const userLocal = JSON.parse(localStorage.getItem('user'));
-    const userName = userLocal.name;
-    let userID = userLocal.id;
-    let tokenLocal = userLocal.token;
+    try {
+        const userLocal = JSON.parse(localStorage.getItem('user'));
+        var userID = userLocal.id;
+        var userName = userLocal.name;
+        var tokenLocal = userLocal.token;
+    } catch (error) {
+        //console.error('Error getting user:', error);
+    }
 
     const handleDeleteMap = async (mapID) => {
 
