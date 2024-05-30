@@ -6,7 +6,10 @@ import socket from '../services/sockets';
 
 export default class Credits extends Phaser.Scene {
     cursors;
-
+    music;
+    constructor() {
+        super('credits');
+    }
     preload() {
         this.BASE_URL = 'http://localhost:8000';
         // this.load.webfont('PixelFont', 'https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
@@ -16,24 +19,13 @@ export default class Credits extends Phaser.Scene {
 
 
     create() {
-        const music = this.sound.add('creditMusic');
+        this.music = this.sound.add('creditMusic');
 
-        music.play();
+        this.music.play();
         // Create a gradient color
-        const gradientColor = new Phaser.Display.Color.GradientColor();
-
-        // Set the gradient color properties
-        gradientColor.setTo(
-            Phaser.Display.Color.ValueToColor(0xff0000), // Start color (red)
-            Phaser.Display.Color.ValueToColor(0x00ff00), // End color (green)
-            1 // Steps (number of color stops)
-        );
-
-        // Create a gradient fill style
-        const gradientFillStyle = this.add.graphics().fillGradientStyle(gradientColor);
+    // const gradientFillStyle = this.add.gradientFillStyle(0, 0, this.cameras.main.width, this.cameras.main.height, 0xff0000, 0xff0000);
 
         // Draw a rectangle with the gradient fill style
-        this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, gradientFillStyle);
         // Add a title
         this.add.text(this.cameras.main.width / 2, 50, 'Chromatic Bond', { fontSize: '36px', fill: '#ffffff', fontFamily: 'PixelFont' }).setOrigin(0.5, 0);
         // Fet per
@@ -53,11 +45,14 @@ export default class Credits extends Phaser.Scene {
         this.add.text(700, 150, 'Danna Rodríguez', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
         this.add.text(700, 200, 'Judith Pascal', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
 
-        this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 3, 'Gràcies per jugar, fes click per tornar al menú', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' }).setOrigin(0.5);
+        this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 3 * 2, 'Gràcies per jugar, prem espai per tornar al menú', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' }).setOrigin(0.5);
     }
     update() {
-        if (this.cursors.leftButton.isDown) {
+        if (this.cursors.space.isDown) {
             socket.emit('endGame');
+            
+            useStore.setState({ room: null });
+            this.music.stop();
         }
     }
 }

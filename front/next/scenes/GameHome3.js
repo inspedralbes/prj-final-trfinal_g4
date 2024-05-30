@@ -2,10 +2,9 @@ import Phaser from 'phaser';
 import useStore from '../src/store';
 import socket from '../services/sockets';
 import LoadingScene from './Loader';
-import GameHome1 from './GameHome1';
 
 
-export default class GameHome extends Phaser.Scene {
+export default class GameHome3 extends Phaser.Scene {
     done = false;
     c1Red = null;
     c1White = null;
@@ -45,7 +44,7 @@ export default class GameHome extends Phaser.Scene {
     animationButtonPLaying;
     otherButtonPressing;
     constructor() {
-        super('gamehome');
+        super('gamehome3');
     }
     platforms = [];
     doors = [];
@@ -94,7 +93,7 @@ export default class GameHome extends Phaser.Scene {
             this.done = false;
             console.log(`mapa${useStore.getState().gameData.currentMap}`)
         }
-        let map = this.add.tilemap(`mapa${useStore.getState().gameData.currentMap}`);
+        let map = this.add.tilemap(`mapa1`);
         let tileset = map.addTilesetImage('tilesetWhite', 'tileset');
 
         let gray = null;
@@ -1283,14 +1282,8 @@ export default class GameHome extends Phaser.Scene {
             //     this.scene.add('preloader', Preloader, true);
             // });
 
-            this.music.stop();
             
-            this.time.delayedCall(1000, () => {
-                
-                
-                
-            });
-            
+           
         });
         if (this.player == 1) {
             switch (useStore.getState().gameData.playersData[0].color) {
@@ -2213,8 +2206,9 @@ export default class GameHome extends Phaser.Scene {
             }
             );
             if (this.player1OnFlag && this.player2OnFlag) {
-                socket.emit('win',0);
+
                 this.time.delayedCall(1000, () => {
+                    this.music.stop();
                     this.scene.switch('credits')
                 });
 

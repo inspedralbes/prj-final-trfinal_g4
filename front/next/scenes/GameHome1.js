@@ -2,10 +2,10 @@ import Phaser from 'phaser';
 import useStore from '../src/store';
 import socket from '../services/sockets';
 import LoadingScene from './Loader';
-import GameHome1 from './GameHome1';
+import GameHome2 from './GameHome2';
 
 
-export default class GameHome extends Phaser.Scene {
+export default class GameHome1 extends Phaser.Scene {
     done = false;
     c1Red = null;
     c1White = null;
@@ -45,7 +45,7 @@ export default class GameHome extends Phaser.Scene {
     animationButtonPLaying;
     otherButtonPressing;
     constructor() {
-        super('gamehome');
+        super('gamehome1');
     }
     platforms = [];
     doors = [];
@@ -160,6 +160,7 @@ export default class GameHome extends Phaser.Scene {
                     const tileB = black.getTileAt(x, y);
 
                     if (tileB && tileB.index > 0) {
+
                         tileB.tint = this.colors.find(color => color.color == 'black').hex;
                     }
                 }
@@ -1284,13 +1285,11 @@ export default class GameHome extends Phaser.Scene {
             // });
 
             this.music.stop();
-            
+            console.log("win");
             this.time.delayedCall(1000, () => {
-                
-                
-                
-            });
             
+            });
+    
         });
         if (this.player == 1) {
             switch (useStore.getState().gameData.playersData[0].color) {
@@ -2213,10 +2212,11 @@ export default class GameHome extends Phaser.Scene {
             }
             );
             if (this.player1OnFlag && this.player2OnFlag) {
-                socket.emit('win',0);
-                this.time.delayedCall(1000, () => {
-                    this.scene.switch('credits')
-                });
+                socket.emit('win', 1);
+                this.time.delayedCall(1500, () => {
+                    this.scene.switch("gamehome2");
+                }
+                );
 
             };
             if (this.player == 1) {

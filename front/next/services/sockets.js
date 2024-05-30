@@ -47,5 +47,9 @@ socket.on("finishGame", () => {
       useStore.setState({ game: null });
       
   });
+  socket.on("endGamefront", () => {
+    useStore.getState().room = null;
+      
+  });
 
 export default socket;

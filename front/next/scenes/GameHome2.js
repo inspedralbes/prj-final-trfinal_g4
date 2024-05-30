@@ -2,10 +2,10 @@ import Phaser from 'phaser';
 import useStore from '../src/store';
 import socket from '../services/sockets';
 import LoadingScene from './Loader';
-import GameHome1 from './GameHome1';
+import GameHome3 from './GameHome3';
 
 
-export default class GameHome extends Phaser.Scene {
+export default class GameHome2 extends Phaser.Scene {
     done = false;
     c1Red = null;
     c1White = null;
@@ -45,7 +45,7 @@ export default class GameHome extends Phaser.Scene {
     animationButtonPLaying;
     otherButtonPressing;
     constructor() {
-        super('gamehome');
+        super('gamehome2');
     }
     platforms = [];
     doors = [];
@@ -91,10 +91,10 @@ export default class GameHome extends Phaser.Scene {
             this.music.setLoop(true);
             this.music.play();
             console.log("mapa" + useStore.getState().gameData.currentMap);
-            this.done = false;
+           
             console.log(`mapa${useStore.getState().gameData.currentMap}`)
         }
-        let map = this.add.tilemap(`mapa${useStore.getState().gameData.currentMap}`);
+        let map = this.add.tilemap(`mapa2`);
         let tileset = map.addTilesetImage('tilesetWhite', 'tileset');
 
         let gray = null;
@@ -1284,13 +1284,9 @@ export default class GameHome extends Phaser.Scene {
             // });
 
             this.music.stop();
-            
-            this.time.delayedCall(1000, () => {
-                
-                
-                
-            });
-            
+          
+
+            this.scene.switch("gamehome3");
         });
         if (this.player == 1) {
             switch (useStore.getState().gameData.playersData[0].color) {
@@ -2213,10 +2209,8 @@ export default class GameHome extends Phaser.Scene {
             }
             );
             if (this.player1OnFlag && this.player2OnFlag) {
-                socket.emit('win',0);
-                this.time.delayedCall(1000, () => {
-                    this.scene.switch('credits')
-                });
+                socket.emit('win', 1);
+                
 
             };
             if (this.player == 1) {

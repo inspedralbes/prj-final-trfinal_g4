@@ -329,12 +329,14 @@ io.on('connection', (socket) => {
 
     socket.on('changeColor', () => {
         let room = findRoomByUser(socket.id);
+
         let player = room.game.playersData.find(player => player.id == socket.id);
         let newColor = nextColor(player);
         if (newColor) {
             player.color = newColor;
         }
         io.to(room.id).emit('changeColorFront', player);
+
     });
 
     socket.on('death', () => {
@@ -342,38 +344,54 @@ io.on('connection', (socket) => {
 
     });
 
-    socket.on('win', () => {
+    socket.on('win', (mapControl) => {
         let room = findRoomByUser(socket.id);
-        room.game.currentMap++;
-        if (room.game.currentMap == room.game.maps.length) {
-            io.to(findRoomByUser(socket.id).id).emit('goToCredits')
+        if (mapControl == room.game.currentMap) {
+            room.game.currentMap++;
+            if (room.game.currentMap == room.game.maps.length) {
+                io.to(findRoomByUser(socket.id).id).emit('goToCredits')
 
-        } else {
-            if (room.game.currentMap == 1) {
-                room.game.playersData[0].colorsUnlocked = ['red'];
-                room.game.playersData[0].color = 'red';
-                room.game.playersData[1].colorsUnlocked = ['blue'];
-                room.game.playersData[1].color = 'blue';
             } else {
-                if (room.game.currentMap == 2) {
-                    room.game.playersData[0].colorsUnlocked.push('green');
-                    room.game.playersData[0].color = 'green';
-                    room.game.playersData[1].colorsUnlocked.push('orange');
-                    room.game.playersData[1].color = 'orange';
+                if (room.game.currentMap == 1) {
+                    room.game.playersData[0].colorsUnlocked = ['red'];
+                    room.game.playersData[0].color = 'red';
+                    room.game.playersData[1].colorsUnlocked = ['blue'];
+                    room.game.playersData[1].color = 'blue';
                 } else {
-                    room.game.playersData[0].colorsUnlocked.push('white');
-                    room.game.playersData[1].colorsUnlocked.push('black');
+                    if (room.game.currentMap == 2) {
+                        room.game.playersData[0].colorsUnlocked.push('green');
+                        room.game.playersData[0].color = 'green';
+                        room.game.playersData[1].colorsUnlocked.push('orange');
+                        room.game.playersData[1].color = 'orange';
+                    } else {
+                        room.game.playersData[0].colorsUnlocked.push('white');
+                        room.game.playersData[1].colorsUnlocked.push('black');
+                    }
                 }
+                room.game.currentMap = room.game.currentMap++;
+
+                io.to(findRoomByUser(socket.id).id).emit('winFront', room.game)
             }
-            room.game.currentMap = room.game.currentMap++;
-            io.to(findRoomByUser(socket.id).id).emit('winFront', room.game)
+        }
+        console.log("nivel:", room.game.currentMap);
+        console.log("playersOn", mapControl);
+    });
+    socket.on("endGame", () => {
+        socket.emit('endGamefront');
+        let room = findRoomByUser(socket.id);
+        if (room) {
+            socket.leave(room.id);
+            if (room.users[0].id == socket.id) {
+                room.users.splice(0, 1);
+            } else {
+                room.users.splice(1, 1);
+            }
+            if (room.users.length == 0) {
+                rooms.splice(rooms.indexOf(room), 1);
+            }
         }
     });
-    socket.on("finishGame", () => {
-        socket.emit('finishGame');
-        socket.leave(room.id);
-        rooms.splice(rooms.indexOf(room), 1);
-    });
+
 
     //Disconnect
     socket.on('disconnect', () => {
