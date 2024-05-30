@@ -8,7 +8,7 @@ export default class Credits extends Phaser.Scene {
     cursors;
 
     preload() {
-        this.BASE_URL = 'https://chromaticbond.cat:8000'; // Change this to the URL of the server
+        this.BASE_URL = 'https://chromaticbond.cat:8000/laravel/api/'; // Change this to the URL of the server
         // this.load.webfont('PixelFont', 'https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
         this.load.audio('creditMusic', 'assets/Rainbow_run.mp3');
         this.cursors = this.input.keyboard.createCursorKeys();
