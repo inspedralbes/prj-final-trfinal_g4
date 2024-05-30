@@ -3,6 +3,11 @@
 
 Aquesta documentació proporciona una descripció breu del projecte i dels diferents components de l'aplicació React/Next.js, adreçada a desenvolupadors que vulguin entendre el funcionament i les funcionalitats de cada part del sistema.
 
+## Estructura del Projecte
+
+En aquesta secció, de Next.js, es troba també PHASER per a la creació de jocs, la documentació es troba en una carpeta especifica.
+
+[Documentació Phaser](../../doc/pheaser/)
 
 ## Index
 
