@@ -5,13 +5,14 @@ import socket from '../services/sockets';
 import { useRouter } from 'next/router';
 
 const Lobby = () => {
+    const URL = 'http://localhost:8000';
     const router = useRouter();
-    const user = useStore.getState().user.name;
-    const image = useStore.getState().user.image;
-    const [room, setRoom] = useState(useStore.getState().room);
+    const userState = useStore.getState().user || {};
+    const user = userState.name || 'Anònim';
+    const image = userState.image || `${URL}/images/profiles/default-NoLogin.png`;
+    const [room, setRoom] = useState(useStore.getState().room || null);
     const [message, setMessage] = useState('');
     var messages = [];
-    const URL = 'http://localhost:8000';
 
     useEffect(() => {
         const handleRoomChange = () => {
@@ -63,7 +64,7 @@ const Lobby = () => {
         });
     }, [router]);
 
-    const chatMessages = room ? room.messages.map((msg, index) => {
+    const chatMessages = room && room.messages ? room.messages.map((msg, index) => {
         if (msg.user == user) {
             return (
                 <div key={index} className='chat-message'>
