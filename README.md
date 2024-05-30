@@ -7,9 +7,6 @@ Esquema mínim de carpetes pels projectes transversals
 ## Atenció
 Un cop comenceu heu de canviar aquesta explicació amb la corresponent al vostre projecte (utilitzant markdown)
 
-## Docker & Docker compose
-El projecte s'ha de poder desplegar en mode desenvolupament simplement fent docker compose up
-
 # Aquest fitxer ha de contenir com a mínim:
  * Nom dels integrants
     - Sara
@@ -18,12 +15,14 @@ El projecte s'ha de poder desplegar en mode desenvolupament simplement fent dock
     - Betsy
     - Fabian
  * Nom del projecte
-    - Chromatic Bond
+      - Chromatic Bond
  * Petita descripció
+      - Chromatic Bond és un joc de trencaclosques que combina estratègia i col·laboració. En aquest manual 
+      trobaràs tota la informació necessària per començar a jugar.
  * Adreça del gestor de tasques (taiga, jira, trello...)
-    - [Linear](https://linear.app/institut-pedralbes/team/CBD/active)
+      - [Linear](https://linear.app/institut-pedralbes/team/CBD/active)
  * Adreça del prototip gràfic del projecte (Penpot, figma, moqups...)
- * URL de producció (quan la tingueu)
- * Estat: en procés, implementant Next.js i TailwindCSS, així com el backend amb Laravel.
-   * GOOGLE_CLIENT_ID= 621468965238-j4t2qmf87b1o9d3941ml2fqtq4hetil1.apps.googleusercontent.com
-   * GOOGLE_CLIENT_SECRET= GOCSPX-FBhy_Kl_1Sjg_OrE1eoxjBe06Xh
+      - [Penpot]()
+ * URL de producció (si és que ja està en marxa)
+      - [Chromatic Bond](https://chromaticbond.cat/)
+ * Estat: finalitzat, implementant Next.js i TailwindCSS, així com el backend amb Laravel.
