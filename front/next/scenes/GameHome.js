@@ -53,7 +53,8 @@ export default class GameHome extends Phaser.Scene {
     player2OnFlag = false;
     priorX;
     priorY;
-
+    audio;
+    music;
     init() {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.activePointer = this.input.activePointer;
@@ -78,8 +79,16 @@ export default class GameHome extends Phaser.Scene {
 
     }
 
-    create() {
+    preload(){
+        this.cursors = this.input.keyboard.createCursorKeys();
+    }
 
+    create() {
+        
+        this.music = this.sound.add('bgMusic');
+        this.music.setLoop(true);
+        this.music.play();
+        console.log("mapa" + useStore.getState().gameData.currentMap);
         this.done = false;
         const map = this.add.tilemap(`mapa${useStore.getState().gameData.currentMap}`);
         const tileset = map.addTilesetImage('tilesetWhite', 'tileset');
@@ -1269,7 +1278,7 @@ export default class GameHome extends Phaser.Scene {
             //     this.scene.add('preloader', Preloader, true);
             // });
 
-
+            this.music.stop();
             this.time.delayedCall(1000, this.scene.start, ['preloader'], this.scene);
         });
         if (this.player == 1) {
@@ -2195,6 +2204,7 @@ export default class GameHome extends Phaser.Scene {
             if (this.player1OnFlag && this.player2OnFlag && this.player == 1) {
                 socket.emit('win');
                 this.done = false;
+
             };
             if (this.player == 1) {
 
