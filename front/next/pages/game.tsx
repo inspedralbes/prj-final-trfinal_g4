@@ -27,12 +27,12 @@ const Game = () => {
                 width: window.innerWidth,
                 height: window.innerHeight,
                 scene: [
-                    Preloader, GameHome, GameHome1, GameHome2, GameHome3, Credits
+                    VideoScene,  Preloader, GameHome, GameHome1, GameHome2, GameHome3, Credits
                 ],
                 physics: {
                     default: 'arcade',
                     arcade: {
-                        debug: true,
+                        debug: false,
                         gravity: { y: 500, x: 0},
                     },
                 },
