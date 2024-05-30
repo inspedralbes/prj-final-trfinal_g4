@@ -1,5 +1,17 @@
 # Documentació del Servidor de Jocs Multijugador
 
+## Índex
+1. [Introducció](#introducció)
+2. [Dependències](#dependències)
+3. [Configuració del Servidor](#configuració-del-servidor)
+   - [Configuració Inicial](#configuració-inicial)
+   - [Gestió del Joc](#gestió-del-joc)
+     - [Variables](#variables)
+     - [Funcions d'Utilitat](#funcions-dutilitat)
+     - [Gestors d'Esdeveniments de Socket.IO](#gestors-desdeveniments-de-socketio)
+4. [Iniciar el Servidor](#iniciar-el-servidor)
+5. [Conclusió](#conclusió)
+
 ## Introducció
 
 Aquesta és una aplicació de servidor Node.js que utilitza Express i Socket.IO per gestionar un entorn de joc multijugador. El servidor permet als clients crear, unir-se i gestionar sales de joc, així com manejar els estats del joc i les interaccions dels jugadors.
@@ -43,14 +55,14 @@ Aquesta és una aplicació de servidor Node.js que utilitza Express i Socket.IO 
     });
     ```
 
-## Gestió del Joc
+### Gestió del Joc
 
-### Variables
+#### Variables
 
 - `rooms`: Array per emmagatzemar totes les sales de joc actives.
 - `lastRoom`: Compte per generar identificadors únics per a les sales.
 
-### Funcions d'Utilitat
+#### Funcions d'Utilitat
 
 1. **findRoomByUser(userId)**
     - Troba la sala on es troba un usuari específic.
@@ -63,7 +75,7 @@ Aquesta és una aplicació de servidor Node.js que utilitza Express i Socket.IO 
 3. **getRandomMaps(), getOriginalMaps(), getMapData(data), getCommunityMaps(maps)**
     - Obtenen mapes d'una API externa basats en diferents criteris (aleatoris, originals, comunitat).
 
-### Gestors d'Esdeveniments de Socket.IO
+#### Gestors d'Esdeveniments de Socket.IO
 
 1. **connection**
     - Gestiona les noves connexions de socket.
@@ -118,7 +130,7 @@ Aquesta és una aplicació de servidor Node.js que utilitza Express i Socket.IO 
     - Gestiona les desconnexions dels usuaris.
     - Actualitza l'estat de la sala i elimina la sala si està buida.
 
-### Iniciar el Servidor
+## Iniciar el Servidor
 
 - Inicia el servidor i escolta al port especificat:
     ```javascript
