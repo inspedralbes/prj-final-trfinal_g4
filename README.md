@@ -23,3 +23,7 @@ El projecte està finalitzat, implementant Next.js i TailwindCSS per al frontend
 
 ## Documentació
 Per a més informació detallada sobre el projecte, consulta el [README de la carpeta de documentació](./doc/README.md).
+
+## Arxius Importants
+
+- [Presentació Comercial](./doc/comercial_2324_G04Projecte-ChromaticBond.pdf)
