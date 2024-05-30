@@ -27,23 +27,26 @@ export default class Credits extends Phaser.Scene {
 
         // Draw a rectangle with the gradient fill style
         // Add a title
-        this.add.text(this.cameras.main.width / 2, 50, 'Chromatic Bond', { fontSize: '36px', fill: '#ffffff', fontFamily: 'PixelFont' }).setOrigin(0.5, 0);
+        const centerX = this.cameras.main.width / 2;
+        const thirdWidth = this.cameras.main.width / 3;
+
+        this.add.text(centerX, 50, 'Chromatic Bond', { fontSize: '36px', fill: '#ffffff', fontFamily: 'PixelFont' }).setOrigin(0.5, 0);
         // Fet per
-        this.add.text(100, 100, 'Fet per:', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont'});
-        this.add.text(100, 150, 'Fabián Roldán', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
-        this.add.text(100, 200, 'Sara Martínez', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
-        this.add.text(100, 300, 'Rubén Lora', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
-        this.add.text(100, 350, 'Betsy Julie Villegas', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
-        this.add.text(100, 400, 'Eric Gómez Vilà', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
+        this.add.text(thirdWidth, 100, 'Fet per:', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont'});
+        this.add.text(thirdWidth, 150, 'Fabián Roldán', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
+        this.add.text(thirdWidth, 200, 'Sara Martínez', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
+        this.add.text(thirdWidth, 300, 'Rubén Lora', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
+        this.add.text(thirdWidth, 350, 'Betsy Julie Villegas', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
+        this.add.text(thirdWidth, 400, 'Eric Gómez Vilà', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
         // Recursos
-        this.add.text(400, 100, 'Recursos:', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' });
-        this.add.text(400, 150, 'Tota la música feta per Suno AI (https://suno.com/)', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont'});
-        this.add.text(400, 200, 'Tots els Sprites fets per Pixel Frog (https://pixelfrog-assets.itch.io/)', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
+        this.add.text(centerX, 100, 'Recursos:', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' });
+        this.add.text(centerX, 150, 'Tota la música feta per Suno AI (https://suno.com/)', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont'});
+        this.add.text(centerX, 200, 'Tots els Sprites fets per Pixel Frog (https://pixelfrog-assets.itch.io/)', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
 
         // Special thanks
-        this.add.text(700, 100, 'Agraiments:', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' });
-        this.add.text(700, 150, 'Danna Rodríguez', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
-        this.add.text(700, 200, 'Judith Pascal', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
+        this.add.text(thirdWidth * 2, 100, 'Agraiments:', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' });
+        this.add.text(thirdWidth * 2, 150, 'Danna Rodríguez', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
+        this.add.text(thirdWidth * 2, 200, 'Judith Pascal', { fontSize: '18px', fill: '#ffffff', fontFamily: 'PixelFont' });
 
         this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 3 * 2, 'Gràcies per jugar, prem espai per tornar al menú', { fontSize: '24px', fill: '#ffffff', fontFamily: 'PixelFont' }).setOrigin(0.5);
     }
@@ -53,6 +56,7 @@ export default class Credits extends Phaser.Scene {
             
             useStore.setState({ room: null });
             this.music.stop();
+            this.scene.stop();
         }
     }
 }

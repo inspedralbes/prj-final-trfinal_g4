@@ -93,7 +93,7 @@ export default class GameHome3 extends Phaser.Scene {
             this.done = false;
             console.log(`mapa${useStore.getState().gameData.currentMap}`)
         }
-        let map = this.add.tilemap(`mapa1`);
+        let map = this.add.tilemap(`mapa3`);
         let tileset = map.addTilesetImage('tilesetWhite', 'tileset');
 
         let gray = null;
@@ -285,7 +285,7 @@ export default class GameHome3 extends Phaser.Scene {
                 case 'spawn-1':
                     {
                         this.character1 = this.physics.add.sprite(x, y, 'character1-idle');
-                        this.character1.setTint(this.colors.find(color => color.color == useStore.getState().gameData.playersData[0].color).hex);
+                        this.character1.setTint(this.colors.find(color => color.color == "white").hex);
                         const w = this.character1.width;
                         const h = this.character1.height;
                         const spawn1X = x;
@@ -294,7 +294,7 @@ export default class GameHome3 extends Phaser.Scene {
                             this.priorX = x;
                             this.priorY = y;
                         }
-                        this.character1.body.tint = this.colors.find(color => color.color == useStore.getState().gameData.playersData[0].color).hex;
+                        this.character1.body.tint = this.colors.find(color => color.color == "white").hex;
                         this.physics.add.existing(this.character1);
 
                         this.character1.setPosition(x, y);
@@ -347,7 +347,7 @@ export default class GameHome3 extends Phaser.Scene {
                     {
 
                         this.character2 = this.physics.add.sprite(x, y, 'character1-idle');
-                        this.character2.setTint(this.colors.find(color => color.color == useStore.getState().gameData.playersData[1].color).hex);
+                        this.character2.setTint(this.colors.find(color => color.color == "black").hex);
                         const w = this.character2.width;
                         const h = this.character2.height;
                         this.physics.add.existing(this.character2);
@@ -912,17 +912,17 @@ export default class GameHome3 extends Phaser.Scene {
 
                     }
                     if (this.redView) {
-                        this.redView.setAlpha(0);
+                        this.redView.setAlpha(0.5);
                         this.c1Red.active = false;
                         this.blueView.setAlpha(0);
-                        this.purpleView.setAlpha(0);
+                        this.purpleView.setAlpha(0.5);
                         this.c1Purple.active = false;
                     }
                     if (this.greenView) {
-                        this.greenView.setAlpha(0);
+                        this.greenView.setAlpha(0.5);
                         this.c1Green.active = false;
                         this.orangeView.setAlpha(0);
-                        this.yellowView.setAlpha(0);
+                        this.yellowView.setAlpha(0.5);
                         this.c1Yellow.active = false;
                     }
                     this.platforms.forEach(platform => {
@@ -935,7 +935,11 @@ export default class GameHome3 extends Phaser.Scene {
                                 platform.collisionC2.active = true;
                             }
                         } else {
-                            platform.setAlpha(0);
+                            if (platform.color == 'Gre' || platform.color == 'Yel' || platform.color == 'Pur' || platform.color == 'Red') {
+                                platform.setAlpha(0.5);
+                            } else {
+                                platform.setAlpha(0);
+                            }
                             if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
@@ -950,16 +954,20 @@ export default class GameHome3 extends Phaser.Scene {
                             button.setAlpha(1);
 
                         } else {
-                            button.setAlpha(0);
+                            if (button.color == 'Gre' || button.color == 'Yel' || button.color == 'Pur' || button.color == 'Red') {
+                                button.setAlpha(0.5);
+                            } else {
+                                button.setAlpha(0);
+                            }
 
                         }
                     });
                     break;
                 case 'red':
                     if (this.whiteView) {
-                        this.whiteView.setAlpha(0);
+                        this.whiteView.setAlpha(0.5);
                         this.c1White.active = false;
-                        this.grayView.setAlpha(0);
+                        this.grayView.setAlpha(0.5);
                         this.c1Gray.active = false;
                         this.blackView.setAlpha(0);
 
@@ -972,10 +980,10 @@ export default class GameHome3 extends Phaser.Scene {
                         this.c1Purple.active = true;
                     }
                     if (this.greenView) {
-                        this.greenView.setAlpha(0);
+                        this.greenView.setAlpha(0.5);
                         this.c1Green.active = false;
                         this.orangeView.setAlpha(0);
-                        this.yellowView.setAlpha(0);
+                        this.yellowView.setAlpha(0.5);
                         this.c1Yellow.active = false;
                     }
                     this.platforms.forEach(platform => {
@@ -988,7 +996,11 @@ export default class GameHome3 extends Phaser.Scene {
                                 platform.collisionC2.active = true;
                             }
                         } else {
-                            platform.setAlpha(0);
+                            if (platform.color == 'Gre' || platform.color == 'Yel' || platform.color == 'Whi' || platform.color == 'Gra') {
+                                platform.setAlpha(0.5);
+                            } else {
+                                platform.setAlpha(0);
+                            }
                             if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
@@ -999,29 +1011,27 @@ export default class GameHome3 extends Phaser.Scene {
                         }
                     });
                     this.buttons.forEach(button => {
-                        if (this.button.color == 'Red' || this.button.color == 'Pur') {
-                            button.setAlpha(1);
-
+                        if (button.color == 'Gre' || button.color == 'Yel' || button.color == 'Whi' || button.color == 'Gra') {
+                            button.setAlpha(0.5);
                         } else {
-                            button.setAlpha(0);
-
+                            platform.setAlpha(0);
                         }
                     });
                     break;
                 case 'green':
                     if (this.whiteView) {
-                        this.whiteView.setAlpha(0);
+                        this.whiteView.setAlpha(0.5);
                         this.c1White.active = false;
-                        this.grayView.setAlpha(0);
+                        this.grayView.setAlpha(0.5);
                         this.c1Gray.active = false;
                         this.blackView.setAlpha(0);
 
                     }
                     if (this.redView) {
-                        this.redView.setAlpha(0);
+                        this.redView.setAlpha(0.5);
                         this.c1Red.active = false;
                         this.blueView.setAlpha(0);
-                        this.purpleView.setAlpha(0);
+                        this.purpleView.setAlpha(0.5);
                         this.c1Purple.active = false;
                     }
                     if (this.greenView) {
@@ -1042,7 +1052,12 @@ export default class GameHome3 extends Phaser.Scene {
                                 platform.collisionC2.active = true;
                             }
                         } else {
-                            platform.setAlpha(0);
+                            if (platform.color == 'Whi' || platform.color == 'Gra' || platform.color == 'Pur' || platform.color == 'Red') {
+                                platform.setAlpha(0.5);
+
+                            } else {
+                                platform.setAlpha(0);
+                            }
                             if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
@@ -1057,8 +1072,11 @@ export default class GameHome3 extends Phaser.Scene {
                             button.setAlpha(1);
 
                         } else {
-                            button.setAlpha(0);
-
+                            if (button.color == 'Whi' || button.color == 'Gra' || button.color == 'Pur' || button.color == 'Red') {
+                                button.setAlpha(0.5);
+                            } else {
+                                button.setAlpha(0);
+                            }
                         }
                     });
                     break;
@@ -1079,17 +1097,17 @@ export default class GameHome3 extends Phaser.Scene {
                     }
                     if (this.blueView) {
                         this.redView.setAlpha(0);
-                        this.blueView.setAlpha(0);
+                        this.blueView.setAlpha(0.5);
 
                         this.c2Blue.active = false;
-                        this.purpleView.setAlpha(0);
+                        this.purpleView.setAlpha(0.5);
                         this.c2Purple.active = false;
                     }
                     if (this.yellowView) {
                         this.greenView.setAlpha(0);
-                        this.orangeView.setAlpha(0);
+                        this.orangeView.setAlpha(0.5);
                         this.c2Orange.active = false;
-                        this.yellowView.setAlpha(0);
+                        this.yellowView.setAlpha(0.5);
                         this.c2Yellow.active = false;
                     }
                     this.platforms.forEach(platform => {
@@ -1102,7 +1120,12 @@ export default class GameHome3 extends Phaser.Scene {
                                 platform.collisionC2.active = true;
                             }
                         } else {
-                            platform.setAlpha(0);
+                            if (platform.color == 'Ora' || platform.color == 'Yel' || platform.color == 'Blu' || platform.color == 'Pur') {
+                                platform.setAlpha(0.5);
+                            } else {
+
+                                platform.setAlpha(0);
+                            }
                             if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
@@ -1117,7 +1140,11 @@ export default class GameHome3 extends Phaser.Scene {
                             button.setAlpha(1);
 
                         } else {
-                            button.setAlpha(0);
+                            if (button.color == 'Ora' || button.color == 'Yel' || button.color == 'Blu' || button.color == 'Pur') {
+                                button.setAlpha(0.5);
+                            } else {
+                                button.setAlpha(0);
+                            }
 
                         }
                     });
@@ -1127,9 +1154,9 @@ export default class GameHome3 extends Phaser.Scene {
                     if (this.whiteView != null) {
                         this.whiteView.setAlpha(0);
                         this.c2Black.active = false;
-                        this.grayView.setAlpha(0);
+                        this.grayView.setAlpha(0.5);
                         this.c2Gray.active = false;
-                        this.blackView.setAlpha(0);
+                        this.blackView.setAlpha(0.5);
 
                     }
                     if (this.redView) {
@@ -1142,9 +1169,9 @@ export default class GameHome3 extends Phaser.Scene {
                     }
                     if (this.yellowView) {
                         this.greenView.setAlpha(0);
-                        this.orangeView.setAlpha(0);
+                        this.orangeView.setAlpha(0.5);
                         this.c2Orange.active = false;
-                        this.yellowView.setAlpha(0);
+                        this.yellowView.setAlpha(0.5);
                         this.c2Yellow.active = false;
                     }
                     this.platforms.forEach(platform => {
@@ -1157,7 +1184,11 @@ export default class GameHome3 extends Phaser.Scene {
                                 platform.collisionC2.active = true;
                             }
                         } else {
-                            platform.setAlpha(0);
+                            if (platform.color == 'Ora' || platform.color == 'Yel' || platform.color == 'Whi' || platform.color == 'Gra') {
+                                platform.setAlpha(0.5);
+                            } else {
+                                platform.setAlpha(0);
+                            }
                             if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
@@ -1172,7 +1203,11 @@ export default class GameHome3 extends Phaser.Scene {
                             button.setAlpha(1);
 
                         } else {
-                            button.setAlpha(0);
+                            if (button.color == 'Ora' || button.color == 'Yel' || button.color == 'Bla' || button.color == 'Gra') {
+                                button.setAlpha(0.5);
+                            } else {
+                                button.setAlpha(0);
+                            }
 
                         }
                     });
@@ -1180,17 +1215,17 @@ export default class GameHome3 extends Phaser.Scene {
                 case 'orange':
                     if (this.whiteView) {
                         this.whiteView.setAlpha(0);
-                        this.grayView.setAlpha(0);
+                        this.grayView.setAlpha(0.5);
                         this.c2Gray.active = false;
-                        this.blackView.setAlpha(0);
+                        this.blackView.setAlpha(0.5);
                         this.c2Black.active = false;
 
                     }
                     if (this.redView) {
                         this.redView.setAlpha(0);
-                        this.blueView.setAlpha(0);
+                        this.blueView.setAlpha(0.5);
                         this.c2Blue.active = false;
-                        this.purpleView.setAlpha(0);
+                        this.purpleView.setAlpha(0.5);
                         this.c2Purple.active = false;
                     }
                     if (this.yellowView) {
@@ -1210,7 +1245,11 @@ export default class GameHome3 extends Phaser.Scene {
                                 platform.collisionC2.active = true;
                             }
                         } else {
-                            platform.setAlpha(0);
+                            if (platform.color == 'Pur' || platform.color == 'Red' || platform.color == 'Bla' || platform.color == 'Gra') {
+                                platform.setAlpha(0.5);
+                            } else {
+                                platform.setAlpha(0);
+                            }
                             if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
@@ -1225,7 +1264,11 @@ export default class GameHome3 extends Phaser.Scene {
                             button.setAlpha(1);
 
                         } else {
-                            button.setAlpha(0);
+                            if (button.color == 'Pur' || button.color == 'Red' || button.color == 'Bla' || button.color == 'Gra') {
+                                button.setAlpha(0.5);
+                            } else {
+                                button.setAlpha(0);
+                            }
 
                         }
                     });
@@ -1310,7 +1353,12 @@ export default class GameHome3 extends Phaser.Scene {
                                 platform.collisionC2.active = true;
                             }
                         } else {
-                            platform.setAlpha(0);
+                            if (platform.color == 'Red' || platform.color == 'Pur' || platform.color == 'Gre' || platform.color == 'Yel') {
+                                platform.setAlpha(0.5);
+                            } else {
+
+                                platform.setAlpha(0);
+                            }
                             if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
@@ -1324,7 +1372,11 @@ export default class GameHome3 extends Phaser.Scene {
                             button.setAlpha(1);
                         }
                         else {
-                            button.setAlpha(0);
+                            if (button.color == 'Red' || button.color == 'Pur' || button.color == 'Gre' || button.color == 'Yel') {
+                                button.setAlpha(0.5);
+                            } else {
+                                button.setAlpha(0);
+                            }
                         }
                     }
                     );
@@ -1352,7 +1404,11 @@ export default class GameHome3 extends Phaser.Scene {
                                 platform.collisionC2.active = true;
                             }
                         } else {
-                            platform.setAlpha(0);
+                            if (platform.color == 'Whi' || platform.color == 'Gra' || platform.color == 'Gre' || platform.color == 'Yel') {
+                                platform.setAlpha(0.5);
+                            } else {
+                                platform.setAlpha(0);
+                            }
                             if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
@@ -1366,7 +1422,11 @@ export default class GameHome3 extends Phaser.Scene {
                             button.setAlpha(1);
                         }
                         else {
-                            button.setAlpha(0);
+                            if (button.color == 'Whi' || button.color == 'Gra' || button.color == 'Gre' || button.color == 'Yel') {
+                                button.setAlpha(0.5);
+                            } else {
+                                button.setAlpha(0);
+                            }
                         }
                     }
                     );
@@ -1395,7 +1455,11 @@ export default class GameHome3 extends Phaser.Scene {
                                 platform.collisionC2.active = true;
                             }
                         } else {
-                            platform.setAlpha(0);
+                            if (platform.color == 'Whi' || platform.color == 'Gra' || platform.color == 'Pur' || platform.color == 'Red') {
+                                platform.setAlpha(0.5);
+                            } else {
+                                platform.setAlpha(0);
+                            }
                             if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
@@ -1410,7 +1474,11 @@ export default class GameHome3 extends Phaser.Scene {
                             button.setAlpha(1);
                         }
                         else {
-                            button.setAlpha(0);
+                            if (button.color == 'Whi' || button.color == 'Gra' || button.color == 'Pur' || button.color == 'Red') {
+                                button.setAlpha(0.5);
+                            } else {
+                                button.setAlpha(0);
+                            }
                         }
                     }
                     );
@@ -1443,7 +1511,12 @@ export default class GameHome3 extends Phaser.Scene {
                                 platform.collisionC2.active = true;
                             }
                         } else {
-                            platform.setAlpha(0);
+                            if (platform.color == 'Blu' || platform.color == 'Pur' || platform.color == 'Ora' || platform.color == 'Yel') {
+                                platform.setAlpha(0.5);
+                            } else {
+
+                                platform.setAlpha(0);
+                            }
                             if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
@@ -1457,7 +1530,11 @@ export default class GameHome3 extends Phaser.Scene {
                             button.setAlpha(1);
                         }
                         else {
-                            button.setAlpha(0);
+                            if (button.color == 'Blu' || button.color == 'Pur' || button.color == 'Ora' || button.color == 'Yel') {
+                                button.setAlpha(0.5);
+                            } else {
+                                button.setAlpha(0);
+                            }
                         }
                     }
                     );
@@ -1492,7 +1569,11 @@ export default class GameHome3 extends Phaser.Scene {
                             }
                         }
                         else {
-                            platform.setAlpha(0);
+                            if (platform.color == 'Bla' || platform.color == 'Gra' || platform.color == 'Ora' || platform.color == 'Yel') {
+                                platform.setAlpha(0.5);
+                            } else {
+                                platform.setAlpha(0);
+                            }
                             if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
@@ -1506,7 +1587,11 @@ export default class GameHome3 extends Phaser.Scene {
                             button.setAlpha(1);
                         }
                         else {
-                            button.setAlpha(0);
+                            if (button.color == 'Bla' || button.color == 'Gra' || button.color == 'Ora' || button.color == 'Yel') {
+                                button.setAlpha(0.5);
+                            } else {
+                                button.setAlpha(0);
+                            }
                         }
                     }
                     );
@@ -1535,7 +1620,11 @@ export default class GameHome3 extends Phaser.Scene {
                                 platform.collisionC2.active = true;
                             }
                         } else {
-                            platform.setAlpha(0);
+                            if (platform.color == 'Blu' || platform.color == 'Pur' || platform.color == 'Bla' || platform.color == 'Gra') {
+                                platform.setAlpha(0.5);
+                            } else {
+                                platform.setAlpha(0);
+                            }
                             if (platform.collisionC1 != null) {
                                 platform.collisionC1.active = false;
                             }
@@ -1555,13 +1644,13 @@ export default class GameHome3 extends Phaser.Scene {
                     this.grayView.setAlpha(1);
                     this.whiteView.setAlpha(0);
                     if (this.blueView) {
-                        this.blueView.setAlpha(0);
-                        this.purpleView.setAlpha(0);
+                        this.blueView.setAlpha(0.5);
+                        this.purpleView.setAlpha(0.5);
                         this.redView.setAlpha(0);
                     }
                     if (this.orangeView) {
-                        this.orangeView.setAlpha(0);
-                        this.yellowView.setAlpha(0);
+                        this.orangeView.setAlpha(0.5);
+                        this.yellowView.setAlpha(0.5);
                         this.greenView.setAlpha(0);
                     }
                     break;
@@ -1571,13 +1660,13 @@ export default class GameHome3 extends Phaser.Scene {
                     this.purpleView.setAlpha(1);
                     this.redView.setAlpha(0);
                     if (this.blackView) {
-                        this.blackView.setAlpha(0);
-                        this.grayView.setAlpha(0);
+                        this.blackView.setAlpha(0.5);
+                        this.grayView.setAlpha(0.5);
                         this.whiteView.setAlpha(0);
                     }
                     if (this.orangeView) {
-                        this.orangeView.setAlpha(0);
-                        this.yellowView.setAlpha(0);
+                        this.orangeView.setAlpha(0.5);
+                        this.yellowView.setAlpha(0.5);
                         this.greenView.setAlpha(0);
                     }
                     break;
@@ -1586,13 +1675,13 @@ export default class GameHome3 extends Phaser.Scene {
                     this.yellowView.setAlpha(1);
                     this.greenView.setAlpha(0);
                     if (this.blackView) {
-                        this.blackView.setAlpha(0);
-                        this.grayView.setAlpha(0);
+                        this.blackView.setAlpha(0.5);
+                        this.grayView.setAlpha(0.5);
                         this.whiteView.setAlpha(0);
                     }
                     if (this.blueView) {
-                        this.blueView.setAlpha(0);
-                        this.purpleView.setAlpha(0);
+                        this.blueView.setAlpha(0.5);
+                        this.purpleView.setAlpha(0.5);
                         this.redView.setAlpha(0);
                     }
                     break;
@@ -1605,13 +1694,13 @@ export default class GameHome3 extends Phaser.Scene {
                     this.grayView.setAlpha(1);
                     this.blackView.setAlpha(0);
                     if (this.redView) {
-                        this.redView.setAlpha(0);
-                        this.purpleView.setAlpha(0);
+                        this.redView.setAlpha(0.5);
+                        this.purpleView.setAlpha(0.5);
                         this.blueView.setAlpha(0);
                     }
                     if (this.greenView) {
-                        this.greenView.setAlpha(0);
-                        this.yellowView.setAlpha(0);
+                        this.greenView.setAlpha(0.5);
+                        this.yellowView.setAlpha(0.5);
                         this.orangeView.setAlpha(0);
                     }
                     break;
@@ -1620,13 +1709,13 @@ export default class GameHome3 extends Phaser.Scene {
                     this.purpleView.setAlpha(1);
                     this.blueView.setAlpha(0);
                     if (this.whiteView) {
-                        this.whiteView.setAlpha(0);
-                        this.grayView.setAlpha(0);
+                        this.whiteView.setAlpha(0.5);
+                        this.grayView.setAlpha(0.5);
                         this.blackView.setAlpha(0);
                     }
                     if (this.greenView) {
-                        this.greenView.setAlpha(0);
-                        this.yellowView.setAlpha(0);
+                        this.greenView.setAlpha(0.5);
+                        this.yellowView.setAlpha(0.5);
                         this.orangeView.setAlpha(0);
                     }
                     break;
@@ -1635,13 +1724,13 @@ export default class GameHome3 extends Phaser.Scene {
                     this.yellowView.setAlpha(1);
                     this.orangeView.setAlpha(0);
                     if (this.whiteView) {
-                        this.whiteView.setAlpha(0);
-                        this.grayView.setAlpha(0);
+                        this.whiteView.setAlpha(0.5);
+                        this.grayView.setAlpha(0.5);
                         this.blackView.setAlpha(0);
                     }
                     if (this.redView) {
-                        this.redView.setAlpha(0);
-                        this.purpleView.setAlpha(0);
+                        this.redView.setAlpha(0.5);
+                        this.purpleView.setAlpha(0.5);
                         this.blueView.setAlpha(0);
                     }
                     break;
@@ -1685,7 +1774,11 @@ export default class GameHome3 extends Phaser.Scene {
 
                         this.platforms.forEach(platform => {
                             if (platform.color != 'Whi' && platform.color != 'Gra') {
-                                platform.setAlpha(0);
+                                if (platform.color == 'Gre' || platform.color == 'Yel' || platform.color == 'Pur' || platform.color == 'Red') {
+                                    platform.setAlpha(0.5);
+                                } else {
+                                    platform.setAlpha(0);
+                                }
                                 if (platform.collisionC1 != null) {
                                     platform.collisionC1.active = false;
                                 }
@@ -1705,7 +1798,11 @@ export default class GameHome3 extends Phaser.Scene {
                         });
                         this.buttons.forEach(button => {
                             if (button.color != 'Whi' && button.color != 'Gra') {
-                                button.setAlpha(0);
+                                if (button.color == 'Gre' || button.color == 'Yel' || button.color == 'Pur' || button.color == 'Red') {
+                                    button.setAlpha(0.5);
+                                } else {
+                                    button.setAlpha(0);
+                                }
                             }
                             else {
                                 button.setAlpha(1);
@@ -1713,17 +1810,17 @@ export default class GameHome3 extends Phaser.Scene {
                             }
                         });
                         if (this.redView != null) {
-                            this.redView.setAlpha(0);
+                            this.redView.setAlpha(0.5);
                             this.c1Red.active = false;
                             this.blueView.setAlpha(0);
                             this.c1Purple.active = false;
-                            this.purpleView.setAlpha(0);
+                            this.purpleView.setAlpha(0.5);
                         }
                         if (this.yellowView != null) {
                             this.greenView.setAlpha(0);
                             this.c1Green.active = false;
-                            this.orangeView.setAlpha(0);
-                            this.yellowView.setAlpha(0);
+                            this.orangeView.setAlpha(0.5);
+                            this.yellowView.setAlpha(0.5);
                             this.c1Yellow.active = false;
                         }
                     } else {
@@ -1736,7 +1833,11 @@ export default class GameHome3 extends Phaser.Scene {
                             this.c1Purple.active = true;
                             this.platforms.forEach(platform => {
                                 if (platform.color != 'Red' && platform.color != 'Pur') {
-                                    platform.setAlpha(0);
+                                    if (platform.color == 'Gre' || platform.color == 'Yel' || platform.color == 'Whi' || platform.color == 'Gra') {
+                                        platform.setAlpha(0.5);
+                                    } else {
+                                        platform.setAlpha(0);
+                                    }
                                     if (platform.collisionC1 != null) {
                                         platform.collisionC1.active = false;
                                     }
@@ -1756,7 +1857,11 @@ export default class GameHome3 extends Phaser.Scene {
                             });
                             this.buttons.forEach(button => {
                                 if (button.color != 'Red' && button.color != 'Pur') {
-                                    button.setAlpha(0);
+                                    if (button.color == 'Gre' || button.color == 'Yel' || button.color == 'Whi' || button.color == 'Gra') {
+                                        button.setAlpha(0.5);
+                                    } else {
+                                        button.setAlpha(0);
+                                    }
                                 }
                                 else {
                                     button.setAlpha(1);
@@ -1764,17 +1869,17 @@ export default class GameHome3 extends Phaser.Scene {
                                 }
                             });
                             if (this.whiteView != null) {
-                                this.whiteView.setAlpha(0);
+                                this.whiteView.setAlpha(0.5);
                                 this.c1White.active = false;
                                 this.blackView.setAlpha(0);
-                                this.grayView.setAlpha(0);
+                                this.grayView.setAlpha(0.5);
                                 this.c1Gray.active = false;
                             }
                             if (this.yellowView != null) {
-
+                                this.greenView.setAlpha(0.5);
                                 this.c1Green.active = false;
                                 this.orangeView.setAlpha(0);
-                                this.yellowView.setAlpha(0);
+                                this.yellowView.setAlpha(0.5);
                                 this.c1Yellow.active = false;
                             }
 
@@ -1789,7 +1894,11 @@ export default class GameHome3 extends Phaser.Scene {
                             this.c1Yellow.active = true;
                             this.platforms.forEach(platform => {
                                 if (platform.color != 'Gre' && platform.color != 'Yel') {
-                                    platform.setAlpha(0);
+                                    if (platform.color == 'Whi' || platform.color == 'Gra' || platform.color == 'Pur' || platform.color == 'Red') {
+                                        platform.setAlpha(0.5);
+                                    } else {
+                                        platform.setAlpha(0);
+                                    }
                                     if (platform.collisionC1 != null) {
                                         platform.collisionC1.active = false;
                                     }
@@ -1811,7 +1920,11 @@ export default class GameHome3 extends Phaser.Scene {
                             this.buttons.forEach(button => {
                                 console.log(button.color);
                                 if (button.color != 'Gre' && button.color != 'Yel') {
-                                    button.setAlpha(0);
+                                    if (button.color == 'Whi' || button.color == 'Gra' || button.color == 'Pur' || button.color == 'Red') {
+                                        button.setAlpha(0.5);
+                                    } else {
+                                        button.setAlpha(0);
+                                    }
                                 } else {
                                     button.setAlpha(1);
 
@@ -1819,17 +1932,17 @@ export default class GameHome3 extends Phaser.Scene {
                             }
                             );
                             if (this.whiteView != null) {
-                                this.whiteView.setAlpha(0);
+                                this.whiteView.setAlpha(0.5);
                                 this.c1White.active = false;
                                 this.blackView.setAlpha(0);
-                                this.grayView.setAlpha(0);
+                                this.grayView.setAlpha(0.5);
                                 this.c1Gray.active = false;
                             }
                             if (this.redView != null) {
-                                this.redView.setAlpha(0);
+                                this.redView.setAlpha(0.5);
                                 this.c1Red.active = false;
                                 this.blueView.setAlpha(0);
-                                this.purpleView.setAlpha(0);
+                                this.purpleView.setAlpha(0.5);
                                 this.c1Purple.active = false;
                             }
                         }
@@ -1845,7 +1958,12 @@ export default class GameHome3 extends Phaser.Scene {
                         this.platforms.forEach(platform => {
                             console.log(platform.color);
                             if (platform.color != 'Bla' && platform.color != 'Gra') {
-                                platform.setAlpha(0);
+                                if (platform.color == 'Ora' || platform.color == 'Yel' || platform.color == 'Blu' || platform.color == 'Pur') {
+                                    platform.setAlpha(0.5);
+                                }
+                                else {
+                                    platform.setAlpha(0);
+                                }
                                 if (platform.collisionC1 != null) {
                                     platform.collisionC1.active = false;
                                 }
@@ -1866,7 +1984,11 @@ export default class GameHome3 extends Phaser.Scene {
                         );
                         this.buttons.forEach(button => {
                             if (button.color != 'Bla' && button.color != 'Gra') {
-                                button.setAlpha(0);
+                                if (button.color == 'Ora' || button.color == 'Yel' || button.color == 'Blu' || button.color == 'Pur') {
+                                    button.setAlpha(0.5);
+                                } else {
+                                    button.setAlpha(0);
+                                }
                             } else {
                                 button.setAlpha(1);
 
@@ -1875,16 +1997,16 @@ export default class GameHome3 extends Phaser.Scene {
                         );
                         if (this.redView != null) {
                             this.redView.setAlpha(0);
-                            this.blueView.setAlpha(0);
+                            this.blueView.setAlpha(0.5);
                             this.c2Blue.active = false;
-                            this.purpleView.setAlpha(0);
+                            this.purpleView.setAlpha(0.5);
                             this.c2Purple.active = false;
                         }
                         if (this.orangeView != null) {
                             this.greenView.setAlpha(0);
-                            this.orangeView.setAlpha(0);
+                            this.orangeView.setAlpha(0.5);
                             this.c2Orange.active = false;
-                            this.yellowView.setAlpha(0);
+                            this.yellowView.setAlpha(0.5);
                             this.c2Yellow.active = false;
                         }
                     } else if (data.color == 'blue') {
@@ -1897,21 +2019,25 @@ export default class GameHome3 extends Phaser.Scene {
 
                         if (this.whiteView != null) {
                             this.whiteView.setAlpha(0);
-                            this.blackView.setAlpha(0);
+                            this.blackView.setAlpha(0.5);
                             this.c2Black.active = false;
-                            this.grayView.setAlpha(0);
+                            this.grayView.setAlpha(0.5);
                             this.c2Gray.active = false;
                         }
                         if (this.orangeView != null) {
                             this.greenView.setAlpha(0);
-                            this.orangeView.setAlpha(0);
+                            this.orangeView.setAlpha(0.5);
                             this.c2Orange.active = false;
-                            this.yellowView.setAlpha(0);
+                            this.yellowView.setAlpha(0.5);
                             this.c2Yellow.active = false;
                         }
                         this.platforms.forEach(platform => {
                             if (platform.color != 'Blu' && platform.color != 'Pur') {
-                                platform.setAlpha(0);
+                                if(platform.color == 'Ora' || platform.color == 'Yel' || platform.color == 'Bla' || platform.color == 'Gra') {
+                                    platform.setAlpha(0.5);
+                                } else {
+                                    platform.setAlpha(0);
+                                }
                                 if (platform.collisionC1 != null) {
                                     platform.collisionC1.active = false;
                                 }
@@ -1932,7 +2058,12 @@ export default class GameHome3 extends Phaser.Scene {
                         );
                         this.buttons.forEach(button => {
                             if (button.color != 'Blu' && button.color != 'Pur') {
-                                button.setAlpha(0);
+                                if (button.color == 'Ora' || button.color == 'Yel' || button.color == 'Bla' || button.color == 'Gra') {
+                                    button.setAlpha(0.5);
+                                }
+                                else {
+                                    button.setAlpha(0);
+                                }
                             } else {
                                 button.setAlpha(1);
 
@@ -1949,7 +2080,11 @@ export default class GameHome3 extends Phaser.Scene {
 
                         this.platforms.forEach(platform => {
                             if (platform.color != 'Ora' && platform.color != 'Yel') {
-                                platform.setAlpha(0);
+                                if(platform.color == 'Bla' || platform.color == 'Gra' || platform.color == 'Blu' || platform.color == 'Pur') {
+                                    platform.setAlpha(0.5);
+                                } else {
+                                    platform.setAlpha(0);
+                                }
                                 if (platform.collisionC1 != null) {
                                     platform.collisionC1.active = false;
                                 }
@@ -1970,7 +2105,11 @@ export default class GameHome3 extends Phaser.Scene {
                         );
                         this.buttons.forEach(button => {
                             if (button.color != 'Ora' && button.color != 'Yel') {
-                                button.setAlpha(0);
+                                if (button.color == 'Bla' || button.color == 'Gra' || button.color == 'Blu' || button.color == 'Pur') {
+                                    button.setAlpha(0.5);
+                                } else {
+                                    button.setAlpha(0);
+                                }
                             } else {
                                 button.setAlpha(1);
 
@@ -1979,16 +2118,16 @@ export default class GameHome3 extends Phaser.Scene {
                         );
                         if (this.whiteView != null) {
                             this.whiteView.setAlpha(0);
-                            this.blackView.setAlpha(0);
+                            this.blackView.setAlpha(0.5);
                             this.c2Black.active = false;
-                            this.grayView.setAlpha(0);
+                            this.grayView.setAlpha(0.5);
                             this.c2Gray.active = false;
                         }
                         if (this.redView != null) {
                             this.redView.setAlpha(0);
-                            this.blueView.setAlpha(0);
+                            this.blueView.setAlpha(0.5);
                             this.c2Blue.active = false;
-                            this.purpleView.setAlpha(0);
+                            this.purpleView.setAlpha(0.5);
                             this.c2Purple.active = false;
                         }
                     }
@@ -2013,7 +2152,7 @@ export default class GameHome3 extends Phaser.Scene {
         if (this.done == true) {
             if (this.cursors.space.isDown && this.pressable) {
 
-                socket.emit('changeColor', this.currentMap);
+                socket.emit('changeColor', 3);
                 this.pressable = false;
             }
             if (this.cursors.space.isUp) {

@@ -2215,7 +2215,7 @@ export default class GameHome extends Phaser.Scene {
             if (this.player1OnFlag && this.player2OnFlag) {
                 socket.emit('win',0);
                 this.time.delayedCall(1000, () => {
-                    this.scene.switch('credits')
+                    this.scene.switch('gamehome1')
                 });
 
             };

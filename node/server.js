@@ -327,9 +327,15 @@ io.on('connection', (socket) => {
         }
     });
 
-    socket.on('changeColor', () => {
+    socket.on('changeColor', (mapControl) => {
+        
         let room = findRoomByUser(socket.id);
+        if(mapControl!=null&&mapControl==3&&room.game.currentMap!=3&&room.game.playersData[0].colorsUnlocked.length!=3){
+            room.game.playersData[0].colorsUnlocked=['white', 'red', 'green'];
 
+            room.game.playersData[1].colorsUnlocked=['black', 'blue', 'orange'];
+            
+        }
         let player = room.game.playersData.find(player => player.id == socket.id);
         let newColor = nextColor(player);
         if (newColor) {
@@ -365,7 +371,9 @@ io.on('connection', (socket) => {
                         room.game.playersData[1].color = 'orange';
                     } else {
                         room.game.playersData[0].colorsUnlocked.push('white');
+                        room.game.playersData[0].color = 'white';
                         room.game.playersData[1].colorsUnlocked.push('black');
+                        room.game.playersData[1].color = 'black';
                     }
                 }
                 room.game.currentMap = room.game.currentMap++;
