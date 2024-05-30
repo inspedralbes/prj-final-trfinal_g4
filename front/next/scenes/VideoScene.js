@@ -23,7 +23,6 @@ export default class VideoScene extends Phaser.Scene {
         //     });
         // });
         this.time.delayedCall(66000, () => {
-            this.scene.add('preloader', Preloader, true);
             this.scene.start('preloader');
             
 
