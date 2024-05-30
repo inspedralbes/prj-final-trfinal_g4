@@ -64,7 +64,7 @@
     margin-right: auto;
     padding-left: 10px;
     padding-right: 10px;
-    box-shadow: 0 0 10px rgba(138, 10, 10, 0.757);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.757);
     border-radius: 10px;
 
 }
@@ -77,9 +77,6 @@
     padding-left: 10px;
     padding-right: 10px;
     margin-right: auto;
-    box-shadow: 0 0 10px rgba(61, 143, 237, 0.757);
-    border-radius: 10px;
-
 }
 
 .container-icon-arrow-users {
@@ -103,7 +100,7 @@
     padding-left: 10px;
     padding-right: 10px;
     margin-right: auto;
-    box-shadow: 0 0 10px rgba(232, 127, 22, 0.757);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.757);
     border-radius: 10px;
     height: 200px;
 }
@@ -144,8 +141,6 @@
     margin-right: auto;
     padding-left: 10px;
     padding-right: 10px;
-    box-shadow: 0 0 10px rgba(232, 127, 22, 0.757);
-    border-radius: 10px;
 
 }
 
@@ -223,8 +218,6 @@
     align-items: center;
     width: 100%;
     height: 100%;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
 }
 
@@ -248,8 +241,6 @@
 }
 
 .icons {
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     color: black;
     font-size: 3.5em;
     display: flex;
@@ -453,7 +444,7 @@
     padding: 15px 20px 15px 20px;
     text-align: center;
     align-items: center;
-    box-shadow: 0 0 10px rgba(232, 127, 22, 0.757);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.757);
     border-radius: 10px;
 }
 

@@ -184,7 +184,7 @@ function AdminPanel() {
     }
 
     return (
-        <div className="flex items-center min-h-screen bg-teal-900">
+        <div className="flex items-center min-h-screen bg-gradient-to-r from-blue-500 from-15% via-red-500 via-60% to-yellow-500">
             <div className="grid grid-cols items-center justify-center min-h-screen w-48 bg-teal-700">
                 <div>
                     <RiAdminLine className='icons' onClick={() => handleIconClick('allUsers')} />
@@ -203,7 +203,7 @@ function AdminPanel() {
                         <IoSettingsOutline style={{ fontSize: '4em', color: 'white' }} />
                     </div>
 
-                    <h1 className="animated-text">Benvingut@ {userName}</h1>
+                    <h1 className="animated-text text-white">Hola, {userName}</h1>
                     <div className='sections'>
                         <div className="section">
                             <div className='barra-lateral'>
@@ -223,7 +223,6 @@ function AdminPanel() {
                             <div className='barra-lateral'>
                                 <TbReportSearch style={{ fontSize: '2em' }} />
                             </div>
-
                             <p className='explicacion'>Pots administrar els mapes reportats, veien tots el reports per mapa i en general.</p>
                         </div>
                     </div>
@@ -233,7 +232,7 @@ function AdminPanel() {
             {selectedIcon === 'maps' && (
                 <div className="container">
                     <div className='container-icon-maps mt-9'>
-                        <FaRegMap style={{ fontSize: '12em', color: '#D5671C' }} />
+                        <FaRegMap style={{ fontSize: '12em', color: '#FFFFFF' }} />
                     </div>
                     <div>
 
@@ -273,7 +272,7 @@ function AdminPanel() {
                             <div className='arrow-left-right'>
                                 {currentPageMaps !== 1 && !searchMapsById && (
                                     <div className="container-icon-arrow-maps">
-                                        <button onClick={() => setCurrentPageMaps(currentPageMaps - 1)} disabled={currentPageMaps === 1}><IoIosArrowDropleft style={{ fontSize: '2.5em', color: '#D5671C' }} /></button>
+                                        <button onClick={() => setCurrentPageMaps(currentPageMaps - 1)} disabled={currentPageMaps === 1}><IoIosArrowDropleft style={{ fontSize: '2.5em', color: '#FFFFFF' }} /></button>
                                     </div>
                                 )}
                             </div>
@@ -341,7 +340,7 @@ function AdminPanel() {
                             <div className='arrow-left-right'>
                                 {indexOfLastMap < filterByIdAndNameAndUser.length && !searchMapsById && (
                                     <div className="container-icon-arrow-maps">
-                                        <button onClick={() => setCurrentPageMaps(currentPageMaps + 1)} disabled={indexOfLastMap >= maps.length}><IoIosArrowDropright style={{ fontSize: '2.5em', color: '#D5671C' }} /></button>
+                                        <button onClick={() => setCurrentPageMaps(currentPageMaps + 1)} disabled={indexOfLastMap >= maps.length}><IoIosArrowDropright style={{ fontSize: '2.5em', color: '#FFFFFF' }} /></button>
                                     </div>
                                 )}
                             </div>
@@ -353,7 +352,7 @@ function AdminPanel() {
             {selectedIcon === 'reportedMaps' && (
                 <div className='container'>
                     <div className='container-icon-report mt-9'>
-                        <MdOutlineReportProblem style={{ fontSize: '12em', color: '#BF0A1D' }} />
+                        <MdOutlineReportProblem style={{ fontSize: '12em', color: '#FFFFFF' }} />
                     </div>
                     <div>
                         <div className='container-filter-users'>
@@ -433,12 +432,10 @@ function AdminPanel() {
                 </div>
             )}
 
-
-
             {selectedIcon === 'allUsers' && (
                 <div className="container ">
                     <div className="container-icon-users mt-9">
-                        <RiAdminLine style={{ fontSize: '12em', color: '#2C66E3' }} />
+                        <RiAdminLine style={{ fontSize: '12em', color: '#FFFFFF' }} />
                     </div>
                     <div>
                         <div className='container-filter-users'>
@@ -471,8 +468,8 @@ function AdminPanel() {
                                                 )
                                                 }
                                             </div>
-                                            <p className="">{user.name}</p>
-                                            <p className="">{user.email}</p>
+                                            <p className="mr-3">{user.name}</p>
+                                            <p className="ml-3">{user.email}</p>
                                             <p className="">{user.admin === 1 ? <TiTickOutline style={{ fontSize: '2em', color: 'rgba(13, 129, 41 , 0.757)' }} /> : <TiTimesOutline style={{ fontSize: '2em', color: 'rgba(138, 10, 10, 0.757)' }} />}</p>
                                             <div>
                                                 {user.admin === 0 ? (
