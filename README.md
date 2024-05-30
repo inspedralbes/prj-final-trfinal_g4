@@ -22,7 +22,7 @@ Un cop comenceu heu de canviar aquesta explicació amb la corresponent al vostre
  * Adreça del gestor de tasques (taiga, jira, trello...)
       - [Linear](https://linear.app/institut-pedralbes/team/CBD/active)
  * Adreça del prototip gràfic del projecte (Penpot, figma, moqups...)
-      - [Penpot]()
+      - [Penpot](https://design.penpot.app/#/view/761002ba-63cd-80f4-8004-4479515cc9a4?page-id=761002ba-63cd-80f4-8004-4479515cc9a5&section=interactions&index=0&share-id=271c9855-ceb4-8079-8004-6d7aa7954c7b)
  * URL de producció (si és que ja està en marxa)
       - [Chromatic Bond](https://chromaticbond.cat/)
  * Estat: finalitzat, implementant Next.js i TailwindCSS, així com el backend amb Laravel.
