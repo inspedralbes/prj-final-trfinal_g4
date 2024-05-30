@@ -13,7 +13,7 @@ const Header = () => {
     const [image, setImage] = useState(null);
     const router = useRouter();
 
-    const url = 'http://localhost:8000';
+    const URL = 'http://localhost:8000';
 
     useEffect(() => {
         const userStore = useStore.getState().user;
@@ -80,7 +80,7 @@ const Header = () => {
                         Administració
                     </Link>
                 )}
-                <img src={`${url}${image}`} className="w-10 h-10 mx-4 text-3xl cursor-pointer rounded-full" onClick={toggleDropdown} />
+                <img src={`${URL}${image}`} className="w-10 h-10 mx-4 text-3xl cursor-pointer rounded-full" onClick={toggleDropdown} />
                 {dropdownOpen && (
                     <div className="dropdown absolute right-0 mt-10 bg-black top-[0.75rem] bg-opacity-50 rounded-md shadow-lg">
                         <Link href="/perfil" className="block px-4 py-2 hover:bg-gray-800 hover:rounded-md">Perfil</Link>

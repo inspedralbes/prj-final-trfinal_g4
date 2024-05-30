@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import useStore from '../src/store';
 
-const url = 'http://localhost:3727';
+const URL = 'http://localhost:3727'; // Change this to the URL of the server
 
 const socket = io(url);
 
@@ -43,9 +43,7 @@ socket.on('winFront', (data) =>{
 
 socket.on("finishGame", () => {
     useStore.getState().room = null;
-      
-      useStore.setState({ game: null });
-      
-  });
+    useStore.setState({ game: null });
+});
 
 export default socket;

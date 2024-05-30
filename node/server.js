@@ -13,7 +13,7 @@ const server = createServer(app);
 var rooms = [];
 var lastRoom = 0;
 
-const url = "http://localhost:8000/api/"; //In production change to "http://server:8000/api/"
+const URL = "http://localhost:8000/api/"; //In production change to "http://server:8000/api/"
 
 const io = new Server(server, {
     cors: {
@@ -49,7 +49,7 @@ function nextColor(player) {
 
 async function getRandomMaps() {
     let maps = [];
-    let tuto = await fetch(`${url}randomMaps`, {
+    let tuto = await fetch(`${URL}randomMaps`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -62,7 +62,7 @@ async function getRandomMaps() {
 
 async function getOriginalMaps() {
     let maps = [];
-    let tuto = await fetch(`${url}defaultMaps`, {
+    let tuto = await fetch(`${URL}defaultMaps`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -74,7 +74,7 @@ async function getOriginalMaps() {
 
 async function getMapData(data) {
     let maps = [];
-    let tuto = await fetch(`${url}maps/4`, {
+    let tuto = await fetch(`${URL}maps/4`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -109,7 +109,7 @@ async function getCommunityMaps(maps) {
     let mapsArray = [];
 
     await Promise.all(maps.map(async map => {
-        let mapData = await fetch(`${url}maps/` + map.id, {
+        let mapData = await fetch(`${URL}maps/` + map.id, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -425,7 +425,6 @@ io.on('connection', (socket) => {
         }
     });
 });
-
 
 server.listen(port, () => {
     console.log(`Server running on port ${port}`)

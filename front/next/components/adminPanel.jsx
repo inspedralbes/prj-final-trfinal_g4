@@ -31,6 +31,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import './styles.css';
 
 function AdminPanel() {
+    const URL = 'http://localhost:8000';
     const [maps, setMaps] = useState([]);
     const [reportedMaps, setReportedMaps] = useState([]);
     const [allUsers, setUsers] = useState([]);
@@ -281,7 +282,7 @@ function AdminPanel() {
                                         {currentMaps.length > 0 && currentMaps.map((map) => (
                                             <li key={map.id} className='info-maps'>
                                                 <div className='info-map_container-img'>
-                                                    <img className="info-map-img" src={`http://localhost:8000${map.image}`} style={{ width: '250px', height: '150px', borderRadius: '7%' }} />
+                                                    <img className="info-map-img" src={`${URL}${map.image}`} style={{ width: '250px', height: '150px', borderRadius: '7%' }} />
                                                 </div>
                                                 <span>{map.name}</span>
                                                 {allUsers.length > 0 && (
