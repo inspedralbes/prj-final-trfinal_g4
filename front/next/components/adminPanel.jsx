@@ -1,10 +1,8 @@
 import React, { useState, useEffect, use } from 'react';
 import { RiAdminLine } from "react-icons/ri";
 import { FaRegMap } from "react-icons/fa";
-import ReactTooltip from 'react-tooltip';
 import { TbMapExclamation } from "react-icons/tb";
 import { MdReportOff } from "react-icons/md";
-import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { getMaps } from '../services/communicationManager';
 import { getReportedMaps } from '../services/communicationManager';
 import { getUsers } from '../services/communicationManager';
@@ -15,7 +13,6 @@ import { updateUser } from '../services/communicationManager';
 import { MdOutlineFileDownload } from "react-icons/md";
 import { MdOutlineReportProblem } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { TbInfoCircle } from "react-icons/tb";
 import { TiTickOutline } from "react-icons/ti";
 import { TiTimesOutline } from "react-icons/ti";
 import { GrUserAdmin } from "react-icons/gr";
