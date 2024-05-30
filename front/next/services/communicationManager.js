@@ -1,4 +1,4 @@
-const URL = 'http://localhost:8000/api/';
+const URL = 'https://chromaticbond.cat:8000/api/';
 
 //Login
 export function login(user) {

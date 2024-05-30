@@ -6,7 +6,7 @@ import ErrorPopup from '../components/errorPopup';
 import useStore from '../src/store';
 
 const Perfil = () => {
-    const URL = 'http://localhost:8000';
+    const URL = 'https://chromaticbond.cat:8000';
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');

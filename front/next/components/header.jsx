@@ -13,7 +13,7 @@ const Header = () => {
     const [image, setImage] = useState(null);
     const router = useRouter();
 
-    const URL = 'http://localhost:8000';
+    const URL = 'https://chromaticbond.cat:8000';
 
     useEffect(() => {
         const userStore = useStore.getState().user;

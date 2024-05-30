@@ -4,7 +4,7 @@ import { TbLetterX } from 'react-icons/tb';
 import { getMapByDifficulty } from '../services/communicationManager';
 
 const Fases = ({ selectedImages, setSelectedImages }) => {
-    const URL = 'http://localhost:8000';
+    const URL = 'https://chromaticbond.cat:8000';
     const [mapsDifficulty1, setMapsDifficulty1] = useState([]);
     const [mapsDifficulty2, setMapsDifficulty2] = useState([]);
     const [mapsDifficulty3, setMapsDifficulty3] = useState([]);

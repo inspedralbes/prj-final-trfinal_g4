@@ -13,7 +13,7 @@ const server = createServer(app);
 var rooms = [];
 var lastRoom = 0;
 
-const URL = "http://localhost:8000/api/"; //In production change to "http://server:8000/api/"
+const URL = "https://chromaticbond.cat:8000/api/"; //In production change to "http://server:8000/api/"
 
 const io = new Server(server, {
     cors: {

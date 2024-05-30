@@ -5,7 +5,7 @@ import socket from '../services/sockets';
 import { useRouter } from 'next/router';
 
 const Lobby = () => {
-    const URL = 'http://localhost:8000';
+    const URL = 'https://chromaticbond.cat:8000';
     const router = useRouter();
     const userState = useStore.getState().user || {};
     const user = userState.name || 'Anònim';

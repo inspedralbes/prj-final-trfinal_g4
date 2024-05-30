@@ -28,7 +28,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import './styles.css';
 
 function AdminPanel() {
-    const URL = 'http://localhost:8000';
+    const URL = 'https://chromaticbond.cat:8000';
     const [maps, setMaps] = useState([]);
     const [reportedMaps, setReportedMaps] = useState([]);
     const [allUsers, setUsers] = useState([]);
