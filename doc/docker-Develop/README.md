@@ -1,4 +1,4 @@
-# Documentació del Projecte
+# Documentació del Projecte per a poder treballar amb el projecte amb Docker
 
 Aquesta documentació proporciona una visió general de la configuració de Docker per a una aplicació multi-servei que inclou un backend Laravel, un frontend Next.js, un servidor WebSocket Node.js, una base de dades MySQL i phpMyAdmin per a la gestió de la base de dades.
 
@@ -14,13 +14,31 @@ Aquesta documentació proporciona una visió general de la configuració de Dock
 - [Volums](#volums)
   - [db-data](#db-data)
 
+## Pasos per a poder treballar amb el projecte amb Docker
+Clona el repositori del projecte a la teva màquina local.
+  
+  ```bash
+  git clone https://github.com/inspedralbes/prj-final-trfinal_g4.git
+  ```
+
+Un cop clonat el repositori, accedeix al directori del projecte.
+
+  ```bash
+  cd prj-final-trfinal_g4
+  ```
+
+I executa la comanda `docker-compose up` per a construir i iniciar els serveis Docker.
+
+  ```bash
+  docker-compose up
+  ```
+
 ## Prerequisits
 
 Assegura't de tenir Docker i Docker Compose instal·lats al teu sistema. Opcional el Docker Desktop.
 Si no tens Docker instal·lat, pots seguir aquesta guia per instal·lar Docker al teu sistema: [Instal·lació de Docker](https://docs.docker.com/get-docker/).
 Si no tens Docker Compose instal·lat, pots seguir aquesta guia per instal·lar Docker Compose al teu sistema: [Instal·lació de Docker Compose](https://docs.docker.com/compose/install/).
 Si vols el Docker Desktop, pots seguir aquesta guia per instal·lar Docker Desktop al teu sistema: [Instal·lació de Docker Desktop](https://www.docker.com/products/docker-desktop).
-
 
 ## Visió General dels Serveis
 
