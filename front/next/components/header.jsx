@@ -13,7 +13,7 @@ const Header = () => {
     const [image, setImage] = useState(null);
     const router = useRouter();
 
-    const URL = 'https://chromaticbond.cat:8000/laravel/api/';
+    const URL = 'https://chromaticbond.cat:8000/laravel/api';
 
     useEffect(() => {
         const userStore = useStore.getState().user;

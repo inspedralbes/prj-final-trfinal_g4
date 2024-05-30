@@ -6,7 +6,7 @@ import { likeMap, dislikeMap, reportMap } from '../services/communicationManager
 import useStore from '../src/store';
 
 const MapCard = ({ map }) => {
-    const URL = 'https://chromaticbond.cat:8000/laravel/api/';
+    const URL = 'https://chromaticbond.cat:8000/laravel/api';
     const [reason, setReason] = useState([]);
     const [otherReasons, setOtherReasons] = useState('');
     const [liked, setLiked] = useState(false);
