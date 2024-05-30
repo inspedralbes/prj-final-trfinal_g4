@@ -4,6 +4,7 @@ import { TbLetterX } from 'react-icons/tb';
 import { getMapByDifficulty } from '../services/communicationManager';
 
 const Fases = ({ selectedImages, setSelectedImages }) => {
+    const URL = 'http://localhost:8000';
     const [mapsDifficulty1, setMapsDifficulty1] = useState([]);
     const [mapsDifficulty2, setMapsDifficulty2] = useState([]);
     const [mapsDifficulty3, setMapsDifficulty3] = useState([]);
@@ -15,11 +16,11 @@ const Fases = ({ selectedImages, setSelectedImages }) => {
         const fetchMaps = async () => {
             try {
                 const maps1 = await getMapByDifficulty(1);
-                setMapsDifficulty1(maps1.filter(map => map.default=== 0).map(map => ({ id: map.id, imageUrl: `http://localhost:8000${map.image}` })));
+                setMapsDifficulty1(maps1.filter(map => map.default=== 0).map(map => ({ id: map.id, imageUrl: `${URL}${map.image}` })));
                 const maps2 = await getMapByDifficulty(2);
-                setMapsDifficulty2(maps2.filter(map => map.default === 0).map(map => ({ id: map.id, imageUrl: `http://localhost:8000${map.image}` })));
+                setMapsDifficulty2(maps2.filter(map => map.default === 0).map(map => ({ id: map.id, imageUrl: `${URL}${map.image}` })));
                 const maps3 = await getMapByDifficulty(3);
-                setMapsDifficulty3(maps3.filter(map => map.default === 0).map(map => ({ id: map.id, imageUrl: `http://localhost:8000${map.image}` })));
+                setMapsDifficulty3(maps3.filter(map => map.default === 0).map(map => ({ id: map.id, imageUrl: `${URL}${map.image}` })));
             } catch (error) {
                 // //console.error(error);
             }

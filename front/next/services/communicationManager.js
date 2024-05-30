@@ -1,9 +1,9 @@
-const url = 'http://localhost:8000/api/';
+const URL = 'http://localhost:8000/api/';
 
 //Login
 export function login(user) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}login`, {
+        fetch(`${URL}login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ export function login(user) {
 //Register
 export function register(user) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}register`, {
+        fetch(`${URL}register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -58,7 +58,7 @@ export function register(user) {
 //Logout
 export function logout(token) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}logout`, {
+        fetch(`${URL}logout`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ export function logout(token) {
 // fetch eliminar usuario
 export function destroyUser(user) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}users/${user}`, {
+        fetch(`${URL}users/${user}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ export function destroyUser(user) {
 // fetch actualizar usuario
 export function updateUser(userData, token) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}users/`, {
+        fetch(`${URL}users/`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -127,7 +127,7 @@ export function getUsers(token, userID) {
     }
 
     return new Promise((resolve, reject) => {
-        fetch(`${url}users?userID=${userID}`, {
+        fetch(`${URL}users?userID=${userID}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ export function getUsers(token, userID) {
 // fetch obtener usuario
 export function getUser(user) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}users/${user}`, {
+        fetch(`${URL}users/${user}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -172,7 +172,7 @@ export function getUser(user) {
 // fetch crear usuario
 export function createUser(user) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}users/`, {
+        fetch(`${URL}users/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -193,7 +193,7 @@ export function createUser(user) {
 // fetch crear mapa
 export function createMap(formData, token) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}maps/`, {
+        fetch(`${URL}maps/`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -218,7 +218,7 @@ export function createMap(formData, token) {
 // fetch obtener mapas
 export function getMaps() {
     return new Promise((resolve, reject) => {
-        fetch(`${url}maps/`, {
+        fetch(`${URL}maps/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -236,7 +236,7 @@ export function getMaps() {
 
 export function getReportedMaps(token, userID) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}reportedMaps?userID=${userID}`, {
+        fetch(`${URL}reportedMaps?userID=${userID}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -255,7 +255,7 @@ export function getReportedMaps(token, userID) {
 
 export function updateMap(mapData, user) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}maps/${mapData.id}`, {
+        fetch(`${URL}maps/${mapData.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -279,7 +279,7 @@ export function destroyMap(mapID, userID, token) {
     }
 
     return new Promise((resolve, reject) => {
-        fetch(`${url}maps/${mapID}?userID=${userID}`, {
+        fetch(`${URL}maps/${mapID}?userID=${userID}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -309,7 +309,7 @@ export function downloadFile(mapId, mapName, userID, token) {
     }
 
     return new Promise((resolve, reject) => {
-        fetch(`${url}download/${mapId}?userID=${userID}`, {
+        fetch(`${URL}download/${mapId}?userID=${userID}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -327,9 +327,9 @@ export function downloadFile(mapId, mapName, userID, token) {
                 return response.blob().then(blob => ({ blob, filename }));
             })
             .then(({ blob, filename }) => {
-                const url = window.URL.createObjectURL(blob);
+                const URL = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.href = url;
+                a.href = URL;
                 a.download = filename;
                 document.body.appendChild(a);
                 a.click();
@@ -348,7 +348,7 @@ export function destroyReport(mapId, userID, token) {
     }
 
     return new Promise((resolve, reject) => {
-        fetch(`${url}reportedMaps/${mapId}?userID=${userID}`, {
+        fetch(`${URL}reportedMaps/${mapId}?userID=${userID}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -370,7 +370,7 @@ export function destroyReport(mapId, userID, token) {
 // fetch obtener mapa por dificultad
 export function getMapByDifficulty(difficulty) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}mapsByDifficulty/${difficulty}`, {
+        fetch(`${URL}mapsByDifficulty/${difficulty}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -389,7 +389,7 @@ export function getMapByDifficulty(difficulty) {
 // Obtener todos los mapas para mostrar en comunidad
 export function getMapsForCommunity() {
     return new Promise((resolve, reject) => {
-        fetch(`${url}mapsCommunity/`, {
+        fetch(`${URL}mapsCommunity/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -408,7 +408,7 @@ export function getMapsForCommunity() {
 // Obtener todos los mapas para mostrar en comunidad filtrados por Nivel
 export function getMapsForCommunityByLevel(level) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}mapsCommunity/${level}`, {
+        fetch(`${URL}mapsCommunity/${level}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -427,7 +427,7 @@ export function getMapsForCommunityByLevel(level) {
 // Dar like a un mapa
 export function likeMap(mapId) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}mapsCommunity/like`, {
+        fetch(`${URL}mapsCommunity/like`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -447,7 +447,7 @@ export function likeMap(mapId) {
 // Dar dislike a un mapa
 export function dislikeMap(mapId) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}mapsCommunity/dislike`, {
+        fetch(`${URL}mapsCommunity/dislike`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -467,7 +467,7 @@ export function dislikeMap(mapId) {
 // Reportar un mapa (map_id, reason)
 export function reportMap(map) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}reportedMaps`, {
+        fetch(`${URL}reportedMaps`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -487,7 +487,7 @@ export function reportMap(map) {
 // Buscar mapas por nombre o descripción
 export function searchMaps(fraseCerca) {
     return new Promise((resolve, reject) => {
-        fetch(`${url}searchMapsCommunity/${fraseCerca}`, {
+        fetch(`${URL}searchMapsCommunity/${fraseCerca}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

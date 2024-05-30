@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import useStore from '../src/store';
 import GameHome from './GameHome';
 
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = 'http://localhost:8000'; // Change this to the URL of the server
 let control = useStore.getState().gameData.currentMap
 
 export default class Preloader extends Phaser.Scene {

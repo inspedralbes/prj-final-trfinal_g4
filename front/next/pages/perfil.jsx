@@ -6,6 +6,7 @@ import ErrorPopup from '../components/errorPopup';
 import useStore from '../src/store';
 
 const Perfil = () => {
+    const URL = 'http://localhost:8000';
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -98,7 +99,7 @@ const Perfil = () => {
                     <div className="flex flex-col justify-center items-center text-center min-h-screen p-4">
                         <div className="text-xl mx-auto mb-3">
                             <img
-                                src={userFromLocalStorage && userFromLocalStorage.image ? 'http://localhost:8000' + userFromLocalStorage.image : '/images/profiles/default.png'}
+                                src={userFromLocalStorage && userFromLocalStorage.image ? `${URL}` + userFromLocalStorage.image : '/images/profiles/default.png'}
                                 alt="User"
                                 className="w-24 h-24 md:w-36 md:h-36 rounded-full"
                             />
