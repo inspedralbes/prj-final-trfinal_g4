@@ -2144,6 +2144,7 @@ export default class GameHome3 extends Phaser.Scene {
                 }
             }
         });
+        this.yellowView.setAlpha(0.5);
         this.done = true;
     }
 
