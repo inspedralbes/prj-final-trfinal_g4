@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import useStore from '../src/store';
 import GameHome from './GameHome';
 
-const BASE_URL = 'https://chromaticbond.cat:8000/laravel/api/'; // Change this to the URL of the server
+const BASE_URL = 'https://chromaticbond.cat/laravel/public/api'; // Change this to the URL of the server
 let control = useStore.getState().gameData.currentMap
 
 export default class Preloader extends Phaser.Scene {
