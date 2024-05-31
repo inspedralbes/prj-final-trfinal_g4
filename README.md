@@ -31,3 +31,4 @@ Per a més informació detallada sobre el projecte, consulta el [README de la ca
 - [Planificació](./doc/Planificació_ChromaticBond.pdf)
 - [Resum Presentació](./doc/resum_2324_G04Projecte-ChromaticBond.pdf)
 - [Pitch](./doc/pitch_2324_G04ProjecteChromatic-bond.mp4)
+- [Presentació Tecnica](./doc/tecnica_2324_ChromaticBond-ProjecteG04.pdf)
