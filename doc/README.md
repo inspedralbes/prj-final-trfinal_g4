@@ -7,7 +7,7 @@
   - [Tecnologies utilitzades](#tecnologies-utilitzades)
   - [Interrelació entre els diversos components](#interrelació-entre-els-diversos-components)
 - [Desenvolupament](./docker-Develop/README.md)
-- [Desplegament](#desplegament)
+- [Desplegament](./produccio/README.md)
 - [Frontend](../front/next/README.md)
   - [Phaser](./pheaser/README.md)
 - [Backend](./laravel/README.md)
