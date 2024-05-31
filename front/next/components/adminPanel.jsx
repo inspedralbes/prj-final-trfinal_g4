@@ -28,7 +28,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import './styles.css';
 
 function AdminPanel() {
-    const URL = 'https://chromaticbond.cat:8000/laravel/api/';
+    const URL = 'https://chromaticbond.cat/laravel/public/api';
     const [maps, setMaps] = useState([]);
     const [reportedMaps, setReportedMaps] = useState([]);
     const [allUsers, setUsers] = useState([]);
