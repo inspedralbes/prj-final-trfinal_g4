@@ -55,7 +55,7 @@ return new class extends Migration
             'name' => 'Mapa 3',
             'description' => 'Mapa original do jogo',
             'image' => '/images/maps/mapa3.png',
-            'mapRoute' => '/maps/mapatuto.json',
+            'mapRoute' => '/maps/mapa-lvl3.json',
             'difficulty' => 3,
             'default' => true,
             'user_id' => 1,

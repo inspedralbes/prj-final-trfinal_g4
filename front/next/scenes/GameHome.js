@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
 import useStore from '../src/store';
 import socket from '../services/sockets';
-import Preloader from './Preloader';
+import LoadingScene from './Loader';
+import GameHome1 from './GameHome1';
 
 
 export default class GameHome extends Phaser.Scene {
@@ -55,6 +56,7 @@ export default class GameHome extends Phaser.Scene {
     priorY;
     audio;
     music;
+    currentMap=useStore.getState().gameData.currentMap;
     init() {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.activePointer = this.input.activePointer;
@@ -79,19 +81,22 @@ export default class GameHome extends Phaser.Scene {
 
     }
 
-    preload(){
+    preload() {
         this.cursors = this.input.keyboard.createCursorKeys();
     }
 
     create() {
-        
-        this.music = this.sound.add('bgMusic');
-        this.music.setLoop(true);
-        this.music.play();
-        console.log("mapa" + useStore.getState().gameData.currentMap);
-        this.done = false;
-        const map = this.add.tilemap(`mapa${useStore.getState().gameData.currentMap}`);
-        const tileset = map.addTilesetImage('tilesetWhite', 'tileset');
+        if (this.music == null) {
+            this.music = this.sound.add('bgMusic');
+            this.music.setLoop(true);
+            this.music.play();
+            console.log("mapa" + useStore.getState().gameData.currentMap);
+            this.done = false;
+            console.log(`mapa${useStore.getState().gameData.currentMap}`)
+        }
+        let map = this.add.tilemap(`mapa${useStore.getState().gameData.currentMap}`);
+        let tileset = map.addTilesetImage('tilesetWhite', 'tileset');
+
         let gray = null;
         let white = null;
         let black = null;
@@ -1279,7 +1284,13 @@ export default class GameHome extends Phaser.Scene {
             // });
 
             this.music.stop();
-            this.time.delayedCall(1000, this.scene.start, ['preloader'], this.scene);
+            
+            this.time.delayedCall(1000, () => {
+                
+                
+                
+            });
+            
         });
         if (this.player == 1) {
             switch (useStore.getState().gameData.playersData[0].color) {
@@ -2009,7 +2020,7 @@ export default class GameHome extends Phaser.Scene {
         if (this.done == true) {
             if (this.cursors.space.isDown && this.pressable) {
 
-                socket.emit('changeColor');
+                socket.emit('changeColor', this.currentMap);
                 this.pressable = false;
             }
             if (this.cursors.space.isUp) {
@@ -2201,9 +2212,11 @@ export default class GameHome extends Phaser.Scene {
                 }
             }
             );
-            if (this.player1OnFlag && this.player2OnFlag && this.player == 1) {
-                socket.emit('win');
-                this.done = false;
+            if (this.player1OnFlag && this.player2OnFlag) {
+                socket.emit('win',0);
+                this.time.delayedCall(1000, () => {
+                    this.scene.switch('gamehome1')
+                });
 
             };
             if (this.player == 1) {

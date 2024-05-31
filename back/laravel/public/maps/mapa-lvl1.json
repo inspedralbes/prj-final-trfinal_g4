@@ -784,7 +784,7 @@
                 }, 
                 {
                  "height":32,
-                 "id":55,
+                 "id":57,
                  "name":"endGameBlu",
                  "properties":[
                         {
@@ -796,12 +796,12 @@
                  "type":"",
                  "visible":true,
                  "width":15.6667,
-                 "x":-97.9200000000001,
-                 "y":-68
+                 "x":3433.415,
+                 "y":-259.5
                 }, 
                 {
                  "height":32,
-                 "id":56,
+                 "id":58,
                  "name":"endGameRed",
                  "properties":[
                         {
@@ -813,8 +813,8 @@
                  "type":"",
                  "visible":true,
                  "width":16.5,
-                 "x":-65.25,
-                 "y":-69
+                 "x":3424.085,
+                 "y":-381.5
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1941,7 +1941,7 @@
          "y":0
         }],
  "nextlayerid":13,
- "nextobjectid":57,
+ "nextobjectid":59,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",

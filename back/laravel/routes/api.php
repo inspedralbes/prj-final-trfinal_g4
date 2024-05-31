@@ -36,15 +36,9 @@ Route::post('/mapsCommunity/like', [MapController::class, 'addLike']);
 Route::post('/mapsCommunity/dislike', [MapController::class, 'removeLike']);
 Route::post('/reportedMaps', [ReportedMapsController::class, 'store']);
 
-Route::get('/saves', [SaveController::class, 'index']);
-Route::get('/saves/{save}', [SaveController::class, 'show']);
-Route::post('/saves', [SaveController::class, 'store']);
-Route::put('/saves/{save}', [SaveController::class, 'update']);
-Route::delete('/saves/{save}', [SaveController::class, 'destroy']);
-
 Route::get('/users/{user}', [UserController::class, 'show']);
 Route::post('/users', [UserController::class, 'store']);
-Route::delete('/users/{user}', [UserController::class, 'destroy']);
+
 
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'store']);
@@ -65,4 +59,5 @@ Route::middleware('admin')->group(function () {
     Route::get('/savesByUser/{user}', [SaveController::class, 'getSavesByUser']);
     Route::get('download/{id}', [MapController::class, 'download']);
     Route::delete('/maps/{map}', [MapController::class, 'destroy']);
+    Route::delete('/users/{user}', [UserController::class, 'destroy']);
 });

@@ -3867,7 +3867,7 @@
                 }, 
                 {
                  "height":37.25,
-                 "id":57,
+                 "id":59,
                  "name":"endGameWhi",
                  "properties":[
                         {
@@ -3879,12 +3879,12 @@
                  "type":"",
                  "visible":true,
                  "width":16.6667,
-                 "x":382.604983333334,
-                 "y":97.0415
+                 "x":2572.77165,
+                 "y":372.0415
                 }, 
                 {
                  "height":37.25,
-                 "id":58,
+                 "id":60,
                  "name":"endGameBla",
                  "properties":[
                         {
@@ -3896,8 +3896,8 @@
                  "type":"",
                  "visible":true,
                  "width":16.6667,
-                 "x":447.394983333334,
-                 "y":97.7085
+                 "x":2637.56165,
+                 "y":372.7085
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -3906,7 +3906,7 @@
          "y":0
         }],
  "nextlayerid":20,
- "nextobjectid":59,
+ "nextobjectid":61,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
