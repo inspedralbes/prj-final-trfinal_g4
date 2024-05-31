@@ -10,7 +10,7 @@
 - [Desplegament](#desplegament)
 - [Frontend](../front/next/README.md)
   - [Phaser](./pheaser/README.md)
-- [Backend](../back/README.md)
+- [Backend](./laravel/README.md)
 - [Node.js](../node/README.md)
 
 ## Objectius
