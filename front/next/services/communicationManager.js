@@ -1,4 +1,4 @@
-const URL = 'https://chromaticbond.cat:8000/laravel/api/';
+const URL = 'https://chromaticbond.cat/laravel/public/api';
 
 //Login
 export function login(user) {
