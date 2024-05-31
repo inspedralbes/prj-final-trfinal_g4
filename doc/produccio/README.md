@@ -1,3 +1,4 @@
+
 # Documentació per fer el desplegament a producció
 
 En aquesta Documentació es proporciona la configuració per al desplegament de la aplicació de forma manual conectat per SSH.
@@ -16,7 +17,6 @@ Si no tens Termius, pots descargar-ho aqui: (https://termius.com/download/window
 Si no tens Putty, ports descargar-ho aqui: (https://www.putty.org/)
 
  - Hauras de posar la clau privada al Termius o Putty i la clau publica al servidor
-
 
 ### Nginx
 
@@ -40,6 +40,8 @@ cd /etc/nginx/sites-available
 sudo mkdir /nom_projecte
 
 ```
+
+
 
 
 Enganchem aquesta configuració de proxy i guardem.
