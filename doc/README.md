@@ -9,7 +9,7 @@
 - [Desenvolupament](./docker-Develop/README.md)
 - [Desplegament](./produccio/README.md)
 - [Frontend](../front/next/README.md)
-  - [Phaser](./pheaser/README.md)
+  - [Phaser](./phaser/README.md)
 - [Backend](./laravel/README.md)
 - [Node.js](../node/README.md)
 
