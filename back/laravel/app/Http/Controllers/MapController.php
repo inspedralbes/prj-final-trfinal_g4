@@ -128,23 +128,38 @@ class MapController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Map $map)
+    public function update($map, Request $request)
     {
-        if ($request->difficulty < 1 || $request->difficulty > 3) {
-            return response()->json([
-                'error' => 'Difficulty must be between 1 and 3'
-            ], 400);
-        }
-
-        $mapToUpdate = Map::find($map)->first();
+        $mapToUpdate = Map::where('id', $map)->first();
         if (!$mapToUpdate) {
             return response()->json([
                 'error' => 'Map not found'
             ], 404);
         }
 
-        $mapToUpdate->name = $request->name;
-        $mapToUpdate->description = $request->description;
+        if ($request->difficulty < 1 || $request->difficulty > 3) {
+            return response()->json([
+                'error' => 'Difficulty must be between 1 and 3'
+            ], 400);
+        } else {
+            $mapToUpdate->difficulty = $request->difficulty;
+        }
+
+        if ( $request->state && $request->state != 'approved' && $request->state != 'pending' && $request->state != 'reported') {
+            return response()->json([
+                'error' => 'State must be Approved, Pending or Rejected'
+            ], 400);
+        } else {
+            $mapToUpdate->state = $request->state;
+        }
+
+        if ($request->name) {
+            $mapToUpdate->name = $request->name;
+        }
+
+        if ($request->description) {
+            $mapToUpdate->description = $request->description;
+        }
 
         if (request()->hasFile('img')) {
             $imgPath = $request->file('img')->storeAs('/images/maps', $request->file('img')->getClientOriginalName());
@@ -165,9 +180,6 @@ class MapController extends Controller
                 'error' => 'Map not found'
             ], 404);
         }
-
-        $mapToUpdate->difficulty = $request->difficulty;
-        $mapToUpdate->state = $request->state;
 
         if ($mapToUpdate->save()) {
             return response()->json($mapToUpdate, 200);

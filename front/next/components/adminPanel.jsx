@@ -3,7 +3,7 @@ import { RiAdminLine } from "react-icons/ri";
 import { FaRegMap } from "react-icons/fa";
 import { TbMapExclamation } from "react-icons/tb";
 import { MdReportOff } from "react-icons/md";
-import { getMaps } from '../services/communicationManager';
+import { getMaps, updateMap } from '../services/communicationManager';
 import { getReportedMaps } from '../services/communicationManager';
 import { getUsers } from '../services/communicationManager';
 import { destroyMap } from '../services/communicationManager';
@@ -142,6 +142,17 @@ function AdminPanel() {
             //console.error('Error updating user:', error);
         }
     }
+
+    const handleApproveMap = async (mapID) => {
+        try {
+            const formData = new FormData();
+            formData.append('state', 'approved');
+            formData.append('map_id', mapID);
+            updateMap(formData, tokenLocal);
+            setMaps(maps.map(map => map.id === mapID ? { ...map, state: 'approved' } : map));
+        } catch (error) {
+            //console.error('Error updating map:', error);
+        }
 
     useEffect(() => {
         getMaps()
@@ -502,7 +513,7 @@ function AdminPanel() {
             </div>
         </div>
     )
-
+    }
 }
 
 export default AdminPanel;

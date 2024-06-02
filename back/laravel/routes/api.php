@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\DB;
 Route::get('/maps', [MapController::class, 'index']);
 Route::get('/maps/{map}', [MapController::class, 'getMap']);
 Route::post('/maps', [MapController::class, 'store']);
-Route::put('/maps/{map}', [MapController::class, 'update']);
+
 
 Route::get('/mapsByDifficulty/{difficulty}', [MapController::class, 'mapsByDifficulty']);
 Route::get('/defaultMaps', [MapController::class, 'getDefaultMaps']);
@@ -58,6 +58,7 @@ Route::middleware('admin')->group(function () {
     Route::get('/reportedReasons', [ReportedMapsController::class, 'getReportedReason']);
     Route::get('/savesByUser/{user}', [SaveController::class, 'getSavesByUser']);
     Route::get('download/{id}', [MapController::class, 'download']);
+    Route::post('/maps/{map}', [MapController::class, 'update']);
     Route::delete('/maps/{map}', [MapController::class, 'destroy']);
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
 });
