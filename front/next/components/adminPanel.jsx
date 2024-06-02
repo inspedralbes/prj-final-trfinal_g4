@@ -148,7 +148,7 @@ function AdminPanel() {
             const formData = new FormData();
             formData.append('state', 'approved');
             formData.append('map_id', mapID);
-            updateMap(formData, tokenLocal);
+            updateMap(formData, tokenLocal, userID);
             setMaps(maps.map(map => map.id === mapID ? { ...map, state: 'approved' } : map));
         } catch (error) {
             //console.error('Error updating map:', error);

@@ -253,9 +253,9 @@ export function getReportedMaps(token, userID) {
     });
 }
 
-export function updateMap(mapData, token) {
+export function updateMap(mapData, token, userID) {
     return new Promise((resolve, reject) => {
-        fetch(`${URL}maps/${mapData.map_id}`, {
+        fetch(`${URL}maps/${mapData.map_id}?userID=${userID}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
