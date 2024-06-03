@@ -253,17 +253,21 @@ export function getReportedMaps(token, userID) {
     });
 }
 
-export function updateMap(mapData, token, userID) {
+export function updateMap(mapData, token) {
     return new Promise((resolve, reject) => {
-        fetch(`${URL}maps/${mapData.map_id}?userID=${userID}`, {
+        fetch(`${URL}mapsUpdate`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
             body: mapData
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 resolve(data);
             })

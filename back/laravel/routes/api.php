@@ -47,6 +47,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //users
     Route::post('/users', [UserController::class, 'update']);
     Route::post('/logout', [UserController::class, 'logout']);
+
+    //admin
+    Route::post('/mapsUpdate', [MapController::class, 'update']);
 });
 
 Route::middleware('admin')->group(function () {
@@ -58,7 +61,6 @@ Route::middleware('admin')->group(function () {
     Route::get('/reportedReasons', [ReportedMapsController::class, 'getReportedReason']);
     Route::get('/savesByUser/{user}', [SaveController::class, 'getSavesByUser']);
     Route::get('download/{id}', [MapController::class, 'download']);
-    Route::post('/maps/{map}', [MapController::class, 'update']);
     Route::delete('/maps/{map}', [MapController::class, 'destroy']);
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
 });
