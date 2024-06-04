@@ -128,12 +128,12 @@ class UserController extends Controller
         ]);
 
         $user = User::find($request->user_id);
+
         if (!$user) {
             return response()->json([
                 'message' => 'User not found'
             ], 404);
         }
-
         
         if ($request->name) {
             $request->validate([
@@ -171,12 +171,10 @@ class UserController extends Controller
             $user->image = '/' . $imgPath;
         }
 
-        //booleans
-        if ($request->admin) {
-            $request->validate([
-                'admin' => 'required'
-            ]);
-            $user->admin = $request->admin;
+        if ($request->admin == 1) {
+            $user->admin = true;
+        } else if ($request->admin == 0){
+            $user->admin = false;
         }
         
         if ($request->googleLogin) {
