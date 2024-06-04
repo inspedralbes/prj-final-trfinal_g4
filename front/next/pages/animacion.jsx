@@ -8,11 +8,12 @@ const Animacion = () => {
     const router = useRouter();
 
     useEffect(() => {
-        const gameData = useStore.getState().gameData || null;
-        if (gameData != null) {
-            router.push('/game');
-        }
-    }, []);
+        socket.on('gameStarted', (data) => {
+            if (useStore.getState().room != null && useStore.getState().room.status === 'Playing') {
+                router.push('/game');
+            }
+        });
+    }, [router]);
 
     useEffect(() => {
         const videoElement = videoRef.current;
@@ -20,10 +21,7 @@ const Animacion = () => {
             console.log('Video ended');
             if ( socket.id == useStore.getState().room.users[0].id ) {
                 console.log('Emit startGame');
-                socket.emit('startGame', (data) => {
-                    console.log('startGame', data);
-                    router.push('/game');
-                });
+                socket.emit('startGame' );
             }
         };
         videoElement.addEventListener('ended', handleVideoEnd);
@@ -37,9 +35,7 @@ const Animacion = () => {
         console.log('Skip video');
         if ( socket.id == useStore.getState().room.users[0].id ) {
             console.log('Emit startGame');
-            socket.emit('startGame', () => {
-                router.push('/game');
-            });
+            socket.emit('startGame');
         }
     };
 
