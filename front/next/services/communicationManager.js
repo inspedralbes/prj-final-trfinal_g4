@@ -1,4 +1,4 @@
-const URL = 'https://chromaticbond.cat/laravel/public/api';
+const URL = 'http://chromaticbond.cat/back/api/';
 
 //Login
 export function login(user) {
@@ -253,15 +253,15 @@ export function getReportedMaps(token, userID) {
     });
 }
 
-export function updateMap(mapData, user) {
+export function updateMap(mapData, token, userID) {
     return new Promise((resolve, reject) => {
-        fetch(`${URL}maps/${mapData.id}`, {
-            method: 'PUT',
+        fetch(`${URL}maps/${mapData.map_id}?userID=${userID}`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${mapData.token}`
+                'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ mapData: mapData, user: user })
+            body: mapData
         })
             .then(response => response.json())
             .then(data => {

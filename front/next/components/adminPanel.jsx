@@ -28,7 +28,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import './styles.css';
 
 function AdminPanel() {
-    const URL = 'https://chromaticbond.cat/laravel/public/api';
+    const URL = 'http://chromaticbond.cat/back';
     const [maps, setMaps] = useState([]);
     const [reportedMaps, setReportedMaps] = useState([]);
     const [allUsers, setUsers] = useState([]);
@@ -140,6 +140,18 @@ function AdminPanel() {
             setUsers(allUsers.map(user => user.id === userID ? { ...user, admin: 0 } : user));
         } catch (error) {
             //console.error('Error updating user:', error);
+        }
+    }
+
+    const handleApproveMap = async (mapID) => {
+        try {
+            const formData = new FormData();
+            formData.append('state', 'approved');
+            formData.append('map_id', mapID);
+            updateMap(formData, tokenLocal, userID);
+            setMaps(maps.map(map => map.id === mapID ? { ...map, state: 'approved' } : map));
+        } catch (error) {
+            //console.error('Error updating map:', error);
         }
     }
 

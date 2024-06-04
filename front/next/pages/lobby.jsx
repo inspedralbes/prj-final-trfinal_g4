@@ -5,7 +5,7 @@ import socket from '../services/sockets';
 import { useRouter } from 'next/router';
 
 const Lobby = () => {
-    const URL = 'https://chromaticbond.cat/laravel/public/api';
+    const URL = 'http://chromaticbond.cat/back';
     const router = useRouter();
     const userState = useStore.getState().user || {};
     const user = userState.name || 'Anònim';

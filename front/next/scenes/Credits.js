@@ -11,9 +11,8 @@ export default class Credits extends Phaser.Scene {
         super('credits');
     }
     preload() {
-        this.BASE_URL = 'https://chromaticbond.cat/laravel/public/api'; // Change this to the URL of the server
+        this.BASE_URL = 'http://chromaticbond.cat/backa'; // Change this to the URL of the server
         // this.load.webfont('PixelFont', 'https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
-        this.load.audio('creditMusic', 'assets/Rainbow_run.mp3');
         this.cursors = this.input.keyboard.createCursorKeys();
     }
 

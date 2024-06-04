@@ -40,7 +40,7 @@ export default class GameHome3 extends Phaser.Scene {
     animationPlaying = false;
     CharacterPosition;
     handleCollision;
-    colors = [{ color: 'white', hex: 0xffffff }, { color: 'black', hex: 0x303030 }, { color: 'gray', hex: 0x969696 }, { color: 'red', hex: 0xf1090d }, { color: 'green', hex: 0x29b127 }, { color: 'blue', hex: 0x2b80ff }, { color: 'orange', hex: 0xe26b09 }, { color: 'yellow', hex: 0xdada00 }, { color: 'purple', hex: 0x91209e }];
+    colors = [{ color: 'white', hex: 0xffffff }, { color: 'black', hex: 0x303030 }, { color: 'gray', hex: 0x969696 }, { color: 'red', hex: 0xc72225  }, { color: 'green', hex: 0x1e9c1c }, { color: 'blue', hex: 0x2b80ff }, { color: 'orange', hex: 0xe26b09 }, { color: 'yellow', hex: 0xdada00 }, { color: 'purple', hex: 0x91209e }];
     animationButtonPLaying;
     otherButtonPressing;
     constructor() {
@@ -2145,6 +2145,74 @@ export default class GameHome3 extends Phaser.Scene {
             }
         });
         this.yellowView.setAlpha(0.5);
+
+if(this.player == 2){
+            this.platforms.forEach(platform => {
+                if(platform.color == 'Yel' || platform.color == 'Ora' || platform.color == 'Pur' || platform.color == 'Red'){
+                    platform.setAlpha(0.5);
+                    if(platform.collisionC1 != null){
+                    platform.collisionC1.active = false;
+                    } 
+                    if(platform.collisionC2 != null){
+                    platform.collisionC2.active = false;
+                    }
+                }else{
+                    if(platform.color == 'Bla' || platform.color == 'Gra'){
+                        platform.setAlpha(1);
+                        if(platform.collisionC1 != null){
+                            platform.collisionC1.active = true;
+                        }
+                        if(platform.collisionC2 != null){
+                            platform.collisionC2.active = true;
+                        }
+                    }
+                }
+            });
+            this.buttons.forEach(button => {
+                if(button.color == 'Yel' || button.color == 'Ora' || button.color == 'Pur' || button.color == 'Red'){
+                    button.setAlpha(0.5);
+                }else{
+                    if(button.color == 'Bla' || button.color == 'Gra'){
+                        button.setAlpha(1);
+                    }
+                }
+            }
+            );
+        }
+        else{
+            forEach(platform => {
+                if(platform.color == 'Yel' || platform.color == 'Gre' || platform.color == 'Pur' || platform.color == 'Red'){
+                    platform.setAlpha(0.5);
+                    if(platform.collisionC1 != null){
+                    platform.collisionC1.active = false;
+                    } 
+                    if(platform.collisionC2 != null){
+                    platform.collisionC2.active = false;
+                    }
+                }else{
+                    if(platform.color == 'Whi' || platform.color == 'Gra'){
+                        platform.setAlpha(1);
+                        if(platform.collisionC1 != null){
+                            platform.collisionC1.active = true;
+                        }
+                        if(platform.collisionC2 != null){
+                            platform.collisionC2.active = true;
+                        }
+                    }
+                }
+            }
+            );
+            this.buttons.forEach(button => {
+                if(button.color == 'Yel' || button.color == 'Gre' || button.color == 'Pur' || button.color == 'Red'){
+                    button.setAlpha(0.5);
+                }else{
+                    if(button.color == 'Whi' || button.color == 'Gra'){
+                        button.setAlpha(1);
+                    }
+                }
+            }
+            );
+        }
         this.done = true;
     }
 

@@ -2012,6 +2012,11 @@ export default class GameHome extends Phaser.Scene {
                 }
             }
         });
+	if(this.player == 1){
+	this.add.text(0,0, "Mou-te amb les fletxes de direcció i canvia de color amb l'espai", { font:'32px Arial', fill: '#000000' });
+	}else{
+	this.add.text(0,0, "Mou-te amb les fletxes de direcció i canvia de color amb l'espai", { font: '32px Arial', fill: '#ffffff' });
+	}
         this.done = true;
     }
 

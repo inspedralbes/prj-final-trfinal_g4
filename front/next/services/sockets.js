@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import useStore from '../src/store';
 
-const URL = 'https://chromaticbond.cat/socket.io'; // Change this to the URL of the server
+const URL = 'http://chromaticbond.cat'; // Change this to the URL of the server
 
 const socket = io(URL);
 
