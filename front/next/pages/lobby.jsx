@@ -59,7 +59,7 @@ const Lobby = () => {
     useEffect(() => {
         socket.on('gameStarted', (data) => {
             if (useStore.getState().room != null && useStore.getState().room.status === 'Playing') {
-                router.push('/game');
+                router.push('/animacion');
             }
         });
     }, [router]);
