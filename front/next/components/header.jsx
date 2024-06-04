@@ -75,6 +75,9 @@ const Header = () => {
                 <Link href="/comunitat" className="mr-4 text-white hover:text-yellow-500">
                     Comunitat
                 </Link>
+                <Link href="/agraiments" className="mr-4 text-white hover:text-yellow-500">
+                    Agraiments
+                </Link>
                 { useStore.getState().user.admin == 1 && (
                     <Link href="/admin" className="mr-4 text-white hover:text-yellow-500">
                         Administració
