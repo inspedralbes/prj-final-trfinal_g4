@@ -59,7 +59,7 @@ const Lobby = () => {
     useEffect(() => {
         socket.on('gameStarted', (data) => {
             if (useStore.getState().room != null && useStore.getState().room.status === 'Playing') {
-                router.push('/animacion');
+                router.push('/game');
             }
         });
     }, [router]);
@@ -116,7 +116,7 @@ const Lobby = () => {
                 </div>
             );
         }
-    }) :[];
+    }) : [];
 
     const adminUser = room && room.admin ? room.admin[1] : '';
     let otherUser = '';
@@ -174,9 +174,9 @@ const Lobby = () => {
                 <div className='min-h-[600px] max-w-[500px] lg:min-w-[1050px] text-center lg:flex lg:flex-inline'>
                     {/* Chat section */}
                     <div className='h-[600px] max-w-[500px] mx-auto lg:min-w-[500px] bg-gray-700 rounded-lg flex flex-col lg:m-3 lg:mt-9 mt-9'>
-                    <div id='messages' class='flex-grow flex flex-col space-y-4 p-3 overflow-x-hidden overflow-y-auto scrollbar-thumb-blue scrollbar-rhumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
-                        { chatMessages }
-                    </div>
+                        <div id='messages' class='flex-grow flex flex-col space-y-4 p-3 overflow-x-hidden overflow-y-auto scrollbar-thumb-blue scrollbar-rhumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch'>
+                            {chatMessages}
+                        </div>
                         <div className='border-t-2 border-gray-200 px-4 pt-4 mb-2 mb-16 mx-2'>
                             <div className='relative flex'>
                                 <input
@@ -202,7 +202,7 @@ const Lobby = () => {
                             <h1 className='text-3xl font-bold mb-3'>Usuaris a la sala</h1>
                             <div id='adminUser' className='flex items-center mt-2 mb-2'>
                                 <div className='flex items-center'>
-                                <img src={ room ? URL + room.users[0].image : '' } alt="User" className='w-10 h-10 ml-2 rounded-full' />                                    <p className='text-2xl ml-3 mt-1 mr-4 truncate'>{adminUser}</p>
+                                    <img src={room ? URL + room.users[0].image : ''} alt="User" className='w-10 h-10 ml-2 rounded-full' />                                    <p className='text-2xl ml-3 mt-1 mr-4 truncate'>{adminUser}</p>
                                 </div>
                                 {user === adminUser && room.users[0].state !== 'Ready' && (
                                     <div id='buttons-check' className='flex items-center ml-auto'>
