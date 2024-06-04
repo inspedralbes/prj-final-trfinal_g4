@@ -106,6 +106,9 @@ const Header = () => {
                 <Link href="/comunitat" className="mr-4 text-white hover:text-yellow-500">
                     Comunitat
                 </Link>
+                <Link href="/agraiments" className="mr-4 text-white hover:text-yellow-500">
+                    Agraiments
+                </Link>
                 <Link href="/login">
                     <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded mr-4 mt-4 md:mt-0">Iniciar Sessió</button>
                 </Link>
