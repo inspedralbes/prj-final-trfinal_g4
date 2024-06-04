@@ -2016,9 +2016,9 @@ export default class GameHome extends Phaser.Scene {
             }
         });
         if(this.player == 1){
-            this.add.text(0, 0, 'Player 1', { font: '32px Arial', fill: '#000000' });
+            this.add.image(0, 0, 'tutoBlack').setOrigin(0, 0).setScale(0.1);
         }else{
-            this.add.text(0, 0, 'Player 2', { font: '32px Arial', fill: '#ffffff' });
+            this.add.image(0, 0, 'tutoWhite').setOrigin(0, 0).setScale(0.1);
         }
         this.done = true;
     }
