@@ -3,7 +3,7 @@ import { RiAdminLine } from "react-icons/ri";
 import { FaRegMap } from "react-icons/fa";
 import { TbMapExclamation } from "react-icons/tb";
 import { MdReportOff } from "react-icons/md";
-import { getMaps } from '../services/communicationManager';
+import { getMaps, updateMap } from '../services/communicationManager';
 import { getReportedMaps } from '../services/communicationManager';
 import { getUsers } from '../services/communicationManager';
 import { destroyMap } from '../services/communicationManager';
@@ -120,8 +120,9 @@ function AdminPanel() {
 
     const handleUserAdmin = async (userID) => {
         try {
+            console.log('userID', userID);
             const formData = new FormData();
-            formData.append('admin', true);
+            formData.append('admin', 1);
             formData.append('user_id', userID);
             updateUser(formData, tokenLocal);
             setUsers(allUsers.map(user => user.id === userID ? { ...user, admin: 1 } : user));
@@ -133,8 +134,9 @@ function AdminPanel() {
 
     const handleUserNotAdmin = async (userID) => {
         try {
+            console.log('userID FALSE', userID);
             const formData = new FormData();
-            formData.append('admin', false);
+            formData.append('admin', 0);
             formData.append('user_id', userID);
             updateUser(formData, tokenLocal);
             setUsers(allUsers.map(user => user.id === userID ? { ...user, admin: 0 } : user));
@@ -148,10 +150,16 @@ function AdminPanel() {
             const formData = new FormData();
             formData.append('state', 'approved');
             formData.append('map_id', mapID);
-            updateMap(formData, tokenLocal, userID);
+            
+            console.log('formData', formData.get('state'));
+            console.log('formData', formData.get('map_id'));
+            console.log(formData);
+    
+            const response = await updateMap(formData, tokenLocal);
+    
             setMaps(maps.map(map => map.id === mapID ? { ...map, state: 'approved' } : map));
         } catch (error) {
-            //console.error('Error updating map:', error);
+            console.error('Error updating map:', error);
         }
     }
 
@@ -514,7 +522,7 @@ function AdminPanel() {
             </div>
         </div>
     )
-
 }
+
 
 export default AdminPanel;

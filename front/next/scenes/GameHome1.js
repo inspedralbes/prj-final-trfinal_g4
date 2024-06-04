@@ -22,6 +22,7 @@ export default class GameHome1 extends Phaser.Scene {
     pressable = true;
     activePointer;
     cursors;
+    
     character1;
     character2;
     whiteView = null;
@@ -41,7 +42,7 @@ export default class GameHome1 extends Phaser.Scene {
     animationPlaying = false;
     CharacterPosition;
     handleCollision;
-    colors = [{ color: 'white', hex: 0xffffff }, { color: 'black', hex: 0x303030 }, { color: 'gray', hex: 0x969696 }, { color: 'red', hex: 0xc72225 }, { color: 'green', hex: 0x1e9c1c }, { color: 'blue', hex: 0x2b80ff }, { color: 'orange', hex: 0xe26b09 }, { color: 'yellow', hex: 0xdada00 }, { color: 'purple', hex: 0x91209e }];
+    colors = [{ color: 'white', hex: 0xffffff }, { color: 'black', hex: 0x303030 }, { color: 'gray', hex: 0x969696 }, { color: 'red', hex: 0xb82727 }, { color: 'green', hex: 0x29b127 }, { color: 'blue', hex: 0x2b80ff }, { color: 'orange', hex: 0xe26b09 }, { color: 'yellow', hex: 0xdada00 }, { color: 'purple', hex: 0x91209e }];
     animationButtonPLaying;
     otherButtonPressing;
     constructor() {
@@ -65,6 +66,9 @@ export default class GameHome1 extends Phaser.Scene {
         this.death = [];
         this.platforms = [];
         this.doors = [];
+        this.wKey = this.input.keyboard.addKey('W');
+        this.dKey = this.input.keyboard.addKey('D');
+        this.aKey = this.input.keyboard.addKey('A');
         this.flags = [];
         // this.greenView = null;
         // this.yellowView = null;
@@ -83,6 +87,7 @@ export default class GameHome1 extends Phaser.Scene {
 
     preload() {
         this.cursors = this.input.keyboard.createCursorKeys();
+        
     }
 
     create() {
@@ -2015,7 +2020,10 @@ export default class GameHome1 extends Phaser.Scene {
     }
 
     update() {
-
+        if (useStore.getState().room==null){
+            this.scene.stop()
+            this.music.stop()
+        }
         if (this.done == true) {
             if (this.cursors.space.isDown && this.pressable) {
 
@@ -2226,13 +2234,13 @@ export default class GameHome1 extends Phaser.Scene {
                     this.cameras.main.setBackgroundColor(this.character1.tintTopLeft);
                 }
 
-                if (this.cursors.left.isDown) {
+                if (this.aKey.isDown) {
                     this.character1.flipX = true;
 
                     this.character1.setVelocityX(-200);
 
                     this.character1.anims.play('walk', true);
-                } else if (this.cursors.right.isDown) {
+                } else if (this.dKey.isDown) {
                     this.character1.flipX = false;
 
                     this.character1.setVelocityX(200);
@@ -2244,7 +2252,7 @@ export default class GameHome1 extends Phaser.Scene {
                     this.character1.anims.play('idle', true);
                     this.character2.anims.play('idle', true);
                 }
-                if (this.cursors.up.isDown && this.character1.body.onFloor()) {
+                if (this.wKey.isDown && this.character1.body.onFloor()) {
                     this.character1.setVelocityY(-280);
                 }
             } else {
@@ -2253,13 +2261,13 @@ export default class GameHome1 extends Phaser.Scene {
 
                     this.cameras.main.setBackgroundColor(this.character2.tintTopLeft);
                 }
-                if (this.cursors.left.isDown) {
+                if (this.aKey.isDown) {
                     this.character2.flipX = true;
 
                     this.character2.setVelocityX(-200);
 
                     this.character2.anims.play('walk', true);
-                } else if (this.cursors.right.isDown) {
+                } else if (this.dKey.isDown) {
                     this.character2.flipX = false;
 
                     this.character2.setVelocityX(200);
@@ -2271,7 +2279,7 @@ export default class GameHome1 extends Phaser.Scene {
                     this.character2.anims.play('idle', true);
                     this.character1.anims.play('idle', true);
                 }
-                if (this.cursors.up.isDown && this.character2.body.onFloor()) {
+                if (this.wKey.isDown && this.character2.body.onFloor()) {
                     this.character2.setVelocityY(-280);
 
                 }

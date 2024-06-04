@@ -59,6 +59,9 @@ export default class GameHome extends Phaser.Scene {
     currentMap=useStore.getState().gameData.currentMap;
     init() {
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.wKey = this.input.keyboard.addKey('W');
+        this.dKey = this.input.keyboard.addKey('D');
+        this.aKey = this.input.keyboard.addKey('A');
         this.activePointer = this.input.activePointer;
         this.buttons = [];
         this.spawns = [];
@@ -2012,16 +2015,19 @@ export default class GameHome extends Phaser.Scene {
                 }
             }
         });
-	if(this.player == 1){
-	this.add.text(0,0, "Mou-te amb les fletxes de direcció i canvia de color amb l'espai", { font:'32px Arial', fill: '#000000' });
-	}else{
-	this.add.text(0,0, "Mou-te amb les fletxes de direcció i canvia de color amb l'espai", { font: '32px Arial', fill: '#ffffff' });
-	}
+        if(this.player == 1){
+            this.add.image(0, 0, 'tutoBlack').setOrigin(0, 0).setScale(0.1);
+        }else{
+            this.add.image(0, 0, 'tutoWhite').setOrigin(0, 0).setScale(0.1);
+        }
         this.done = true;
     }
 
     update() {
-
+        if (useStore.getState().room==null){
+            this.scene.stop()
+            this.music.stop()
+        }
         if (this.done == true) {
             if (this.cursors.space.isDown && this.pressable) {
 
@@ -2231,13 +2237,13 @@ export default class GameHome extends Phaser.Scene {
                     this.cameras.main.setBackgroundColor(this.character1.tintTopLeft);
                 }
 
-                if (this.cursors.left.isDown) {
+                if (this.aKey.isDown) {
                     this.character1.flipX = true;
 
                     this.character1.setVelocityX(-200);
 
                     this.character1.anims.play('walk', true);
-                } else if (this.cursors.right.isDown) {
+                } else if (this.dKey.isDown) {
                     this.character1.flipX = false;
 
                     this.character1.setVelocityX(200);
@@ -2249,7 +2255,7 @@ export default class GameHome extends Phaser.Scene {
                     this.character1.anims.play('idle', true);
                     this.character2.anims.play('idle', true);
                 }
-                if (this.cursors.up.isDown && this.character1.body.onFloor()) {
+                if (this.wKey.isDown && this.character1.body.onFloor()) {
                     this.character1.setVelocityY(-280);
                 }
             } else {
@@ -2258,13 +2264,13 @@ export default class GameHome extends Phaser.Scene {
 
                     this.cameras.main.setBackgroundColor(this.character2.tintTopLeft);
                 }
-                if (this.cursors.left.isDown) {
+                if (this.aKey.isDown) {
                     this.character2.flipX = true;
 
                     this.character2.setVelocityX(-200);
 
                     this.character2.anims.play('walk', true);
-                } else if (this.cursors.right.isDown) {
+                } else if (this.dKey.isDown) {
                     this.character2.flipX = false;
 
                     this.character2.setVelocityX(200);
@@ -2276,7 +2282,7 @@ export default class GameHome extends Phaser.Scene {
                     this.character2.anims.play('idle', true);
                     this.character1.anims.play('idle', true);
                 }
-                if (this.cursors.up.isDown && this.character2.body.onFloor()) {
+                if (this.wKey.isDown && this.character2.body.onFloor()) {
                     this.character2.setVelocityY(-280);
 
                 }
@@ -2289,4 +2295,6 @@ export default class GameHome extends Phaser.Scene {
             }
         }
     }
+
+    
 }

@@ -128,55 +128,82 @@ class MapController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Map $map)
-    {
+    public function update(Request $request)
+{
+    // Validación inicial de los campos requeridos
+    $request->validate([
+        'map_id' => 'required'
+    ]);
+
+    // Buscar el mapa a actualizar
+    $mapToUpdate = Map::find($request->map_id);
+
+    if (!$mapToUpdate) {
+        return response()->json([
+            'error' => 'Map not found'
+        ], 404);
+    }
+
+    // Validar y actualizar dificultad
+    if ($request->has('difficulty')) {
         if ($request->difficulty < 1 || $request->difficulty > 3) {
             return response()->json([
                 'error' => 'Difficulty must be between 1 and 3'
             ], 400);
-        }
-
-        $mapToUpdate = Map::find($map)->first();
-        if (!$mapToUpdate) {
-            return response()->json([
-                'error' => 'Map not found'
-            ], 404);
-        }
-
-        $mapToUpdate->name = $request->name;
-        $mapToUpdate->description = $request->description;
-
-        if (request()->hasFile('img')) {
-            $imgPath = $request->file('img')->storeAs('/images/maps', $request->file('img')->getClientOriginalName());
-            $img = $request->file('img');
-            $imgName = $img->getClientOriginalName();
-            $img->move(public_path('images/maps'), $imgName);
-            $mapToUpdate->image = $imgPath;
-        }
-
-        if (request()->hasFile('map')) {
-            $mapPath = $request->file('map')->storeAs('/maps', $request->file('map')->getClientOriginalName());
-            $map = $request->file('map');
-            $mapName = $map->getClientOriginalName();
-            $map->move(public_path('maps'), $mapName);
-            $mapToUpdate->mapRoute = $mapPath;
         } else {
-            return response()->json([
-                'error' => 'Map not found'
-            ], 404);
-        }
-
-        $mapToUpdate->difficulty = $request->difficulty;
-        $mapToUpdate->state = $request->state;
-
-        if ($mapToUpdate->save()) {
-            return response()->json($mapToUpdate, 200);
-        } else {
-            return response()->json([
-                'error' => 'Error updating the map'
-            ], 500);
+            $mapToUpdate->difficulty = $request->difficulty;
         }
     }
+
+    // Validar y actualizar estado
+    if ($request->has('state')) {
+        if (!in_array($request->state, ['approved', 'pending', 'reported'])) {
+            return response()->json([
+                'error' => 'State must be Approved, Pending or Rejected'
+            ], 400);
+        } else {
+            $mapToUpdate->state = $request->state;
+        }
+    }
+
+    // Actualizar nombre si está presente
+    if ($request->has('name')) {
+        $mapToUpdate->name = $request->name;
+    }
+
+    // Actualizar descripción si está presente
+    if ($request->has('description')) {
+        $mapToUpdate->description = $request->description;
+    }
+
+    // Manejar la carga de la imagen si está presente
+    if ($request->hasFile('img')) {
+        $imgPath = $request->file('img')->storeAs('/images/maps', $request->file('img')->getClientOriginalName());
+        $img = $request->file('img');
+        $imgName = $img->getClientOriginalName();
+        $img->move(public_path('images/maps'), $imgName);
+        $mapToUpdate->image = $imgPath;
+    }
+
+    // Manejar la carga del mapa si está presente
+    if ($request->hasFile('map')) {
+        $mapPath = $request->file('map')->storeAs('/maps', $request->file('map')->getClientOriginalName());
+        $map = $request->file('map');
+        $mapName = $map->getClientOriginalName();
+        $map->move(public_path('maps'), $mapName);
+        $mapToUpdate->mapRoute = $mapPath;
+    }
+
+    // Guardar los cambios y retornar la respuesta adecuada
+    if ($mapToUpdate->save()) {
+        return response()->json($mapToUpdate, 200);
+    } else {
+        return response()->json([
+            'error' => 'Error updating the map'
+        ], 500);
+    }
+}
+
 
     
 

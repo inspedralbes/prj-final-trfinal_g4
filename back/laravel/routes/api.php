@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\DB;
 Route::get('/maps', [MapController::class, 'index']);
 Route::get('/maps/{map}', [MapController::class, 'getMap']);
 Route::post('/maps', [MapController::class, 'store']);
-Route::put('/maps/{map}', [MapController::class, 'update']);
+
 
 Route::get('/mapsByDifficulty/{difficulty}', [MapController::class, 'mapsByDifficulty']);
 Route::get('/defaultMaps', [MapController::class, 'getDefaultMaps']);
@@ -47,6 +47,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //users
     Route::post('/users', [UserController::class, 'update']);
     Route::post('/logout', [UserController::class, 'logout']);
+
+    //admin
+    Route::post('/mapsUpdate', [MapController::class, 'update']);
 });
 
 Route::middleware('admin')->group(function () {

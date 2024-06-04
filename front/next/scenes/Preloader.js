@@ -30,6 +30,8 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('confetti', `assets/confetti.png`);
         this.load.audio('bgMusic', 'assets/Endless_Colors.mp3');
         this.load.audio('creditMusic', 'assets/Rainbow_run.mp3');
+        this.load.image('tutoWhite', `assets/tutoWhite.png`);
+        this.load.image('tutoBlack', `assets/tutoBlack.png`);
         this.load.atlas({
             key: 'button',
             textureURL: `assets/pressButton.png`,
