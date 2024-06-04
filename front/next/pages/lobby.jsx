@@ -23,6 +23,7 @@ const Lobby = () => {
             (state) => {
                 setRoom(state.room);
             },
+            
             handleRoomChange
         );
 
@@ -32,9 +33,19 @@ const Lobby = () => {
     }, [router.pathname]);
 
     useEffect(() => {
+        if (room && room.users.length > 1 && room.users[0].state === 'Ready' && room.users[1].state === 'Ready') {
+            router.push('/animacion');
+        }
+    }, [room]);
+    
+
+    useEffect(() => {
         const intervalId = setInterval(() => {
-            const roomMessages = useStore.getState().room.messages;
-            messages = roomMessages;
+            const room = useStore.getState().room;
+            if (room) {
+                const roomMessages = room.messages;
+                messages = roomMessages;
+            }
         }, 1000);
         return () => clearInterval(intervalId);
     }, []);
@@ -55,14 +66,6 @@ const Lobby = () => {
         useStore.setState({ room: null });
         router.push('/rooms');
     };
-
-    useEffect(() => {
-        socket.on('gameStarted', (data) => {
-            if (useStore.getState().room != null && useStore.getState().room.status === 'Playing') {
-                router.push('/animacion');
-            }
-        });
-    }, [router]);
 
     const chatMessages = room && room.messages ? room.messages.map((msg, index) => {
         if (msg.user == user) {
@@ -156,11 +159,6 @@ const Lobby = () => {
             </div>
         );
     }
-
-    const emitStart = () => {
-        socket.emit('startGame', room);
-        router.push('/game');
-    };
 
     const userReady = () => {
         socket.emit('changeState', { state: 'Ready' });
@@ -258,11 +256,6 @@ const Lobby = () => {
                         </div>
                     </div>
                 </div>
-                {user === adminUser && room && room.users.length > 1 && room.users[0].state === 'Ready' && room.users[1].state === 'Ready' && (
-                    <button className="text-white text-2xl font-bold py-2 px-4 w-40 rounded mt-5 bg-red-500 hover:bg-red-700" onClick={emitStart}>
-                        Iniciar Joc
-                    </button>
-                )}
             </div>
         </div>
     );

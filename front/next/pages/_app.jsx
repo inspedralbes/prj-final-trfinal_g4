@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     const handleRouteChange = (url) => {
       const { room } = useStore.getState();
-      if (room && url !== '/lobby' && url !== '/game') {
+      if (room && url !== '/lobby' && url !== '/game' && url !== '/animacion' && url !== '/agraiments') {
         socket.emit('exitRoom');
         useStore.setState({ room: null });
       }

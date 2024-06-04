@@ -1,20 +1,32 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, use } from 'react';
 import { useRouter } from 'next/router';
+import useStore from '../src/store';
+import socket from '../services/sockets';
 
 const Animacion = () => {
     const videoRef = useRef(null);
     const router = useRouter();
 
     useEffect(() => {
+        const gameData = useStore.getState().gameData || null;
+        if (gameData != null) {
+            router.push('/game');
+        }
+    }, []);
+
+    useEffect(() => {
         const videoElement = videoRef.current;
-
         const handleVideoEnd = () => {
-            // Redirige al usuario a otra pantalla cuando el video termina
-            router.push('game');
+            console.log('Video ended');
+            if ( socket.id == useStore.getState().room.users[0].id ) {
+                console.log('Emit startGame');
+                socket.emit('startGame', (data) => {
+                    console.log('startGame', data);
+                    router.push('/game');
+                });
+            }
         };
-
         videoElement.addEventListener('ended', handleVideoEnd);
-
         // Limpia el evento cuando el componente se desmonta
         return () => {
             videoElement.removeEventListener('ended', handleVideoEnd);
@@ -22,33 +34,39 @@ const Animacion = () => {
     }, [router]);
 
     const handleSkip = () => {
-        router.push('game');
+        console.log('Skip video');
+        if ( socket.id == useStore.getState().room.users[0].id ) {
+            console.log('Emit startGame');
+            socket.emit('startGame', () => {
+                router.push('/game');
+            });
+        }
     };
 
-    useEffect(() => {
-        const videoElement = videoRef.current;
-        (async () => {
-            try {
-                await videoElement.play();
-                if (videoElement.requestFullscreen) {
-                    await videoElement.requestFullscreen();
-                } else if (videoElement.mozRequestFullScreen) { // Firefox
-                    await videoElement.mozRequestFullScreen();
-                } else if (videoElement.webkitRequestFullscreen) { // Chrome, Safari and Opera
-                    await videoElement.webkitRequestFullscreen();
-                } else if (videoElement.msRequestFullscreen) { // IE/Edge
-                    await videoElement.msRequestFullscreen();
-                }
-            } catch (error) {
-                console.error('Error al reproducir el video:', error);
-            }
-        })();
-    }, []);
+    // useEffect(() => {
+    //     const videoElement = videoRef.current;
+    //     (async () => {
+    //         try {
+    //             await videoElement.play();
+    //             if (videoElement.requestFullscreen) {
+    //                 await videoElement.requestFullscreen();
+    //             } else if (videoElement.mozRequestFullScreen) { // Firefox
+    //                 await videoElement.mozRequestFullScreen();
+    //             } else if (videoElement.webkitRequestFullscreen) { // Chrome, Safari and Opera
+    //                 await videoElement.webkitRequestFullscreen();
+    //             } else if (videoElement.msRequestFullscreen) { // IE/Edge
+    //                 await videoElement.msRequestFullscreen();
+    //             }
+    //         } catch (error) {
+    //             console.error('Error al reproducir el video:', error);
+    //         }
+    //     })();
+    // }, []);
 
     return (
         <div className="relative w-full h-full">
             <video ref={videoRef} src="/video/animacion.mp4" autoPlay muted >
-                Tu navegador no soporta la reproducción de video.
+                El teu navegador no soporta la reproducció de vídeos.
             </video>
             <button
                 onClick={handleSkip}

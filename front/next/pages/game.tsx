@@ -14,20 +14,20 @@ const Game = () => {
         async function initPhaser() {
             const Phaser = await import('phaser');
             // const { default: Preloader } = await import('../scenes/Preloader');
-            const {default: VideoScene} = await import('../scenes/VideoScene');
+            // const {default: VideoScene} = await import('../scenes/VideoScene');
             const {default: Preloader} = await import('../scenes/Preloader');
             const {default: GameHome} = await import('../scenes/GameHome');
             const {default: GameHome1} = await import('../scenes/GameHome1');
             const {default: GameHome2} = await import('../scenes/GameHome2');
             const {default: GameHome3} = await import('../scenes/GameHome3');
-            const {default: Credits} = await import('../scenes/Credits');
+            // const {default: Credits} = await import('../scenes/Credits');
             const phaserGame = new Phaser.Game({
                 type: Phaser.WEBGL,
                 parent: 'game-content',
                 width: window.innerWidth,
                 height: window.innerHeight,
                 scene: [
-                    VideoScene,  Preloader, GameHome, GameHome1, GameHome2, GameHome3, Credits
+                    Preloader, GameHome, GameHome1, GameHome2, GameHome3
                 ],
                 physics: {
                     default: 'arcade',
