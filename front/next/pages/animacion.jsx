@@ -5,23 +5,28 @@ const Animacion = () => {
     const videoRef = useRef(null);
     const router = useRouter();
 
-
+    useEffect(() => {
         const videoElement = videoRef.current;
 
-        useEffect(() => {
-            const videoElement = videoRef.current;
-            const handleVideoEnd = () => {
-                // Redirige al usuario a otra pantalla cuando el video termina
-                router.push('/game');
-            };
-            videoElement.addEventListener('ended', handleVideoEnd);
-    
-            // Limpia el evento cuando el componente se desmonta
-            return () => {
-                videoElement.removeEventListener('ended', handleVideoEnd);
-            };
-        }, [router]);
+        const handleVideoEnd = () => {
+            // Redirige al usuario a otra pantalla cuando el video termina
+            router.push('game');
+        };
 
+        videoElement.addEventListener('ended', handleVideoEnd);
+
+        // Limpia el evento cuando el componente se desmonta
+        return () => {
+            videoElement.removeEventListener('ended', handleVideoEnd);
+        };
+    }, [router]);
+
+    const handleSkip = () => {
+        router.push('game');
+    };
+
+    useEffect(() => {
+        const videoElement = videoRef.current;
         (async () => {
             try {
                 await videoElement.play();
@@ -38,16 +43,21 @@ const Animacion = () => {
                 console.error('Error al reproducir el video:', error);
             }
         })();
-        return (
-            <div>
-                <video ref={videoRef} src="/video/animacion.mp4" autoPlay>
-                    Tu navegador no soporta la reproducción de video.
-                </video>
-            </div>
-        );
-    
-    };
+    }, []);
 
-    
+    return (
+        <div className="relative w-full h-full">
+            <video ref={videoRef} src="/video/animacion.mp4" autoPlay muted >
+                Tu navegador no soporta la reproducción de video.
+            </video>
+            <button
+                onClick={handleSkip}
+                className="absolute top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg z-10 hover:bg-red-700"
+            >
+                Omitir
+            </button>
+        </div>
+    );
+};
 
 export default Animacion;
