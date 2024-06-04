@@ -27,7 +27,7 @@ const Game = () => {
                 width: window.innerWidth,
                 height: window.innerHeight,
                 scene: [
-                    VideoScene,  Preloader, GameHome, GameHome1, GameHome2, GameHome3, Credits
+                     Preloader, GameHome, GameHome1, GameHome2, GameHome3, Credits
                 ],
                 physics: {
                     default: 'arcade',

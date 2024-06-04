@@ -2155,7 +2155,10 @@ export default class GameHome2 extends Phaser.Scene {
     }
 
     update() {
-
+        if (useStore.getState().room==null){
+            this.scene.stop()
+            this.music.stop()
+        }
         if (this.done == true) {
             if (this.cursors.space.isDown && this.pressable) {
 
