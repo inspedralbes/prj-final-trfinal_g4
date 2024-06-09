@@ -26,7 +26,6 @@ const Credits = () => {
                         <p>Judith Pascal</p>
                     </div>
                 </div>
-                <h3 className="text-xl mt-8">Gràcies per jugar, prem espai per tornar al menú</h3>
             </div>
         </div>
     );

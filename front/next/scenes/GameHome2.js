@@ -1331,7 +1331,7 @@ export default class GameHome2 extends Phaser.Scene {
 
             this.music.stop();
 
-            this.time.delayedCall(3000, () => {
+            this.time.delayedCall(1500, () => {
                 this.scene.switch("gamehome3");
             });
         });
@@ -2355,12 +2355,12 @@ export default class GameHome2 extends Phaser.Scene {
             }
             );
             if (this.player1OnFlag && this.player2OnFlag) {
-                socket.emit('win', 1);
+                socket.emit('win', 2);
                 this.music.stop()
-                this.time.delayedCall(3000, () => {
-                    this.scene.switch("gamehome3");
+                // this.time.delayedCall(1500, () => {
+                //     this.scene.switch("gamehome3");
 
-                });
+                // });
 
             };
             if (this.player == 1) {

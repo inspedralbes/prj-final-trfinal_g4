@@ -2182,7 +2182,7 @@ export default class GameHome3 extends Phaser.Scene {
             );
         }
         else{
-            forEach(platform => {
+            this.platforms.forEach(platform => {
                 if(platform.color == 'Yel' || platform.color == 'Gre' || platform.color == 'Pur' || platform.color == 'Red'){
                     platform.setAlpha(0.5);
                     if(platform.collisionC1 != null){

@@ -445,8 +445,8 @@ io.on('connection', (socket) => {
                         socketToLeave.emit('newInfoRoom', null);
                     }
                 });
-                rooms.splice(rooms.indexOf(room), 1);
-            }
+                }
+            rooms.splice(rooms.indexOf(room), 1);
             io.emit('allRooms', rooms);
         }
     });
